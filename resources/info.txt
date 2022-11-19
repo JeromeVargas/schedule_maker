@@ -1,0 +1,19 @@
+Resources:
+
+- Resource 1
+  - element
+  - element
+  - element
+  - element
+
+- Resource 2
+  - element
+  - element
+  - element
+  - element
+
+- Resource 3
+  - element
+  - element
+  - element
+  - element
