@@ -1,0 +1,65 @@
+- Phases of the project
+
+    - Planning ->
+
+        - information collection
+
+        - users stories creation        
+
+    - Analyzing ->
+
+        - user journey
+
+        - task flow
+
+        - user flow
+
+        - wire-frames / mocks
+
+    - Design ->
+
+        - entities creation (UML graph)
+
+        - stack and infrastructure drafting
+
+    - Development
+
+        - Backend:
+
+            - feature 1
+
+            - feature 2
+
+            - feature 3
+        
+        - Frontend        
+
+            - feature 1
+
+            - feature 2
+
+            - feature 3
+            
+    - Testing
+
+        - unitary
+
+        - integration
+
+        - end to end
+
+    - Continuos integration
+
+        - item
+    
+        - item
+    
+        - item
+    
+    - Maintenance
+    
+        - item
+    
+        - item
+    
+        - item
