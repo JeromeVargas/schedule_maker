@@ -4,7 +4,17 @@
 
         - information collection
 
+            - create a local branch ✅
+            - set up the files ✅
+            - push the branch to the github repository ✅
+            - find information on the topic ⌛⏳⌛
+
         - users stories creation        
+
+            - create a users-story file ✅
+            - define the users
+            - describe the users
+            - complete the users stories            
 
     - Analyzing ->
 
