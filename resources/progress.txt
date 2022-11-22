@@ -7,12 +7,14 @@
             - create a local branch ✅
             - set up the files ✅
             - push the branch to the github repository ✅
-            - find information on the topic ⌛⏳⌛
+            - find information on the topic
+                - collect the info ✅
+                - separate and organize the info by topic and user ⌛⏳⌛
 
         - users stories creation        
 
             - create a users-story file ✅
-            - define the users
+            - define the users 
             - describe the users
             - complete the users stories            
 

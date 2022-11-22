@@ -1,6 +1,6 @@
-To do of additional but related tasks to keep in mind:
+To do of additional but related tasks to keep in mind, i.e., administrative:
 
-- Item 1
+- Data collection  
   - element
   - element
   - element
