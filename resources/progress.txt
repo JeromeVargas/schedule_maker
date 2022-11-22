@@ -9,9 +9,9 @@
             - push the branch to the github repository ✅
             - find information on the topic
                 - collect the info ✅
-                - separate and organize the info by topic and user ⌛⏳⌛
+                - separate and organize the info by topic and user ✅
 
-        - users stories creation        
+        - users stories creation ⌛⏳⌛
 
             - create a users-story file ✅
             - define the users 
