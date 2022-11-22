@@ -26,77 +26,99 @@ Resources:
 
 - To take into account
 
------------------------------------------- --> continue here --> --------------------------------------
+  - actor / entity*: 
 
-  - Budget
-  
-  - master schedule
-    - adjust master schedule
-    - incomplete schedules
-    - assess the scheduling process
-      - Teachers, groups and students
-  - base grid for teachers requirements
-  - base grid for groups requirements
-  - base grid for classes requirements
-  - balancing ratio
-  - timelines
-  - subjects requirements
-  - primary scheduling framework
-  - teaching strategies
-  - traditional period, block, or any of the numerous modified block schedules
-    - periods per school day
-    - minutes for each period
-    - lunch periods
-    - required courses by grade    
-  - courses are necessary and which are optional for students
-  - total number of seats available for each course and grade Level
-  - teacher and staffing allocations
-  - singleton and doubleton Courses
-  - teacher contracts
-    - teacher assignments are consistent with contract language
-  - teacher requests
-  - teacher subjects and credentials
-  - covering teachers
-  - teacher times restriction / requirements
-  - teacher student contact hours and class ratios
-  - teacher general and  core meetings, also prep periods / blocks
-  - average daily pupil load and number of preparations
-  - encoding of teachers’ assignments (course number, section number, seat capacity, period of the day, accessibility for inclusion students and room number)
-  - teacher schedule conflicts
-  - class conflicts
-  - conflict matrix
-  - additional or support / cram classes
-  - grade bands
-  - different lunch / break periods
-  - a system for teachers and staff to report absences due to personal days, sickness, professional development, and leaves
-  - substitute teacher
-  - communicating the school schedule with parents
-  - primary framework or basic organizational plan for the school
-    - traditional schedules feature 6, 7, 8 or 9 periods per day, including a lunch module or period
-    - semester 1/Semester 2 
-    - trimester schedules 
-    - Rotating-drop schedules, not so common
-  - recovery programs
-  - prepare curriculum information
-    - required and elective courses
-      - elective courses should be available to students in any cohort/academy/pathway
-      - students have access to electives
-  - numbering / labeling system
-    - department, course number and cohort or pathway
-  - department summaries - users databases
-  - FTE - Full-time equivalent, a full-time person is therefore counted as one FTE
-  - assets requests management, for instance: classroom, tvs, video beam ...
-  - remainder of courses
-    - All remaining sections can now be placed for assignment
-  - total seats available
-  - prioritize or weight to insure seats for students, for instance: with numerous singletons/doubletons
-  - concept of “tracking” students
-  - class sizes
-  - special education and other needs
-  - end term draft / regular draft
-  - projections
-  - graduation requirements
-  - fine-tuning
-  - grade reversals
-  - changes in teaching personnel
-  - changes in staffing allotments
+    - entity 1 -> School
+      - FTE - Full-time equivalent, a full-time person is therefore counted as one FTE
+      - numbering, encoding / labeling system, course number, section number, seat capacity, period of the day, accessibility for inclusion students and room number  
+      - grade bands
+      - primary framework or basic organizational plan for the school
+        - semester 1/Semester 2
+        - trimester schedules
+        - Rotating-drop schedules, not so common
+      - school day, traditional schedules feature 6, 7, 8 or 9 periods per day, including a lunch module or period
+        - periods per school day
+        - minutes for each period
+        - lunch periods      
+      - recovery programs    
+      - graduation requirements
+      - organizations summaries - users databases
+
+        - master schedule
+          - adjusting / fine-tuning    
+            - incomplete schedules
+              - remainder of subjects and teachers
+                - All remaining subjects and teachers can now be placed for assignment
+            - conflict matrix
+                - teacher schedule conflicts
+                - class conflicts
+            - balancing ratio
+          - end term draft / regular draft
+          - changes in teaching personnel
+          - changes in staffing allotments
+
+        - grade levels
+          - base grid for groups requirements
+          - base grid for subjects requirements
+          - base grid for teachers requirements and restrictions
+          - base grid for classes requirements
+
+        - groups
+          - schedule instance
+          - singleton and doubleton classes
+          - total number of seats available for each group
+          - class sizes, i.e., total seats available
+          - prioritize or weight to insure seats for students, for instance: with numerous singletons/doubletons
+
+        - subject / course
+          - prepare curriculum information
+          - required and elective subjects
+            - elective subjects should be available to students in any cohort/academy/pathway
+            - students have access to electives
+
+        - class / lesson
+          - additional or support / cram classes   
+
+    - entity 2 -> User
+      - basic data: first name - last name, email, password and role/s
+
+        - principal / headmaster
+          - teacher and staffing allocations responsibilities
+          - staff assigned
+          - coordinators assigned
+          - assigned to teaching too
+
+        - coordinator
+          - teacher and staffing allocations responsibilities
+          - assigned to teaching too
+
+        - teacher
+          - teacher contracts
+            - teacher assignments are consistent with contract language
+          - teacher subjects and credentials
+          - covering teachers
+            - full time teacher
+            - substitute teacher
+          - teacher student contact hours and class ratios
+          - teacher general and core meetings, also prep periods / blocks
+          - average daily pupil load and number of preparations
+          - teacher requests and restrictions
+
+          - student
+            - special education and other needs    
+
+
+  - other possible future features
+   - search bars
+   - budget
+   - assets requests management, for instance: classroom, tvs, video beam ...
+   - a system for teachers and staff to report absences due to personal days, sickness, professional development, and leaves
+   - communicating the school schedule with parents
+   - concept of “tracking” students progress
+   - projections
+   - marks / grades center
+   - grade reversals
+
+notes:
+* each sub entity inherits from the previous one
+------------------------------------------ --> continue here --> --------------------------------------
