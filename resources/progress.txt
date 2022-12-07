@@ -11,14 +11,14 @@
                 - collect the info ✅
                 - separate and organize the info by topic and user ✅
 
-        - users stories creation ⌛⏳⌛
+        - users stories creation 
 
             - create a users-story file ✅
             - define the users 
-            - describe the users
-            - complete the users stories            
+            - describe the users ✅
+            - complete the users stories ✅
 
-    - Analyzing ->
+    - Analyzing -> ⌛⏳⌛
 
         - user journey
 
