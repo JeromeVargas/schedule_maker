@@ -1,25 +1,42 @@
-# User Stories for {ProjectName}
+# User Stories for Schedule_maker
 
-## {userRole_1}
+## Principal / Headmaster
 
-1. [ ] as a **{userRole_1}**, I need **{functionality}**, so that **{reason/benefit}**.
+1. [ ] as a **Principal / Headmaster**, I need **to monitor and control coordinators, groups and teachers**, so that **the educational organization runs adequately**.
 
-   ### {potentialFeature_1}
+   ### Dashboard
 
-   1. [ ] Provide {feature} with {characteristics}, to {what_it_solves}.
+   1. [ ] Provide Dashboard with access to create, read, update and delete users and resources, to manage all users and resources.
+   2. [ ] Provide access to all schedules, to monitor all users and resources.
 
-## {userRole_2}
+   ### Master schedule
 
-1. [ ] as a **{userRole_2}**, I need **{functionality}**, so that **{reason/benefit}**.
+   1. [ ] Provide Master schedule with all the areas to add the base information, to server as template to schedule instances.
 
-   ### {potentialFeature_1}
+## Coordinator
 
-   1. [ ] Provide {feature} with {characteristics}, to {what_it_solves}.
+1. [ ] as a **Coordinator**, I need **to monitor and control assigned groups and teachers**, so that **there are not any clashes in the schedules or resources**.
 
-## {userRole_3}
+   ### Dashboard
 
-1. [ ] as a **{userRole_3}**, I need **{functionality}**, so that **{reason/benefit}**.
+   1. [ ] Provide Dashboard with access to create, read, update and delete assigned groups, teachers and resources, to manage assigned users and resources.
 
-   ### {potentialFeature_1}
+   ### Schedule for assigned users and resources
 
-   1. [ ] Provide {feature} with {characteristics}, to {what_it_solves}.
+   1. [ ] Provide schedule with access to assigned groups, teachers and resources, to monitor its state and availability.
+
+## Teacher
+
+1. [ ] as a **Teacher**, I need **to have a clear schedule**, so that **I can organize my time adequately and slipt my efforts evenly**.
+
+   ### Schedule for assigned groups and classes
+
+   1. [ ] Provide schedule with access to groups and classes assigned, to keep track of the work load assigned.
+
+## Student
+
+1. [ ] as a **Student**, I need **to know my schedule**, so that **I can attend the correct classes**.
+
+   ### Schedule for assigned classes
+
+   1. [ ] Provide schedule with access classes assigned, to attend the corresponding classes.

@@ -30,10 +30,11 @@ Resources:
 
     - entity 1 -> School
       - FTE - Full-time equivalent, a full-time person is therefore counted as one FTE
-      - numbering, encoding / labeling system, course number, section number, seat capacity, period of the day, accessibility for inclusion students and room number  
+      - numbering, encoding / labeling system, course number, section number
+      - seat capacity, period of the day, accessibility for inclusion students and room number  
       - grade bands
       - primary framework or basic organizational plan for the school
-        - semester 1/Semester 2
+        - semester 1/ Semester 2
         - trimester schedules
         - Rotating-drop schedules, not so common
       - school day, traditional schedules feature 6, 7, 8 or 9 periods per day, including a lunch module or period
@@ -86,7 +87,7 @@ Resources:
           - teacher and staffing allocations responsibilities
           - staff assigned
           - coordinators assigned
-          - assigned to teaching too
+          - He / She is assigned to teaching too
 
         - coordinator
           - teacher and staffing allocations responsibilities
