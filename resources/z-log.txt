@@ -1,6 +1,6 @@
 To do of additional but related tasks to keep in mind, i.e., administrative:
 
-- Resources Customer journey  
+- Resources Task flow  
   - element
   - element
   - element
