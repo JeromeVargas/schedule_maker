@@ -24,11 +24,14 @@
 
         - task flow for each stage in the customer journey ✅
 
-        - user flow - update the customer journey --> ⌛⏳⌛ 
+        - user flow ⌛⏳⌛ 
 
-        - wire-frames / mocks
 
     - Design ->
+
+        - mocks
+
+            - pick color scheme
 
         - entities creation (UML graph)
 
@@ -60,7 +63,7 @@
 
         - end to end
 
-    - Continuos integration
+    - Deployment / Continuos integration
 
         - item
     
