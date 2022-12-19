@@ -24,7 +24,7 @@
 
         - task flow for each stage in the customer journey ✅
 
-        - user flow ⌛⏳⌛
+        - user flow - update the customer journey --> ⌛⏳⌛ 
 
         - wire-frames / mocks
 
