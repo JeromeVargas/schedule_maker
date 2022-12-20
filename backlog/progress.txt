@@ -14,21 +14,24 @@
         - users stories creation 
 
             - create a users-story file ✅
-            - define the users 
+            - define the users ✅
             - describe the users ✅
             - complete the users stories ✅
 
-    - Analyzing -> ⌛⏳⌛
+    - Analyzing ->
 
-        - user journey
+        - customer journey ✅
 
-        - task flow
+        - task flow for each stage in the customer journey ✅
 
-        - user flow
+        - user flow ⌛⏳⌛ 
 
-        - wire-frames / mocks
 
     - Design ->
+
+        - mocks
+
+            - pick color scheme
 
         - entities creation (UML graph)
 
@@ -60,7 +63,7 @@
 
         - end to end
 
-    - Continuos integration
+    - Deployment / Continuos integration
 
         - item
     
