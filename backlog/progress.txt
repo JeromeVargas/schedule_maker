@@ -24,12 +24,17 @@
 
         - task flow for each stage in the customer journey ✅
 
-        - user flow ⌛⏳⌛ 
+        - user flow ✅
 
 
     - Design ->
 
-        - mocks
+        - wire-frame ⌛⏳⌛ 
+        
+            - list pages and the components in each one ✅
+            - create wire-frames ⌛⏳⌛             
+
+        - mocks 
 
             - pick color scheme
 

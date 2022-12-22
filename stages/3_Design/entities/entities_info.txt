@@ -1,0 +1,65 @@
+<>- User
+    - id: string
+    + firstName: string
+    + lastName: string
+    + password: string - must be encrypted in the database            
+        <- Headmaster
+            - school_id: string                
+        <- Coordinator *
+            - school_id: string
+            + isActiveCoordinator: boolean
+        <- Teacher
+            - coordinator_id: string : nullable **
+            + isActiveTeacher: boolean
+            <- Assignable_subjects
+                - teacher_id
+                - subject_id
+
+- School
+    - id: string
+    - name: string
+
+        <>- Schedule_schema
+                - id
+                - school_id
+                + initial_day: number - make it 0 index, i.e.: 0 meaning Monday
+                + final_day: number - make it 0 index, i.e.: 4 meaning Friday
+                + shift_start: date - just the hour
+                + number_hours: number: hours per shift
+                + class_unit: number - minutes                    
+                + sets_accepted: number - two-hour class, three-hour class ... n-hour class
+                    
+                    <>- Breaks
+                        - id: number
+                        - schedule_id: number
+                        + break_start: date - just the hour
+                        + number_minutes: number
+
+        <>- Group
+                - id: number
+                - school_id: number ****
+                - coordinator_id: string : nullable **
+                - schedule_id: number
+                + name: string
+
+            <>- Subject
+                - id: number
+                + name: string
+                + class_set: number - two-hour class, three-hour class ... n-hour class
+                + number_classes: number - number of classes during the period, i.e: 2 per week
+                + sub_groups: number: default 1 - sub-groups for this subject in the same main group ***
+
+                    <- Class
+                        - id: number
+                        - subject_id: number
+                        - teacher_id: number - teacher assigned
+                        - class_number: number - class order in the period, i.e: 1st, 2nd ... nst in the week
+                        - day: number - make it 0 index, i.e.: 0 meaning Monday
+                        - class_start_time: date - just the hour
+
+* the coordinator may or not exist
+** that is why the coordinator id can be nullable
+*** if more than one, the groups will receive an alpha numbering, i.e.: a, b .. z
+**** group_id might be duplicated in the class entity in the mongo implementation - To avoid that you can use promise all to add the info in the controllers to the payload
+
+
