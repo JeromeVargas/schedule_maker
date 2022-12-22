@@ -5,3 +5,13 @@ To do of additional but related tasks to keep in mind, i.e., administrative:
   - https://www.youtube.com/watch?v=V6nN3jJMbJY&ab_channel=WiredtoDesign
   - https://www.youtube.com/watch?v=TIV1y11xz7k&ab_channel=chunbuns
   - https://www.youtube.com/watch?v=4uHxJMCzeGg&ab_channel=DesignCourse
+
+- Resources ui layout
+  - https://www.youtube.com/watch?v=iHXB34ZsjHQ&ab_channel=AdrianTwarog
+  - https://www.youtube.com/watch?v=V_cioLTaDvQ&ab_channel=DESIGNR
+  - https://www.youtube.com/watch?v=uZwRVckjQWI&ab_channel=chunbuns
+  - https://www.youtube.com/watch?v=0JeJTGjgcco&ab_channel=AdrianTwarog
+  - https://www.youtube.com/watch?v=1h73MOcH3xA&ab_channel=DesignCode
+  - https://www.youtube.com/watch?v=efmJEzT5G1A&ab_channel=CubertoDesign
+  - https://www.youtube.com/watch?v=_P3CrgFlXhg&ab_channel=freeCodeCamp.org
+

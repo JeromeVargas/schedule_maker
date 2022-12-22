@@ -1,0 +1,57 @@
+pages list
+
+    - Home
+        - header
+            - logo, make sure you show who you are, show your name
+            - navigation, links
+                - home
+                - about us
+                - contact us
+                - login
+                - sign up / create an account, highlight it
+        - hero
+            - hero Image or Video
+            - headline
+                - what you have to offer
+                - why people should trust you
+            - subheading
+                - the benefits of working with you
+            - call to action
+                - what action they should take next, add some benefit, such it is free
+            - social proof subheading, this or that use your product
+        - product/service, benefits, about us
+        - social proof, testimonials, companies, sponsors
+        - footer, includes contact us
+        - copyright
+
+    - Login
+        - username / mail input
+        - password input
+        - login button
+    
+    - Sign up / create an account
+        - username / mail input
+        - password input
+        - sign up button
+
+    - Dashboard
+        - side menu
+            - link 1
+            - link 2
+            - link 3            
+        - dashboard main area
+            - schedule home
+                - schedule/s list
+                    - schedule instance
+                    - schedule update
+                        - schedule details summary
+                        - conflicts matrix
+                - schedule creation
+                        - conflicts matrix 
+                - schedule/s statics
+            - resources home
+                - resources list
+                    - resource instance
+                    - resource update
+                - resources creation
+                - resources statics
