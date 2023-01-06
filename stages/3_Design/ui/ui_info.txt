@@ -29,19 +29,16 @@ pages list
         - password input
         - login button
     
-    - Sign up / create an account
+    - Sign up / create a free account
         - username / mail input
         - password input
         - sign up button
 
-    - Dashboard
-        - side menu
-            - link 1
-            - link 2
-            - link 3            
-        - dashboard main area
-            - schedule home
-                - schedule/s list
+    - Dashboard             
+        - dashboard main area:  percentage of teachers per subject
+                                percentage of teachers and subjects hours assigned            
+            - groups home: list of groups, grid
+                - schedule/s list, (groups)
                     - schedule instance
                     - schedule update
                         - schedule details summary
@@ -49,7 +46,16 @@ pages list
                 - schedule creation
                         - conflicts matrix 
                 - schedule/s statics
-            - resources home
+            - schedule home: master schedule
+                - schedule/s list, (groups)
+                    - schedule instance
+                    - schedule update
+                        - schedule details summary
+                        - conflicts matrix
+                - schedule creation
+                        - conflicts matrix 
+                - schedule/s statics
+            - resources home: list of teachers and subjects
                 - resources list
                     - resource instance
                     - resource update
