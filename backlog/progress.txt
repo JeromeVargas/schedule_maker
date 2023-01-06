@@ -3,8 +3,7 @@
     - Planning ->
 
         - information collection
-
-            - create a local branch ✅
+            
             - set up the files ✅
             - push the branch to the github repository ✅
             - find information on the topic
@@ -29,16 +28,15 @@
 
     - Design ->
 
+        - entities creation (UML graph)
+
         - wire-frame ⌛⏳⌛ 
         
+            - basic design system
             - list pages and the components in each one ✅
-            - create wire-frames ⌛⏳⌛             
-
-        - mocks 
-
-            - pick color scheme
-
-        - entities creation (UML graph)
+            ------------------------------------------ --> continue here --> --------------------------------------
+            - create wire-frames  ⌛⏳⌛                                                                                                 
+                            - create the mobile views
 
         - stack and infrastructure drafting
 
@@ -62,9 +60,7 @@
             
     - Testing
 
-        - unitary
-
-        - integration
+        - unitary / integration
 
         - end to end
 

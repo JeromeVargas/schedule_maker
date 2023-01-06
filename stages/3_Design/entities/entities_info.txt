@@ -11,6 +11,9 @@
         <- Teacher
             - coordinator_id: string : nullable **
             + isActiveTeacher: boolean
+            + contractualType: string
+            + number of hours assigned: string
+            + field: string
             <- Assignable_subjects
                 - teacher_id
                 - subject_id

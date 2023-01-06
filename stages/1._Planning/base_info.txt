@@ -66,7 +66,6 @@ Resources:
 
         - groups
           - schedule instance
-          - singleton and doubleton classes
           - total number of seats available for each group
           - class sizes, i.e., total seats available
           - prioritize or weight to insure seats for students, for instance: with numerous singletons/doubletons
@@ -79,6 +78,7 @@ Resources:
 
         - class / lesson
           - additional or support / cram classes   
+          - singleton and doubleton classes
 
     - entity 2 -> User
       - basic data: first name - last name, email, password and role/s
@@ -122,4 +122,3 @@ Resources:
 
 notes:
 * each sub entity inherits from the previous one
------------------------------------------- --> continue here --> --------------------------------------
