@@ -30,13 +30,13 @@
 
         - entities creation (UML graph)
 
-        - wire-frame ⌛⏳⌛ 
-        
-            - basic design system
-            - list pages and the components in each one ✅
+        - wire-frame ⌛⏳⌛         
             ------------------------------------------ --> continue here --> --------------------------------------
-            - create wire-frames  ⌛⏳⌛                                                                                                 
-                            - create the mobile views
+            - basic design system ⌛⏳⌛
+            - list pages and the components in each one ✅
+            - create wire-frames  ✅                                                                                                
+                            - desktop ✅
+                            - mobile ✅
 
         - stack and infrastructure drafting
 
