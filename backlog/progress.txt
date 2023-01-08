@@ -28,15 +28,24 @@
 
     - Design ->
 
-        - entities creation (UML graph)
+        - entities creation (UML graph) ⌛⏳⌛
+        ------------------------------------------ --> continue here --> --------------------------------------
 
-        - wire-frame ⌛⏳⌛         
-            ------------------------------------------ --> continue here --> --------------------------------------
-            - basic design system ⌛⏳⌛
-            - list pages and the components in each one ✅
-            - create wire-frames  ✅                                                                                                
-                            - desktop ✅
-                            - mobile ✅
+        - basic design system ✅
+                - fonts  ✅
+                - color  ✅
+                    - primary, the color that identify the brand
+                    - secondary, complementary
+                    - shades: mostly black and white, for background, fonts and general purposes
+                    - neutral, mainly gray
+                    - success
+                    - warning
+                    - error
+                - buttons ✅
+        - list pages and the components in each one ✅
+        - wire-frames  ✅                                                                                                
+                    - desktop ✅
+                    - mobile ✅
 
         - stack and infrastructure drafting
 
