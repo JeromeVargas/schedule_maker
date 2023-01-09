@@ -1,68 +1,75 @@
-<>- User
+- User
     - id: string
     + firstName: string
     + lastName: string
-    + password: string - must be encrypted in the database            
-        <- Headmaster
-            - school_id: string                
-        <- Coordinator *
-            - school_id: string
-            + isActiveCoordinator: boolean
+    + password: string - must be encrypted in the database
+    + status
+    + roles: Headmaster, Coordinator*, Teacher and Student            
         <- Teacher
-            - coordinator_id: string : nullable **
-            + isActiveTeacher: boolean
-            + contractualType: string
-            + number of hours assigned: string
-            + field: string
-            <- Assignable_subjects
-                - teacher_id
-                - subject_id
+            - coordinator_id: string : nullable **            
+            + contract_type: string
+            + number of hours assignable: integer
+            + number of hours assigned: integer
+            + field: string            
+        <- Student
+            - group
 
 - School
     - id: string
     - name: string
 
-        <>- Schedule_schema
-                - id
-                - school_id
-                + initial_day: number - make it 0 index, i.e.: 0 meaning Monday
-                + final_day: number - make it 0 index, i.e.: 4 meaning Friday
-                + shift_start: date - just the hour
-                + number_hours: number: hours per shift
-                + class_unit: number - minutes                    
-                + sets_accepted: number - two-hour class, three-hour class ... n-hour class
+        <>- Master_Schedule
+                - id: string
+                - school_id: string      
+                + start_school_day: date - just the hour
+                + number_hours: integer: hours per shift
+                + class_unit:length: integer - minutes                    
                     
-                    <>- Breaks
-                        - id: number
-                        - schedule_id: number
+                    <- Breaks
+                        - id: string
+                        - schedule_id: string
                         + break_start: date - just the hour
-                        + number_minutes: number
+                        + number_minutes: integer
 
         <>- Group
-                - id: number
-                - school_id: number ****
+                - id: string ***
+                - school_id: string
                 - coordinator_id: string : nullable **
-                - schedule_id: number
+                - schedule_id: string
                 + name: string
+                + number_students: integer
 
             <>- Subject
-                - id: number
+                - id: string
+                - group_id: string
+                - field: string
                 + name: string
-                + class_set: number - two-hour class, three-hour class ... n-hour class
-                + number_classes: number - number of classes during the period, i.e: 2 per week
-                + sub_groups: number: default 1 - sub-groups for this subject in the same main group ***
+                + class_units: integer - two-hour class, three-hour class ... n-hour class
+                + frequency: integer - number of classes during the period, i.e: 2 per week
+                
 
                     <- Class
-                        - id: number
-                        - subject_id: number
-                        - teacher_id: number - teacher assigned
-                        - class_number: number - class order in the period, i.e: 1st, 2nd ... nst in the week
-                        - day: number - make it 0 index, i.e.: 0 meaning Monday
-                        - class_start_time: date - just the hour
+                        - id: string
+                        - subject_id: string
+                        - teacher_id: string - teacher assigned
+                        - schedule_slot: integer - index to be used in a list
+
+- Field:
+    - id: string
+    - name: string
+
+- Field_teacher: link entity
+    - id: string
+    - field: string
+    - teacher_id: number
+
+- Day_resource: link entity
+    - id: string
+    - day: integer - index to be used in a list
+    - resource_id: string, a resource can be a schedule, a group or teacher
 
 * the coordinator may or not exist
 ** that is why the coordinator id can be nullable
-*** if more than one, the groups will receive an alpha numbering, i.e.: a, b .. z
-**** group_id might be duplicated in the class entity in the mongo implementation - To avoid that you can use promise all to add the info in the controllers to the payload
+*** if more than one group per level, the groups will receive an alpha numbering, i.e.: a, b .. z
 
 

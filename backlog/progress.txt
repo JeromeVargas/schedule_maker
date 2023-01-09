@@ -29,7 +29,7 @@
     - Design ->
 
         - entities creation (UML graph) ⌛⏳⌛
-        ------------------------------------------ --> continue here --> --------------------------------------
+            - review the entities
 
         - basic design system ✅
                 - fonts  ✅
@@ -47,7 +47,8 @@
                     - desktop ✅
                     - mobile ✅
 
-        - stack and infrastructure drafting
+        - stack and structure drafting
+        ------------------------------------------ --> continue here --> --------------------------------------
 
     - Development
 
