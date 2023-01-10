@@ -26,10 +26,11 @@
         - user flow ✅
 
 
-    - Design ->
+    - Design -> ✅
 
-        - entities creation (UML graph) ⌛⏳⌛
-            - review the entities
+        - entities creation (UML graph) ✅
+            - list the entities ✅
+            - add properties ✅
 
         - basic design system ✅
                 - fonts  ✅
@@ -47,10 +48,10 @@
                     - desktop ✅
                     - mobile ✅
 
-        - stack and structure drafting
-        ------------------------------------------ --> continue here --> --------------------------------------
+        - stack and structure drafting ✅        
 
-    - Development
+    - Development ⌛⏳⌛
+        ------------------------------------------ --> continue here --> --------------------------------------
 
         - Backend:
 
