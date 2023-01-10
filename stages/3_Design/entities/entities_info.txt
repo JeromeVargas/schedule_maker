@@ -10,7 +10,7 @@
             + contract_type: string
             + number of hours assignable: integer
             + number of hours assigned: integer
-            + field: string            
+            + field: string : nullable ****
         <- Student
             - group
 
@@ -42,7 +42,7 @@
             <>- Subject
                 - id: string
                 - group_id: string
-                - field: string
+                - field: string : nullable **
                 + name: string
                 + class_units: integer - two-hour class, three-hour class ... n-hour class
                 + frequency: integer - number of classes during the period, i.e: 2 per week
@@ -71,5 +71,6 @@
 * the coordinator may or not exist
 ** that is why the coordinator id can be nullable
 *** if more than one group per level, the groups will receive an alpha numbering, i.e.: a, b .. z
+**** assuming each teacher only has one field
 
 

@@ -1,0 +1,55 @@
+- Backend
+
+    - endpoints         
+        - user
+            - teacher and teacher:id
+                - get
+                - create
+                - update
+                - delete
+            - student and student:id *
+                - get
+                - create
+                - update
+                - delete
+        - school
+            - master schedule
+                - get
+                - create
+                - update
+                - delete            
+            - group and group:id
+                - get
+                - create
+                - update
+                - delete
+            - subject and subject:id
+                - get
+                - create
+                - update
+                - delete
+            - field and subject:id
+                - get
+                - create
+                - update
+                - delete
+        - auth
+            - login
+            - refresh
+            - delete
+
+
+- Frontend
+    - Home
+    - login
+    - dashboard
+    - resources
+        - dashboard master schedule
+        - dashboard group
+        - dashboard subject
+        - dashboard teacher
+            - dashboard add / remove resources from a resource
+    - dashboard conflicts
+    - dashboard stats
+
+* as future feature

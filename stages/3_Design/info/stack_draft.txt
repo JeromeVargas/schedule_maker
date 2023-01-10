@@ -1,0 +1,26 @@
+- Backend
+    
+    - server
+        - typescript
+        - express
+
+    - database
+        - mongo
+        - mongoose
+
+    - testing
+        - supertest
+        - jest
+
+
+- Frontend
+
+    - vite    
+        - react
+
+    - state management
+        - react tool kit query
+    
+    - testing
+        - react testing library
+        - vitest
