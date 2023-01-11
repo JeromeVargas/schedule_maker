@@ -1,11 +1,17 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+const PORT = process.env.PORT || 3001;
+
+import { router } from "./routes";
 
 const server = express();
 server.use(cors());
+server.use(express.json());
 
-const PORT = process.env.PORT || 3001;
+server.use(router);
+
+server.use(cors());
 
 // ------------------------------------------ --> continue here --> --------------------------------------
 

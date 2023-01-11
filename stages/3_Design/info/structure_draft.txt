@@ -13,7 +13,7 @@
                 - update
                 - delete
         - school
-            - master schedule
+            - master schedule and master schedule:id
                 - get
                 - create
                 - update
