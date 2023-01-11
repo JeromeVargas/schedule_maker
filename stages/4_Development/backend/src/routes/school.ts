@@ -1,13 +1,12 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
+
+import { getSchool } from "../controllers/schoolController";
 
 const router = Router();
 
 // @desc    Get school data
 // @route   GET /api/
-// @access  Public: later Private
-
-router.get("/", (req: Request, res: Response) => {
-  res.send({ data: "test" });
-});
+// @access  Private
+router.get("/", getSchool);
 
 export { router };
