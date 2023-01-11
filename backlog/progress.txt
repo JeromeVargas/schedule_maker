@@ -10,7 +10,7 @@
                 - collect the info ✅
                 - separate and organize the info by topic and user ✅
 
-        - users stories creation 
+        - users stories creation
 
             - create a users-story file ✅
             - define the users ✅
@@ -20,10 +20,8 @@
     - Analyzing ->
 
         - customer journey ✅
-
         - task flow for each stage in the customer journey ✅
-
-        - user flow ✅
+        - user flow charts ✅
 
 
     - Design -> ✅
@@ -44,24 +42,23 @@
                     - error
                 - buttons ✅
         - list pages and the components in each one ✅
-        - wire-frames  ✅                                                                                                
+        - wire-frames  ✅                                                   
                     - desktop ✅
                     - mobile ✅
 
-        - stack and structure drafting ✅        
+        - stack and structure drafting ✅
 
     - Development ⌛⏳⌛
-        ------------------------------------------ --> continue here --> --------------------------------------
 
-        - Backend:
+        - Backend: ⌛⏳⌛
 
-            - feature 1
+            - base server ⌛⏳⌛            
 
-            - feature 2
+            - end points
 
-            - feature 3
+            - utility features
         
-        - Frontend        
+        - Frontend
 
             - feature 1
 
