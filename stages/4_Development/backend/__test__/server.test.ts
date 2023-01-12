@@ -11,6 +11,6 @@ describe("GET /school ", () => {
       .get("/api/v1/school")
       .send();
     expect(statusCode).toBe(200);
-    expect(body.data).toBe("testing the school endpoint");
+    expect(body.data).toBe("testing the get schools endpoint");
   });
 });
