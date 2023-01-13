@@ -1,10 +1,11 @@
 // main and library imports
 import "dotenv/config";
 import express from "express";
+import "express-async-errors";
 import cors from "cors";
 
-// port to listen to
-const PORT = process.env.PORT || 3001;
+// local imports
+import errorHandlerMiddleware from "./middleware/error-handler";
 
 // routes
 import { router } from "./routes";
@@ -19,9 +20,12 @@ import connectDB from "./config/connect";
 server.use(cors());
 server.use(express.json());
 
+// local middleware instantiation
 server.use(router);
 
-server.use(cors());
+// port to listen to
+const PORT = process.env.PORT || 3001;
+server.use(errorHandlerMiddleware);
 
 // db connection function execution
 if (process.env.NODE_ENV !== "test") {

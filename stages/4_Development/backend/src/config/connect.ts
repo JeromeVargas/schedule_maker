@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// to prevent deprecated behavior
 mongoose.set("strictQuery", false);
 
 async function connectDB(): Promise<void> {

@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import BadRequestError from "../errors/bad-request";
+
 import { insertSchool } from "../services/schoolService";
-import SchoolModel from "../models/schoolModel";
 
 // @desc get all the schools
 const getSchools = (req: Request, res: Response) => {
-  res.send({ data: "testing the get schools endpoint" });
+  res.json({ data: "testing the get schools endpoint" });
 };
 
 // @desc get the school name
@@ -14,13 +16,12 @@ const getSchool = (req: Request, res: Response) => {
 
 // @desc create a school
 const createSchool = async ({ body }: Request, res: Response) => {
-  // work on the async wrapper, use coding addict suggested async errors library  ------------------------------------------ --> continue here --> --------------------------------------
-  try {
-    const responseInsert = await insertSchool(body);
-    res.send(responseInsert);
-  } catch (error) {
-    console.log(error);
+  // work on express validator  ------------------------------------------ --> continue here --> --------------------------------------
+  if (!body.name) {
+    throw new BadRequestError("Please add a school name");
   }
+  const schoolCreated = await insertSchool(body);
+  res.status(StatusCodes.CREATED).json(schoolCreated);
 };
 
 // @desc update a school
