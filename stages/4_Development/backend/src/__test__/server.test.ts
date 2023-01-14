@@ -1,6 +1,6 @@
 import supertest from "supertest";
 
-import { server, connection } from "../src/server";
+import { server, connection } from "../server";
 
 describe("GET /school ", () => {
   afterAll(() => {

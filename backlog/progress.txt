@@ -52,9 +52,22 @@
 
         - Backend: ⌛⏳⌛
 
-            - base server ⌛⏳⌛            
+            - base server ✅
 
-            - end points
+                - base route ✅
+                - base testing ✅
+                - start db connection ✅
+                - base model ✅
+                - asynchronous error wrapper ✅
+                - validation - express validator ✅
+
+            - end points ⌛⏳⌛
+
+                - school ⌛⏳⌛
+                    - create ⌛⏳⌛
+                    - read
+                    - update
+                    - delete
 
             - utility features
         

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import validateCreate from "../validators/schoolValidator";
 
 import {
   getSchools,
@@ -21,7 +22,7 @@ router.get("/:id", getSchool);
 // @desc    Create a school
 // @route   POST /api/v1/school
 // @access  Private
-router.post("/", createSchool);
+router.post("/", validateCreate, createSchool);
 // @desc    Update a school data
 // @route   PUT /api/v1/school/:id
 // @access  Private

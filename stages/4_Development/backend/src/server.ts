@@ -29,7 +29,7 @@ server.use(errorHandlerMiddleware);
 
 // db connection function execution
 if (process.env.NODE_ENV !== "test") {
-  connectDB().then(() => console.log("Data base connection established"));
+  connectDB().then(() => console.log("Database connection established"));
 }
 
 const createConnection = () => {

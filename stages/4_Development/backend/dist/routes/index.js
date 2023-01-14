@@ -37,7 +37,7 @@ const cleanFileName = (fileName) => {
     var _a;
     const cleanName = cleanFileName(filename);
     if (cleanName !== "index") {
-        console.log(`The /${cleanName} is being loaded`);
+        console.log(`The /${cleanName} route is being loaded`);
         (_a = `./${cleanName}`, Promise.resolve().then(() => __importStar(require(_a)))).then((moduleRouter) => {
             router.use(`/api/v1/${cleanName}`, moduleRouter.router);
         });

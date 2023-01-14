@@ -17,9 +17,6 @@ const getSchool = (req: Request, res: Response) => {
 // @desc create a school
 const createSchool = async ({ body }: Request, res: Response) => {
   // work on express validator  ------------------------------------------ --> continue here --> --------------------------------------
-  if (!body.name) {
-    throw new BadRequestError("Please add a school name");
-  }
   const schoolCreated = await insertSchool(body);
   res.status(StatusCodes.CREATED).json(schoolCreated);
 };

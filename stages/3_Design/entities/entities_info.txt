@@ -20,7 +20,8 @@
 
         <>- Master_Schedule
                 - id: string
-                - school_id: string      
+                - school_id: string
+                - number_slots: integer
                 + start_school_day: date - just the hour
                 + number_hours: integer: hours per shift
                 + class_unit:length: integer - minutes                    
