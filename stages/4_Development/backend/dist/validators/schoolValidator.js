@@ -10,11 +10,11 @@ const validateCreate = [
         .exists()
         .withMessage("Please add a name")
         .bail()
-        .isString()
-        .withMessage("The name is a number")
-        .bail()
         .notEmpty()
-        .withMessage("the name field is empty"),
+        .withMessage("the name field is empty")
+        .bail()
+        .isString()
+        .withMessage("The name is not valid"),
     (req, res, next) => {
         (0, validateHelper_1.default)(req, res, next);
     },

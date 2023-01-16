@@ -2,7 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const SchoolSchema = new mongoose_1.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: [true, "must provide name for the task"],
+        unique: true,
+    },
 }, {
     timestamps: true,
     versionKey: false,

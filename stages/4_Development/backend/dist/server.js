@@ -18,7 +18,7 @@ exports.server.use(routes_1.router);
 const PORT = process.env.PORT || 3001;
 exports.server.use(error_handler_1.default);
 if (process.env.NODE_ENV !== "test") {
-    (0, connect_1.default)().then(() => console.log("Data base connection established"));
+    (0, connect_1.default)().then(() => console.log("Database connection established"));
 }
 const createConnection = () => {
     if (process.env.NODE_ENV === "test") {

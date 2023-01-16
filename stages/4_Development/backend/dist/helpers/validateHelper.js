@@ -8,7 +8,7 @@ const validateResult = (req, res, next) => {
     }
     catch (error) {
         res.status(400);
-        res.send({ errors: error.array() });
+        res.json(error.array());
     }
 };
 exports.default = validateResult;
