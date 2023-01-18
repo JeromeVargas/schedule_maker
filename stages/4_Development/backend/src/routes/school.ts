@@ -1,5 +1,5 @@
 import { Router } from "express";
-import validateCreate from "../validators/schoolValidator";
+import { validateCreate } from "../validators/schoolValidator";
 
 import {
   getSchools,
@@ -11,6 +11,10 @@ import {
 
 const router = Router();
 
+// @desc    Create a school
+// @route   POST /api/v1/school
+// @access  Private
+router.post("/", validateCreate, createSchool);
 // @desc    Get schools data
 // @route   GET /api/v1/school
 // @access  Private
@@ -19,10 +23,6 @@ router.get("/", getSchools);
 // @route   GET /api/v1/school/:id
 // @access  Private
 router.get("/:id", getSchool);
-// @desc    Create a school
-// @route   POST /api/v1/school
-// @access  Private
-router.post("/", validateCreate, createSchool);
 // @desc    Update a school data
 // @route   PUT /api/v1/school/:id
 // @access  Private

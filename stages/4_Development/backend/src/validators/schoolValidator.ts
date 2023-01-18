@@ -16,4 +16,5 @@ const validateCreate = [
     validateResult(req, res, next);
   },
 ];
-export default validateCreate;
+
+export { validateCreate };
