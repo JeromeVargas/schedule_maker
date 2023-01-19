@@ -1,4 +1,5 @@
 import { FilterQuery } from "mongoose";
+import BadRequestError from "../errors/bad-request";
 import SchoolModel from "../models/schoolModel";
 
 const models = {
@@ -70,7 +71,10 @@ const deleteResource = (
   resourceName: keyof typeof models
 ) => {
   const model = models[resourceName];
-  const resourceDeleted = model.findOneAndRemove({ _id: resourceId });
+  const resourceDeleted = model
+    .findOneAndRemove({ _id: resourceId })
+    .lean()
+    .exec();
   return resourceDeleted;
 };
 

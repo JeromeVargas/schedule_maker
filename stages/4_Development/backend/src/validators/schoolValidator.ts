@@ -8,10 +8,12 @@ const validateCreate = [
     .withMessage("Please add a name")
     .bail()
     .notEmpty()
-    .withMessage("the name field is empty")
+    .withMessage("The name field is empty")
     .bail()
     .isString()
-    .withMessage("The name is not valid"),
+    .withMessage("The name is not valid")
+    .isLength({ min: 1, max: 100 })
+    .withMessage("The name must not exceed 100 characters"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
