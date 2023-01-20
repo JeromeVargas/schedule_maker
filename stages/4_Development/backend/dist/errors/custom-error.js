@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const http_status_codes_1 = require("http-status-codes");
 class CustomAPIError extends Error {
     constructor(message) {
         super(message);
-        this.statusCode = 400;
+        this.statusCode = http_status_codes_1.StatusCodes.BAD_REQUEST;
     }
 }
 exports.default = CustomAPIError;

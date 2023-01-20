@@ -1,11 +1,16 @@
-import { FilterQuery } from "mongoose";
-import BadRequestError from "../errors/bad-request";
+import { FilterQuery, isValidObjectId } from "mongoose";
 import SchoolModel from "../models/schoolModel";
 
 const models = {
   school: SchoolModel,
 } as const;
 
+// helper functions
+const isValidId = (id: string) => {
+  return isValidObjectId(id);
+};
+
+// CRUD operations
 // @desc insert a resource in database
 // @params resource, resourceName
 const insertResource = <T>(resource: T, resourceName: keyof typeof models) => {
@@ -79,6 +84,7 @@ const deleteResource = (
 };
 
 export {
+  isValidId,
   insertResource,
   findAllResources,
   findResourceById,
