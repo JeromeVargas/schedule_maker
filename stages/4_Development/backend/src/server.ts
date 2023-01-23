@@ -6,6 +6,7 @@ import cors from "cors";
 
 // local imports
 import errorHandlerMiddleware from "./middleware/error-handler";
+import notFound404Middleware from "./middleware/not-found";
 
 // routes
 import { router } from "./routes";
@@ -25,6 +26,9 @@ server.use(router);
 
 // port to listen to
 const PORT = process.env.PORT || 3001;
+
+// custom middleware
+server.use(notFound404Middleware);
 server.use(errorHandlerMiddleware);
 
 // db connection function execution
