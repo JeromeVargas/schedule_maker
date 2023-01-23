@@ -14,7 +14,7 @@ import {
   deleteResource,
 } from "../services/mongoServices";
 
-// continue here --> review the tests based on validation and work on the controllers features validation
+// continue here --> create the user end point and its crud operations
 // @desc create a school
 // @route POST /api/v1/school
 // @access Private

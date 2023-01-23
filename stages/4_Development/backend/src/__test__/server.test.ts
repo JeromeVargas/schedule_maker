@@ -1,4 +1,5 @@
 import supertest from "supertest";
+import { Types } from "mongoose";
 
 import { server, connection } from "../server";
 import * as MongoServices from "../services/mongoServices";
@@ -32,10 +33,11 @@ describe("Schedule maker API", () => {
           const newSchool = {
             name: "school 182",
           };
+          const validMockId = new Types.ObjectId().toString();
 
           // payloads
           const schoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 182",
           };
 
@@ -108,10 +110,10 @@ describe("Schedule maker API", () => {
           const newSchool = {
             name: "school 182",
           };
-
+          const validMockId = new Types.ObjectId().toString();
           // payloads
           const schoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 182",
           };
 
@@ -147,10 +149,10 @@ describe("Schedule maker API", () => {
           const newSchoolMissingName = {
             nam: "school 182",
           };
-
+          const validMockId = new Types.ObjectId().toString();
           // payloads
           const schoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 182",
           };
 
@@ -188,10 +190,11 @@ describe("Schedule maker API", () => {
           const newSchoolEmptyValue = {
             name: "",
           };
+          const validMockId = new Types.ObjectId().toString();
 
           // payloads
           const schoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 182",
           };
 
@@ -229,10 +232,11 @@ describe("Schedule maker API", () => {
           const newSchoolNotAString = {
             name: 1234567890,
           };
+          const validMockId = new Types.ObjectId().toString();
 
           // payloads
           const schoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 182",
           };
 
@@ -270,10 +274,11 @@ describe("Schedule maker API", () => {
           const newSchoolNameTooLong = {
             name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
           };
+          const validMockId = new Types.ObjectId().toString();
 
           // payloads
           const schoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 182",
           };
 
@@ -310,18 +315,23 @@ describe("Schedule maker API", () => {
     describe("GET /school ", () => {
       describe("Requesting all schools", () => {
         it("should get all schools", async () => {
+          // inputs
+          const validMockId01 = new Types.ObjectId().toString();
+          const validMockId02 = new Types.ObjectId().toString();
+          const validMockId03 = new Types.ObjectId().toString();
+
           // payloads
           const schoolsPayload = [
             {
-              _id: "63c5dcac78b868f800355853",
+              _id: validMockId01,
               name: "school 001",
             },
             {
-              _id: "63c5dcac78b868f800355857",
+              _id: validMockId02,
               name: "school 039",
             },
             {
-              _id: "63c5dcac78b868f800355858",
+              _id: validMockId03,
               name: "school 182",
             },
           ];
@@ -352,9 +362,12 @@ describe("Schedule maker API", () => {
       });
       describe("Requesting a school correctly", () => {
         it("should get a school", async () => {
+          // inputs
+          const validMockId = new Types.ObjectId().toString();
+
           // payloads
           const schoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 182",
           };
 
@@ -366,7 +379,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}63c5dcac78b868f800355853`)
+            .get(`${endPointUrl}${validMockId}`)
             .send();
 
           // assertions
@@ -382,6 +395,9 @@ describe("Schedule maker API", () => {
       });
       describe("Requesting a school but not finding it", () => {
         it("should not get a school", async () => {
+          // inputs
+          const validMockId = new Types.ObjectId().toString();
+
           // payloads
           const schoolPayload = null;
 
@@ -393,7 +409,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}63c5dcac78b868f800355853`)
+            .get(`${endPointUrl}${validMockId}`)
             .send();
 
           // assertions
@@ -408,14 +424,15 @@ describe("Schedule maker API", () => {
       });
       describe("Passing an invalid formatted school name", () => {
         it("should return an invalid id error", async () => {
+          // inputs
+          const validMockId = new Types.ObjectId().toString();
+          const badlyFormattedId = "63c5dcac78b868f80035asdf";
+
           // payloads
           const schoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 182",
           };
-
-          // inputs
-          const badlyFormattedId = "63c5dcac78b868f80035asdf";
 
           // mock services
           const findResourceByIdService = mockService(
@@ -443,14 +460,15 @@ describe("Schedule maker API", () => {
     describe("PUT /school ", () => {
       describe("Passing a school correctly to update", () => {
         it("should update a school", async () => {
-          // payloads
-          const updatedSchoolPayload = {
-            _id: "63c5dcac78b868f800355853",
-            name: "school 039",
-          };
-
           // inputs
           const newSchool = {
+            name: "school 039",
+          };
+          const validMockId = new Types.ObjectId().toString();
+
+          // payloads
+          const updatedSchoolPayload = {
+            _id: validMockId,
             name: "school 039",
           };
 
@@ -462,7 +480,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}63c5dcac78b868f800355853`)
+            .put(`${endPointUrl}${validMockId}`)
             .send(newSchool);
 
           // assertions
@@ -478,6 +496,9 @@ describe("Schedule maker API", () => {
       });
       describe("Passing a school but not updating it", () => {
         it("should not update a school", async () => {
+          // inputs
+          const validMockId = new Types.ObjectId().toString();
+
           // payloads
           const updatedSchoolPayload = null;
 
@@ -494,7 +515,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}63c5dcac78b868f800355853`)
+            .put(`${endPointUrl}${validMockId}`)
             .send(newSchool);
 
           // assertions
@@ -509,9 +530,12 @@ describe("Schedule maker API", () => {
       });
       describe("Passing a school without the name field", () => {
         it("should return a name needed error", async () => {
+          // inputs
+          const validMockId = new Types.ObjectId().toString();
+
           // payloads
           const updatedSchoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 039",
           };
 
@@ -528,7 +552,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}63c5dcac78b868f800355853`)
+            .put(`${endPointUrl}${validMockId}`)
             .send(newSchoolMissingName);
 
           // assertions
@@ -545,9 +569,12 @@ describe("Schedule maker API", () => {
       });
       describe("Passing an empty string as school name", () => {
         it("should return an empty field error", async () => {
+          // inputs
+          const validMockId = new Types.ObjectId().toString();
+
           // payloads
           const updatedSchoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 039",
           };
 
@@ -564,7 +591,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}63c5dcac78b868f800355853`)
+            .put(`${endPointUrl}${validMockId}`)
             .send(newSchoolEmptyValue);
 
           //assertions
@@ -581,9 +608,12 @@ describe("Schedule maker API", () => {
       });
       describe("Passing a long school name", () => {
         it("should return a name too long error", async () => {
+          // inputs
+          const validMockId = new Types.ObjectId().toString();
+
           // payloads
           const updatedSchoolPayload = {
-            _id: "63c5dcac78b868f800355853",
+            _id: validMockId,
             name: "school 039",
           };
 
@@ -599,7 +629,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}63c5dcac78b868f800355853`)
+            .put(`${endPointUrl}${validMockId}`)
             .send(newSchoolNameTooLong);
 
           // assertions
@@ -616,15 +646,16 @@ describe("Schedule maker API", () => {
       });
       describe("Passing an invalid formatted school name", () => {
         it("should return an invalid id error", async () => {
-          // payloads
-          const updatedSchoolPayload = {
-            _id: "63c5dcac78b868f800355853",
-            name: "school 039",
-          };
-
           // inputs
           const badlyFormattedId = "63c5dcac78b868f80035asdf";
           const newSchool = {
+            name: "school 039",
+          };
+          const validMockId = new Types.ObjectId().toString();
+
+          // payloads
+          const updatedSchoolPayload = {
+            _id: validMockId,
             name: "school 039",
           };
 
@@ -654,10 +685,12 @@ describe("Schedule maker API", () => {
     describe("DELETE /school ", () => {
       describe("Passing a school id correctly to delete", () => {
         it("should delete a school", async () => {
+          // inputs
+          const validMockId = new Types.ObjectId().toString();
           // payloads
           const deletedSchoolPayload = {
             schoolDeleted: {
-              _id: "63c5dcac78b868f800355853",
+              _id: validMockId,
               name: "School 001",
             },
           };
@@ -670,7 +703,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}63c5dcac78b868f800355853`)
+            .delete(`${endPointUrl}${validMockId}`)
             .send();
 
           // assertions
@@ -688,6 +721,9 @@ describe("Schedule maker API", () => {
       });
       describe("Passing a school id but not deleting it", () => {
         it("should not delete a school", async () => {
+          // inputs
+          const validMockId = new Types.ObjectId().toString();
+
           // payloads
           const deletedSchoolPayload = null;
 
@@ -699,7 +735,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}63c5dcac78b868f800355853`)
+            .delete(`${endPointUrl}${validMockId}`)
             .send();
 
           // assertions
@@ -714,16 +750,17 @@ describe("Schedule maker API", () => {
       });
       describe("Passing an invalid formatted school id", () => {
         it("should return an invalid id error", async () => {
+          // inputs
+          const badlyFormattedId = "63c5dcac78b868f80035asdf";
+          const validMockId = new Types.ObjectId().toString();
+
           // payloads
           const deletedSchoolPayload = {
             schoolDeleted: {
-              _id: "63c5dcac78b868f800355853",
+              _id: validMockId,
               name: "School 001",
             },
           };
-
-          // inputs
-          const badlyFormattedId = "63c5dcac78b868f80035asdf";
 
           // mock services
           const deleteResourceService = mockService(

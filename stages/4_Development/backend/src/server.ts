@@ -24,12 +24,12 @@ server.use(express.json());
 // local middleware instantiation
 server.use(router);
 
-// port to listen to
-const PORT = process.env.PORT || 3001;
-
 // custom middleware
 server.use(notFound404Middleware);
 server.use(errorHandlerMiddleware);
+
+// port to listen to
+const PORT = process.env.PORT || 3001;
 
 // db connection function execution
 if (process.env.NODE_ENV !== "test") {

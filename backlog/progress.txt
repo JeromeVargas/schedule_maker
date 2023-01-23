@@ -63,11 +63,23 @@
 
             - end points ⌛⏳⌛
 
-                - school ⌛⏳⌛
+                - school ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
+
+                - user ⌛⏳⌛
                     - create ⌛⏳⌛
                     - read
                     - update
                     - delete
+
+                - auth
+                    - login
+                    - logout
+                    - refresh
+                    - rotation, maybe for later
 
             - utility features
         
