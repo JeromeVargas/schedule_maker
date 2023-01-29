@@ -9,14 +9,16 @@ const express_1 = __importDefault(require("express"));
 require("express-async-errors");
 const cors_1 = __importDefault(require("cors"));
 const error_handler_1 = __importDefault(require("./middleware/error-handler"));
+const not_found_1 = __importDefault(require("./middleware/not-found"));
 const routes_1 = require("./routes");
 exports.server = (0, express_1.default)();
 const connect_1 = __importDefault(require("./config/connect"));
 exports.server.use((0, cors_1.default)());
 exports.server.use(express_1.default.json());
 exports.server.use(routes_1.router);
-const PORT = process.env.PORT || 3001;
+exports.server.use(not_found_1.default);
 exports.server.use(error_handler_1.default);
+const PORT = process.env.PORT || 3001;
 if (process.env.NODE_ENV !== "test") {
     (0, connect_1.default)().then(() => console.log("Database connection established"));
 }

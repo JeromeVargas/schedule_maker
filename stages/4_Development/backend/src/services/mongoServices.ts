@@ -1,8 +1,10 @@
 import { FilterQuery, isValidObjectId } from "mongoose";
 import SchoolModel from "../models/schoolModel";
+import UserModel from "../models/userModel";
 
 const models = {
   school: SchoolModel,
+  user: UserModel,
 } as const;
 
 // helper functions
@@ -15,15 +17,25 @@ const isValidId = (id: string) => {
 // @params resource, resourceName
 const insertResource = <T>(resource: T, resourceName: keyof typeof models) => {
   const model = models[resourceName];
+  // @ts-ignore
   const resourceInsert = model.create(resource);
   return resourceInsert;
 };
 
 // @desc find all resources of a type
 // @params resourceName
-const findAllResources = (resourceName: keyof typeof models) => {
+const findAllResources = (
+  fieldsToReturn: string,
+  resourceName: keyof typeof models
+) => {
   const model = models[resourceName];
-  const resourceFound = model.find().lean().exec();
+  // @ts-ignore
+  const resourceFound = model
+    // @ts-ignore
+    .find()
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
   return resourceFound;
 };
 
@@ -31,10 +43,18 @@ const findAllResources = (resourceName: keyof typeof models) => {
 // @params resourceId, resourceName
 const findResourceById = (
   resourceId: string,
+  fieldsToReturn: string,
   resourceName: keyof typeof models
 ) => {
   const model = models[resourceName];
-  const resourceFound = model.findById(resourceId).lean().exec();
+  // @ts-ignore
+  const resourceFound = model
+    // @ts-ignore
+    .findById(resourceId)
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
+
   return resourceFound;
 };
 
@@ -42,12 +62,15 @@ const findResourceById = (
 // @params resourceProperty, resourceName
 const findResourceByProperty = <T>(
   resource: FilterQuery<T>,
+  fieldsToReturn: string,
   resourceName: keyof typeof models
 ) => {
   const model = models[resourceName];
   const resourceFound = model
+    // @ts-ignore
     .findOne(resource)
     .collation({ locale: "en", strength: 2 })
+    .select(fieldsToReturn)
     .lean()
     .exec();
   return resourceFound;
@@ -61,6 +84,7 @@ const updateResource = <T>(
   resourceName: keyof typeof models
 ) => {
   const model = models[resourceName];
+  // @ts-ignore
   const resourceUpdated = model.findByIdAndUpdate(resourceId, resource, {
     new: true,
     runValidators: true,

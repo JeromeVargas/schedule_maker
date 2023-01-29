@@ -6,8 +6,8 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     if (err instanceof errors_1.CustomAPIError) {
         return res.status(err.statusCode).json({ msg: err.message });
     }
-    return (res
-        .status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ err }));
+    return res
+        .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+        .json({ err, msg: "Something unexpected happened, please try again" });
 };
 exports.default = errorHandlerMiddleware;

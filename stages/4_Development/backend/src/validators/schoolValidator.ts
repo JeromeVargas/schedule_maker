@@ -5,13 +5,13 @@ import validateResult from "../helpers/validateHelper";
 const validateCreateASchool = [
   check("name")
     .exists()
-    .withMessage("Please add a name")
+    .withMessage("Please add a school name")
     .bail()
     .notEmpty()
-    .withMessage("The name field is empty")
+    .withMessage("The school name field is empty")
     .bail()
     .isString()
-    .withMessage("The name is not valid")
+    .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters"),
   (req: Request, res: Response, next: NextFunction) => {
@@ -38,7 +38,7 @@ const validateUpdateASchool = [
     .withMessage("The name field is empty")
     .bail()
     .isString()
-    .withMessage("The name is not valid")
+    .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters"),
   check("id", { message: "Non-properly formatted id" })

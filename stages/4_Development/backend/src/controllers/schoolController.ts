@@ -14,27 +14,38 @@ import {
   deleteResource,
 } from "../services/mongoServices";
 
-// continue here --> create the user end point and its crud operations
 // @desc create a school
 // @route POST /api/v1/school
 // @access Private
 const createSchool = async ({ body }: Request, res: Response) => {
-  const duplicate = await findResourceByProperty(body, "school");
+  const searchCriteria = { name: body.name };
+  const fieldsToReturn = "-_id -createdAt -updatedAt";
+  const model = "school";
+  const duplicate = await findResourceByProperty(
+    searchCriteria,
+    fieldsToReturn,
+    model
+  );
   if (duplicate) {
     throw new ConflictError("This school name already exists");
   }
-  const schoolCreated = await insertResource(body, "school");
+  const schoolCreated = await insertResource(body, model);
   if (!schoolCreated) {
     throw new BadRequestError("School not created");
   }
-  res.status(StatusCodes.CREATED).json(schoolCreated);
+  res.status(StatusCodes.CREATED).json({ msg: "School created successfully!" });
 };
 
 // @desc get all the schools
 // @route GET /api/v1/school
 // @access Private
 const getSchools = async (req: Request, res: Response) => {
-  const schoolsFound = await findAllResources("school");
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const model = "school";
+  const schoolsFound = await findAllResources(fieldsToReturn, model);
+  if (!schoolsFound || schoolsFound.length === 0) {
+    throw new NotFoundError("No schools found");
+  }
   res.status(StatusCodes.OK).json(schoolsFound);
 };
 
@@ -43,11 +54,13 @@ const getSchools = async (req: Request, res: Response) => {
 // @access Private
 const getSchool = async ({ params }: Request, res: Response) => {
   const { id: schoolId } = params;
-  const isValid = isValidId(schoolId);
-  if (isValid === false) {
-    throw new BadRequestError("Invalid Id");
+  const isValidSchoolId = isValidId(schoolId);
+  if (isValidSchoolId === false) {
+    throw new BadRequestError("Invalid school Id");
   }
-  const schoolFound = await findResourceById(schoolId, "school");
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const model = "school";
+  const schoolFound = await findResourceById(schoolId, fieldsToReturn, model);
   if (!schoolFound) {
     throw new NotFoundError("School not found");
   }
@@ -59,15 +72,26 @@ const getSchool = async ({ params }: Request, res: Response) => {
 // @access Private
 const updateSchool = async ({ body, params }: Request, res: Response) => {
   const { id: schoolId } = params;
-  const isValid = isValidId(schoolId);
-  if (isValid === false) {
-    throw new BadRequestError("Invalid Id");
+  const isValidSchoolId = isValidId(schoolId);
+  if (isValidSchoolId === false) {
+    throw new BadRequestError("Invalid school Id");
   }
-  const schoolUpdated = await updateResource(schoolId, body, "school");
+  const searchCriteria = { name: body.name };
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const model = "school";
+  const duplicate = await findResourceByProperty(
+    searchCriteria,
+    fieldsToReturn,
+    model
+  );
+  if (duplicate && duplicate?._id.toString() !== schoolId) {
+    throw new ConflictError("This school name already exists");
+  }
+  const schoolUpdated = await updateResource(schoolId, body, model);
   if (!schoolUpdated) {
     throw new NotFoundError("School not updated");
   }
-  res.status(StatusCodes.OK).json(schoolUpdated);
+  res.status(StatusCodes.OK).json({ msg: "School updated" });
 };
 
 // @desc delete a school
@@ -75,15 +99,16 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
 // @access Private
 const deleteSchool = async ({ params }: Request, res: Response) => {
   const { id: schoolId } = params;
-  const isValid = isValidId(schoolId);
-  if (isValid === false) {
-    throw new BadRequestError("Invalid Id");
+  const isValidSchoolId = isValidId(schoolId);
+  if (isValidSchoolId === false) {
+    throw new BadRequestError("Invalid school Id");
   }
-  const schoolDeleted = await deleteResource(schoolId, "school");
+  const model = "school";
+  const schoolDeleted = await deleteResource(schoolId, model);
   if (!schoolDeleted) {
     throw new NotFoundError("School not deleted");
   }
-  res.status(StatusCodes.OK).json(schoolDeleted);
+  res.status(StatusCodes.OK).json({ msg: "School deleted" });
 };
 
 export { getSchools, getSchool, createSchool, updateSchool, deleteSchool };

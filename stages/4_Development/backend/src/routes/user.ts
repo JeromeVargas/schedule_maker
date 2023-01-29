@@ -1,44 +1,44 @@
 import { Router } from "express";
 import {
-  validateCreateASchool,
-  validateGetASchool,
-  validateDeleteASchool,
-  validateUpdateASchool,
-} from "../validators/schoolValidator";
+  validateCreateAUser,
+  validateGetAUser,
+  validateUpdateAUser,
+  validateDeleteAUser,
+} from "../validators/userValidator";
 
 import {
-  getSchools,
-  getSchool,
-  createSchool,
-  updateSchool,
-  deleteSchool,
-} from "../controllers/schoolController";
+  createUser,
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+} from "../controllers/userController";
 
 const router = Router();
 
 // @desc    Create a school
 // @route   POST /api/v1/school
 // @access  Private
-router.post("/", validateCreateASchool, createSchool);
+router.post("/", validateCreateAUser, createUser);
 
 // @desc    Get schools data
 // @route   GET /api/v1/school
 // @access  Private
-router.get("/", getSchools);
+router.get("/", getUsers);
 
 // @desc    Get a school data
 // @route   GET /api/v1/school/:id
 // @access  Private
-router.get("/:id", validateGetASchool, getSchool);
+router.get("/:id", validateGetAUser, getUser);
 
 // @desc    Update a school data
 // @route   PUT /api/v1/school/:id
 // @access  Private
-router.put("/:id", validateUpdateASchool, updateSchool);
+router.put("/:id", validateUpdateAUser, updateUser);
 
 // @desc    Delete a school data
 // @route   PUT /api/v1/school/:id
 // @access  Private
-router.delete("/:id", validateDeleteASchool, deleteSchool);
+router.delete("/:id", validateDeleteAUser, deleteUser);
 
 export { router };

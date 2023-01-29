@@ -6,8 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteResource = exports.updateResource = exports.findResourceByProperty = exports.findResourceById = exports.findAllResources = exports.insertResource = exports.isValidId = void 0;
 const mongoose_1 = require("mongoose");
 const schoolModel_1 = __importDefault(require("../models/schoolModel"));
+const userModel_1 = __importDefault(require("../models/userModel"));
 const models = {
     school: schoolModel_1.default,
+    user: userModel_1.default,
 };
 const isValidId = (id) => {
     return (0, mongoose_1.isValidObjectId)(id);
@@ -19,23 +21,32 @@ const insertResource = (resource, resourceName) => {
     return resourceInsert;
 };
 exports.insertResource = insertResource;
-const findAllResources = (resourceName) => {
+const findAllResources = (fieldsToReturn, resourceName) => {
     const model = models[resourceName];
-    const resourceFound = model.find().lean().exec();
+    const resourceFound = model
+        .find()
+        .select(fieldsToReturn)
+        .lean()
+        .exec();
     return resourceFound;
 };
 exports.findAllResources = findAllResources;
-const findResourceById = (resourceId, resourceName) => {
+const findResourceById = (resourceId, fieldsToReturn, resourceName) => {
     const model = models[resourceName];
-    const resourceFound = model.findById(resourceId).lean().exec();
+    const resourceFound = model
+        .findById(resourceId)
+        .select(fieldsToReturn)
+        .lean()
+        .exec();
     return resourceFound;
 };
 exports.findResourceById = findResourceById;
-const findResourceByProperty = (resource, resourceName) => {
+const findResourceByProperty = (resource, fieldsToReturn, resourceName) => {
     const model = models[resourceName];
     const resourceFound = model
         .findOne(resource)
         .collation({ locale: "en", strength: 2 })
+        .select(fieldsToReturn)
         .lean()
         .exec();
     return resourceFound;
