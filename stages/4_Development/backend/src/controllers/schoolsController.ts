@@ -18,17 +18,19 @@ import {
 // @route POST /api/v1/school
 // @access Private
 const createSchool = async ({ body }: Request, res: Response) => {
+  /* find if the school already exists */
   const searchCriteria = { name: body.name };
   const fieldsToReturn = "-_id -createdAt -updatedAt";
   const model = "school";
-  const duplicate = await findResourceByProperty(
+  const duplicatedSchool = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
     model
   );
-  if (duplicate) {
+  if (duplicatedSchool) {
     throw new ConflictError("This school name already exists");
   }
+  /* create school */
   const schoolCreated = await insertResource(body, model);
   if (!schoolCreated) {
     throw new BadRequestError("School not created");
@@ -40,6 +42,7 @@ const createSchool = async ({ body }: Request, res: Response) => {
 // @route GET /api/v1/school
 // @access Private
 const getSchools = async (req: Request, res: Response) => {
+  // get all schools
   const fieldsToReturn = "-createdAt -updatedAt";
   const model = "school";
   const schoolsFound = await findAllResources(fieldsToReturn, model);
@@ -53,11 +56,14 @@ const getSchools = async (req: Request, res: Response) => {
 // @route GET /api/v1/school/:id
 // @access Private
 const getSchool = async ({ params }: Request, res: Response) => {
+  // check if id is valid //
   const { id: schoolId } = params;
   const isValidSchoolId = isValidId(schoolId);
   if (isValidSchoolId === false) {
     throw new BadRequestError("Invalid school Id");
   }
+
+  // get the school
   const fieldsToReturn = "-createdAt -updatedAt";
   const model = "school";
   const schoolFound = await findResourceById(schoolId, fieldsToReturn, model);
@@ -71,11 +77,13 @@ const getSchool = async ({ params }: Request, res: Response) => {
 // @route PUT /api/v1/school/:id
 // @access Private
 const updateSchool = async ({ body, params }: Request, res: Response) => {
+  // check if id is valid
   const { id: schoolId } = params;
   const isValidSchoolId = isValidId(schoolId);
   if (isValidSchoolId === false) {
     throw new BadRequestError("Invalid school Id");
   }
+  // check if there is a duplicate that belongs to someone else
   const searchCriteria = { name: body.name };
   const fieldsToReturn = "-createdAt -updatedAt";
   const model = "school";
@@ -87,6 +95,7 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
   if (duplicate && duplicate?._id.toString() !== schoolId) {
     throw new ConflictError("This school name already exists");
   }
+  // update school
   const schoolUpdated = await updateResource(schoolId, body, model);
   if (!schoolUpdated) {
     throw new NotFoundError("School not updated");
@@ -98,11 +107,13 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
 // @route DELETE /api/v1/school/:id
 // @access Private
 const deleteSchool = async ({ params }: Request, res: Response) => {
+  // check if the id is valid
   const { id: schoolId } = params;
   const isValidSchoolId = isValidId(schoolId);
   if (isValidSchoolId === false) {
     throw new BadRequestError("Invalid school Id");
   }
+  // delete school
   const model = "school";
   const schoolDeleted = await deleteResource(schoolId, model);
   if (!schoolDeleted) {

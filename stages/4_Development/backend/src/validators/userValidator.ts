@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 
-const validateCreateAUser = [
+const validateCreateUser = [
   check("firstName")
     .exists()
     .withMessage("Please add the user's first name")
@@ -89,22 +89,29 @@ const validateCreateAUser = [
     .bail()
     .isIn(["active", "inactive", "suspended"])
     .withMessage("the status provided is not a valid option"),
-  (req: Request, res: Response, next: NextFunction) => {
-    validateResult(req, res, next);
-  },
-];
-
-const validateGetAUser = [
-  check("id", { message: "Non-properly formatted id" })
-    .isAlphanumeric()
+  check("hasTeachingFunc")
+    .exists()
+    .withMessage("Please add if the user has teaching functions assigned")
     .bail()
-    .isLength({ min: 24, max: 24 }),
+    .notEmpty()
+    .withMessage("The hasTeachingFunc field is empty")
+    .bail()
+    .isBoolean()
+    .withMessage("hasTeachingFunc value is not valid")
+    .bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-const validateUpdateAUser = [
+const validateGetUser = [
+  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
+  (req: Request, res: Response, next: NextFunction) => {
+    validateResult(req, res, next);
+  },
+];
+
+const validateUpdateUser = [
   check("firstName")
     .exists()
     .withMessage("Please add the user's first name")
@@ -139,9 +146,7 @@ const validateUpdateAUser = [
     .bail()
     .isAlphanumeric()
     .withMessage("The school id is Non-properly formatted")
-    .bail()
-    .isLength({ min: 24, max: 24 })
-    .withMessage("The school id is not in the correct format"),
+    .bail(),
   check("email")
     .exists()
     .withMessage("Please add the user's email")
@@ -191,28 +196,32 @@ const validateUpdateAUser = [
     .bail()
     .isIn(["active", "inactive", "suspended"])
     .withMessage("the status provided is not a valid option"),
-  check("id", { message: "Non-properly formatted id" })
-    .isAlphanumeric()
+  check("hasTeachingFunc")
+    .exists()
+    .withMessage("Please add if the user has teaching functions assigned")
     .bail()
-    .isLength({ min: 24, max: 24 }),
+    .notEmpty()
+    .withMessage("The hasTeachingFunc field is empty")
+    .bail()
+    .isBoolean()
+    .withMessage("hasTeachingFunc value is not valid")
+    .bail(),
+  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-const validateDeleteAUser = [
-  check("id", { message: "Non-properly formatted id" })
-    .isAlphanumeric()
-    .bail()
-    .isLength({ min: 24, max: 24 }),
+const validateDeleteUser = [
+  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
 export {
-  validateCreateAUser,
-  validateGetAUser,
-  validateUpdateAUser,
-  validateDeleteAUser,
+  validateCreateUser,
+  validateGetUser,
+  validateUpdateUser,
+  validateDeleteUser,
 };

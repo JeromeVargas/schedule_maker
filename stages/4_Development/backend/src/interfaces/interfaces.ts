@@ -15,4 +15,15 @@ export type User = {
   password: string;
   role: Role;
   status: Status;
+  hasTeachingFunc: boolean;
+};
+
+export type ContractType = "full-time" | "part-time" | "substitute";
+
+export type Teacher = {
+  user_id: Types.ObjectId;
+  coordinator_id: Types.ObjectId;
+  contractType: ContractType;
+  hoursAssignable: number;
+  hoursAssigned: number;
 };

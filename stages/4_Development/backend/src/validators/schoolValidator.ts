@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 
-const validateCreateASchool = [
+const validateCreateSchool = [
   check("name")
     .exists()
     .withMessage("Please add a school name")
@@ -19,17 +19,14 @@ const validateCreateASchool = [
   },
 ];
 
-const validateGetASchool = [
-  check("id", { message: "Non-properly formatted id" })
-    .isAlphanumeric()
-    .bail()
-    .isLength({ min: 24, max: 24 }),
+const validateGetSchool = [
+  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-const validateUpdateASchool = [
+const validateUpdateSchool = [
   check("name")
     .exists()
     .withMessage("Please add a name")
@@ -41,28 +38,22 @@ const validateUpdateASchool = [
     .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters"),
-  check("id", { message: "Non-properly formatted id" })
-    .isAlphanumeric()
-    .bail()
-    .isLength({ min: 24, max: 24 }),
+  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-const validateDeleteASchool = [
-  check("id", { message: "Non-properly formatted id" })
-    .isAlphanumeric()
-    .bail()
-    .isLength({ min: 24, max: 24 }),
+const validateDeleteSchool = [
+  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
 export {
-  validateCreateASchool,
-  validateGetASchool,
-  validateUpdateASchool,
-  validateDeleteASchool,
+  validateCreateSchool,
+  validateGetSchool,
+  validateUpdateSchool,
+  validateDeleteSchool,
 };

@@ -1,10 +1,12 @@
 import { FilterQuery, isValidObjectId } from "mongoose";
 import SchoolModel from "../models/schoolModel";
+import TeacherModel from "../models/teacherModel";
 import UserModel from "../models/userModel";
 
 const models = {
   school: SchoolModel,
   user: UserModel,
+  teacher: TeacherModel,
 } as const;
 
 // helper functions

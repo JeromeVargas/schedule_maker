@@ -18,22 +18,37 @@ import {
 // @route POST /api/v1/user
 // @access Private
 const createUser = async ({ body }: Request, res: Response) => {
-  const { school: schoolId } = body;
-  const isValidSchoolId = isValidId(schoolId);
+  //check if the school id is valid
+  const { school: school_id } = body;
+  const isValidSchoolId = isValidId(school_id);
   if (isValidSchoolId === false) {
     throw new BadRequestError("Invalid school Id");
   }
+  // check if the email is already in use
   const searchCriteria = { email: body.email };
-  const fieldsToReturn = "-_id -password -createdAt -updatedAt";
+  const fieldsToReturn = "-password -createdAt -updatedAt";
   const model = "user";
-  const duplicate = await findResourceByProperty(
+  const duplicatedUserEmailFound = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
     model
   );
-  if (duplicate) {
+  if (duplicatedUserEmailFound) {
     throw new ConflictError("Please try a different email address");
   }
+  // check if the school exists
+  const schoolModel = "school";
+  const schoolSearchCriteria = school_id;
+  const schoolFieldsToReturn = "-password -createdAt -updatedAt";
+  const existingSchool = await findResourceById(
+    schoolSearchCriteria,
+    schoolFieldsToReturn,
+    schoolModel
+  );
+  if (!existingSchool) {
+    throw new ConflictError("Please create the school first");
+  }
+  // create the user
   const userCreated = await insertResource(body, model);
   if (!userCreated) {
     throw new BadRequestError("User not created");
@@ -58,11 +73,13 @@ const getUsers = async (req: Request, res: Response) => {
 // @route GET /api/v1/user/:id
 // @access Private
 const getUser = async ({ params }: Request, res: Response) => {
+  // check if the user id is valid
   const { id: userId } = params;
   const isValidUserId = isValidId(userId);
   if (isValidUserId === false) {
     throw new BadRequestError("Invalid user Id");
   }
+  // find the user
   const fieldsToReturn = "-password -createdAt -updatedAt";
   const model = "user";
   const userFound = await findResourceById(userId, fieldsToReturn, model);
@@ -76,27 +93,42 @@ const getUser = async ({ params }: Request, res: Response) => {
 // @route PUT /api/v1/user/:id
 // @access Private
 const updateUser = async ({ body, params }: Request, res: Response) => {
+  // check if the user and school id are valid
   const { id: userId } = params;
   const isValidUserId = isValidId(userId);
   if (isValidUserId === false) {
     throw new BadRequestError("Invalid user Id");
   }
-  const { school: schoolId } = body;
-  const isValidSchoolId = isValidId(schoolId);
+  const { school: school_id } = body;
+  const isValidSchoolId = isValidId(school_id);
   if (isValidSchoolId === false) {
     throw new BadRequestError("Invalid school Id");
   }
+  // check if the user email is already in use by another user
   const searchCriteria = { email: body.email };
   const fieldsToReturn = "-password -createdAt -updatedAt";
   const model = "user";
-  const duplicate = await findResourceByProperty(
+  const duplicatedEmail = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
     model
   );
-  if (duplicate && duplicate?._id.toString() !== userId) {
+  if (duplicatedEmail && duplicatedEmail?._id.toString() !== userId) {
     throw new ConflictError("Please try a different email address");
   }
+  // check if the user's school already exists
+  const schoolModel = "school";
+  const schoolSearchCriteria = school_id;
+  const schoolFieldsToReturn = "-password -createdAt -updatedAt";
+  const existingSchool = await findResourceById(
+    schoolSearchCriteria,
+    schoolFieldsToReturn,
+    schoolModel
+  );
+  if (!existingSchool) {
+    throw new ConflictError("Please create the school first");
+  }
+  // update the user info
   const userUpdated = await updateResource(userId, body, model);
   if (!userUpdated) {
     throw new NotFoundError("User not updated");
@@ -108,11 +140,13 @@ const updateUser = async ({ body, params }: Request, res: Response) => {
 // @route DELETE /api/v1/user/:id
 // @access Private
 const deleteUser = async ({ params }: Request, res: Response) => {
+  // check if the user id in the url is valid
   const { id: userId } = params;
   const isValidUserId = isValidId(userId);
   if (isValidUserId === false) {
     throw new BadRequestError("Invalid user Id");
   }
+  // delete the user
   const model = "user";
   const userDeleted = await deleteResource(userId, model);
   if (!userDeleted) {
