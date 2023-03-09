@@ -1,10 +1,11 @@
 import { Router } from "express";
 import {
   validateCreateTeacher,
+  validateGetTeachers,
   validateGetTeacher,
   validateUpdateTeacher,
   validateDeleteTeacher,
-} from "../validators/teacherValidator";
+} from "../validators/teachersValidator";
 
 import {
   createTeacher,
@@ -24,7 +25,7 @@ router.post("/", validateCreateTeacher, createTeacher);
 // @desc    Get schools data
 // @route   GET /api/v1/school
 // @access  Private
-router.get("/", getTeachers);
+router.get("/", validateGetTeachers, getTeachers);
 
 // @desc    Get a school data
 // @route   GET /api/v1/school/:id

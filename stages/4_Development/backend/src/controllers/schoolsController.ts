@@ -17,6 +17,7 @@ import {
 // @desc create a school
 // @route POST /api/v1/school
 // @access Private
+// @fields: body {name:[string]}
 const createSchool = async ({ body }: Request, res: Response) => {
   /* find if the school already exists */
   const searchCriteria = { name: body.name };
@@ -41,6 +42,7 @@ const createSchool = async ({ body }: Request, res: Response) => {
 // @desc get all the schools
 // @route GET /api/v1/school
 // @access Private
+// @fields: no fields
 const getSchools = async (req: Request, res: Response) => {
   // get all schools
   const fieldsToReturn = "-createdAt -updatedAt";
@@ -52,17 +54,17 @@ const getSchools = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json(schoolsFound);
 };
 
-// @desc get the school by Id
+// @desc get the school by id
 // @route GET /api/v1/school/:id
 // @access Private
+// @fields: params: {id:[string]}
 const getSchool = async ({ params }: Request, res: Response) => {
   // check if id is valid //
   const { id: schoolId } = params;
   const isValidSchoolId = isValidId(schoolId);
   if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school Id");
+    throw new BadRequestError("Invalid school id");
   }
-
   // get the school
   const fieldsToReturn = "-createdAt -updatedAt";
   const model = "school";
@@ -76,12 +78,13 @@ const getSchool = async ({ params }: Request, res: Response) => {
 // @desc update a school
 // @route PUT /api/v1/school/:id
 // @access Private
+// @fields: params: {id:[string]},  body: {name:[string]}
 const updateSchool = async ({ body, params }: Request, res: Response) => {
   // check if id is valid
   const { id: schoolId } = params;
   const isValidSchoolId = isValidId(schoolId);
   if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school Id");
+    throw new BadRequestError("Invalid school id");
   }
   // check if there is a duplicate that belongs to someone else
   const searchCriteria = { name: body.name };
@@ -106,12 +109,13 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
 // @desc delete a school
 // @route DELETE /api/v1/school/:id
 // @access Private
+// @fields: params: {id:[string]}}
 const deleteSchool = async ({ params }: Request, res: Response) => {
   // check if the id is valid
   const { id: schoolId } = params;
   const isValidSchoolId = isValidId(schoolId);
   if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school Id");
+    throw new BadRequestError("Invalid school id");
   }
   // delete school
   const model = "school";

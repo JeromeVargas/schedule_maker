@@ -69,11 +69,23 @@
                     - update ✅
                     - delete ✅
 
-                - user ⌛⏳⌛
-                    - create ⌛⏳⌛
-                    - read
-                    - update
-                    - delete
+                - user ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
+
+                - teacher ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
+                
+                - field ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
 
                 - auth
                     - login

@@ -3,6 +3,11 @@ import { Teacher } from "../interfaces/interfaces";
 
 const TeacherSchema = new Schema<Teacher>(
   {
+    school_id: {
+      type: Schema.Types.ObjectId,
+      ref: "School",
+      required: [true, "Please provide a school name"],
+    },
     user_id: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -11,6 +16,7 @@ const TeacherSchema = new Schema<Teacher>(
     },
     coordinator_id: {
       type: Schema.Types.ObjectId,
+      ref: "User",
       required: [true, "Please provide the user's coordinator id"],
     },
     contractType: {

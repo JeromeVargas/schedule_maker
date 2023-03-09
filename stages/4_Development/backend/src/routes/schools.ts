@@ -4,7 +4,7 @@ import {
   validateGetSchool,
   validateDeleteSchool,
   validateUpdateSchool,
-} from "../validators/schoolValidator";
+} from "../validators/schoolsValidator";
 
 import {
   getSchools,

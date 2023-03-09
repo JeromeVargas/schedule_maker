@@ -3,6 +3,11 @@ import { User } from "../interfaces/interfaces";
 
 const UserSchema = new Schema<User>(
   {
+    school_id: {
+      type: Schema.Types.ObjectId,
+      ref: "School",
+      required: [true, "Please provide a school name"],
+    },
     firstName: {
       type: String,
       required: [true, "Please provide a first name for the user"],
@@ -10,11 +15,6 @@ const UserSchema = new Schema<User>(
     lastName: {
       type: String,
       required: [true, "Please provide a last name for the user"],
-    },
-    school: {
-      type: Schema.Types.ObjectId,
-      ref: "School",
-      required: [true, "Please provide a school name"],
     },
     email: {
       type: String,

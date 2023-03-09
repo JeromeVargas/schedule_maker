@@ -3,6 +3,18 @@ import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 
 const validateCreateUser = [
+  check("school_id")
+    .exists()
+    .withMessage("Please add the user's school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school field is empty")
+    .bail()
+    .isString()
+    .withMessage("The school id is not valid")
+    .bail()
+    .isAlphanumeric()
+    .withMessage("The school id is Non-properly formatted"),
   check("firstName")
     .exists()
     .withMessage("Please add the user's first name")
@@ -25,21 +37,6 @@ const validateCreateUser = [
     .withMessage("The last name is not valid")
     .isLength({ min: 1, max: 50 })
     .withMessage("The last name must not exceed 50 characters"),
-  check("school")
-    .exists()
-    .withMessage("Please add the user's school")
-    .bail()
-    .notEmpty()
-    .withMessage("The school field is empty")
-    .bail()
-    .isString()
-    .withMessage("The school id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The school id is Non-properly formatted")
-    .bail()
-    .isLength({ min: 24, max: 24 })
-    .withMessage("The school id is not in the correct format"),
   check("email")
     .exists()
     .withMessage("Please add the user's email")
@@ -98,6 +95,22 @@ const validateCreateUser = [
     .bail()
     .isBoolean()
     .withMessage("hasTeachingFunc value is not valid")
+    .bail(),
+  (req: Request, res: Response, next: NextFunction) => {
+    validateResult(req, res, next);
+  },
+];
+
+const validateGetUsers = [
+  check("school_id")
+    .exists()
+    .withMessage("Please add a school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school id field is empty")
+    .bail()
+    .isAlphanumeric()
+    .withMessage("Non-properly formatted school id")
     .bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
@@ -105,13 +118,41 @@ const validateCreateUser = [
 ];
 
 const validateGetUser = [
-  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
+  check("id")
+    .isAlphanumeric()
+    .withMessage("Non-properly formatted user id")
+    .bail(),
+  check("school_id")
+    .exists()
+    .withMessage("Please add a school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school id field is empty")
+    .bail()
+    .isAlphanumeric()
+    .withMessage("Non-properly formatted school id"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
 const validateUpdateUser = [
+  check("id")
+    .isAlphanumeric()
+    .withMessage("Non-properly formatted user id")
+    .bail(),
+  check("school_id")
+    .exists()
+    .withMessage("Please add the user's school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school field is empty")
+    .bail()
+    .isString()
+    .withMessage("The school id is not valid")
+    .bail()
+    .isAlphanumeric()
+    .withMessage("The school id is Non-properly formatted"),
   check("firstName")
     .exists()
     .withMessage("Please add the user's first name")
@@ -134,19 +175,6 @@ const validateUpdateUser = [
     .withMessage("The last name is not valid")
     .isLength({ min: 1, max: 50 })
     .withMessage("The last name must not exceed 50 characters"),
-  check("school")
-    .exists()
-    .withMessage("Please add the user's school")
-    .bail()
-    .notEmpty()
-    .withMessage("The school field is empty")
-    .bail()
-    .isString()
-    .withMessage("The school id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The school id is Non-properly formatted")
-    .bail(),
   check("email")
     .exists()
     .withMessage("Please add the user's email")
@@ -206,14 +234,25 @@ const validateUpdateUser = [
     .isBoolean()
     .withMessage("hasTeachingFunc value is not valid")
     .bail(),
-  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
 const validateDeleteUser = [
-  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
+  check("id")
+    .isAlphanumeric()
+    .withMessage("Non-properly formatted user id")
+    .bail(),
+  check("school_id")
+    .exists()
+    .withMessage("Please add a school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school id field is empty")
+    .bail()
+    .isAlphanumeric()
+    .withMessage("Non-properly formatted school id"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -221,6 +260,7 @@ const validateDeleteUser = [
 
 export {
   validateCreateUser,
+  validateGetUsers,
   validateGetUser,
   validateUpdateUser,
   validateDeleteUser,

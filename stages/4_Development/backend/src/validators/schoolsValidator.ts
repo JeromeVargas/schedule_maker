@@ -20,13 +20,20 @@ const validateCreateSchool = [
 ];
 
 const validateGetSchool = [
-  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
+  check("id")
+    .isAlphanumeric()
+    .withMessage("Non-properly formatted school id")
+    .bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
 const validateUpdateSchool = [
+  check("id")
+    .isAlphanumeric()
+    .withMessage("Non-properly formatted school id")
+    .bail(),
   check("name")
     .exists()
     .withMessage("Please add a name")
@@ -38,14 +45,16 @@ const validateUpdateSchool = [
     .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters"),
-  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
 const validateDeleteSchool = [
-  check("id").isAlphanumeric().withMessage("Non-properly formatted id").bail(),
+  check("id")
+    .isAlphanumeric()
+    .withMessage("Non-properly formatted school id")
+    .bail(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
