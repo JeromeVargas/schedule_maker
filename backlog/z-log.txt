@@ -16,19 +16,16 @@ To do of additional but related tasks to keep in mind, i.e., administrative:
   - https://www.youtube.com/watch?v=_P3CrgFlXhg&ab_channel=freeCodeCamp.org
 
 - review the testing, check what info is actually needed
-- always destructure to make the code cleaner
-- make the the badly formatted ids error part of the invalid type validations or something similar
-- make sure if it is and id to suffix it with _id
 - try jest match object method to check for object and array equality
-- move the id validation to the validators
 - password hashing
 
+. if user is a teacher make sure he / she has teaching functions as true
 - if user is updated as inactive or with no teaching functions, delete teacher
 - delete cascade user, delete teacher assignments
 - creating a teacher directly from the user route
 
-- add checks for the school, make sure the field actually belongs to the school
+- add checks for the school, make sure the field actually belongs to the school  - school middleware
 - not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
-- make sure resources belong to the user/coordinator's school
+- make sure resources belong to the user/coordinator's school - school middleware
 
 

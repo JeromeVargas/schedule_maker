@@ -5,7 +5,6 @@ import ConflictError from "../errors/conflict";
 import NotFoundError from "../errors/not-found";
 
 import {
-  isValidId,
   insertResource,
   findResourceById,
   findFilterAllResources,
@@ -19,13 +18,8 @@ import {
 // @access Private
 // @fields: body {school_id:[string] , name:[string]}
 const createField = async ({ body }: Request, res: Response) => {
-  /* Destructure the fields */
+  /* destructure the fields */
   const { school_id, name } = body;
-  /* check if the school is valid */
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
   /* find if the school already exists */
   const schoolModel = "school";
   const fieldsToReturn = "-createdAt -updatedAt";
@@ -37,7 +31,7 @@ const createField = async ({ body }: Request, res: Response) => {
   if (!schoolFound) {
     throw new BadRequestError("Please make sure the school exists");
   }
-  /* find if the field already exists */
+  /* find if the field already exists for the school */
   const filters = [{ school_id: school_id }, { name: name }];
   const model = "field";
   const duplicatedSchool = await findFilterResourceByProperty(
@@ -61,13 +55,8 @@ const createField = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {school_id:[string]}
 const getFields = async ({ body }: Request, res: Response) => {
-  /* Destructure the fields */
+  /* destructure the fields */
   const { school_id } = body;
-  /* check if the school is valid */
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
   /* filter by school id */
   const filters = { school_id: school_id };
   const model = "field";
@@ -90,29 +79,22 @@ const getFields = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getField = async ({ params, body }: Request, res: Response) => {
-  /* check if ids are valid */
+  /* destructure the fields */
   const { id: fieldId } = params;
-  const isValidFieldId = isValidId(fieldId);
-  if (isValidFieldId === false) {
-    throw new BadRequestError("Invalid field id");
-  }
   const { school_id } = body;
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
   /* get the field */
+  const filters = [{ _id: fieldId }, { school_id: school_id }];
   const fieldsToReturn = "-createdAt -updatedAt";
   const model = "field";
-  const fieldFound = await findResourceById(fieldId, fieldsToReturn, model);
-  /* check if the field exists */
-  if (!fieldFound) {
+  const fieldFound = await findFilterResourceByProperty(
+    filters,
+    fieldsToReturn,
+    model
+  );
+  if (fieldFound?.length === 0) {
     throw new NotFoundError("Field not found");
   }
-  /* check if the field belongs to the school */
-  if (fieldFound?.school_id?.toString() !== school_id) {
-    throw new ConflictError("The school id is not correct!");
-  }
+
   res.status(StatusCodes.OK).json(fieldFound);
 };
 
@@ -121,18 +103,9 @@ const getField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], name:[string], prevName:[string]}
 const updateField = async ({ params, body }: Request, res: Response) => {
-  /* destructure the fields from the params and body */
+  /* destructure the fields*/
   const { id: fieldId } = params;
   const { school_id, name, prevName } = body;
-  /* check if the field and school ids are valid */
-  const isValidFieldId = isValidId(fieldId);
-  if (isValidFieldId === false) {
-    throw new BadRequestError("Invalid field id");
-  }
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
   /* check if the field already exist for the school */
   const filters = [{ school_id: school_id }, { name: name }];
   const model = "field";
@@ -145,7 +118,7 @@ const updateField = async ({ params, body }: Request, res: Response) => {
   if (fieldFound?.length !== 0) {
     throw new ConflictError("This field name already exists!");
   }
-  /* update if the field and school ids are the same one as the one passed and update the field */
+  /* update if the field and school ids are the same one as the one passed and update the field, prevName is used to search the field name to change */
   const filtersUpdate = [
     { _id: fieldId },
     { school_id: school_id },
@@ -171,17 +144,8 @@ const deleteField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: fieldId } = params;
   const { school_id } = body;
-  /* check if ids are valid */
-  const isValidFieldId = isValidId(fieldId);
-  if (isValidFieldId === false) {
-    throw new BadRequestError("Invalid field id");
-  }
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
   /* delete field */
-  const filtersDelete = [{ _id: fieldId }, { school_id: school_id }];
+  const filtersDelete = { _id: fieldId, school_id: school_id };
   const model = "field";
   const fieldDeleted = await deleteFilterResource(filtersDelete, model);
   if (!fieldDeleted) {

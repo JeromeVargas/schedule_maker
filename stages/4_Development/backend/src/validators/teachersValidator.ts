@@ -1,32 +1,41 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
+import { isValidId } from "../services/mongoServices";
 
 const validateCreateTeacher = [
   check("school_id")
     .exists()
-    .withMessage("Please add the user's school")
+    .withMessage("Please add the user's school id")
     .bail()
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isString()
-    .withMessage("The school id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The school id is Non-properly formatted"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   check("user_id")
     .exists()
     .withMessage("Please add the teacher`s user id")
     .bail()
     .notEmpty()
-    .withMessage("The teacher`s user id field is empty")
+    .withMessage("The teacher's user id field is empty")
     .bail()
-    .isString()
-    .withMessage("The teacher`s user id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The teacher`s user id is Non-properly formatted"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The teacher's user id is not valid`),
   check("coordinator_id")
     .exists()
     .withMessage("Please add the coordinator's id")
@@ -35,11 +44,15 @@ const validateCreateTeacher = [
     .withMessage("The coordinator's id field is empty")
     .bail()
     .isString()
-    .withMessage("The coordinator's id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The coordinator's id is Non-properly formatted")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The coordinator's id is not valid`),
   check("contractType")
     .exists()
     .withMessage("Please add the teacher`s contract type")
@@ -102,8 +115,15 @@ const validateGetTeachers = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -111,9 +131,15 @@ const validateGetTeachers = [
 
 const validateGetTeacher = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted teacher id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The teacher id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -121,8 +147,15 @@ const validateGetTeacher = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -130,9 +163,15 @@ const validateGetTeacher = [
 
 const validateUpdateTeacher = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted teacher id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The teacher's id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
@@ -140,12 +179,15 @@ const validateUpdateTeacher = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isString()
-    .withMessage("The school id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The school id is Non-properly formatted")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   check("user_id")
     .exists()
     .withMessage("Please add the teacher's user id")
@@ -154,11 +196,15 @@ const validateUpdateTeacher = [
     .withMessage("The teacher`s user id field is empty")
     .bail()
     .isString()
-    .withMessage("The teacher`s user id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The teacher`s user id is Non-properly formatted")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The teacher's user id is not valid`),
   check("coordinator_id")
     .exists()
     .withMessage("Please add the coordinator's user id")
@@ -167,11 +213,15 @@ const validateUpdateTeacher = [
     .withMessage("The coordinator's id field is empty")
     .bail()
     .isString()
-    .withMessage("The coordinator's id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The coordinator's id is Non-properly formatted")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The coordinator's id is not valid`),
   check("contractType")
     .exists()
     .withMessage("Please add the teacher`s contract type")
@@ -228,9 +278,15 @@ const validateUpdateTeacher = [
 
 const validateDeleteTeacher = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted teacher id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The teacher's id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -238,8 +294,15 @@ const validateDeleteTeacher = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

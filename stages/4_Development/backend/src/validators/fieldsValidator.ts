@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
+import { isValidId } from "../services/mongoServices";
 
 const validateCreateField = [
   check("school_id")
@@ -10,8 +11,15 @@ const validateCreateField = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("The school id is Non-properly formatted"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   check("name")
     .exists()
     .withMessage("Please add a field name")
@@ -36,8 +44,15 @@ const validateGetFields = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -45,9 +60,15 @@ const validateGetFields = [
 
 const validateGetField = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted field id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The field id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -55,8 +76,15 @@ const validateGetField = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -64,9 +92,15 @@ const validateGetField = [
 
 const validateUpdateField = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted field id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The field id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -74,8 +108,15 @@ const validateUpdateField = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   check("name")
     .exists()
     .withMessage("Please add a field name")
@@ -105,9 +146,15 @@ const validateUpdateField = [
 
 const validateDeleteField = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted field id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The field id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -115,8 +162,15 @@ const validateDeleteField = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

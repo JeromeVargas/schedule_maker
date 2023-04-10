@@ -5,36 +5,22 @@ import ConflictError from "../errors/conflict";
 import NotFoundError from "../errors/not-found";
 
 import {
-  isValidId,
   insertResource,
   findResourceById,
   findResourceByProperty,
-  deleteResource,
   findFilterAllResources,
+  findFilterResourceByProperty,
   updateFilterResource,
   deleteFilterResource,
 } from "../services/mongoServices";
 
 // @desc create a user
-// @route POST /api/v1/user
+// @route POST /api/v1/teachers
 // @access Private
 // @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
 const createTeacher = async ({ body }: Request, res: Response) => {
-  /* destructure the fields from the params and body */
+  /* destructure the fields */
   const { user_id, school_id, coordinator_id } = body;
-  /*  check if the ids are valid */
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
-  const isValidUserId = isValidId(user_id);
-  if (isValidUserId === false) {
-    throw new BadRequestError("Invalid user id");
-  }
-  const isValidCoordinatorId = isValidId(coordinator_id);
-  if (isValidCoordinatorId === false) {
-    throw new BadRequestError("Invalid coordinator id");
-  }
   /* check if the user exists, is active and has teaching functions */
   const userModel = "user";
   const userSearchCriteria = user_id;
@@ -107,17 +93,12 @@ const createTeacher = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the users
-// @route GET /api/v1/user
+// @route GET /api/v1/teachers
 // @access Private
 // @fields: body: {school_id:[string]}
 const getTeachers = async ({ body }: Request, res: Response) => {
-  /* Destructure the fields */
+  /* destructure the fields */
   const { school_id } = body;
-  /* check if the school is valid */
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
   /* filter by school id */
   const filters = { school_id: school_id };
   const model = "teacher";
@@ -135,61 +116,36 @@ const getTeachers = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the user by id
-// @route GET /api/v1/user/:id
+// @route GET /api/v1/teachers/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getTeacher = async ({ params, body }: Request, res: Response) => {
-  /* check if ids are valid */
+  /* destructure the fields */
   const { id: teacherId } = params;
-  const isValidTeacherId = isValidId(teacherId);
-  if (isValidTeacherId === false) {
-    throw new BadRequestError("Invalid teacher id");
-  }
   const { school_id } = body;
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
   /* get the teacher */
+  const filters = [{ _id: teacherId }, { school_id: school_id }];
   const fieldsToReturn = "-createdAt -updatedAt";
   const model = "teacher";
-  const teacherFound = await findResourceById(teacherId, fieldsToReturn, model);
-  /* check if the field exists */
-  if (!teacherFound) {
+  const teacherFound = await findFilterResourceByProperty(
+    filters,
+    fieldsToReturn,
+    model
+  );
+  if (teacherFound?.length === 0) {
     throw new NotFoundError("Teacher not found");
-  }
-  /* check if the field belongs to the school */
-  if (teacherFound?.school_id?.toString() !== school_id) {
-    throw new ConflictError("The school id is not correct!");
   }
   res.status(StatusCodes.OK).json(teacherFound);
 };
 
 // @desc update a user
-// @route PUT /api/v1/user/:id
+// @route PUT /api/v1/teachers/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
+// @fields: params: {id:[string]},  body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
 const updateTeacher = async ({ body, params }: Request, res: Response) => {
-  /* destructure the fields from the params and body */
+  /* destructure the fields */
   const { id: teacherId } = params;
   const { school_id, user_id, coordinator_id } = body;
-  /* check if the teacher, user , school and coordinator ids are valid */
-  const isValidTeacherId = isValidId(teacherId);
-  if (isValidTeacherId === false) {
-    throw new BadRequestError("Invalid teacher id");
-  }
-  const isValidUserId = isValidId(user_id);
-  if (isValidUserId === false) {
-    throw new BadRequestError("Invalid user id");
-  }
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
-  const isValidCoordinatorId = isValidId(coordinator_id);
-  if (isValidCoordinatorId === false) {
-    throw new BadRequestError("Invalid coordinator id");
-  }
   /* check if coordinator exists, has the role and is active  */
   const coordinatorSearchCriteria = coordinator_id;
   const coordinatorFieldsToReturn = "-password -createdAt -updatedAt";
@@ -208,7 +164,7 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
   if (existingCoordinator?.status !== "active") {
     throw new BadRequestError("Please pass an active coordinator");
   }
-  /* update if the teacher user and school ids are the same one as the one passed and update the field */
+  /* update if the teacher, user and school ids are the same one as the one passed and update the field */
   const filtersUpdate = [
     { _id: teacherId },
     { user_id: user_id },
@@ -228,24 +184,15 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
 };
 
 // @desc delete a user
-// @route DELETE /api/v1/user/:id
+// @route DELETE /api/v1/teachers/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteTeacher = async ({ params, body }: Request, res: Response) => {
-  /* destructure the fields from the params and body */
+  /* destructure the fields */
   const { id: teacherId } = params;
   const { school_id } = body;
-  /* check if the teacher, coordinator and school ids are valid */
-  const isValidTeacherId = isValidId(teacherId);
-  if (isValidTeacherId === false) {
-    throw new BadRequestError("Invalid teacher id");
-  }
-  const isValidSchoolId = isValidId(school_id);
-  if (isValidSchoolId === false) {
-    throw new BadRequestError("Invalid school id");
-  }
   /* delete teacher */
-  const filtersDelete = [{ _id: teacherId }, { school_id: school_id }];
+  const filtersDelete = { _id: teacherId, school_id: school_id };
   const model = "teacher";
   const fieldDeleted = await deleteFilterResource(filtersDelete, model);
   if (!fieldDeleted) {

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
+import { isValidId } from "../services/mongoServices";
 
 const validateCreateUser = [
   check("school_id")
@@ -10,11 +11,15 @@ const validateCreateUser = [
     .notEmpty()
     .withMessage("The school field is empty")
     .bail()
-    .isString()
-    .withMessage("The school id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The school id is Non-properly formatted"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   check("firstName")
     .exists()
     .withMessage("Please add the user's first name")
@@ -94,8 +99,8 @@ const validateCreateUser = [
     .withMessage("The hasTeachingFunc field is empty")
     .bail()
     .isBoolean()
-    .withMessage("hasTeachingFunc value is not valid")
-    .bail(),
+    .withMessage("hasTeachingFunc value is not valid"),
+
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -109,9 +114,15 @@ const validateGetUsers = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -119,9 +130,15 @@ const validateGetUsers = [
 
 const validateGetUser = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted user id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The user id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -129,8 +146,15 @@ const validateGetUser = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -138,9 +162,15 @@ const validateGetUser = [
 
 const validateUpdateUser = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted user id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The user id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add the user's school id")
@@ -148,11 +178,15 @@ const validateUpdateUser = [
     .notEmpty()
     .withMessage("The school field is empty")
     .bail()
-    .isString()
-    .withMessage("The school id is not valid")
-    .bail()
-    .isAlphanumeric()
-    .withMessage("The school id is Non-properly formatted"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   check("firstName")
     .exists()
     .withMessage("Please add the user's first name")
@@ -241,9 +275,15 @@ const validateUpdateUser = [
 
 const validateDeleteUser = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted user id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The user id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -251,8 +291,15 @@ const validateDeleteUser = [
     .notEmpty()
     .withMessage("The school id field is empty")
     .bail()
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id"),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
+import { isValidId } from "../services/mongoServices";
 
 const validateCreateSchool = [
   check("name")
@@ -21,9 +22,15 @@ const validateCreateSchool = [
 
 const validateGetSchool = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -31,9 +38,15 @@ const validateGetSchool = [
 
 const validateUpdateSchool = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   check("name")
     .exists()
     .withMessage("Please add a name")
@@ -52,9 +65,15 @@ const validateUpdateSchool = [
 
 const validateDeleteSchool = [
   check("id")
-    .isAlphanumeric()
-    .withMessage("Non-properly formatted school id")
-    .bail(),
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
