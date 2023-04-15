@@ -8,16 +8,16 @@ const TeacherSchema = new Schema<Teacher>(
       ref: "School",
       required: [true, "Please provide a school name"],
     },
+    coordinator_id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Please provide the user's coordinator id"],
+    },
     user_id: {
       type: Schema.Types.ObjectId,
       ref: "User",
       unique: true,
       required: [true, "Please provide the user's id"],
-    },
-    coordinator_id: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "Please provide the user's coordinator id"],
     },
     contractType: {
       type: String,
@@ -45,6 +45,6 @@ const TeacherSchema = new Schema<Teacher>(
   }
 );
 
-const TeacherModel = model<Teacher>("teacher", TeacherSchema);
+const TeacherModel = model<Teacher>("Teacher", TeacherSchema);
 
 export default TeacherModel;

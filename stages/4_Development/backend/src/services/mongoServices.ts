@@ -1,7 +1,7 @@
 import { isValidObjectId } from "mongoose";
 import SchoolModel from "../models/schoolModel";
-import TeacherModel from "../models/teacherModel";
 import UserModel from "../models/userModel";
+import TeacherModel from "../models/teacherModel";
 import FieldModel from "../models/fieldModel";
 
 const models = {
@@ -18,7 +18,7 @@ const isValidId = (id: string) => {
 
 // CRUD services
 // @desc insert a resource in database
-// @params resource, resourceName
+// @params resource, resource name
 const insertResource = <T>(resource: T, resourceName: keyof typeof models) => {
   const model = models[resourceName];
   // @ts-ignore
@@ -27,7 +27,7 @@ const insertResource = <T>(resource: T, resourceName: keyof typeof models) => {
 };
 
 // @desc find all resources of a type
-// @params fields to return, resourceName
+// @params fields to return, resource name
 const findAllResources = (
   fieldsToReturn: string,
   resourceName: keyof typeof models
@@ -44,7 +44,7 @@ const findAllResources = (
 };
 
 // @desc find all resources of a type based on some properties
-// @params filters, fields to return, resourceName
+// @params filters, fields to return, resource name
 const findFilterAllResources = (
   filters: unknown,
   fieldsToReturn: string,
@@ -61,8 +61,29 @@ const findFilterAllResources = (
   return resourceFound;
 };
 
+// @desc find a resource by id and populate the embedded
+// @params filters, fields to return, fields to populate, fields to return populate, resourceName
+const findPopulateFilterAllResources = (
+  filters: unknown,
+  fieldsToReturn: string,
+  fieldsToPopulate: string,
+  fieldsToReturnPopulate: string,
+  resourceName: keyof typeof models
+) => {
+  const model = models[resourceName];
+  // @ts-ignore
+  const resourceFound = model
+    // @ts-ignore
+    .find({ _id: { $in: filters } })
+    .select(fieldsToReturn)
+    .populate(fieldsToPopulate, fieldsToReturnPopulate)
+    .lean()
+    .exec();
+  return resourceFound;
+};
+
 // @desc find a resource by id
-// @params resourceId, fields to return, resourceName
+// @params resourceId, fields to return, resource name
 const findResourceById = (
   resourceId: string,
   fieldsToReturn: string,
@@ -79,8 +100,29 @@ const findResourceById = (
   return resourceFound;
 };
 
+// @desc find a resource by id and populate the embedded
+// @params resourceId, fields to return, fields to populate, fields to return populate, resourceName
+const findPopulateResourceById = (
+  resourceId: string,
+  fieldsToReturn: string,
+  fieldsToPopulate: string,
+  fieldsToReturnPopulate: string,
+  resourceName: keyof typeof models
+) => {
+  const model = models[resourceName];
+  // @ts-ignore
+  const resourceFound = model
+    // @ts-ignore
+    .findById(resourceId)
+    .select(fieldsToReturn)
+    .populate(fieldsToPopulate, fieldsToReturnPopulate)
+    .lean()
+    .exec();
+  return resourceFound;
+};
+
 // @desc find a resource by name or other property
-// @params resourceProperty, fields to return, resourceName
+// @params resourceProperty, fields to return, resource name
 const findResourceByProperty = (
   filters: unknown,
   fieldsToReturn: string,
@@ -98,7 +140,7 @@ const findResourceByProperty = (
 };
 
 // @desc find a resource and filter by some more properties
-// @params resourceProperty, fields to return, resourceName
+// @params resourceProperty, fields to return, resource name
 const findFilterResourceByProperty = (
   filters: unknown,
   fieldsToReturn: string,
@@ -116,7 +158,7 @@ const findFilterResourceByProperty = (
 };
 
 // @desc update a resource by id
-// @params resourceId, resource, resourceName
+// @params resourceId, resource, resource name
 const updateResource = <T>(
   resourceId: string,
   resource: T,
@@ -133,7 +175,7 @@ const updateResource = <T>(
 };
 
 // @desc update a resource by some properties
-// @params resourceId, resource, resourceName
+// @params resourceId, resource, resource name
 const updateFilterResource = <T>(
   filters: unknown,
   resource: T,
@@ -150,7 +192,7 @@ const updateFilterResource = <T>(
 };
 
 // @desc delete a resource by id
-// @params resourceId, resourceName
+// @params resourceId, resource name
 const deleteResource = (
   resourceId: string,
   resourceName: keyof typeof models
@@ -164,7 +206,7 @@ const deleteResource = (
 };
 
 // @desc delete a resource by property
-// @params resourceId, filters, resourceName
+// @params resourceId, filters, resource name
 const deleteFilterResource = (
   filters: any,
   resourceName: keyof typeof models
@@ -179,7 +221,9 @@ export {
   insertResource,
   findAllResources,
   findFilterAllResources,
+  findPopulateFilterAllResources,
   findResourceById,
+  findPopulateResourceById,
   findResourceByProperty,
   findFilterResourceByProperty,
   updateResource,

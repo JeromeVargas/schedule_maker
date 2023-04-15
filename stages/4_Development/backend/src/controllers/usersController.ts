@@ -64,7 +64,6 @@ const getUsers = async ({ body }: Request, res: Response) => {
   const filters = { school_id: school_id };
   const model = "user";
   const fieldsToReturn = "-createdAt -updatedAt";
-
   const usersFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
@@ -105,7 +104,7 @@ const getUser = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const updateUser = async ({ params, body }: Request, res: Response) => {
-  /* destructure the fields from the body */
+  /* destructure the fields */
   const { id: userId } = params;
   const { school_id, email } = body;
   /* check if the user email is already in use by another user */
@@ -139,7 +138,7 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], name:[string], prevName:[string]}
 const deleteUser = async ({ params, body }: Request, res: Response) => {
-  /* destructure the fields from the params and body */
+  /* destructure the fields */
   const { id: userId } = params;
   const { school_id } = body;
   /* delete the user */

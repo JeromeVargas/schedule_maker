@@ -9,6 +9,7 @@ import {
   findResourceById,
   findResourceByProperty,
   findFilterAllResources,
+  findPopulateFilterAllResources,
   findFilterResourceByProperty,
   updateFilterResource,
   deleteFilterResource,
@@ -20,15 +21,22 @@ import {
 // @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
 const createTeacher = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { user_id, school_id, coordinator_id } = body;
+  const { user_id, coordinator_id } = body;
   /* check if the user exists, is active and has teaching functions */
-  const userModel = "user";
-  const userSearchCriteria = user_id;
+  const userSearchCriteria = [user_id, coordinator_id];
   const userFieldsToReturn = "-password -createdAt -updatedAt";
-  const existingUser = await findResourceById(
+  const userFieldsToPopulate = "school_id";
+  const userFieldsToReturnPopulate = "-_id -createdAt -updatedAt";
+  const userModel = "user";
+  const existingUserSchoolCoordinator = await findPopulateFilterAllResources(
     userSearchCriteria,
     userFieldsToReturn,
+    userFieldsToPopulate,
+    userFieldsToReturnPopulate,
     userModel
+  );
+  const existingUser = existingUserSchoolCoordinator.find(
+    (user: any) => user?._id == user_id
   );
   if (!existingUser) {
     throw new BadRequestError("Please create the base user first");
@@ -42,24 +50,12 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     );
   }
   /* check if the school exists*/
-  const schoolSearchCriteria = school_id;
-  const schoolFieldsToReturn = "-createdAt -updatedAt";
-  const schoolModel = "school";
-  const existingSchool = await findResourceById(
-    schoolSearchCriteria,
-    schoolFieldsToReturn,
-    schoolModel
-  );
-  if (!existingSchool) {
+  if (!existingUser?.school_id) {
     throw new BadRequestError("Please create the school first");
   }
   /* check if the coordinator exists, has a coordinator role and it is active */
-  const coordinatorSearchCriteria = coordinator_id;
-  const coordinatorFieldsToReturn = "-password -createdAt -updatedAt";
-  const existingCoordinator = await findResourceById(
-    coordinatorSearchCriteria,
-    coordinatorFieldsToReturn,
-    userModel
+  const existingCoordinator = existingUserSchoolCoordinator.find(
+    (user: any) => user?._id == coordinator_id
   );
   if (!existingCoordinator) {
     throw new BadRequestError("Please pass an existent coordinator");

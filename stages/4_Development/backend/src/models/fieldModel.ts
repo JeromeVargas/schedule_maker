@@ -18,6 +18,6 @@ const SchoolSchema = new Schema<Field>(
   }
 );
 
-const SchoolModel = model<Field>("field", SchoolSchema);
+const SchoolModel = model<Field>("Field", SchoolSchema);
 
 export default SchoolModel;

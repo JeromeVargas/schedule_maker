@@ -2238,6 +2238,34 @@ describe("Schedule maker API", () => {
     };
 
     // payloads
+    const userSchoolCoordinatorPayload = [
+      {
+        _id: validMockUserId,
+        school_id: {
+          name: "School 001",
+        },
+        //cspell:disable-next-line
+        firstName: "Mtuts",
+        lastName: "Tuts",
+        email: "mtuts@hello.com",
+        rol: "teacher",
+        status: "active",
+        hasTeachingFunc: true,
+      },
+      {
+        _id: validMockCoordinatorId,
+        school_id: {
+          name: "School 001",
+        },
+        firstName: "Dave",
+        lastName: "Gray",
+        email: "dave@hello.com",
+        role: "coordinator",
+        status: "active",
+        hasTeachingFunc: false,
+      },
+    ];
+
     const teacherPayload = {
       _id: validMockTeacherId,
       school_id: validMockSchoolId,
@@ -2308,22 +2336,13 @@ describe("Schedule maker API", () => {
     const teachersNullPayload: any[] = [];
 
     // test blocks
-    // continue here --> first, check it manually
     describe("POST /teacher ", () => {
       describe("teacher::post::01 - Passing a teacher with missing fields", () => {
         it("should return a field needed error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            userSchoolCoordinatorPayload,
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2383,7 +2402,7 @@ describe("Schedule maker API", () => {
             ])
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(0);
+          expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
@@ -2391,17 +2410,9 @@ describe("Schedule maker API", () => {
       describe("teacher::post::02 - Passing a teacher with empty fields", () => {
         it("should return an empty field error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            userSchoolCoordinatorPayload,
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2461,7 +2472,7 @@ describe("Schedule maker API", () => {
             ])
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(0);
+          expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
@@ -2469,17 +2480,9 @@ describe("Schedule maker API", () => {
       describe("teacher::post::03 - Passing an invalid type as field value", () => {
         it("should return a not valid value error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            userSchoolCoordinatorPayload,
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2539,7 +2542,7 @@ describe("Schedule maker API", () => {
             ])
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(0);
+          expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
@@ -2547,17 +2550,9 @@ describe("Schedule maker API", () => {
       describe("teacher::post::04 - Passing wrong contract type, hours assignable or hours assigned input values", () => {
         it("should return a wrong input value error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            userSchoolCoordinatorPayload,
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2596,7 +2591,7 @@ describe("Schedule maker API", () => {
             ])
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(0);
+          expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
@@ -2604,17 +2599,9 @@ describe("Schedule maker API", () => {
       describe("teacher::post::05 - Not finding a user", () => {
         it("should return a user not found error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userNullPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            [null, userSchoolCoordinatorPayload[1]],
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2637,7 +2624,7 @@ describe("Schedule maker API", () => {
             })
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(1);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
@@ -2645,17 +2632,12 @@ describe("Schedule maker API", () => {
       describe("teacher::post::06 - Passing an inactive user", () => {
         it("should return an inactive user error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            { ...userPayload, status: "inactive" },
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            [
+              { ...userSchoolCoordinatorPayload[0], status: "inactive" },
+              userSchoolCoordinatorPayload[1],
+            ],
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2676,7 +2658,7 @@ describe("Schedule maker API", () => {
             expect.objectContaining({ msg: "The user is not active" })
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(1);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
@@ -2684,17 +2666,12 @@ describe("Schedule maker API", () => {
       describe("teacher::post::07 - Passing a user with no teaching functions assigned", () => {
         it("should return no teaching functions assigned error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            { ...userPayload, hasTeachingFunc: false },
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            [
+              { ...userSchoolCoordinatorPayload[0], hasTeachingFunc: false },
+              userSchoolCoordinatorPayload[1],
+            ],
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2717,25 +2694,56 @@ describe("Schedule maker API", () => {
             })
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(1);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
       });
-      describe("teacher::post::08 - Not finding a coordinator", () => {
+      describe("teacher::post::08 - The user's school does not exists", () => {
+        it("should return no teaching functions assigned error", async () => {
+          // mock services
+          const findUserSchoolCoordinator = mockService(
+            [
+              {
+                ...userSchoolCoordinatorPayload[0],
+                school_id: null,
+              },
+              userSchoolCoordinatorPayload[1],
+            ],
+            "findPopulateFilterAllResources"
+          );
+          const findTeacherByIdPropertyService = mockService(
+            teacherNullPayload,
+            "findResourceByProperty"
+          );
+          const insertTeacherService = mockService(
+            teacherPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacher);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please create the school first",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalled();
+        });
+      });
+      describe("teacher::post::09 - Not finding a coordinator", () => {
         it("should return a non-existent coordinator error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorNullPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            [userSchoolCoordinatorPayload[0], null],
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2758,25 +2766,20 @@ describe("Schedule maker API", () => {
             })
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(3);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
       });
-      describe("teacher::post::09 - Passing a user with a role different from coordinator", () => {
+      describe("teacher::post::10 - Passing a user with a role different from coordinator", () => {
         it("should return an not-a-coordinator error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            { ...coordinatorPayload, role: "student" },
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            [
+              userSchoolCoordinatorPayload[0],
+              { ...userSchoolCoordinatorPayload[1], role: "student" },
+            ],
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2799,25 +2802,19 @@ describe("Schedule maker API", () => {
             })
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(3);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
       });
-      describe("teacher::post::10 - Passing an inactive coordinator", () => {
+      describe("teacher::post::11 - Passing an inactive coordinator", () => {
         it("should return an inactive coordinator error", async () => {
-          // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            { ...coordinatorPayload, status: "inactive" },
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            [
+              userSchoolCoordinatorPayload[0],
+              { ...userSchoolCoordinatorPayload[1], status: "inactive" },
+            ],
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2840,25 +2837,17 @@ describe("Schedule maker API", () => {
             })
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(3);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
       });
-      describe("teacher::post::11 - user already a teacher", () => {
+      describe("teacher::post::12 - user already a teacher", () => {
         it("should return a user already a teacher error", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            userSchoolCoordinatorPayload,
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherPayload,
@@ -2881,25 +2870,17 @@ describe("Schedule maker API", () => {
             })
           );
           expect(statusCode).toBe(409);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(3);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).toHaveBeenCalled();
           expect(insertTeacherService).not.toHaveBeenCalled();
         });
       });
-      describe("teacher::post::12 - Passing a teacher but not being created", () => {
+      describe("teacher::post::13 - Passing a teacher but not being created", () => {
         it("should not create a teacher", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            userSchoolCoordinatorPayload,
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2922,25 +2903,17 @@ describe("Schedule maker API", () => {
             })
           );
           expect(statusCode).toBe(400);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(3);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).toHaveBeenCalled();
           expect(insertTeacherService).toHaveBeenCalled();
         });
       });
-      describe("teacher::post::13 - Passing a teacher correctly to create", () => {
+      describe("teacher::post::14 - Passing a teacher correctly to create", () => {
         it("should create a teacher", async () => {
           // mock services
-          let findUserSchoolCoordinator = mockService(
-            userPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            schoolPayload,
-            "findResourceById"
-          );
-          findUserSchoolCoordinator = mockService(
-            coordinatorPayload,
-            "findResourceById"
+          const findUserSchoolCoordinator = mockService(
+            userSchoolCoordinatorPayload,
+            "findPopulateFilterAllResources"
           );
           const findTeacherByIdPropertyService = mockService(
             teacherNullPayload,
@@ -2961,7 +2934,7 @@ describe("Schedule maker API", () => {
             expect.objectContaining({ msg: "Teacher created successfully!" })
           );
           expect(statusCode).toBe(201);
-          expect(findUserSchoolCoordinator).toHaveBeenCalledTimes(3);
+          expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).toHaveBeenCalled();
           expect(insertTeacherService).toHaveBeenCalled();
         });

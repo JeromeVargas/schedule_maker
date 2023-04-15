@@ -22,8 +22,8 @@ export type ContractType = "full-time" | "part-time" | "substitute";
 
 export type Teacher = {
   school_id: Types.ObjectId;
-  user_id: Types.ObjectId;
   coordinator_id: Types.ObjectId;
+  user_id: Types.ObjectId;
   contractType: ContractType;
   hoursAssignable: number;
   hoursAssigned: number;

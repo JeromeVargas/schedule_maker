@@ -15,6 +15,6 @@ const SchoolSchema = new Schema<School>(
   }
 );
 
-const SchoolModel = model<School>("school", SchoolSchema);
+const SchoolModel = model<School>("School", SchoolSchema);
 
 export default SchoolModel;
