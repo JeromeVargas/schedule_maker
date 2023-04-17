@@ -27,6 +27,13 @@ export type Teacher = {
   contractType: ContractType;
   hoursAssignable: number;
   hoursAssigned: number;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
 };
 
 export type Field = {

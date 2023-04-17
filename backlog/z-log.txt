@@ -16,7 +16,6 @@ To do of additional but related tasks to keep in mind, i.e., administrative:
   - https://www.youtube.com/watch?v=_P3CrgFlXhg&ab_channel=freeCodeCamp.org
 
 - review the testing, check what info is actually needed
-- try jest match object method to check for object and array equality
 - password hashing
 
 . if user is a teacher make sure he / she has teaching functions as true

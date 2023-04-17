@@ -38,6 +38,34 @@ const TeacherSchema = new Schema<Teacher>(
         "Please provide the number of hours assigned to the teacher",
       ],
     },
+    monday: {
+      type: Boolean,
+      required: [true, "Please provide if the teacher is available "],
+    },
+    tuesday: {
+      type: Boolean,
+      required: [true, "Please provide if the teacher is available "],
+    },
+    wednesday: {
+      type: Boolean,
+      required: [true, "Please provide if the teacher is available "],
+    },
+    thursday: {
+      type: Boolean,
+      required: [true, "Please provide if the teacher is available "],
+    },
+    friday: {
+      type: Boolean,
+      required: [true, "Please provide if the teacher is available "],
+    },
+    saturday: {
+      type: Boolean,
+      required: [true, "Please provide if the teacher is available "],
+    },
+    sunday: {
+      type: Boolean,
+      required: [true, "Please provide if the teacher is available "],
+    },
   },
   {
     timestamps: true,
