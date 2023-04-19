@@ -5,6 +5,7 @@ const SchoolSchema = new Schema<Field>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
+      ref: "School",
       required: [true, "must provide name for the task"],
     },
     name: {

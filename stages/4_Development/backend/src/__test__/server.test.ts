@@ -30,7 +30,7 @@ describe("Schedule maker API", () => {
     const validMockSchoolId = new Types.ObjectId().toString();
     const otherValidMockSchoolId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "63c5dcac78b868f80035asdf";
+    const invalidMockId = "invalidMockId";
     const newSchool = {
       name: "school 001",
     };
@@ -89,13 +89,13 @@ describe("Schedule maker API", () => {
             .send(newSchoolMissingValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add a school name",
               param: "name",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedSchoolNameByPropertyService
@@ -121,14 +121,14 @@ describe("Schedule maker API", () => {
             .send(newSchoolEmptyValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school name field is empty",
               param: "name",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedSchoolNameByPropertyService
@@ -154,14 +154,14 @@ describe("Schedule maker API", () => {
             .send(newSchoolNotValidDataTypes);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school name is not valid",
               param: "name",
               value: 1234567890,
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedSchoolNameByPropertyService
@@ -187,7 +187,7 @@ describe("Schedule maker API", () => {
             .send(newSchoolWrongLengthValues);
 
           //assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The name must not exceed 100 characters",
@@ -195,7 +195,7 @@ describe("Schedule maker API", () => {
               value:
                 "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedSchoolNameByPropertyService
@@ -326,7 +326,7 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 _id: expect.any(String),
                 name: "school 001",
@@ -339,7 +339,7 @@ describe("Schedule maker API", () => {
                 _id: expect.any(String),
                 name: "school 003",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(200);
             expect(findAllSchoolsService).toHaveBeenCalled();
           });
@@ -360,15 +360,15 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "params",
                 msg: "The school id is not valid",
                 param: "id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: invalidMockId,
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findSchoolByIdService).not.toHaveBeenCalled();
           });
@@ -442,13 +442,13 @@ describe("Schedule maker API", () => {
             .send(newSchoolMissingValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add a name",
               param: "name",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findSchoolNameDuplicatedByPropertyService
@@ -474,14 +474,14 @@ describe("Schedule maker API", () => {
             .send(newSchoolEmptyValues);
 
           //assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The name field is empty",
               param: "name",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findSchoolNameDuplicatedByPropertyService
@@ -507,13 +507,13 @@ describe("Schedule maker API", () => {
             .send(newSchoolNotValidDataTypes);
 
           //assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "params",
               msg: "The school id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
@@ -521,7 +521,7 @@ describe("Schedule maker API", () => {
               param: "name",
               value: 1234567890,
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findSchoolNameDuplicatedByPropertyService
@@ -547,7 +547,7 @@ describe("Schedule maker API", () => {
             .send(newSchoolWrongLengthValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The name must not exceed 100 characters",
@@ -555,7 +555,7 @@ describe("Schedule maker API", () => {
               value:
                 "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findSchoolNameDuplicatedByPropertyService
@@ -662,15 +662,15 @@ describe("Schedule maker API", () => {
             .send();
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "params",
               msg: "The school id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteSchoolService).not.toHaveBeenCalled();
         });
@@ -731,7 +731,7 @@ describe("Schedule maker API", () => {
     const validMockSchoolId = new Types.ObjectId().toString();
     const otherValidMockUserId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "63c5dcac78b868f80035asdf";
+    const invalidMockId = "invalidMockId";
     const newUser = {
       school_id: validMockSchoolId,
       firstName: "Jerome",
@@ -875,7 +875,7 @@ describe("Schedule maker API", () => {
             .send(newUserMissingValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               msg: "Please add the user's school id",
               param: "school_id",
@@ -916,7 +916,7 @@ describe("Schedule maker API", () => {
               param: "hasTeachingFunc",
               location: "body",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
           expect(
@@ -943,7 +943,7 @@ describe("Schedule maker API", () => {
             .send(newUserEmptyValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               msg: "The school field is empty",
               param: "school_id",
@@ -992,7 +992,7 @@ describe("Schedule maker API", () => {
               location: "body",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
           expect(
@@ -1020,13 +1020,13 @@ describe("Schedule maker API", () => {
             .send(newUserNotValidDataTypes);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
@@ -1070,7 +1070,7 @@ describe("Schedule maker API", () => {
               param: "hasTeachingFunc",
               value: 987314,
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
           expect(
@@ -1098,7 +1098,7 @@ describe("Schedule maker API", () => {
             .send(newUserWrongLengthValues);
 
           //assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -1129,7 +1129,7 @@ describe("Schedule maker API", () => {
               param: "password",
               value: "1234123",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
           expect(
@@ -1157,13 +1157,13 @@ describe("Schedule maker API", () => {
             .send(newUserWrongValues);
 
           //assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
@@ -1185,7 +1185,7 @@ describe("Schedule maker API", () => {
               //cspell:disable-next-line
               value: "activo",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
           expect(
             findDuplicatedUserEmailByPropertyService
@@ -1335,13 +1335,13 @@ describe("Schedule maker API", () => {
               .send({ school_i: invalidMockId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "Please add a school id",
                 param: "school_id",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findAllUsersService).not.toHaveBeenCalled();
           });
@@ -1360,14 +1360,14 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "The school id field is empty",
                 param: "school_id",
                 value: "",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findAllUsersService).not.toHaveBeenCalled();
           });
@@ -1386,15 +1386,15 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: "invalidMockId",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findAllUsersService).not.toHaveBeenCalled();
           });
@@ -1436,7 +1436,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 _id: expect.any(String),
                 email: "jerome@gmail.com",
@@ -1469,7 +1469,7 @@ describe("Schedule maker API", () => {
                 school_id: expect.any(String),
                 status: "suspended",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(200);
             expect(findAllUsersService).toHaveBeenCalled();
           });
@@ -1491,13 +1491,13 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "Please add a school id",
                 param: "school_id",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findUserByPropertyService).not.toHaveBeenCalled();
           });
@@ -1516,14 +1516,14 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "The school id field is empty",
                 param: "school_id",
                 value: "",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findUserByPropertyService).not.toHaveBeenCalled();
           });
@@ -1542,22 +1542,22 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "params",
                 msg: "The user id is not valid",
                 param: "id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: "invalidMockId",
               },
               {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: "invalidMockId",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findUserByPropertyService).not.toHaveBeenCalled();
           });
@@ -1637,7 +1637,7 @@ describe("Schedule maker API", () => {
             .send(newUserMissingValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add the user's school id",
@@ -1678,7 +1678,7 @@ describe("Schedule maker API", () => {
               msg: "Please add if the user has teaching functions assigned",
               param: "hasTeachingFunc",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedUserEmailByPropertyService
@@ -1704,7 +1704,7 @@ describe("Schedule maker API", () => {
             .send(newUserEmptyValues);
 
           //assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school field is empty",
@@ -1753,7 +1753,7 @@ describe("Schedule maker API", () => {
               param: "hasTeachingFunc",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedUserEmailByPropertyService
@@ -1779,20 +1779,20 @@ describe("Schedule maker API", () => {
             .send(newUserNotValidDataTypes);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "params",
               msg: "The user id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
@@ -1836,7 +1836,7 @@ describe("Schedule maker API", () => {
               param: "hasTeachingFunc",
               value: 987314,
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedUserEmailByPropertyService
@@ -1862,7 +1862,7 @@ describe("Schedule maker API", () => {
             .send(newUserWrongLengthValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -1893,7 +1893,7 @@ describe("Schedule maker API", () => {
               param: "password",
               value: "1234123",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedUserEmailByPropertyService
@@ -1919,13 +1919,13 @@ describe("Schedule maker API", () => {
             .send(newUserWrongValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
@@ -1947,7 +1947,7 @@ describe("Schedule maker API", () => {
               //cspell:disable-next-line
               value: "activo",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedUserEmailByPropertyService
@@ -2055,13 +2055,13 @@ describe("Schedule maker API", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add a school id",
               param: "school_id",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteUserService).not.toHaveBeenCalled();
         });
@@ -2080,14 +2080,14 @@ describe("Schedule maker API", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id field is empty",
               param: "school_id",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteUserService).not.toHaveBeenCalled();
         });
@@ -2106,22 +2106,22 @@ describe("Schedule maker API", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "params",
               msg: "The user id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteUserService).not.toHaveBeenCalled();
         });
@@ -2182,7 +2182,7 @@ describe("Schedule maker API", () => {
     const validMockCoordinatorId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "63c5dcac78b868f80035asdf";
+    const invalidMockId = "invalidMockId";
     const newTeacher = {
       school_id: validMockSchoolId,
       user_id: validMockUserId,
@@ -2392,7 +2392,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherMissingValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add the user's school id",
@@ -2458,7 +2458,7 @@ describe("Schedule maker API", () => {
               msg: "Please add if the teacher is available to work on Sundays",
               param: "sunday",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
@@ -2487,7 +2487,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherEmptyValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -2566,7 +2566,7 @@ describe("Schedule maker API", () => {
               param: "sunday",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
@@ -2595,7 +2595,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherNotValidDataTypes);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -2680,7 +2680,7 @@ describe("Schedule maker API", () => {
               param: "sunday",
               value: "hello",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
@@ -2709,27 +2709,27 @@ describe("Schedule maker API", () => {
             .send(newTeacherWrongValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
               msg: "The teacher's user id is not valid",
               param: "user_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
               msg: "The coordinator's id is not valid",
               param: "coordinator_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
@@ -2750,7 +2750,7 @@ describe("Schedule maker API", () => {
               param: "hoursAssigned",
               value: 72,
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
@@ -3118,13 +3118,13 @@ describe("Schedule maker API", () => {
               .send({ school_i: invalidMockId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "Please add a school id",
                 param: "school_id",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findAllTeachersService).not.toHaveBeenCalled();
           });
@@ -3143,14 +3143,14 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "The school id field is empty",
                 param: "school_id",
                 value: "",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findAllTeachersService).not.toHaveBeenCalled();
           });
@@ -3169,15 +3169,15 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: "invalidMockId",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findAllTeachersService).not.toHaveBeenCalled();
           });
@@ -3219,7 +3219,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 _id: expect.any(String),
                 contractType: "full-time",
@@ -3247,7 +3247,7 @@ describe("Schedule maker API", () => {
                 school_id: expect.any(String),
                 user_id: expect.any(String),
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(200);
             expect(findAllTeachersService).toHaveBeenCalled();
           });
@@ -3268,13 +3268,13 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "Please add a school id",
                 param: "school_id",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findTeacherByPropertyService).not.toHaveBeenCalled();
           });
@@ -3293,14 +3293,14 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "The school id field is empty",
                 param: "school_id",
                 value: "",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findTeacherByPropertyService).not.toHaveBeenCalled();
           });
@@ -3319,22 +3319,22 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "params",
                 msg: "The teacher id is not valid",
                 param: "id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: "invalidMockId",
               },
               {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: "invalidMockId",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findTeacherByPropertyService).not.toHaveBeenCalled();
           });
@@ -3413,7 +3413,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherMissingValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add the school id",
@@ -3479,7 +3479,7 @@ describe("Schedule maker API", () => {
               msg: "Please add if the teacher is available to work on Sundays",
               param: "sunday",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).not.toHaveBeenCalled();
           expect(updateTeacherService).not.toHaveBeenCalled();
@@ -3503,7 +3503,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherEmptyValues);
 
           //assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -3582,7 +3582,7 @@ describe("Schedule maker API", () => {
               param: "sunday",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).not.toHaveBeenCalled();
           expect(updateTeacherService).not.toHaveBeenCalled();
@@ -3606,7 +3606,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherNotValidDataTypes);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -3697,7 +3697,7 @@ describe("Schedule maker API", () => {
               param: "sunday",
               value: "hello",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).not.toHaveBeenCalled();
           expect(updateTeacherService).not.toHaveBeenCalled();
@@ -3721,27 +3721,27 @@ describe("Schedule maker API", () => {
             .send(newTeacherWrongValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
               msg: "The teacher's user id is not valid",
               param: "user_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
               msg: "The coordinator's id is not valid",
               param: "coordinator_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
@@ -3763,7 +3763,7 @@ describe("Schedule maker API", () => {
               param: "hoursAssigned",
               value: 72,
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).not.toHaveBeenCalled();
           expect(updateTeacherService).not.toHaveBeenCalled();
@@ -3926,13 +3926,13 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add a school id",
               param: "school_id",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteTeacherService).not.toHaveBeenCalled();
         });
@@ -3953,14 +3953,14 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id field is empty",
               param: "school_id",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteTeacherService).not.toHaveBeenCalled();
         });
@@ -3981,22 +3981,22 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "params",
               msg: "The teacher's id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteTeacherService).not.toHaveBeenCalled();
         });
@@ -4058,7 +4058,7 @@ describe("Schedule maker API", () => {
     const validMockFieldId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "63c5dcac78b868f80035asdf";
+    const invalidMockId = "invalidMockId";
     const newField = {
       school_id: validMockSchoolId,
       name: "Mathematics",
@@ -4130,7 +4130,7 @@ describe("Schedule maker API", () => {
             .send(newFieldMissingValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add a school id",
@@ -4141,7 +4141,7 @@ describe("Schedule maker API", () => {
               msg: "Please add a field name",
               param: "name",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
           expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
@@ -4170,7 +4170,7 @@ describe("Schedule maker API", () => {
             .send(newFieldEmptyValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -4183,7 +4183,7 @@ describe("Schedule maker API", () => {
               param: "name",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
           expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
@@ -4212,7 +4212,7 @@ describe("Schedule maker API", () => {
             .send(newFieldNotValidDataTypes);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -4225,7 +4225,7 @@ describe("Schedule maker API", () => {
               param: "name",
               value: 1234567890,
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
           expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
@@ -4254,7 +4254,7 @@ describe("Schedule maker API", () => {
             .send(newFieldWrongLengthValues);
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The field name must not exceed 100 characters",
@@ -4262,7 +4262,7 @@ describe("Schedule maker API", () => {
               value:
                 "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
           expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
@@ -4333,7 +4333,7 @@ describe("Schedule maker API", () => {
           expect(insertFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("school::post::07 - Passing a field but not being created", () => {
+      describe("field::post::07 - Passing a field but not being created", () => {
         it("should not create a field", async () => {
           // mock services
           const findSchoolByIdService = mockService(
@@ -4413,13 +4413,13 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "Please add a school id",
                 param: "school_id",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findAllFieldsService).not.toHaveBeenCalled();
           });
@@ -4438,14 +4438,14 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "The school id field is empty",
                 param: "school_id",
                 value: "",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findAllFieldsService).not.toHaveBeenCalled();
           });
@@ -4464,15 +4464,15 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: "invalidMockId",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findAllFieldsService).not.toHaveBeenCalled();
           });
@@ -4514,7 +4514,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 _id: expect.any(String),
                 name: "Mathematics",
@@ -4530,7 +4530,7 @@ describe("Schedule maker API", () => {
                 name: "Physics",
                 school_id: expect.any(String),
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(200);
             expect(findAllFieldsService).toHaveBeenCalled();
           });
@@ -4551,13 +4551,13 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "Please add a school id",
                 param: "school_id",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findFieldByIdService).not.toHaveBeenCalled();
           });
@@ -4576,14 +4576,14 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "body",
                 msg: "The school id field is empty",
                 param: "school_id",
                 value: "",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findFieldByIdService).not.toHaveBeenCalled();
           });
@@ -4601,22 +4601,22 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect([
+            expect(body).toMatchObject([
               {
                 location: "params",
                 msg: "The field id is not valid",
                 param: "id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: "invalidMockId",
               },
               {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
                 //cspell:disable-next-line
-                value: "63c5dcac78b868f80035asdf",
+                value: "invalidMockId",
               },
-            ]).toMatchObject(body);
+            ]);
             expect(statusCode).toBe(400);
             expect(findFieldByIdService).not.toHaveBeenCalled();
           });
@@ -4690,7 +4690,7 @@ describe("Schedule maker API", () => {
             .send({ ...newFieldMissingValues, prevNam: "Science" });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add a school id",
@@ -4706,7 +4706,7 @@ describe("Schedule maker API", () => {
               msg: "Please add the previous field name",
               param: "prevName",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findFieldNameDuplicatedByPropertyService
@@ -4732,7 +4732,7 @@ describe("Schedule maker API", () => {
             .send({ ...newFieldEmptyValues, prevName: "" });
 
           //assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -4751,7 +4751,7 @@ describe("Schedule maker API", () => {
               param: "prevName",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findFieldNameDuplicatedByPropertyService
@@ -4777,7 +4777,7 @@ describe("Schedule maker API", () => {
             .send({ ...newFieldNotValidDataTypes, prevName: 12341234 });
 
           //assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -4796,7 +4796,7 @@ describe("Schedule maker API", () => {
               param: "prevName",
               value: 12341234,
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findFieldNameDuplicatedByPropertyService
@@ -4826,7 +4826,7 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The name must not exceed 100 characters",
@@ -4841,7 +4841,7 @@ describe("Schedule maker API", () => {
               value:
                 "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(
             findFieldNameDuplicatedByPropertyService
@@ -4905,7 +4905,7 @@ describe("Schedule maker API", () => {
           expect(updateFieldService).toHaveBeenCalled();
         });
       });
-      describe("field::put::11 - Passing a field correctly to update", () => {
+      describe("field::put::07 - Passing a field correctly to update", () => {
         it("should update a field", async () => {
           // mock services
           const findFieldNameDuplicatedByPropertyService = mockService(
@@ -4948,13 +4948,13 @@ describe("Schedule maker API", () => {
             .send();
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "Please add a school id",
               param: "school_id",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteFieldService).not.toHaveBeenCalled();
         });
@@ -4973,19 +4973,19 @@ describe("Schedule maker API", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "body",
               msg: "The school id field is empty",
               param: "school_id",
               value: "",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::delete::03 - Passing an invalid field id in the url", () => {
+      describe("field::delete::03 - Passing an invalid field and school ids", () => {
         it("should return an invalid id error", async () => {
           // mock services
           const deleteFieldService = mockService(
@@ -4999,22 +4999,22 @@ describe("Schedule maker API", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect([
+          expect(body).toMatchObject([
             {
               location: "params",
               msg: "The field id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "63c5dcac78b868f80035asdf",
+              value: "invalidMockId",
             },
-          ]).toMatchObject(body);
+          ]);
           expect(statusCode).toBe(400);
           expect(deleteFieldService).not.toHaveBeenCalled();
         });
@@ -5064,957 +5064,1115 @@ describe("Schedule maker API", () => {
     });
   });
 
-  // continue here --> create the teacher_field table
   describe("RESOURCE => teacher_field", () => {
     // end point url
     const endPointUrl = "/api/v1/teacher_fields/";
 
     // inputs
-    const validMockFieldId = new Types.ObjectId().toString();
+    const validMockTeacherFieldId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
+    const validMockTeacherId = new Types.ObjectId().toString();
+    const validMockUserId = new Types.ObjectId().toString();
+    const validMockCoordinatorId = new Types.ObjectId().toString();
+    const validMockFieldId = new Types.ObjectId().toString();
+    const otherValidMockFieldId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "63c5dcac78b868f80035asdf";
-    const newField = {
+    const invalidMockId = "invalidMockId";
+    const newTeacherField = {
       school_id: validMockSchoolId,
-      name: "Mathematics",
+      teacher_id: validMockTeacherId,
+      field_id: validMockFieldId,
     };
-    const newFieldMissingValues = {
+    const newTeacherFieldMissingValues = {
       school_i: validMockSchoolId,
-      nam: "Mathematics",
+      teacher_i: validMockTeacherId,
+      field_i: validMockFieldId,
     };
-    const newFieldEmptyValues = {
+    const newTeacherFieldEmptyValues = {
       school_id: "",
-      name: "",
+      teacher_id: "",
+      field_id: "",
     };
-    const newFieldNotValidDataTypes = {
-      school_id: 9769231419,
-      name: 1234567890,
-    };
-    const newFieldWrongLengthValues = {
-      school_id: validMockSchoolId,
-      name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+    const newTeacherFieldNotValidDataTypes = {
+      school_id: invalidMockId,
+      teacher_id: invalidMockId,
+      field_id: invalidMockId,
     };
 
     // payloads
+    const teacherPayload = {
+      _id: validMockTeacherId,
+      school_id: { _id: validMockSchoolId },
+      user_id: validMockUserId,
+      coordinator_id: validMockCoordinatorId,
+      contractType: "full-time",
+      hoursAssignable: 60,
+      hoursAssigned: 60,
+    };
+    const teacherNullPayload = null;
     const fieldPayload = {
       _id: validMockFieldId,
-      school_id: validMockSchoolId,
+      school_id: { _id: validMockSchoolId },
       name: "Mathematics",
     };
     const fieldNullPayload = null;
-    const fieldsPayload = [
+    const teacherFieldPayload = {
+      _id: validMockTeacherFieldId,
+      school_id: validMockSchoolId,
+      teacher_id: validMockTeacherId,
+      field_id: validMockFieldId,
+    };
+    const teacherFieldNullPayload = null;
+    const teacherFieldsPayload = [
       {
         _id: new Types.ObjectId().toString(),
         school_id: new Types.ObjectId().toString(),
-        name: "Mathematics",
+        teacher_id: new Types.ObjectId().toString(),
+        field_id: new Types.ObjectId().toString(),
       },
       {
         _id: new Types.ObjectId().toString(),
         school_id: new Types.ObjectId().toString(),
-        name: "Language",
+        teacher_id: new Types.ObjectId().toString(),
+        field_id: new Types.ObjectId().toString(),
       },
       {
         _id: new Types.ObjectId().toString(),
         school_id: new Types.ObjectId().toString(),
-        name: "Physics",
+        teacher_id: new Types.ObjectId().toString(),
+        field_id: new Types.ObjectId().toString(),
       },
     ];
-    const fieldsNullPayload: any[] = [];
+    const teacherFieldsNullPayload: any[] = [];
 
     // test blocks
-    describe("POST /field ", () => {
-      describe("field::post::01 - Passing a field with missing fields", () => {
+    describe("POST /teacher_field ", () => {
+      describe("teacher_field::post::01 - Passing a field with missing fields", () => {
         it("should return a field needed error", async () => {
-          // // mock services
-          // const findSchoolByIdService = mockService(
-          //   fieldPayload,
-          //   "findResourceById"
-          // );
-          // const findDuplicatedFieldsByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const insertFieldService = mockService(
-          //   fieldPayload,
-          //   "insertResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .post(`${endPointUrl}`)
-          //   .send(newFieldMissingValues);
-          // // assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "Please add a school id",
-          //     param: "school_id",
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "Please add a field name",
-          //     param: "name",
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(findSchoolByIdService).not.toHaveBeenCalled();
-          // expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
-          // expect(insertFieldService).not.toHaveBeenCalled();
+          let findDuplicatedTeacherFieldByIdService = mockService(
+            teacherPayload,
+            "findPopulateResourceById"
+          );
+          findDuplicatedTeacherFieldByIdService = mockService(
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertFieldService = mockService(
+            teacherFieldPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherFieldMissingValues);
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a teacher id",
+              param: "teacher_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a field id",
+              param: "field_id",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            0
+          );
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::post::02 - Passing a field with empty fields", () => {
+      describe("teacher_field::post::02 - Passing a field with empty fields", () => {
         it("should return an empty field error", async () => {
-          // // mock services
-          // const findSchoolByIdService = mockService(
-          //   fieldPayload,
-          //   "findResourceById"
-          // );
-          // const findDuplicatedFieldsByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const insertFieldService = mockService(
-          //   fieldPayload,
-          //   "insertResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .post(`${endPointUrl}`)
-          //   .send(newFieldEmptyValues);
-          // // assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "The school id field is empty",
-          //     param: "school_id",
-          //     value: "",
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "The field name is empty",
-          //     param: "name",
-          //     value: "",
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(findSchoolByIdService).not.toHaveBeenCalled();
-          // expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
-          // expect(insertFieldService).not.toHaveBeenCalled();
+          let findDuplicatedTeacherFieldByIdService = mockService(
+            teacherPayload,
+            "findPopulateResourceById"
+          );
+          findDuplicatedTeacherFieldByIdService = mockService(
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertFieldService = mockService(
+            teacherFieldPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherFieldEmptyValues);
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacher id field is empty",
+              param: "teacher_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The field id field is empty",
+              param: "field_id",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            0
+          );
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::post::03 - Passing an invalid type as a value", () => {
+      describe("teacher_field::post::03 - Passing an invalid type as a value", () => {
         it("should return a not valid value error", async () => {
-          // // mock services
-          // const findSchoolByIdService = mockService(
-          //   fieldPayload,
-          //   "findResourceById"
-          // );
-          // const findDuplicatedFieldsByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const insertFieldService = mockService(
-          //   fieldPayload,
-          //   "insertResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .post(`${endPointUrl}`)
-          //   .send(newFieldNotValidDataTypes);
-          // // assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "The school id is not valid",
-          //     param: "school_id",
-          //     value: 9769231419,
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "The field name is not valid",
-          //     param: "name",
-          //     value: 1234567890,
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(findSchoolByIdService).not.toHaveBeenCalled();
-          // expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
-          // expect(insertFieldService).not.toHaveBeenCalled();
+          let findDuplicatedTeacherFieldByIdService = mockService(
+            teacherPayload,
+            "findPopulateResourceById"
+          );
+          findDuplicatedTeacherFieldByIdService = mockService(
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertFieldService = mockService(
+            teacherFieldPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherFieldNotValidDataTypes);
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacher id is not valid",
+              param: "teacher_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The field id is not valid",
+              param: "field_id",
+              value: invalidMockId,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            0
+          );
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::post::04 - Passing too long or short input values", () => {
-        it("should return an invalid length input value error", async () => {
-          // // mock services
-          // const findSchoolByIdService = mockService(
-          //   fieldPayload,
-          //   "findResourceById"
-          // );
-          // const findDuplicatedFieldsByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const insertFieldService = mockService(
-          //   fieldPayload,
-          //   "insertResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .post(`${endPointUrl}`)
-          //   .send(newFieldWrongLengthValues);
-          // // assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "The field name must not exceed 100 characters",
-          //     param: "name",
-          //     value:
-          //       "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(findSchoolByIdService).not.toHaveBeenCalled();
-          // expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
-          // expect(insertFieldService).not.toHaveBeenCalled();
-        });
-      });
-      describe("field::post::05 - Passing an non-existent school in the body", () => {
+      describe("teacher_field::post::04 - Passing an non-existent teacher in the body", () => {
         it("should return a non-existent school error", async () => {
-          // // mock services
-          // const findSchoolByIdService = mockService(
-          //   fieldNullPayload,
-          //   "findResourceById"
-          // );
-          // const findDuplicatedFieldsByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const insertFieldService = mockService(
-          //   fieldPayload,
-          //   "insertResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .post(`${endPointUrl}`)
-          //   .send(newField);
-          // // assertions
-          // expect(body).toEqual(
-          //   expect.objectContaining({
-          //     msg: "Please make sure the school exists",
-          //   })
-          // );
-          // expect(statusCode).toBe(400);
-          // expect(findSchoolByIdService).toHaveBeenCalled();
-          // expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
-          // expect(insertFieldService).not.toHaveBeenCalled();
+          let findDuplicatedTeacherFieldByIdService = mockService(
+            teacherNullPayload,
+            "findPopulateResourceById"
+          );
+          findDuplicatedTeacherFieldByIdService = mockService(
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertFieldService = mockService(
+            teacherFieldPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherField);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please make sure the teacher exists",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            1
+          );
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::post::06 - Passing an existing field name", () => {
-        it("should return a duplicated field error", async () => {
-          // // mock services
-          // const findSchoolByIdService = mockService(
-          //   fieldPayload,
-          //   "findResourceById"
-          // );
-          // const findDuplicatedFieldsByPropertyService = mockService(
-          //   [fieldPayload],
-          //   "findFilterResourceByProperty"
-          // );
-          // const insertFieldService = mockService(
-          //   fieldPayload,
-          //   "insertResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .post(`${endPointUrl}`)
-          //   .send(newField);
-          // // assertions
-          // expect(body).toEqual(
-          //   expect.objectContaining({ msg: "This field name already exists" })
-          // );
-          // expect(statusCode).toBe(409);
-          // expect(findSchoolByIdService).toHaveBeenCalled();
-          // expect(findDuplicatedFieldsByPropertyService).toHaveBeenCalled();
-          // expect(insertFieldService).not.toHaveBeenCalled();
+      describe("teacher_field::post::05 - Passing an non-existent field in the body", () => {
+        it("should return a non-existent school error", async () => {
+          let findDuplicatedTeacherFieldByIdService = mockService(
+            teacherPayload,
+            "findPopulateResourceById"
+          );
+          findDuplicatedTeacherFieldByIdService = mockService(
+            fieldNullPayload,
+            "findPopulateResourceById"
+          );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertFieldService = mockService(
+            teacherFieldPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherField);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please make sure the field exists",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            2
+          );
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("school::post::07 - Passing a field but not being created", () => {
-        it("should not create a field", async () => {
-          // // mock services
-          // const findSchoolByIdService = mockService(
-          //   fieldPayload,
-          //   "findResourceById"
-          // );
-          // const findDuplicatedFieldsByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const insertFieldService = mockService(
-          //   fieldNullPayload,
-          //   "insertResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .post(`${endPointUrl}`)
-          //   .send(newField);
-          // // assertions
-          // expect(body).toEqual(
-          //   expect.objectContaining({ msg: "Field not created!" })
-          // );
-          // expect(statusCode).toBe(400);
-          // expect(findSchoolByIdService).toHaveBeenCalled();
-          // expect(findDuplicatedFieldsByPropertyService).toHaveBeenCalled();
-          // expect(insertFieldService).toHaveBeenCalled();
+      describe("teacher_field::post::06 - Passing an field or teacher that do not match the school id", () => {
+        it("should return a non-existent school error", async () => {
+          let findDuplicatedTeacherFieldByIdService = mockService(
+            { ...teacherPayload, school_id: otherValidMockFieldId },
+            "findPopulateResourceById"
+          );
+          findDuplicatedTeacherFieldByIdService = mockService(
+            { ...fieldPayload, school_id: otherValidMockFieldId },
+            "findPopulateResourceById"
+          );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertFieldService = mockService(
+            teacherFieldPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherField);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "The resources do not belong to this school",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            2
+          );
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::post::08 - Passing a field correctly to create", () => {
-        it("should create a field", async () => {
-          // // mock services
-          // const findSchoolByIdService = mockService(
-          //   fieldPayload,
-          //   "findResourceById"
-          // );
-          // const findDuplicatedFieldByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const insertFieldService = mockService(
-          //   fieldPayload,
-          //   "insertResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .post(`${endPointUrl}`)
-          //   .send(newField);
-          // // assertions
-          // expect(body).toEqual(
-          //   expect.objectContaining({ msg: "Field created successfully!" })
-          // );
-          // expect(statusCode).toBe(201);
-          // expect(findSchoolByIdService).toHaveBeenCalled();
-          // expect(findDuplicatedFieldByPropertyService).toHaveBeenCalled();
-          // expect(insertFieldService).toHaveBeenCalled();
+      describe("teacher_field::post::07 - teacher has the field already assigned", () => {
+        it("should return an already assigned field", async () => {
+          // mock services
+          let findDuplicatedTeacherFieldByIdService = mockService(
+            teacherPayload,
+            "findPopulateResourceById"
+          );
+          findDuplicatedTeacherFieldByIdService = mockService(
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertFieldService = mockService(
+            teacherFieldPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherField);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "This teacher has already been assigned this field",
+            })
+          );
+          expect(statusCode).toBe(409);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            2
+          );
+          expect(findTeacherFieldByPropertyService).toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalled();
+        });
+      });
+      describe("teacher_field::post::08 - Passing a teacher_field but not being created", () => {
+        it("should not create a teacher_field", async () => {
+          // mock services
+          let findDuplicatedTeacherFieldByIdService = mockService(
+            teacherPayload,
+            "findPopulateResourceById"
+          );
+          findDuplicatedTeacherFieldByIdService = mockService(
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertFieldService = mockService(
+            teacherFieldNullPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherField);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Teacher_Field not created!",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            2
+          );
+          expect(findTeacherFieldByPropertyService).toHaveBeenCalled();
+          expect(insertFieldService).toHaveBeenCalled();
+        });
+      });
+      describe("teacher_field::post::09 - Passing a teacher_field correctly to create", () => {
+        it("should create a teacher_field", async () => {
+          // mock services
+          let findDuplicatedTeacherFieldByIdService = mockService(
+            teacherPayload,
+            "findPopulateResourceById"
+          );
+          findDuplicatedTeacherFieldByIdService = mockService(
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertFieldService = mockService(
+            teacherFieldPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherField);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Teacher_Field created successfully!",
+            })
+          );
+          expect(statusCode).toBe(201);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            2
+          );
+          expect(findTeacherFieldByPropertyService).toHaveBeenCalled();
+          expect(insertFieldService).toHaveBeenCalled();
         });
       });
     });
 
-    describe("GET /field ", () => {
-      describe("field - GET", () => {
-        describe("field::get::01 - passing a field with missing values", () => {
+    // continue here --> test the teacher_field controllers manually, create the master_schedule table
+    describe("GET /teacher_field ", () => {
+      describe("teacher_field - GET", () => {
+        describe("teacher_field::get::01 - passing a school id with missing values", () => {
           it("should return a missing values error", async () => {
-            // // mock services
-            // const findAllFieldsService = mockService(
-            //   fieldsPayload,
-            //   "findFilterAllResources"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}`)
-            //   .send();
-            // // assertions
-            // expect([
-            //   {
-            //     location: "body",
-            //     msg: "Please add a school id",
-            //     param: "school_id",
-            //   },
-            // ]).toMatchObject(body);
-            // expect(statusCode).toBe(400);
-            // expect(findAllFieldsService).not.toHaveBeenCalled();
+            // mock services
+            const findAllTeacherFieldsService = mockService(
+              teacherFieldsNullPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_i: validMockSchoolId });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findAllTeacherFieldsService).not.toHaveBeenCalled();
           });
         });
-        describe("field::get::02 - passing a field with empty values", () => {
+        describe("teacher_field::get::02 - passing a field with empty values", () => {
           it("should return an empty values error", async () => {
-            // // mock services
-            // const findAllFieldsService = mockService(
-            //   fieldsPayload,
-            //   "findFilterAllResources"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}`)
-            //   .send({ school_id: "" });
-            // // assertions
-            // expect([
-            //   {
-            //     location: "body",
-            //     msg: "The school id field is empty",
-            //     param: "school_id",
-            //     value: "",
-            //   },
-            // ]).toMatchObject(body);
-            // expect(statusCode).toBe(400);
-            // expect(findAllFieldsService).not.toHaveBeenCalled();
+            // mock services
+            const findAllTeacherFieldsService = mockService(
+              teacherFieldsNullPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: "" });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findAllTeacherFieldsService).not.toHaveBeenCalled();
           });
         });
-        describe("field::get::03 - passing and invalid school id", () => {
+        describe("teacher_field::get::03 - passing and invalid school id", () => {
           it("should get all fields", async () => {
-            // // mock services
-            // const findAllFieldsService = mockService(
-            //   fieldsPayload,
-            //   "findFilterAllResources"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}`)
-            //   .send({ school_id: invalidMockId });
-            // // assertions
-            // expect([
-            //   {
-            //     location: "body",
-            //     msg: "The school id is not valid",
-            //     param: "school_id",
-            //     //cspell:disable-next-line
-            //     value: "63c5dcac78b868f80035asdf",
-            //   },
-            // ]).toMatchObject(body);
-            // expect(statusCode).toBe(400);
-            // expect(findAllFieldsService).not.toHaveBeenCalled();
+            // mock services
+            const findAllTeacherFieldsService = mockService(
+              teacherFieldsNullPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: invalidMockId });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findAllTeacherFieldsService).not.toHaveBeenCalled();
           });
         });
-        describe("field::get::04 - Requesting all fields but not finding any", () => {
+        describe("teacher_field::get::04 - Requesting all fields but not finding any", () => {
           it("should not get any fields", async () => {
-            // // mock services
-            // const findAllFieldsService = mockService(
-            //   fieldsNullPayload,
-            //   "findFilterAllResources"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}`)
-            //   .send({ school_id: validMockSchoolId });
-            // // assertions
-            // expect(body).toEqual(
-            //   expect.objectContaining({
-            //     msg: "No fields found",
-            //   })
-            // );
-            // expect(statusCode).toBe(404);
-            // expect(findAllFieldsService).toHaveBeenCalled();
+            // mock services
+            const findAllTeacherFieldsService = mockService(
+              teacherFieldsNullPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: validMockSchoolId });
+
+            // assertions
+            expect(body).toEqual(
+              expect.objectContaining({
+                msg: "No fields assigned to any teachers found",
+              })
+            );
+            expect(statusCode).toBe(404);
+            expect(findAllTeacherFieldsService).toHaveBeenCalled();
           });
         });
-        describe("field::get::05 - Requesting all fields correctly", () => {
+        describe("teacher_field::get::05 - Requesting all teacher_fields correctly", () => {
           it("should get all fields", async () => {
-            // // mock services
-            // const findAllFieldsService = mockService(
-            //   fieldsPayload,
-            //   "findFilterAllResources"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}`)
-            //   .send({ school_id: validMockSchoolId });
-            // // assertions
-            // expect([
-            //   {
-            //     _id: expect.any(String),
-            //     name: "Mathematics",
-            //     school_id: expect.any(String),
-            //   },
-            //   {
-            //     _id: expect.any(String),
-            //     name: "Language",
-            //     school_id: expect.any(String),
-            //   },
-            //   {
-            //     _id: expect.any(String),
-            //     name: "Physics",
-            //     school_id: expect.any(String),
-            //   },
-            // ]).toMatchObject(body);
-            // expect(statusCode).toBe(200);
-            // expect(findAllFieldsService).toHaveBeenCalled();
+            // mock services
+            const findAllTeacherFieldsService = mockService(
+              teacherFieldsPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: validMockSchoolId });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                _id: expect.any(String),
+                field_id: expect.any(String),
+                school_id: expect.any(String),
+                teacher_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                field_id: expect.any(String),
+                school_id: expect.any(String),
+                teacher_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                field_id: expect.any(String),
+                school_id: expect.any(String),
+                teacher_id: expect.any(String),
+              },
+            ]);
+            expect(statusCode).toBe(200);
+            expect(findAllTeacherFieldsService).toHaveBeenCalled();
           });
         });
       });
-      describe("field - GET/:id", () => {
-        describe("field::get/:id::01 - Passing a field with missing values", () => {
+      describe("teacher_field - GET/:id", () => {
+        describe("teacher_field::get/:id::01 - Passing fields with missing values", () => {
           it("should return a missing values error", async () => {
-            // // mock services
-            // const findFieldByIdService = mockService(
-            //   fieldPayload,
-            //   "findFilterResourceByProperty"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}${validMockFieldId}`)
-            //   .send();
-            // // assertions
-            // expect([
-            //   {
-            //     location: "body",
-            //     msg: "Please add a school id",
-            //     param: "school_id",
-            //   },
-            // ]).toMatchObject(body);
-            // expect(statusCode).toBe(400);
-            // expect(findFieldByIdService).not.toHaveBeenCalled();
+            // mock services
+            const findTeacherFieldByIdService = mockService(
+              teacherFieldsNullPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockTeacherFieldId}`)
+              .send({ school_i: validMockSchoolId });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findTeacherFieldByIdService).not.toHaveBeenCalled();
           });
         });
-        describe("field::get/:id::02 - Passing a field with empty values", () => {
+        describe("teacher_field::get/:id::02 - Passing fields with empty values", () => {
           it("should return an empty values error", async () => {
-            // // mock services
-            // const findFieldByIdService = mockService(
-            //   fieldPayload,
-            //   "findFilterResourceByProperty"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}${validMockFieldId}`)
-            //   .send({ school_id: "" });
-            // // assertions
-            // expect([
-            //   {
-            //     location: "body",
-            //     msg: "The school id field is empty",
-            //     param: "school_id",
-            //     value: "",
-            //   },
-            // ]).toMatchObject(body);
-            // expect(statusCode).toBe(400);
-            // expect(findFieldByIdService).not.toHaveBeenCalled();
+            // mock services
+            const findTeacherFieldByIdService = mockService(
+              teacherFieldsNullPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockTeacherFieldId}`)
+              .send({ school_id: "" });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findTeacherFieldByIdService).not.toHaveBeenCalled();
           });
         });
-        describe("field::get/:id::03 - Passing an invalid field and school ids in the url", () => {
+        describe("teacher_field::get/:id::03 - Passing an invalid teacher_field and school ids", () => {
           it("should return an invalid id error", async () => {
-            // // mock services
-            // const findFieldByIdService = mockService(
-            //   fieldPayload,
-            //   "findFilterResourceByProperty"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}${invalidMockId}`)
-            //   .send({ school_id: invalidMockId });
-            // // assertions
-            // expect([
-            //   {
-            //     location: "params",
-            //     msg: "The field id is not valid",
-            //     param: "id",
-            //     //cspell:disable-next-line
-            //     value: "63c5dcac78b868f80035asdf",
-            //   },
-            //   {
-            //     location: "body",
-            //     msg: "The school id is not valid",
-            //     param: "school_id",
-            //     //cspell:disable-next-line
-            //     value: "63c5dcac78b868f80035asdf",
-            //   },
-            // ]).toMatchObject(body);
-            // expect(statusCode).toBe(400);
-            // expect(findFieldByIdService).not.toHaveBeenCalled();
+            // mock services
+            const findTeacherFieldByIdService = mockService(
+              teacherFieldsNullPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${invalidMockId}`)
+              .send({ school_id: invalidMockId });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                location: "params",
+                msg: "The teacher_field id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findTeacherFieldByIdService).not.toHaveBeenCalled();
           });
         });
-        describe("field::get/:id::04 - Requesting a field but not finding it", () => {
+        describe("teacher_field::get/:id::04 - Requesting a field but not finding it", () => {
           it("should not get a school", async () => {
-            // // mock services
-            // const findFieldByIdService = mockService(
-            //   fieldsNullPayload,
-            //   "findFilterResourceByProperty"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}${validMockFieldId}`)
-            //   .send({ school_id: validMockSchoolId });
-            // // assertions
-            // expect(body).toEqual(
-            //   expect.objectContaining({
-            //     msg: "Field not found",
-            //   })
-            // );
-            // expect(statusCode).toBe(404);
-            // expect(findFieldByIdService).toHaveBeenCalled();
+            // mock services
+            const findTeacherFieldByIdService = mockService(
+              teacherFieldsNullPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockFieldId}`)
+              .send({ school_id: validMockSchoolId });
+
+            // assertions
+            expect(body).toEqual(
+              expect.objectContaining({
+                msg: "Teacher_Field not found",
+              })
+            );
+            expect(statusCode).toBe(404);
+            expect(findTeacherFieldByIdService).toHaveBeenCalled();
           });
         });
-        describe("field::get/:id::05 - Requesting a field correctly", () => {
+        describe("teacher_field::get/:id::05 - Requesting a field correctly", () => {
           it("should get a field", async () => {
-            // // mock services
-            // const findFieldByIdService = mockService(
-            //   fieldPayload,
-            //   "findFilterResourceByProperty"
-            // );
-            // // api call
-            // const { statusCode, body } = await supertest(server)
-            //   .get(`${endPointUrl}${validMockFieldId}`)
-            //   .send({ school_id: validMockSchoolId });
-            // // assertions
-            // expect(body).toEqual(
-            //   expect.objectContaining({
-            //     _id: expect.any(String),
-            //     name: "Mathematics",
-            //   })
-            // );
-            // expect(statusCode).toBe(200);
-            // expect(findFieldByIdService).toHaveBeenCalled();
+            // mock services
+            const findTeacherFieldByIdService = mockService(
+              teacherFieldPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockTeacherFieldId}`)
+              .send({ school_id: validMockSchoolId });
+
+            // assertions
+            expect(body).toMatchObject({
+              _id: expect.any(String),
+              field_id: expect.any(String),
+              school_id: expect.any(String),
+              teacher_id: expect.any(String),
+            });
+            expect(statusCode).toBe(200);
+            expect(findTeacherFieldByIdService).toHaveBeenCalled();
           });
         });
       });
     });
 
-    describe("PUT /field ", () => {
-      describe("field::put::01 - Passing a field with missing fields", () => {
+    describe("PUT /teacher_field ", () => {
+      describe("teacher_field::put::01 - Passing fields with missing fields", () => {
         it("should return a field needed error", async () => {
-          // // mock services
-          // const findFieldNameDuplicatedByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const updateFieldService = mockService(
-          //   fieldPayload,
-          //   "updateFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .put(`${endPointUrl}${validMockFieldId}`)
-          //   .send({ ...newFieldMissingValues, prevNam: "Science" });
-          // // assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "Please add a school id",
-          //     param: "school_id",
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "Please add a field name",
-          //     param: "name",
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "Please add the previous field name",
-          //     param: "prevName",
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(
-          //   findFieldNameDuplicatedByPropertyService
-          // ).not.toHaveBeenCalled();
-          // expect(updateFieldService).not.toHaveBeenCalled();
+          const findFieldAlreadyAssignedToTeacherByPropertyService =
+            mockService(
+              teacherFieldsNullPayload,
+              "findFilterResourceByProperty"
+            );
+          const updateTeacherFieldService = mockService(
+            teacherFieldPayload,
+            "updateFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({
+              ...newTeacherFieldMissingValues,
+              //cspell:disable-next-line
+              prevFiel: otherValidMockFieldId,
+            });
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a teacher id",
+              param: "teacher_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a field id",
+              param: "field_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the previous field id",
+              param: "prevField",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).not.toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::put::02 - Passing a field with empty fields", () => {
+      describe("field::put::02 - Passing fields with empty fields", () => {
         it("should return an empty field error", async () => {
-          // // mock services
-          // const findFieldNameDuplicatedByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const updateFieldService = mockService(
-          //   fieldPayload,
-          //   "updateFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .put(`${endPointUrl}${validMockFieldId}`)
-          //   .send({ ...newFieldEmptyValues, prevName: "" });
-          // //assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "The school id field is empty",
-          //     param: "school_id",
-          //     value: "",
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "The name field is empty",
-          //     param: "name",
-          //     value: "",
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "The previous field name is empty",
-          //     param: "prevName",
-          //     value: "",
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(
-          //   findFieldNameDuplicatedByPropertyService
-          // ).not.toHaveBeenCalled();
-          // expect(updateFieldService).not.toHaveBeenCalled();
+          const findFieldAlreadyAssignedToTeacherByPropertyService =
+            mockService(
+              teacherFieldsNullPayload,
+              "findFilterResourceByProperty"
+            );
+          const updateTeacherFieldService = mockService(
+            teacherFieldPayload,
+            "updateFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({
+              ...newTeacherFieldEmptyValues,
+              prevField: "",
+            });
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacher id field is empty",
+              param: "teacher_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The field id field is empty",
+              param: "field_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The previous field id is empty",
+              param: "prevField",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).not.toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::put::03 - Passing an invalid type as field value", () => {
+      describe("teacher_field::put::03 - Passing an invalid type as field value", () => {
         it("should return a not valid value error", async () => {
-          // // mock services
-          // const findFieldNameDuplicatedByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const updateFieldService = mockService(
-          //   fieldPayload,
-          //   "updateFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .put(`${endPointUrl}${validMockFieldId}`)
-          //   .send({ ...newFieldNotValidDataTypes, prevName: 12341234 });
-          // //assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "The school id is not valid",
-          //     param: "school_id",
-          //     value: 9769231419,
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "The field name is not valid",
-          //     param: "name",
-          //     value: 1234567890,
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "The previous field name is not valid",
-          //     param: "prevName",
-          //     value: 12341234,
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(
-          //   findFieldNameDuplicatedByPropertyService
-          // ).not.toHaveBeenCalled();
-          // expect(updateFieldService).not.toHaveBeenCalled();
+          // mock services
+          const findFieldAlreadyAssignedToTeacherByPropertyService =
+            mockService(
+              teacherFieldsNullPayload,
+              "findFilterResourceByProperty"
+            );
+          const updateTeacherFieldService = mockService(
+            teacherFieldPayload,
+            "updateFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({
+              ...newTeacherFieldNotValidDataTypes,
+              prevField: invalidMockId,
+            });
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacher id is not valid",
+              param: "teacher_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The field id is not valid",
+              param: "field_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The previous field id is not valid",
+              param: "prevField",
+              value: invalidMockId,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).not.toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::put::04 - Passing too long or short input values", () => {
-        it("should return an invalid length input value error", async () => {
-          // // mock services
-          // const findFieldNameDuplicatedByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const updateFieldService = mockService(
-          //   fieldPayload,
-          //   "updateFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .put(`${endPointUrl}${validMockFieldId}`)
-          //   .send({
-          //     ...newFieldWrongLengthValues,
-          //     prevName:
-          //       "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          //   });
-          // // assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "The name must not exceed 100 characters",
-          //     param: "name",
-          //     value:
-          //       "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "The previous field name must not exceed 100 characters",
-          //     param: "prevName",
-          //     value:
-          //       "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(
-          //   findFieldNameDuplicatedByPropertyService
-          // ).not.toHaveBeenCalled();
-          // expect(updateFieldService).not.toHaveBeenCalled();
+      describe("teacher_field::put::04 - Passing a field but not updating it because the field has already been assigned to the teacher", () => {
+        it("should not update a teacher_field", async () => {
+          // mock services
+          const findFieldAlreadyAssignedToTeacherByPropertyService =
+            mockService(teacherFieldsPayload, "findFilterResourceByProperty");
+          const updateTeacherFieldService = mockService(
+            teacherFieldPayload,
+            "updateFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "This field has already been assigned to the teacher!",
+            })
+          );
+          expect(statusCode).toBe(409);
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::put::05 - Passing a field but not updating it because the field name, prevName, already exists for the school", () => {
-        it("should not update a field", async () => {
-          // // mock services
-          // const findFieldNameDuplicatedByPropertyService = mockService(
-          //   fieldsPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const updateFieldService = mockService(
-          //   fieldNullPayload,
-          //   "updateFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .put(`${endPointUrl}${validMockFieldId}`)
-          //   .send({ ...newField, prevName: "Science" });
-          // // assertions
-          // expect(body).toEqual(
-          //   expect.objectContaining({
-          //     msg: "This field name already exists!",
-          //   })
-          // );
-          // expect(statusCode).toBe(409);
-          // expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalled();
-          // expect(updateFieldService).not.toHaveBeenCalled();
+      describe("teacher_field::put::05 - Passing a field but not updating it because it does not match one of the filters: _id, school_id , teacher_id or previous field", () => {
+        it("should not update a teacher_field", async () => {
+          // mock services
+          const findFieldAlreadyAssignedToTeacherByPropertyService =
+            mockService(
+              teacherFieldsNullPayload,
+              "findFilterResourceByProperty"
+            );
+          const updateTeacherFieldService = mockService(
+            teacherFieldNullPayload,
+            "updateFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({ msg: "Teacher_Field not updated" })
+          );
+          expect(statusCode).toBe(404);
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).toHaveBeenCalled();
+          expect(updateTeacherFieldService).toHaveBeenCalled();
         });
       });
-      describe("field::put::06 - Passing a field but not updating it because it does not match one of the filters: _id, school_id or previous name", () => {
-        it("should not update a field", async () => {
-          // // mock services
-          // const findFieldNameDuplicatedByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const updateFieldService = mockService(
-          //   fieldNullPayload,
-          //   "updateFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .put(`${endPointUrl}${validMockFieldId}`)
-          //   .send({ ...newField, prevName: "Science" });
-          // // assertions
-          // expect(body).toEqual(
-          //   expect.objectContaining({
-          //     msg: "Field not updated",
-          //   })
-          // );
-          // expect(statusCode).toBe(404);
-          // expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalled();
-          // expect(updateFieldService).toHaveBeenCalled();
-        });
-      });
-      describe("field::put::11 - Passing a field correctly to update", () => {
+      describe("teacher_field::put::06 - Passing a field correctly to update", () => {
         it("should update a field", async () => {
-          // // mock services
-          // const findFieldNameDuplicatedByPropertyService = mockService(
-          //   fieldsNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const updateFieldService = mockService(
-          //   fieldPayload,
-          //   "updateFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .put(`${endPointUrl}${validMockFieldId}`)
-          //   .send({ ...newField, prevName: "Science" });
-          // // assertions
-          // expect(body).toEqual(
-          //   expect.objectContaining({ msg: "Field updated" })
-          // );
-          // expect(statusCode).toBe(200);
-          // expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalled();
-          // expect(updateFieldService).toHaveBeenCalled();
+          // mock services
+          const findFieldAlreadyAssignedToTeacherByPropertyService =
+            mockService(
+              teacherFieldsNullPayload,
+              "findFilterResourceByProperty"
+            );
+          const updateTeacherFieldService = mockService(
+            teacherFieldPayload,
+            "updateFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({ msg: "Teacher_Field updated" })
+          );
+          expect(statusCode).toBe(200);
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).toHaveBeenCalled();
+          expect(updateTeacherFieldService).toHaveBeenCalled();
         });
       });
     });
 
-    describe("DELETE /field ", () => {
-      describe("field::delete::01 - Passing a field with missing fields", () => {
+    describe("DELETE /teacher_field ", () => {
+      describe("teacher_field::delete::01 - Passing fields with missing fields", () => {
         it("should return a missing fields error", async () => {
-          // // mock services
-          // const deleteFieldService = mockService(
-          //   fieldNullPayload,
-          //   "deleteFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .delete(`${endPointUrl}${validMockFieldId}`)
-          //   .send();
-          // // assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "Please add a school id",
-          //     param: "school_id",
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(deleteFieldService).not.toHaveBeenCalled();
+          // mock services
+          const deleteTeacherFieldService = mockService(
+            teacherFieldNullPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({ school_i: validMockSchoolId });
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(deleteTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::delete::02 - Passing a field with empty fields", () => {
+      describe("teacher_field::delete::02 - Passing fields with empty fields", () => {
         it("should return a empty fields error", async () => {
-          // // mock services
-          // const deleteFieldService = mockService(
-          //   fieldNullPayload,
-          //   "deleteFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .delete(`${endPointUrl}${validMockFieldId}`)
-          //   .send({ school_id: "" });
-          // // assertions
-          // expect([
-          //   {
-          //     location: "body",
-          //     msg: "The school id field is empty",
-          //     param: "school_id",
-          //     value: "",
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(deleteFieldService).not.toHaveBeenCalled();
+          // mock services
+          const deleteTeacherFieldService = mockService(
+            teacherFieldNullPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({ school_id: "" });
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(deleteTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::delete::03 - Passing an invalid field id in the url", () => {
+      describe("teacher_field::delete::03 - Passing an invalid teacher_field and school ids", () => {
         it("should return an invalid id error", async () => {
-          // // mock services
-          // const deleteFieldService = mockService(
-          //   fieldNullPayload,
-          //   "deleteFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .delete(`${endPointUrl}${invalidMockId}`)
-          //   .send({ school_id: invalidMockId });
-          // // assertions
-          // expect([
-          //   {
-          //     location: "params",
-          //     msg: "The field id is not valid",
-          //     param: "id",
-          //     //cspell:disable-next-line
-          //     value: "63c5dcac78b868f80035asdf",
-          //   },
-          //   {
-          //     location: "body",
-          //     msg: "The school id is not valid",
-          //     param: "school_id",
-          //     //cspell:disable-next-line
-          //     value: "63c5dcac78b868f80035asdf",
-          //   },
-          // ]).toMatchObject(body);
-          // expect(statusCode).toBe(400);
-          // expect(deleteFieldService).not.toHaveBeenCalled();
+          // mock services
+          const deleteTeacherFieldService = mockService(
+            teacherFieldNullPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${invalidMockId}`)
+            .send({ school_id: invalidMockId });
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "params",
+              msg: "The teacher_field id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(deleteTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("field::delete::04 - Passing a field id but not deleting it", () => {
+      describe("teacher_field::delete::04 - Passing a teacher_field id but not deleting it", () => {
         it("should not delete a school", async () => {
-          // // mock services
-          // const deleteFieldService = mockService(
-          //   fieldNullPayload,
-          //   "deleteFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .delete(`${endPointUrl}${validMockFieldId}`)
-          //   .send({ school_id: validMockSchoolId });
-          // // assertions
-          // expect(body).toEqual(
-          //   expect.objectContaining({ msg: "Field not deleted" })
-          // );
-          // expect(statusCode).toBe(404);
-          // expect(deleteFieldService).toHaveBeenCalled();
+          // mock services
+          const deleteTeacherFieldService = mockService(
+            teacherFieldNullPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({ school_id: validMockSchoolId });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({ msg: "Teacher_Field not deleted" })
+          );
+          expect(statusCode).toBe(404);
+          expect(deleteTeacherFieldService).toHaveBeenCalled();
         });
       });
-      describe("field::delete::05 - Passing a field id correctly to delete", () => {
-        it("should delete a field", async () => {
-          // // mock services
-          // const deleteFieldService = mockService(
-          //   fieldPayload,
-          //   "deleteFilterResource"
-          // );
-          // // api call
-          // const { statusCode, body } = await supertest(server)
-          //   .delete(`${endPointUrl}${validMockFieldId}`)
-          //   .send({ school_id: validMockSchoolId });
-          // // assertions
-          // expect(body).toEqual(
-          //   expect.objectContaining({ msg: "Field deleted" })
-          // );
-          // expect(statusCode).toBe(200);
-          // expect(deleteFieldService).toHaveBeenCalled();
+      describe("teacher_field::delete::05 - Passing a teacher_field id correctly to delete", () => {
+        it("should delete a teacher_field", async () => {
+          // mock services
+          const deleteTeacherFieldService = mockService(
+            teacherFieldPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({ school_id: validMockSchoolId });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({ msg: "Teacher_Field deleted" })
+          );
+          expect(statusCode).toBe(200);
+          expect(deleteTeacherFieldService).toHaveBeenCalled();
         });
       });
     });

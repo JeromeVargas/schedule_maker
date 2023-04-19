@@ -40,3 +40,9 @@ export type Field = {
   school_id: Types.ObjectId;
   name: string;
 };
+
+export type Teacher_Field = {
+  school_id: Types.ObjectId;
+  teacher_id: Types.ObjectId;
+  field_id: Types.ObjectId;
+};

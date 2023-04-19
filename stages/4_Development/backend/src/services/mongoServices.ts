@@ -3,12 +3,14 @@ import SchoolModel from "../models/schoolModel";
 import UserModel from "../models/userModel";
 import TeacherModel from "../models/teacherModel";
 import FieldModel from "../models/fieldModel";
+import TeacherFieldModel from "../models/teacherFieldModel";
 
 const models = {
   school: SchoolModel,
   user: UserModel,
   teacher: TeacherModel,
   field: FieldModel,
+  teacherField: TeacherFieldModel,
 } as const;
 
 // helper functions
