@@ -5536,7 +5536,6 @@ describe("Schedule maker API", () => {
       });
     });
 
-    // continue here --> test the teacher_field controllers manually, create the master_schedule table
     describe("GET /teacher_field ", () => {
       describe("teacher_field - GET", () => {
         describe("teacher_field::get::01 - passing a school id with missing values", () => {
@@ -6177,4 +6176,5 @@ describe("Schedule maker API", () => {
       });
     });
   });
+  // continue here --> create the master_schedule table code
 });

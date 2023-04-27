@@ -20,6 +20,9 @@ import {
 // @access Private
 // @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
 const createTeacher = async ({ body }: Request, res: Response) => {
+  /* models */
+  const userModel = "user";
+  const teacherModel = "teacher";
   /* destructure the fields */
   const { user_id, coordinator_id } = body;
   /* check if the user exists, is active and has teaching functions */
@@ -27,7 +30,6 @@ const createTeacher = async ({ body }: Request, res: Response) => {
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
   const userFieldsToReturnPopulate = "-_id -createdAt -updatedAt";
-  const userModel = "user";
   const existingUserSchoolCoordinator = await findPopulateFilterAllResources(
     userSearchCriteria,
     userFieldsToReturn,
@@ -67,7 +69,6 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     throw new BadRequestError("Please pass an active coordinator");
   }
   /* check if the user is already a teacher */
-  const teacherModel = "teacher";
   const teacherSearchCriteria = { user_id };
   const teacherFieldsToReturn = "-createdAt -updatedAt";
   const existingTeacher = await findResourceByProperty(
@@ -93,16 +94,17 @@ const createTeacher = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body: {school_id:[string]}
 const getTeachers = async ({ body }: Request, res: Response) => {
+  /* models */
+  const teacherModel = "teacher";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
   const filters = { school_id: school_id };
-  const model = "teacher";
   const fieldsToReturn = "-createdAt -updatedAt";
   const teachersFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
-    model
+    teacherModel
   );
   /* get all fields */
   if (teachersFound?.length === 0) {
@@ -116,17 +118,18 @@ const getTeachers = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getTeacher = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const teacherModel = "teacher";
   /* destructure the fields */
   const { id: teacherId } = params;
   const { school_id } = body;
   /* get the teacher */
   const filters = [{ _id: teacherId }, { school_id: school_id }];
   const fieldsToReturn = "-createdAt -updatedAt";
-  const model = "teacher";
   const teacherFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    model
+    teacherModel
   );
   if (teacherFound?.length === 0) {
     throw new NotFoundError("Teacher not found");
@@ -139,13 +142,15 @@ const getTeacher = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
 const updateTeacher = async ({ body, params }: Request, res: Response) => {
+  /* models */
+  const userModel = "user";
+  const teacherModel = "teacher";
   /* destructure the fields */
   const { id: teacherId } = params;
   const { school_id, user_id, coordinator_id } = body;
   /* check if coordinator exists, has the role and is active  */
   const coordinatorSearchCriteria = coordinator_id;
   const coordinatorFieldsToReturn = "-password -createdAt -updatedAt";
-  const userModel = "user";
   const existingCoordinator = await findResourceById(
     coordinatorSearchCriteria,
     coordinatorFieldsToReturn,
@@ -167,7 +172,6 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
     { school_id: school_id },
   ];
   const newTeacher = body;
-  const teacherModel = "teacher";
   const teacherUpdated = await updateFilterResource(
     filtersUpdate,
     newTeacher,
@@ -184,13 +188,14 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteTeacher = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const teacherModel = "teacher";
   /* destructure the fields */
   const { id: teacherId } = params;
   const { school_id } = body;
   /* delete teacher */
   const filtersDelete = { _id: teacherId, school_id: school_id };
-  const model = "teacher";
-  const fieldDeleted = await deleteFilterResource(filtersDelete, model);
+  const fieldDeleted = await deleteFilterResource(filtersDelete, teacherModel);
   if (!fieldDeleted) {
     throw new NotFoundError("Teacher not deleted");
   }

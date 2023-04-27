@@ -18,6 +18,10 @@ import {
 // @access Private
 // @fields: body {school_id:[string] , teacher_id:[string], field_id:[string]}
 const createTeacherField = async ({ body }: Request, res: Response) => {
+  /* models */
+  const teacherModel = "school";
+  const fieldModel = "field";
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { school_id, teacher_id, field_id } = body;
   /* find if the teacher already exists */
@@ -25,7 +29,6 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     "-coordinator_id -user_id -contractType -hoursAssignable -hoursAssigned -monday -tuesday -wednesday -thursday -friday -saturday -sunday -createdAt -updatedAt";
   const fieldsToPopulateTeacher = "school_id";
   const fieldsToReturnPopulateTeacher = "_id -name -createdAt -updatedAt";
-  const teacherModel = "teacher";
   const teacherFound = await findPopulateResourceById(
     teacher_id,
     fieldsToReturnTeacher,
@@ -40,7 +43,6 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
   const fieldsToReturnField = "-name -createdAt -updatedAt";
   const fieldsToPopulateField = "school_id";
   const fieldsToReturnPopulateField = "_id -name -createdAt -updatedAt";
-  const fieldModel = "field";
   const fieldFound = await findPopulateResourceById(
     field_id,
     fieldsToReturnField,
@@ -65,7 +67,6 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     { field_id: field_id },
   ];
   const fieldsToReturnTeacherField = "-name -createdAt -updatedAt";
-  const teacherFieldModel = "teacherField";
   const duplicatedTeacherField = await findFilterResourceByProperty(
     filters,
     fieldsToReturnTeacherField,
@@ -91,17 +92,17 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {school_id:[string]}
 const getTeacherFields = async ({ body }: Request, res: Response) => {
+  /* models */
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
   const filters = { school_id: school_id };
-  const model = "teacherField";
   const fieldsToReturn = "-createdAt -updatedAt";
-
   const teacherFieldsFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
-    model
+    teacherFieldModel
   );
   /* get all fields */
   if (teacherFieldsFound?.length === 0) {
@@ -115,17 +116,18 @@ const getTeacherFields = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getTeacherField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id } = body;
   /* get the field */
   const filters = [{ _id: teacherFieldId }, { school_id: school_id }];
   const fieldsToReturn = "-createdAt -updatedAt";
-  const model = "teacherField";
   const teacherFieldFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    model
+    teacherFieldModel
   );
   if (teacherFieldFound?.length === 0) {
     throw new NotFoundError("Teacher_Field not found");
@@ -138,6 +140,8 @@ const getTeacherField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], field_id:[string], prevField:[string]}
 const updateTeacherField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id, teacher_id, field_id, prevField } = body;
@@ -147,12 +151,11 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
     { teacher_id: teacher_id },
     { field_id: field_id },
   ];
-  const model = "teacherField";
   const fieldsToReturn = "-createdAt -updatedAt";
   const fieldFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    model
+    teacherFieldModel
   );
   if (fieldFound?.length !== 0) {
     throw new ConflictError(
@@ -173,7 +176,7 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
     newField,
-    model
+    teacherFieldModel
   );
   if (!fieldUpdated) {
     throw new NotFoundError("Teacher_Field not updated");
@@ -186,13 +189,17 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteTeacherField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id } = body;
   /* delete field */
   const teacherFiltersDelete = { _id: teacherFieldId, school_id: school_id };
-  const model = "teacherField";
-  const fieldDeleted = await deleteFilterResource(teacherFiltersDelete, model);
+  const fieldDeleted = await deleteFilterResource(
+    teacherFiltersDelete,
+    teacherFieldModel
+  );
   if (!fieldDeleted) {
     throw new NotFoundError("Teacher_Field not deleted");
   }

@@ -18,10 +18,12 @@ import {
 // @access Private
 // @fields: body {school_id:[string] , name:[string]}
 const createField = async ({ body }: Request, res: Response) => {
+  /* models */
+  const schoolModel = "school";
+  const fieldModel = "field";
   /* destructure the fields */
   const { school_id, name } = body;
   /* find if the school already exists */
-  const schoolModel = "school";
   const fieldsToReturn = "-createdAt -updatedAt";
   const schoolFound = await findResourceById(
     school_id,
@@ -33,17 +35,16 @@ const createField = async ({ body }: Request, res: Response) => {
   }
   /* find if the field already exists for the school */
   const filters = [{ school_id: school_id }, { name: name }];
-  const model = "field";
   const duplicatedSchool = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    model
+    fieldModel
   );
   if (duplicatedSchool?.length !== 0) {
     throw new ConflictError("This field name already exists");
   }
   /* create school */
-  const schoolCreated = await insertResource(body, model);
+  const schoolCreated = await insertResource(body, fieldModel);
   if (!schoolCreated) {
     throw new BadRequestError("Field not created!");
   }
@@ -55,17 +56,17 @@ const createField = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {school_id:[string]}
 const getFields = async ({ body }: Request, res: Response) => {
+  /* models */
+  const fieldModel = "field";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
   const filters = { school_id: school_id };
-  const model = "field";
   const fieldsToReturn = "-createdAt -updatedAt";
-
   const fieldsFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
-    model
+    fieldModel
   );
   /* get all fields */
   if (fieldsFound?.length === 0) {
@@ -79,22 +80,22 @@ const getFields = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const fieldModel = "field";
   /* destructure the fields */
   const { id: fieldId } = params;
   const { school_id } = body;
   /* get the field */
   const filters = [{ _id: fieldId }, { school_id: school_id }];
   const fieldsToReturn = "-createdAt -updatedAt";
-  const model = "field";
   const fieldFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    model
+    fieldModel
   );
   if (fieldFound?.length === 0) {
     throw new NotFoundError("Field not found");
   }
-
   res.status(StatusCodes.OK).json(fieldFound);
 };
 
@@ -103,17 +104,18 @@ const getField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], name:[string], prevName:[string]}
 const updateField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const fieldModel = "field";
   /* destructure the fields*/
   const { id: fieldId } = params;
   const { school_id, name, prevName } = body;
   /* check if the field already exist for the school */
   const filters = [{ school_id: school_id }, { name: name }];
-  const model = "field";
   const fieldsToReturn = "-createdAt -updatedAt";
   const fieldFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    model
+    fieldModel
   );
   if (fieldFound?.length !== 0) {
     throw new ConflictError("This field name already exists!");
@@ -128,7 +130,7 @@ const updateField = async ({ params, body }: Request, res: Response) => {
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
     newField,
-    model
+    fieldModel
   );
   if (!fieldUpdated) {
     throw new NotFoundError("Field not updated");
@@ -141,13 +143,14 @@ const updateField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const fieldModel = "field";
   /* destructure the fields from the params and body */
   const { id: fieldId } = params;
   const { school_id } = body;
   /* delete field */
   const filtersDelete = { _id: fieldId, school_id: school_id };
-  const model = "field";
-  const fieldDeleted = await deleteFilterResource(filtersDelete, model);
+  const fieldDeleted = await deleteFilterResource(filtersDelete, fieldModel);
   if (!fieldDeleted) {
     throw new NotFoundError("Field not deleted");
   }
