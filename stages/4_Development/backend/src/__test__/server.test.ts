@@ -6177,4 +6177,227 @@ describe("Schedule maker API", () => {
     });
   });
   // continue here --> create the master_schedule table code
+  describe("Resource => schedule", () => {
+    // end point url
+    const endPointUrl = "/api/v1/schedules/";
+
+    // inputs
+    const validMockScheduleId = new Types.ObjectId().toString();
+    const validMockSchoolId = new Types.ObjectId().toString();
+    //cspell:disable-next-line
+    const invalidMockId = "63c5dcac78b868f80035asdf";
+    const newSchedule = {
+      school_id: validMockSchoolId,
+      name: "Mathematics",
+    };
+    const newScheduleMissingValues = {
+      school_i: validMockSchoolId,
+      nam: "Mathematics",
+    };
+    const newScheduleEmptyValues = {
+      school_id: "",
+      name: "",
+    };
+    const newScheduleNotValidDataTypes = {
+      school_id: 9769231419,
+      name: 1234567890,
+    };
+    const newScheduleWrongLengthValues = {
+      school_id: validMockSchoolId,
+      name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+    };
+
+    // payloads
+    const schedulePayload = {
+      _id: validMockScheduleId,
+      school_id: validMockSchoolId,
+      name: "Mathematics",
+    };
+    const scheduleNullPayload = null;
+    const schedulesPayload = [
+      {
+        _id: new Types.ObjectId().toString(),
+        school_id: new Types.ObjectId().toString(),
+        name: "Mathematics",
+      },
+      {
+        _id: new Types.ObjectId().toString(),
+        school_id: new Types.ObjectId().toString(),
+        name: "Language",
+      },
+      {
+        _id: new Types.ObjectId().toString(),
+        school_id: new Types.ObjectId().toString(),
+        name: "Physics",
+      },
+    ];
+    const schedulesNullPayload: any[] = [];
+
+    // test blocks
+    describe("POST /schedule ", () => {
+      describe("schedule::post::01 - Passing missing fields", () => {
+        it("should return a missing fields error", async () => {
+          //code
+        });
+      });
+      describe("schedule::post::02 - Passing fields with empty values", () => {
+        it("should return an empty fields error", async () => {
+          //code
+        });
+      });
+      describe("schedule::post::03 - Passing an invalid type as a value", () => {
+        it("should return a not valid value error", async () => {
+          //code
+        });
+      });
+      describe("schedule::post::04 - Passing too long or short input values", () => {
+        it("should return an invalid length input value error", async () => {
+          //code
+        });
+      });
+      describe("schedule::post::05 - Passing an non-existent school in the body", () => {
+        it("should return a non-existent school error", async () => {
+          //code
+        });
+      });
+      describe("schedule::post::06 - Passing an existing field name", () => {
+        it("should return a duplicated field error", async () => {
+          //code
+        });
+      });
+      describe("schedule::post::07 - Passing a schedule but not being created", () => {
+        it("should not create a field", async () => {
+          //code
+        });
+      });
+      describe.only("schedule::post::08 - Passing a field correctly to create", () => {
+        it("should create a field", async () => {
+          //code
+        });
+      });
+    });
+
+    describe("GET /schedule ", () => {
+      describe("schedule - GET", () => {
+        describe("schedule::get::01 - Passing missing fields", () => {
+          it("should return a missing values error", async () => {
+            //code
+          });
+        });
+        describe("schedule::get::02 - passing fields with empty values", () => {
+          it("should return an empty values error", async () => {
+            //code
+          });
+        });
+        describe("schedule::get::03 - passing invalid ids", () => {
+          it("should return an invalid id error", async () => {
+            //code
+          });
+        });
+        describe("schedule::get::04 - Requesting all fields but not finding any", () => {
+          it("should not get any fields", async () => {
+            //code
+          });
+        });
+        describe("schedule::get::05 - Requesting all fields correctly", () => {
+          it("should get all fields", async () => {
+            //code
+          });
+        });
+      });
+      describe("schedule - GET/:id", () => {
+        describe("schedule::get/:id::01 - Passing missing fields", () => {
+          it("should return a missing values error", async () => {
+            //code
+          });
+        });
+        describe("schedule::get/:id::02 - Passing fields with empty values", () => {
+          it("should return an empty values error", async () => {
+            //code
+          });
+        });
+        describe("schedule::get/:id::03 - Passing an invalid ids", () => {
+          it("should return an invalid id error", async () => {
+            //code
+          });
+        });
+        describe("schedule::get/:id::04 - Requesting a field but not finding it", () => {
+          it("should not get a school", async () => {
+            //code
+          });
+        });
+        describe("schedule::get/:id::05 - Requesting a field correctly", () => {
+          it("should get a field", async () => {
+            //code
+          });
+        });
+      });
+    });
+
+    describe("PUT /schedule ", () => {
+      describe("schedule::put::01 - Passing missing fields", () => {
+        it("should return a missing fields error", async () => {
+          //code
+        });
+      });
+      describe("schedule::put::02 - Passing fields with empty values", () => {
+        it("should return an empty field error", async () => {
+          //code
+        });
+      });
+      describe("schedule::put::03 - Passing an invalid type as field value", () => {
+        it("should return a not valid value error", async () => {
+          //code
+        });
+      });
+      describe("schedule::put::04 - Passing too long or short input values", () => {
+        it("should return an invalid length input value error", async () => {
+          //code
+        });
+      });
+      describe("schedule::put::05 - Passing a field but not updating it because fields already exist", () => {
+        it("should not update a schedule", async () => {
+          //code
+        });
+      });
+      describe("schedule::put::06 - Passing a field but not updating it because it does not match the filters", () => {
+        it("should not update a schedule", async () => {
+          //code
+        });
+      });
+      describe("field::put::11 - Passing a field correctly to update", () => {
+        it("should update a field", async () => {
+          //code
+        });
+      });
+    });
+
+    describe("DELETE /schedule ", () => {
+      describe("schedule::delete::01 - Passing missing fields", () => {
+        it("should return a missing fields error", async () => {
+          //code
+        });
+      });
+      describe("schedule::delete::02 - Passing fields with empty values", () => {
+        it("should return a empty fields error", async () => {
+          //code
+        });
+      });
+      describe("schedule::delete::03 - Passing an invalid ids", () => {
+        it("should return an invalid id error", async () => {
+          //code
+        });
+      });
+      describe("field::delete::04 - Passing a field id but not deleting it", () => {
+        it("should not delete a school", async () => {
+          //code
+        });
+      });
+      describe("field::delete::05 - Passing a field id correctly to delete", () => {
+        it("should delete a field", async () => {
+          //code
+        });
+      });
+    });
+  });
 });

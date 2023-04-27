@@ -1,0 +1,62 @@
+import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import BadRequestError from "../errors/bad-request";
+import ConflictError from "../errors/conflict";
+import NotFoundError from "../errors/not-found";
+
+import {
+  insertResource,
+  findResourceById,
+  findFilterAllResources,
+  deleteFilterResource,
+  findFilterResourceByProperty,
+  updateFilterResource,
+} from "../services/mongoServices";
+
+// @desc create a baseResource
+// @route POST /api/v1/baseResources
+// @access Private
+// @fields: body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
+const createBaseResource = async ({ body }: Request, res: Response) => {
+  // code
+};
+
+// @desc get all the BaseResources
+// @route GET /api/v1/BaseResources
+// @access Private
+// @fields: body {fieldOne:[string]}
+const getBaseResources = async ({ body }: Request, res: Response) => {
+  // code
+};
+
+// @desc get the BaseResource by id
+// @route GET /api/v1/BaseResources/:id
+// @access Private
+// @fields: params: {id:[string]},  body: {field:[string]}
+const getBaseResource = async ({ params, body }: Request, res: Response) => {
+  // code
+};
+
+// @desc update a BaseResource
+// @route PUT /api/v1/BaseResources/:id
+// @access Private
+// @fields: params: {id:[string]},  body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
+const updateBaseResource = async ({ params, body }: Request, res: Response) => {
+  //code
+};
+
+// @desc delete a BaseResource
+// @route DELETE /api/v1/BaseResources/:id
+// @access Private
+// @fields: params: {id:[string]},  body: {fieldOne:[string]}
+const deleteBaseResource = async ({ params, body }: Request, res: Response) => {
+  // code
+};
+
+export {
+  createBaseResource,
+  getBaseResources,
+  getBaseResource,
+  updateBaseResource,
+  deleteBaseResource,
+};

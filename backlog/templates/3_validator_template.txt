@@ -1,0 +1,32 @@
+import { NextFunction, Request, Response } from "express";
+import { check } from "express-validator";
+import validateResult from "../helpers/validateHelper";
+import { isValidId } from "../services/mongoServices";
+
+const validateCreateBaseResource = [
+  // code  
+];
+
+const validateGetBaseResources = [
+  // code
+];
+
+const validateGetBaseResource = [
+  // code
+];
+
+const validateUpdateBaseResource = [
+  // code
+];
+
+const validateDeleteBaseResource = [
+  // code
+];
+
+export {
+  validateCreateBaseResource,
+  validateGetBaseResources,
+  validateGetBaseResource,
+  validateUpdateBaseResource,
+  validateDeleteBaseResource,
+};
