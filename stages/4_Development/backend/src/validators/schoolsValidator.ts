@@ -24,7 +24,7 @@ const validateGetSchool = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -40,7 +40,7 @@ const validateUpdateSchool = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -67,7 +67,7 @@ const validateDeleteSchool = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;

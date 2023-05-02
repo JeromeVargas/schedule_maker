@@ -37,7 +37,8 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     userFieldsToReturnPopulate,
     userModel
   );
-  const existingUser = existingUserSchoolCoordinator.find(
+  // if there is not at least one record with an existing user id property, it returns false and triggers an error
+  const existingUser = existingUserSchoolCoordinator?.find(
     (user: any) => user?._id == user_id
   );
   if (!existingUser) {
@@ -56,7 +57,8 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     throw new BadRequestError("Please create the school first");
   }
   /* check if the coordinator exists, has a coordinator role and it is active */
-  const existingCoordinator = existingUserSchoolCoordinator.find(
+  // if there is not at least one record with an existing coordinator id property, it returns false and triggers an error
+  const existingCoordinator = existingUserSchoolCoordinator?.find(
     (user: any) => user?._id == coordinator_id
   );
   if (!existingCoordinator) {

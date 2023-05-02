@@ -3,35 +3,35 @@ import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
-const validateCreateBaseResource = [
+const validateCreateBreak = [
   // code
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-const validateGetBaseResources = [
+const validateGetBreaks = [
   // code
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-const validateGetBaseResource = [
+const validateGetBreak = [
   // code
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-const validateUpdateBaseResource = [
+const validateUpdateBreak = [
   // code
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-const validateDeleteBaseResource = [
+const validateDeleteBreak = [
   // code
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
@@ -39,9 +39,9 @@ const validateDeleteBaseResource = [
 ];
 
 export {
-  validateCreateBaseResource,
-  validateGetBaseResources,
-  validateGetBaseResource,
-  validateUpdateBaseResource,
-  validateDeleteBaseResource,
+  validateCreateBreak,
+  validateGetBreaks,
+  validateGetBreak,
+  validateUpdateBreak,
+  validateDeleteBreak,
 };

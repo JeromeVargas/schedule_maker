@@ -3,13 +3,13 @@ import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
-const validateCreateTeacher = [
+const validateCreateSchedule = [
   check("school_id")
     .exists()
     .withMessage("Please add the user's school id")
     .bail()
     .notEmpty()
-    .withMessage("The school id field is empty")
+    .withMessage("The school field is empty")
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
@@ -20,88 +20,92 @@ const validateCreateTeacher = [
       }
     })
     .withMessage(`The school id is not valid`),
-  check("user_id")
+  check("name")
     .exists()
-    .withMessage("Please add the teacher`s user id")
+    .withMessage("Please add a schedule name")
     .bail()
     .notEmpty()
-    .withMessage("The teacher's user id field is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The teacher's user id is not valid`),
-  check("coordinator_id")
-    .exists()
-    .withMessage("Please add the coordinator's id")
-    .bail()
-    .notEmpty()
-    .withMessage("The coordinator's id field is empty")
+    .withMessage("The schedule name field is empty")
     .bail()
     .isString()
+    .withMessage("The schedule name is not valid")
+    .isLength({ min: 1, max: 100 })
+    .withMessage("The schedule name must not exceed 100 characters"),
+  check("dayStart")
+    .exists()
+    .withMessage("Please add the school day start time")
+    .bail()
+    .notEmpty()
+    .withMessage("The day start field is empty")
+    .bail()
+    .isNumeric()
+    .withMessage("day start value is not valid")
+    .bail()
     .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      const maxMinutesInDay = 1439;
+      if (value > maxMinutesInDay) {
         return false;
-      } else if (validId === true) {
+      } else if (value <= maxMinutesInDay) {
         return true;
       }
     })
-    .withMessage(`The coordinator's id is not valid`),
-  check("contractType")
+    .withMessage(`The school start time must must not exceed the 23:59 hours`),
+  check("shiftNumberMinutes")
     .exists()
-    .withMessage("Please add the teacher`s contract type")
+    .withMessage("Please add the school shift number of minutes")
     .bail()
     .notEmpty()
-    .withMessage("The contract type field is empty")
-    .bail()
-    .isString()
-    .withMessage("contract type is not valid")
-    .bail()
-    .isIn(["full-time", "part-time", "substitute"])
-    .withMessage("the contract type provided is not a valid option"),
-  check("hoursAssignable")
-    .exists()
-    .withMessage("Please add the number of hours assignable to the teacher")
-    .bail()
-    .notEmpty()
-    .withMessage("The hours assignable field is empty")
+    .withMessage("The number of minutes field is empty")
     .bail()
     .isNumeric()
-    .withMessage("hours assignable value is not valid")
-    .bail()
-    .custom((value) => {
-      const maxHours = 70;
-      if (value > maxHours) {
-        return false;
-      } else if (value <= maxHours) {
-        return true;
-      }
-    })
-    .withMessage(`hours assignable must not exceed 70 hours`),
-  check("hoursAssigned")
-    .exists()
-    .withMessage("Please add the number of hours assigned to the teacher")
-    .bail()
-    .notEmpty()
-    .withMessage("The hours assigned field is empty")
-    .bail()
-    .isNumeric()
-    .withMessage("hours assigned value is not valid")
+    .withMessage("number of minutes value is not valid")
     .bail()
     .custom((value, { req }) => {
-      if (value > req.body.hoursAssignable) {
+      const maxMinutesInDay = 1439;
+      const remainingMinutesInDay = maxMinutesInDay - req.body.dayStart;
+      if (value > remainingMinutesInDay) {
         return false;
-      } else if (value <= req.body.hoursAssignable) {
+      } else if (value <= remainingMinutesInDay) {
         return true;
       }
     })
-    .withMessage("hours assigned must not exceed the hours assignable"),
+    .withMessage(
+      "There is not enough time to allocate the entire shift in a day"
+    ),
+  check("classUnitMinutes")
+    .exists()
+    .withMessage("Please add the class unit length")
+    .bail()
+    .notEmpty()
+    .withMessage("The class unit length field is empty")
+    .bail()
+    .isNumeric()
+    .withMessage("class unit length value is not valid")
+    .bail()
+    .custom((value, { req }) => {
+      const maxMinutesInDay = 1439;
+      const remainingMinutesInDay = maxMinutesInDay - req.body.dayStart;
+      if (value > remainingMinutesInDay) {
+        return false;
+      } else if (value <= remainingMinutesInDay) {
+        return true;
+      }
+    })
+    .withMessage(
+      "There is not enough time available to allocate any class in a day"
+    )
+    .bail()
+    .custom((value, { req }) => {
+      360;
+      if (value > req.body.shiftNumberMinutes) {
+        return false;
+      } else if (value <= req.body.shiftNumberMinutes) {
+        return true;
+      }
+    })
+    .withMessage(
+      "There is not enough time available to allocate any class in the shift"
+    ),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")
@@ -170,7 +174,7 @@ const validateCreateTeacher = [
   },
 ];
 
-const validateGetTeachers = [
+const validateGetSchedules = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -192,7 +196,7 @@ const validateGetTeachers = [
   },
 ];
 
-const validateGetTeacher = [
+const validateGetSchedule = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -202,7 +206,7 @@ const validateGetTeacher = [
         return true;
       }
     })
-    .withMessage(`The teacher id is not valid`),
+    .withMessage(`The teacher_field id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -224,23 +228,13 @@ const validateGetTeacher = [
   },
 ];
 
-const validateUpdateTeacher = [
-  check("id")
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The teacher's id is not valid`),
+const validateUpdateSchedule = [
   check("school_id")
     .exists()
-    .withMessage("Please add the school id")
+    .withMessage("Please add the user's school id")
     .bail()
     .notEmpty()
-    .withMessage("The school id field is empty")
+    .withMessage("The school field is empty")
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
@@ -251,89 +245,92 @@ const validateUpdateTeacher = [
       }
     })
     .withMessage(`The school id is not valid`),
-  check("user_id")
+  check("name")
     .exists()
-    .withMessage("Please add the teacher's user id")
+    .withMessage("Please add a schedule name")
     .bail()
     .notEmpty()
-    .withMessage("The teacher`s user id field is empty")
+    .withMessage("The schedule name field is empty")
     .bail()
     .isString()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The teacher's user id is not valid`),
-  check("coordinator_id")
+    .withMessage("The schedule name is not valid")
+    .isLength({ min: 1, max: 100 })
+    .withMessage("The schedule name must not exceed 100 characters"),
+  check("dayStart")
     .exists()
-    .withMessage("Please add the coordinator's user id")
+    .withMessage("Please add the school day start time")
     .bail()
     .notEmpty()
-    .withMessage("The coordinator's id field is empty")
-    .bail()
-    .isString()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The coordinator's id is not valid`),
-  check("contractType")
-    .exists()
-    .withMessage("Please add the teacher`s contract type")
-    .bail()
-    .notEmpty()
-    .withMessage("The contract type field is empty")
-    .bail()
-    .isString()
-    .withMessage("contract type is not valid")
-    .bail()
-    .isIn(["full-time", "part-time", "substitute"])
-    .withMessage("the contract type provided is not a valid option"),
-  check("hoursAssignable")
-    .exists()
-    .withMessage("Please add the number of hours assignable to the teacher")
-    .bail()
-    .notEmpty()
-    .withMessage("The hours assignable field is empty")
+    .withMessage("The day start field is empty")
     .bail()
     .isNumeric()
-    .withMessage("hours assignable value is not valid")
+    .withMessage("day start value is not valid")
     .bail()
     .custom((value) => {
-      const maxHours = 70;
-      if (value > maxHours) {
+      const maxMinutesInDay = 1439;
+      if (value > maxMinutesInDay) {
         return false;
-      } else if (value <= maxHours) {
+      } else if (value <= maxMinutesInDay) {
         return true;
       }
     })
-    .withMessage(`hours assignable must not exceed 70 hours`),
-  check("hoursAssigned")
+    .withMessage(`The school start time must must not exceed the 23:59 hours`),
+  check("shiftNumberMinutes")
     .exists()
-    .withMessage("Please add the number of hours assigned to the teacher")
+    .withMessage("Please add the school shift number of minutes")
     .bail()
     .notEmpty()
-    .withMessage("The hours assigned field is empty")
+    .withMessage("The number of minutes field is empty")
     .bail()
     .isNumeric()
-    .withMessage("hours assigned value is not valid")
+    .withMessage("number of minutes value is not valid")
     .bail()
     .custom((value, { req }) => {
-      if (value > req.body.hoursAssignable) {
+      const maxMinutesInDay = 1439;
+      const remainingMinutesInDay = maxMinutesInDay - req.body.dayStart;
+      if (value > remainingMinutesInDay) {
         return false;
-      } else if (value <= req.body.hoursAssignable) {
+      } else if (value <= remainingMinutesInDay) {
         return true;
       }
     })
-    .withMessage("hours assigned must not exceed the hours assignable"),
+    .withMessage(
+      "There is not enough time to allocate the entire shift in a day"
+    ),
+  check("classUnitMinutes")
+    .exists()
+    .withMessage("Please add the class unit length")
+    .bail()
+    .notEmpty()
+    .withMessage("The class unit length field is empty")
+    .bail()
+    .isNumeric()
+    .withMessage("class unit length value is not valid")
+    .bail()
+    .custom((value, { req }) => {
+      const maxMinutesInDay = 1439;
+      const remainingMinutesInDay = maxMinutesInDay - req.body.dayStart;
+      if (value > remainingMinutesInDay) {
+        return false;
+      } else if (value <= remainingMinutesInDay) {
+        return true;
+      }
+    })
+    .withMessage(
+      "There is not enough time available to allocate any class in a day"
+    )
+    .bail()
+    .custom((value, { req }) => {
+      360;
+      if (value > req.body.shiftNumberMinutes) {
+        return false;
+      } else if (value <= req.body.shiftNumberMinutes) {
+        return true;
+      }
+    })
+    .withMessage(
+      "There is not enough time available to allocate any class in the shift"
+    ),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")
@@ -402,7 +399,7 @@ const validateUpdateTeacher = [
   },
 ];
 
-const validateDeleteTeacher = [
+const validateDeleteSchedule = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -412,7 +409,7 @@ const validateDeleteTeacher = [
         return true;
       }
     })
-    .withMessage(`The teacher's id is not valid`),
+    .withMessage(`The schedule id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -435,9 +432,9 @@ const validateDeleteTeacher = [
 ];
 
 export {
-  validateCreateTeacher,
-  validateGetTeachers,
-  validateGetTeacher,
-  validateUpdateTeacher,
-  validateDeleteTeacher,
+  validateCreateSchedule,
+  validateGetSchedules,
+  validateGetSchedule,
+  validateUpdateSchedule,
+  validateDeleteSchedule,
 };

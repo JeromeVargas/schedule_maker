@@ -82,7 +82,7 @@ const getUsers = async ({ body }: Request, res: Response) => {
 // @desc get the user by id
 // @route GET /api/v1/users/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], name:[string], prevName:[string]}
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const getUser = async ({ params, body }: Request, res: Response) => {
   /* models */
   const userModel = "user";
@@ -141,7 +141,7 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
 // @desc delete a user
 // @route DELETE /api/v1/users/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], name:[string], prevName:[string]}
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteUser = async ({ params, body }: Request, res: Response) => {
   /* models */
   const userModel = "user";

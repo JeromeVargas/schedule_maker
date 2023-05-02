@@ -13,7 +13,7 @@ const validateCreateField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -46,7 +46,7 @@ const validateGetFields = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -62,7 +62,7 @@ const validateGetField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -78,7 +78,7 @@ const validateGetField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -94,7 +94,7 @@ const validateUpdateField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -110,7 +110,7 @@ const validateUpdateField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -128,17 +128,6 @@ const validateUpdateField = [
     .withMessage("The field name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters"),
-  check("prevName")
-    .exists()
-    .withMessage("Please add the previous field name")
-    .bail()
-    .notEmpty()
-    .withMessage("The previous field name is empty")
-    .bail()
-    .isString()
-    .withMessage("The previous field name is not valid")
-    .isLength({ min: 1, max: 100 })
-    .withMessage("The previous field name must not exceed 100 characters"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -148,7 +137,7 @@ const validateDeleteField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -164,7 +153,7 @@ const validateDeleteField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;

@@ -13,75 +13,69 @@ import {
   updateFilterResource,
 } from "../services/mongoServices";
 
-// @desc create a baseResource
-// @route POST /api/v1/baseResources
+// @desc create a break
+// @route POST /api/v1/breaks
 // @access Private
 // @fields: body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
-const createBaseResource = async ({ body }: Request, res: Response) => {
+const createBreak = async ({ body }: Request, res: Response) => {
   /* models */
-  //  const baseResource = "baseResource";
+  //  const break = "break";
   /* destructure the fields */
 
   // code
-  res.sendStatus(StatusCodes.OK);
+  res.status(StatusCodes.OK).json({ msg: "Break endpoint working!" });
 };
 
-// @desc get all the BaseResources
-// @route GET /api/v1/BaseResources
+// @desc get all the Breaks
+// @route GET /api/v1/Breaks
 // @access Private
 // @fields: body {fieldOne:[string]}
-const getBaseResources = async ({ body }: Request, res: Response) => {
+const getBreaks = async ({ body }: Request, res: Response) => {
   /* models */
-  // const baseResource = "baseResource";
+  // const break = "break";
   /* destructure the fields */
 
   // code
   res.sendStatus(StatusCodes.OK);
 };
 
-// @desc get the BaseResource by id
-// @route GET /api/v1/BaseResources/:id
+// @desc get the Break by id
+// @route GET /api/v1/Breaks/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {fieldOne:[string]}
-const getBaseResource = async ({ params, body }: Request, res: Response) => {
+// @fields: params: {id:[string]},  body: {field:[string]}
+const getBreak = async ({ params, body }: Request, res: Response) => {
   /* models */
-  // const baseResource = "baseResource";
+  // const break = "break";
   /* destructure the fields */
 
   // code
   res.sendStatus(StatusCodes.OK);
 };
 
-// @desc update a BaseResource
-// @route PUT /api/v1/BaseResources/:id
+// @desc update a Break
+// @route PUT /api/v1/Breaks/:id
 // @access Private
 // @fields: params: {id:[string]},  body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
-const updateBaseResource = async ({ params, body }: Request, res: Response) => {
+const updateBreak = async ({ params, body }: Request, res: Response) => {
   /* models */
-  // const baseResource = "baseResource";
+  // const break = "break";
   /* destructure the fields */
 
   //code
   res.sendStatus(StatusCodes.OK);
 };
 
-// @desc delete a BaseResource
-// @route DELETE /api/v1/BaseResources/:id
+// @desc delete a Break
+// @route DELETE /api/v1/Breaks/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
-const deleteBaseResource = async ({ params, body }: Request, res: Response) => {
+const deleteBreak = async ({ params, body }: Request, res: Response) => {
   /* models */
-  // const baseResource = "baseResource";
+  // const break = "break";
   /* destructure the fields */
 
   // code
   res.sendStatus(StatusCodes.OK);
 };
 
-export {
-  createBaseResource,
-  getBaseResources,
-  getBaseResource,
-  updateBaseResource,
-  deleteBaseResource,
-};
+export { createBreak, getBreaks, getBreak, updateBreak, deleteBreak };

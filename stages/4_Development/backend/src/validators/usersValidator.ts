@@ -13,7 +13,7 @@ const validateCreateUser = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -100,7 +100,6 @@ const validateCreateUser = [
     .bail()
     .isBoolean()
     .withMessage("hasTeachingFunc value is not valid"),
-
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -116,7 +115,7 @@ const validateGetUsers = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -132,7 +131,7 @@ const validateGetUser = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -148,7 +147,7 @@ const validateGetUser = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -164,7 +163,7 @@ const validateUpdateUser = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -180,7 +179,7 @@ const validateUpdateUser = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -277,7 +276,7 @@ const validateDeleteUser = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -293,7 +292,7 @@ const validateDeleteUser = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;

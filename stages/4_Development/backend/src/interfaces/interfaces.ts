@@ -49,9 +49,10 @@ export type Teacher_Field = {
 
 export type Schedule = {
   school_id: Types.ObjectId;
-  day_start: Number;
-  number_hours: Number;
-  class_unit_length: ContractType;
+  name: string;
+  dayStart: number;
+  shiftNumberMinutes: number;
+  classUnitMinutes: number;
   monday: boolean;
   tuesday: boolean;
   wednesday: boolean;
@@ -59,4 +60,11 @@ export type Schedule = {
   friday: boolean;
   saturday: boolean;
   sunday: boolean;
+};
+
+export type Break = {
+  school_id: Types.ObjectId;
+  schedule_id: Types.ObjectId;
+  break_start: number;
+  number_minutes: number;
 };

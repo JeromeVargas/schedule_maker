@@ -13,7 +13,7 @@ const validateCreateTeacherField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -29,7 +29,7 @@ const validateCreateTeacherField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -45,7 +45,7 @@ const validateCreateTeacherField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -68,7 +68,7 @@ const validateGetTeacherFields = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -84,7 +84,7 @@ const validateGetTeacherField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -100,7 +100,7 @@ const validateGetTeacherField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -116,7 +116,7 @@ const validateUpdateTeacherField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -132,7 +132,7 @@ const validateUpdateTeacherField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -148,7 +148,7 @@ const validateUpdateTeacherField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -164,29 +164,13 @@ const validateUpdateTeacherField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
       }
     })
     .withMessage(`The field id is not valid`),
-  check("prevField")
-    .exists()
-    .withMessage("Please add the previous field id")
-    .bail()
-    .notEmpty()
-    .withMessage("The previous field id is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false) {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The previous field id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -196,7 +180,7 @@ const validateDeleteTeacherField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;
@@ -212,7 +196,7 @@ const validateDeleteTeacherField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false) {
+      if (validId === false || typeof value !== "string") {
         return false;
       } else if (validId === true) {
         return true;

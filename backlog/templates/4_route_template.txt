@@ -5,7 +5,7 @@ import {
   validateGetBaseResource,
   validateDeleteBaseResource,
   validateUpdateBaseResource,
-} from "../validators/BaseResourcesValidator";
+} from "../validators/baseResourcesValidator";
 
 import {
   createBaseResource,
@@ -13,7 +13,7 @@ import {
   getBaseResource,
   updateBaseResource,
   deleteBaseResource,
-} from "../controllers/BaseResourcesController";
+} from "../controllers/baseResourcesController";
 
 const router = Router();
 

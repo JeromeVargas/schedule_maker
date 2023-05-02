@@ -19,14 +19,13 @@ import {
 // @fields: body {school_id:[string] , teacher_id:[string], field_id:[string]}
 const createTeacherField = async ({ body }: Request, res: Response) => {
   /* models */
-  const teacherModel = "school";
+  const teacherModel = "teacher";
   const fieldModel = "field";
   const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { school_id, teacher_id, field_id } = body;
   /* find if the teacher already exists */
-  const fieldsToReturnTeacher =
-    "-coordinator_id -user_id -contractType -hoursAssignable -hoursAssigned -monday -tuesday -wednesday -thursday -friday -saturday -sunday -createdAt -updatedAt";
+  const fieldsToReturnTeacher = "-createdAt -updatedAt";
   const fieldsToPopulateTeacher = "school_id";
   const fieldsToReturnPopulateTeacher = "_id -name -createdAt -updatedAt";
   const teacherFound = await findPopulateResourceById(
@@ -36,6 +35,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     fieldsToReturnPopulateTeacher,
     teacherModel
   );
+
   if (!teacherFound) {
     throw new BadRequestError("Please make sure the teacher exists");
   }
@@ -144,38 +144,30 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
-  const { school_id, teacher_id, field_id, prevField } = body;
-  /* check if the field already exist for the school */
+  const { school_id, teacher_id, field_id } = body;
+  /* check if the field has already been assigned to a teacher for the school */
   const filters = [
     { school_id: school_id },
     { teacher_id: teacher_id },
     { field_id: field_id },
   ];
   const fieldsToReturn = "-createdAt -updatedAt";
-  const fieldFound = await findFilterResourceByProperty(
+  const fieldAlreadyAssignedToTeacherFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
     teacherFieldModel
   );
-  if (fieldFound?.length !== 0) {
+  if (fieldAlreadyAssignedToTeacherFound?.length !== 0) {
     throw new ConflictError(
       "This field has already been assigned to the teacher!"
     );
   }
-  /* update if the field and school ids are the same one as the one passed and update the field, prevName is used to search the field name to change */
-  const filtersUpdate = [
-    { _id: teacherFieldId },
-    { school_id: school_id },
-    { field_id: prevField },
-  ];
-  const newField = {
-    school_id: school_id,
-    teacher_id: teacher_id,
-    field_id: field_id,
-  };
+  /* update if the field and school ids are the same one as the one passed and update the field */
+  const filtersUpdate = [{ _id: teacherFieldId }, { school_id: school_id }];
+  const newTeacherFieldAssignment = body;
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
-    newField,
+    newTeacherFieldAssignment,
     teacherFieldModel
   );
   if (!fieldUpdated) {

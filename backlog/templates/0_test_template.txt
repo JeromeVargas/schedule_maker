@@ -81,7 +81,7 @@ describe("Resource => baseResource", () => {
         //code
       });
     });
-    describe("baseResource::post::06 - Passing an existing field name", () => {
+    describe("baseResource::post::06 - Passing an existing value", () => {
       it("should return a duplicated field error", async () => {
         //code
       });
@@ -91,9 +91,43 @@ describe("Resource => baseResource", () => {
         //code
       });
     });
-    describe("baseResource::post::08 - Passing a field correctly to create", () => {
+    describe("baseResource::post::08 - Passing a baseResource correctly to create", () => {
       it("should create a field", async () => {
-        //code
+        // mock services
+          // let findDuplicatedBaseResourceByIdService = mockService(
+          //   baseResourcePayload,
+          //   "findPopulateResourceById"
+          // );
+          // findDuplicatedBaseResourceByIdService = mockService(
+          //   baseResourcePayload,
+          //   "findPopulateResourceById"
+          // );
+          // const findBaseResourceByPropertyService = mockService(
+          //   baseResourcesNullPayload,
+          //   "findFilterResourceByProperty"
+          // );
+          // const insertBaseResourceService = mockService(
+          //   BaseResourcePayload,
+          //   "insertResource"
+          // );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newBaseResource);
+
+          // assertions
+          expect(body).toEqual(
+          expect.objectContaining({
+             msg: "BaseResource endpoint working!",
+           })
+          );
+          expect(statusCode).toBe(200);
+          // expect(findDuplicatedBaseResourceByIdService).toHaveBeenCalledTimes(
+          //   2
+          // );
+          // expect(findBaseResourceByPropertyService).toHaveBeenCalled();
+          // expect(insertBaseResourceService).toHaveBeenCalled();
       });
     });
   });
@@ -137,7 +171,7 @@ describe("Resource => baseResource", () => {
           //code
         });
       });
-      describe("baseResource::get/:id::03 - Passing an invalid ids", () => {
+      describe("baseResource::get/:id::03 - Passing invalid ids", () => {
         it("should return an invalid id error", async () => {
           //code
         });
@@ -176,18 +210,18 @@ describe("Resource => baseResource", () => {
         //code
       });
     });
-    describe("baseResource::put::05 - Passing a field but not updating it because fields already exist", () => {
+    describe("baseResource::put::05 - Passing a baseResource but not updating it because baseResource already exist", () => {
       it("should not update a baseResource", async () => {
         //code
       });
     });
-    describe("baseResource::put::06 - Passing a field but not updating it because it does not match the filters", () => {
+    describe("baseResource::put::06 - Passing a baseResource but not updating it because it does not match the filters", () => {
       it("should not update a baseResource", async () => {
         //code
       });
     });
-    describe("field::put::11 - Passing a field correctly to update", () => {
-      it("should update a field", async () => {
+    describe("field::put::07 - Passing a field correctly to update", () => {
+      it("should update a baseResource", async () => {
         //code
       });
     });
@@ -204,17 +238,17 @@ describe("Resource => baseResource", () => {
         //code
       });
     });
-    describe("baseResource::delete::03 - Passing an invalid ids", () => {
+    describe("baseResource::delete::03 - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         //code
       });
     });
-    describe("baseResource::delete::04 - Passing a field id but not deleting it", () => {
+    describe("baseResource::delete::04 - Passing a baseResource id but not deleting it", () => {
       it("should not delete a school", async () => {
         //code
       });
     });
-    describe("baseResource::delete::05 - Passing a field id correctly to delete", () => {
+    describe("baseResource::delete::05 - Passing a baseResource id correctly to delete", () => {
       it("should delete a field", async () => {
         //code
       });

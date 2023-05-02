@@ -35,17 +35,17 @@ const createField = async ({ body }: Request, res: Response) => {
   }
   /* find if the field already exists for the school */
   const filters = [{ school_id: school_id }, { name: name }];
-  const duplicatedSchool = await findFilterResourceByProperty(
+  const duplicatedField = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
     fieldModel
   );
-  if (duplicatedSchool?.length !== 0) {
+  if (duplicatedField?.length !== 0) {
     throw new ConflictError("This field name already exists");
   }
   /* create school */
-  const schoolCreated = await insertResource(body, fieldModel);
-  if (!schoolCreated) {
+  const fieldCreated = await insertResource(body, fieldModel);
+  if (!fieldCreated) {
     throw new BadRequestError("Field not created!");
   }
   res.status(StatusCodes.CREATED).json({ msg: "Field created successfully!" });
@@ -102,31 +102,31 @@ const getField = async ({ params, body }: Request, res: Response) => {
 // @desc update a field
 // @route PUT /api/v1/field/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], name:[string], prevName:[string]}
+// @fields: params: {id:[string]},  body: {school_id:[string], name:[string]}
 const updateField = async ({ params, body }: Request, res: Response) => {
   /* models */
   const fieldModel = "field";
   /* destructure the fields*/
   const { id: fieldId } = params;
-  const { school_id, name, prevName } = body;
+  const { school_id, name } = body;
   /* check if the field already exist for the school */
   const filters = [{ school_id: school_id }, { name: name }];
   const fieldsToReturn = "-createdAt -updatedAt";
-  const fieldFound = await findFilterResourceByProperty(
+  const duplicatedFieldNameFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
     fieldModel
   );
-  if (fieldFound?.length !== 0) {
+  // if there is at least one record with that name and a different field id, it returns true and triggers an error
+  const duplicatedFieldName = duplicatedFieldNameFound?.some(
+    (field: any) => field._id.toString() !== fieldId
+  );
+  if (duplicatedFieldName) {
     throw new ConflictError("This field name already exists!");
   }
-  /* update if the field and school ids are the same one as the one passed and update the field, prevName is used to search the field name to change */
-  const filtersUpdate = [
-    { _id: fieldId },
-    { school_id: school_id },
-    { name: prevName },
-  ];
-  const newField = { school_id: school_id, name: name };
+  /* update if the field and school ids are the same one as the one passed and update the field */
+  const filtersUpdate = [{ _id: fieldId }, { school_id: school_id }];
+  const newField = body;
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
     newField,
