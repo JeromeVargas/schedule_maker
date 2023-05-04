@@ -5,6 +5,7 @@ import ConflictError from "../errors/conflict";
 import NotFoundError from "../errors/not-found";
 
 import {
+  models,
   insertResource,
   findResourceById,
   findFilterAllResources,
@@ -18,9 +19,6 @@ import {
 // @access Private
 // @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const createSchedule = async ({ body }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
-  const scheduleModel = "schedule";
   /* destructure the fields */
   const { school_id, name } = body;
   /* check if the school exists */
@@ -29,7 +27,7 @@ const createSchedule = async ({ body }: Request, res: Response) => {
   const existingSchool = await findResourceById(
     schoolSearchCriteria,
     schoolFieldsToReturn,
-    schoolModel
+    models.school as unknown as keyof typeof models
   );
   if (!existingSchool) {
     throw new ConflictError("Please create the school first");
@@ -40,13 +38,16 @@ const createSchedule = async ({ body }: Request, res: Response) => {
   const duplicatedName = await findFilterResourceByProperty(
     scheduleFilters,
     scheduleFieldsToReturn,
-    scheduleModel
+    models.schedule as unknown as keyof typeof models
   );
   if (duplicatedName?.length !== 0) {
     throw new ConflictError("This field name already exists");
   }
   /* create the schedule  */
-  const userCreated = await insertResource(body, scheduleModel);
+  const userCreated = await insertResource(
+    body,
+    models.schedule as unknown as keyof typeof models
+  );
   if (!userCreated) {
     throw new BadRequestError("Schedule not created");
   }
@@ -60,8 +61,6 @@ const createSchedule = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {school_id:[string]}
 const getSchedules = async ({ body }: Request, res: Response) => {
-  /* models */
-  const scheduleModel = "schedule";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -70,7 +69,7 @@ const getSchedules = async ({ body }: Request, res: Response) => {
   const schedulesFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
-    scheduleModel
+    models.schedule as unknown as keyof typeof models
   );
   /* get all fields */
   if (schedulesFound?.length === 0) {
@@ -84,8 +83,6 @@ const getSchedules = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {schoolId:[string]}
 const getSchedule = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const scheduleModel = "schedule";
   /* destructure the fields */
   const { id: scheduleId } = params;
   const { school_id } = body;
@@ -95,7 +92,7 @@ const getSchedule = async ({ params, body }: Request, res: Response) => {
   const scheduleFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    scheduleModel
+    models.schedule as unknown as keyof typeof models
   );
   if (scheduleFound?.length === 0) {
     throw new NotFoundError("Schedule not found");
@@ -108,8 +105,6 @@ const getSchedule = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const updateSchedule = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const scheduleModel = "schedule";
   /* destructure the fields*/
   const { id: scheduleId } = params;
   const { school_id, name } = body;
@@ -119,7 +114,7 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
   const duplicatedScheduleFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    scheduleModel
+    models.schedule as unknown as keyof typeof models
   );
   // if there is at least one record with that name and a different schedule id, it returns true and triggers an error
   const duplicatedScheduleId = duplicatedScheduleFound?.some(
@@ -134,7 +129,7 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
   const scheduleUpdated = await updateFilterResource(
     filtersUpdate,
     newSchedule,
-    scheduleModel
+    models.schedule as unknown as keyof typeof models
   );
   if (!scheduleUpdated) {
     throw new NotFoundError("Schedule not updated");
@@ -147,8 +142,6 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteSchedule = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const scheduleModel = "schedule";
   /* destructure the fields from the params and body */
   const { id: scheduleId } = params;
   const { school_id } = body;
@@ -156,7 +149,7 @@ const deleteSchedule = async ({ params, body }: Request, res: Response) => {
   const filtersDelete = { _id: scheduleId, school_id: school_id };
   const scheduleDeleted = await deleteFilterResource(
     filtersDelete,
-    scheduleModel
+    models.schedule as unknown as keyof typeof models
   );
   if (!scheduleDeleted) {
     throw new NotFoundError("Schedule not deleted");

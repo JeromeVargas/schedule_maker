@@ -7753,8 +7753,7 @@ describe("Schedule maker API", () => {
       });
     });
   });
-  // continue here --> test the schedule code manually
-  // continue here --> check if the prev resource field is actually necessary in the fields and field_teacher controllers
+  // continue here --> test all the code manually
   // continue here --> create the breaks table code
   describe("Resource => break", () => {
     // end point url

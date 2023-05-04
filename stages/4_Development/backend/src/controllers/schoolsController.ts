@@ -5,6 +5,7 @@ import ConflictError from "../errors/conflict";
 import NotFoundError from "../errors/not-found";
 
 import {
+  models,
   insertResource,
   findAllResources,
   findResourceById,
@@ -18,8 +19,6 @@ import {
 // @access Private
 // @fields: body {name:[string]}
 const createSchool = async ({ body }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* destructure the fields */
   const { name } = body;
   /* find if the school name already exists */
@@ -28,13 +27,16 @@ const createSchool = async ({ body }: Request, res: Response) => {
   const duplicatedSchool = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
-    schoolModel
+    models.school as unknown as keyof typeof models
   );
   if (duplicatedSchool) {
     throw new ConflictError("This school name already exists");
   }
   /* create school */
-  const schoolCreated = await insertResource(body, schoolModel);
+  const schoolCreated = await insertResource(
+    body,
+    models.school as unknown as keyof typeof models
+  );
   if (!schoolCreated) {
     throw new BadRequestError("School not created");
   }
@@ -46,11 +48,12 @@ const createSchool = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: no fields
 const getSchools = async (req: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* get all schools */
   const fieldsToReturn = "-createdAt -updatedAt";
-  const schoolsFound = await findAllResources(fieldsToReturn, schoolModel);
+  const schoolsFound = await findAllResources(
+    fieldsToReturn,
+    models.school as unknown as keyof typeof models
+  );
   if (!schoolsFound || schoolsFound.length === 0) {
     throw new NotFoundError("No schools found");
   }
@@ -62,8 +65,6 @@ const getSchools = async (req: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]}
 const getSchool = async ({ params }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* destructure the fields*/
   const { id: schoolId } = params;
   /* get the school */
@@ -71,7 +72,7 @@ const getSchool = async ({ params }: Request, res: Response) => {
   const schoolFound = await findResourceById(
     schoolId,
     fieldsToReturn,
-    schoolModel
+    models.school as unknown as keyof typeof models
   );
   if (!schoolFound) {
     throw new NotFoundError("School not found");
@@ -84,8 +85,6 @@ const getSchool = async ({ params }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {name:[string]}
 const updateSchool = async ({ body, params }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* destructure the fields*/
   const { id: schoolId } = params;
   /* check if there is a duplicate that belongs to someone else */
@@ -94,13 +93,17 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
   const duplicate = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
-    schoolModel
+    models.school as unknown as keyof typeof models
   );
   if (duplicate && duplicate?._id.toString() !== schoolId) {
     throw new ConflictError("This school name already exists");
   }
   /* update school */
-  const schoolUpdated = await updateResource(schoolId, body, schoolModel);
+  const schoolUpdated = await updateResource(
+    schoolId,
+    body,
+    models.school as unknown as keyof typeof models
+  );
   if (!schoolUpdated) {
     throw new NotFoundError("School not updated");
   }
@@ -112,12 +115,13 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]}}
 const deleteSchool = async ({ params }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* destructure the fields*/
   const { id: schoolId } = params;
   /* delete school */
-  const schoolDeleted = await deleteResource(schoolId, schoolModel);
+  const schoolDeleted = await deleteResource(
+    schoolId,
+    models.school as unknown as keyof typeof models
+  );
   if (!schoolDeleted) {
     throw new NotFoundError("School not deleted");
   }

@@ -221,6 +221,7 @@ const deleteFilterResource = (
 };
 
 export {
+  models,
   isValidId,
   insertResource,
   findAllResources,
