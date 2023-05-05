@@ -5,7 +5,6 @@ import ConflictError from "../errors/conflict";
 import NotFoundError from "../errors/not-found";
 
 import {
-  models,
   insertResource,
   findFilterAllResources,
   findResourceById,
@@ -20,6 +19,10 @@ import {
 // @access Private
 // @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const createUser = async ({ body }: Request, res: Response) => {
+  /* models */
+  const schoolModel = "school";
+  const userModel = "user";
+
   /* destructure the fields */
   const { school_id, email } = body;
   /* check if the school exists */
@@ -28,7 +31,7 @@ const createUser = async ({ body }: Request, res: Response) => {
   const existingSchool = await findResourceById(
     schoolSearchCriteria,
     schoolFieldsToReturn,
-    models.school as unknown as keyof typeof models
+    schoolModel
   );
   if (!existingSchool) {
     throw new ConflictError("Please create the school first");
@@ -39,16 +42,13 @@ const createUser = async ({ body }: Request, res: Response) => {
   const duplicatedUserEmailFound = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
-    models.user as unknown as keyof typeof models
+    userModel
   );
   if (duplicatedUserEmailFound) {
     throw new ConflictError("Please try a different email address");
   }
   /* create the user */
-  const userCreated = await insertResource(
-    body,
-    models.user as unknown as keyof typeof models
-  );
+  const userCreated = await insertResource(body, userModel);
   if (!userCreated) {
     throw new BadRequestError("User not created");
   }
@@ -60,6 +60,8 @@ const createUser = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body: {school_id:[string]}
 const getUsers = async ({ body }: Request, res: Response) => {
+  /* models */
+  const userModel = "user";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -68,7 +70,7 @@ const getUsers = async ({ body }: Request, res: Response) => {
   const usersFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
-    models.user as unknown as keyof typeof models
+    userModel
   );
   /* get all fields */
   if (usersFound?.length === 0) {
@@ -82,6 +84,8 @@ const getUsers = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getUser = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const userModel = "user";
   /* destructure the fields */
   const { id: userId } = params;
   const { school_id } = body;
@@ -91,7 +95,7 @@ const getUser = async ({ params, body }: Request, res: Response) => {
   const userFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    models.user as unknown as keyof typeof models
+    userModel
   );
   if (userFound?.length === 0) {
     throw new NotFoundError("User not found");
@@ -104,6 +108,8 @@ const getUser = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const updateUser = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const userModel = "user";
   /* destructure the fields */
   const { id: userId } = params;
   const { school_id, email } = body;
@@ -113,7 +119,7 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
   const duplicatedEmail = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
-    models.user as unknown as keyof typeof models
+    userModel
   );
   if (duplicatedEmail && duplicatedEmail?._id?.toString() !== userId) {
     throw new ConflictError("Please try a different email address");
@@ -124,7 +130,7 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
     newUser,
-    models.user as unknown as keyof typeof models
+    userModel
   );
   if (!fieldUpdated) {
     throw new NotFoundError("User not updated");
@@ -137,15 +143,14 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteUser = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const userModel = "user";
   /* destructure the fields */
   const { id: userId } = params;
   const { school_id } = body;
   /* delete the user */
   const filtersDelete = { _id: userId, school_id: school_id };
-  const userDeleted = await deleteFilterResource(
-    filtersDelete,
-    models.user as unknown as keyof typeof models
-  );
+  const userDeleted = await deleteFilterResource(filtersDelete, userModel);
   if (!userDeleted) {
     throw new NotFoundError("User not deleted");
   }

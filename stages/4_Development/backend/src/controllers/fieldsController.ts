@@ -5,7 +5,6 @@ import ConflictError from "../errors/conflict";
 import NotFoundError from "../errors/not-found";
 
 import {
-  models,
   insertResource,
   findResourceById,
   findFilterAllResources,
@@ -19,6 +18,9 @@ import {
 // @access Private
 // @fields: body {school_id:[string] , name:[string]}
 const createField = async ({ body }: Request, res: Response) => {
+  /* models */
+  const schoolModel = "school";
+  const fieldModel = "field";
   /* destructure the fields */
   const { school_id, name } = body;
   /* find if the school already exists */
@@ -26,7 +28,7 @@ const createField = async ({ body }: Request, res: Response) => {
   const schoolFound = await findResourceById(
     school_id,
     fieldsToReturn,
-    models.school as unknown as keyof typeof models
+    schoolModel
   );
   if (!schoolFound) {
     throw new BadRequestError("Please make sure the school exists");
@@ -36,16 +38,13 @@ const createField = async ({ body }: Request, res: Response) => {
   const duplicatedField = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    models.field as unknown as keyof typeof models
+    fieldModel
   );
   if (duplicatedField?.length !== 0) {
     throw new ConflictError("This field name already exists");
   }
   /* create school */
-  const fieldCreated = await insertResource(
-    body,
-    models.field as unknown as keyof typeof models
-  );
+  const fieldCreated = await insertResource(body, fieldModel);
   if (!fieldCreated) {
     throw new BadRequestError("Field not created!");
   }
@@ -57,6 +56,8 @@ const createField = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {school_id:[string]}
 const getFields = async ({ body }: Request, res: Response) => {
+  /* models */
+  const fieldModel = "field";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -65,7 +66,7 @@ const getFields = async ({ body }: Request, res: Response) => {
   const fieldsFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
-    models.field as unknown as keyof typeof models
+    fieldModel
   );
   /* get all fields */
   if (fieldsFound?.length === 0) {
@@ -79,6 +80,8 @@ const getFields = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const fieldModel = "field";
   /* destructure the fields */
   const { id: fieldId } = params;
   const { school_id } = body;
@@ -88,7 +91,7 @@ const getField = async ({ params, body }: Request, res: Response) => {
   const fieldFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    models.field as unknown as keyof typeof models
+    fieldModel
   );
   if (fieldFound?.length === 0) {
     throw new NotFoundError("Field not found");
@@ -101,6 +104,8 @@ const getField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], name:[string]}
 const updateField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const fieldModel = "field";
   /* destructure the fields*/
   const { id: fieldId } = params;
   const { school_id, name } = body;
@@ -110,7 +115,7 @@ const updateField = async ({ params, body }: Request, res: Response) => {
   const duplicatedFieldNameFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    models.field as unknown as keyof typeof models
+    fieldModel
   );
   // if there is at least one record with that name and a different field id, it returns true and triggers an error
   const duplicatedFieldName = duplicatedFieldNameFound?.some(
@@ -125,7 +130,7 @@ const updateField = async ({ params, body }: Request, res: Response) => {
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
     newField,
-    models.field as unknown as keyof typeof models
+    fieldModel
   );
   if (!fieldUpdated) {
     throw new NotFoundError("Field not updated");
@@ -138,15 +143,14 @@ const updateField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const fieldModel = "field";
   /* destructure the fields from the params and body */
   const { id: fieldId } = params;
   const { school_id } = body;
   /* delete field */
   const filtersDelete = { _id: fieldId, school_id: school_id };
-  const fieldDeleted = await deleteFilterResource(
-    filtersDelete,
-    models.field as unknown as keyof typeof models
-  );
+  const fieldDeleted = await deleteFilterResource(filtersDelete, fieldModel);
   if (!fieldDeleted) {
     throw new NotFoundError("Field not deleted");
   }

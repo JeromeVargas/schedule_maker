@@ -5,7 +5,6 @@ import ConflictError from "../errors/conflict";
 import NotFoundError from "../errors/not-found";
 
 import {
-  models,
   insertResource,
   findPopulateResourceById,
   findFilterAllResources,
@@ -19,6 +18,10 @@ import {
 // @access Private
 // @fields: body {school_id:[string] , teacher_id:[string], field_id:[string]}
 const createTeacherField = async ({ body }: Request, res: Response) => {
+  /* models */
+  const teacherModel = "teacher";
+  const fieldModel = "field";
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { school_id, teacher_id, field_id } = body;
   /* find if the teacher already exists */
@@ -30,7 +33,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     fieldsToReturnTeacher,
     fieldsToPopulateTeacher,
     fieldsToReturnPopulateTeacher,
-    models.teacher as unknown as keyof typeof models
+    teacherModel
   );
 
   if (!teacherFound) {
@@ -45,7 +48,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     fieldsToReturnField,
     fieldsToPopulateField,
     fieldsToReturnPopulateField,
-    models.field as unknown as keyof typeof models
+    fieldModel
   );
   if (!fieldFound) {
     throw new BadRequestError("Please make sure the field exists");
@@ -67,7 +70,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
   const duplicatedTeacherField = await findFilterResourceByProperty(
     filters,
     fieldsToReturnTeacherField,
-    models.teacherField as unknown as keyof typeof models
+    teacherFieldModel
   );
   if (duplicatedTeacherField?.length !== 0) {
     throw new ConflictError(
@@ -75,10 +78,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     );
   }
   /* create the teacher_field record */
-  const teacherFieldCreated = await insertResource(
-    body,
-    models.teacherField as unknown as keyof typeof models
-  );
+  const teacherFieldCreated = await insertResource(body, teacherFieldModel);
   if (!teacherFieldCreated) {
     throw new BadRequestError("Teacher_Field not created!");
   }
@@ -92,6 +92,8 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {school_id:[string]}
 const getTeacherFields = async ({ body }: Request, res: Response) => {
+  /* models */
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -100,7 +102,7 @@ const getTeacherFields = async ({ body }: Request, res: Response) => {
   const teacherFieldsFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
-    models.teacherField as unknown as keyof typeof models
+    teacherFieldModel
   );
   /* get all fields */
   if (teacherFieldsFound?.length === 0) {
@@ -114,6 +116,8 @@ const getTeacherFields = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getTeacherField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id } = body;
@@ -123,7 +127,7 @@ const getTeacherField = async ({ params, body }: Request, res: Response) => {
   const teacherFieldFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    models.teacherField as unknown as keyof typeof models
+    teacherFieldModel
   );
   if (teacherFieldFound?.length === 0) {
     throw new NotFoundError("Teacher_Field not found");
@@ -136,6 +140,8 @@ const getTeacherField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], field_id:[string], prevField:[string]}
 const updateTeacherField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id, teacher_id, field_id } = body;
@@ -149,7 +155,7 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   const fieldAlreadyAssignedToTeacherFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
-    models.teacherField as unknown as keyof typeof models
+    teacherFieldModel
   );
   if (fieldAlreadyAssignedToTeacherFound?.length !== 0) {
     throw new ConflictError(
@@ -162,7 +168,7 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
     newTeacherFieldAssignment,
-    models.teacherField as unknown as keyof typeof models
+    teacherFieldModel
   );
   if (!fieldUpdated) {
     throw new NotFoundError("Teacher_Field not updated");
@@ -175,6 +181,8 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteTeacherField = async ({ params, body }: Request, res: Response) => {
+  /* models */
+  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id } = body;
@@ -182,7 +190,7 @@ const deleteTeacherField = async ({ params, body }: Request, res: Response) => {
   const teacherFiltersDelete = { _id: teacherFieldId, school_id: school_id };
   const fieldDeleted = await deleteFilterResource(
     teacherFiltersDelete,
-    models.teacherField as unknown as keyof typeof models
+    teacherFieldModel
   );
   if (!fieldDeleted) {
     throw new NotFoundError("Teacher_Field not deleted");
