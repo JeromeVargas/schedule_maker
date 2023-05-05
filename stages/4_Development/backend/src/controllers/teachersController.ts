@@ -15,14 +15,15 @@ import {
   deleteFilterResource,
 } from "../services/mongoServices";
 
+/* models */
+const userModel = "user";
+const teacherModel = "teacher";
+
 // @desc create a user
 // @route POST /api/v1/teachers
 // @access Private
 // @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
 const createTeacher = async ({ body }: Request, res: Response) => {
-  /* models */
-  const userModel = "user";
-  const teacherModel = "teacher";
   /* destructure the fields */
   const { user_id, coordinator_id } = body;
   /* check if the user exists, is active and has teaching functions */
@@ -96,8 +97,6 @@ const createTeacher = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body: {school_id:[string]}
 const getTeachers = async ({ body }: Request, res: Response) => {
-  /* models */
-  const teacherModel = "teacher";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -120,8 +119,6 @@ const getTeachers = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getTeacher = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const teacherModel = "teacher";
   /* destructure the fields */
   const { id: teacherId } = params;
   const { school_id } = body;
@@ -144,9 +141,6 @@ const getTeacher = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
 const updateTeacher = async ({ body, params }: Request, res: Response) => {
-  /* models */
-  const userModel = "user";
-  const teacherModel = "teacher";
   /* destructure the fields */
   const { id: teacherId } = params;
   const { school_id, user_id, coordinator_id } = body;
@@ -190,8 +184,6 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteTeacher = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const teacherModel = "teacher";
   /* destructure the fields */
   const { id: teacherId } = params;
   const { school_id } = body;

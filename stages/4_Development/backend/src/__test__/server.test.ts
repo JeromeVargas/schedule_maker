@@ -5790,6 +5790,11 @@ describe("Schedule maker API", () => {
     describe("PUT /teacher_field ", () => {
       describe("teacher_field::put::01 - Passing fields with missing fields", () => {
         it("should return a field needed error", async () => {
+          /* mock services */
+          const findExistingField = mockService(
+            fieldPayload,
+            "findResourceById"
+          );
           const findFieldAlreadyAssignedToTeacherByPropertyService =
             mockService(
               teacherFieldsNullPayload,
@@ -5799,6 +5804,7 @@ describe("Schedule maker API", () => {
             teacherFieldPayload,
             "updateFilterResource"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
@@ -5807,6 +5813,7 @@ describe("Schedule maker API", () => {
               //cspell:disable-next-line
               prevFiel: otherValidMockFieldId,
             });
+
           // assertions
           expect(body).toMatchObject([
             {
@@ -5826,6 +5833,7 @@ describe("Schedule maker API", () => {
             },
           ]);
           expect(statusCode).toBe(400);
+          expect(findExistingField).not.toHaveBeenCalled();
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).not.toHaveBeenCalled();
@@ -5834,6 +5842,11 @@ describe("Schedule maker API", () => {
       });
       describe("field::put::02 - Passing fields with empty fields", () => {
         it("should return an empty field error", async () => {
+          /* mock services */
+          const findExistingField = mockService(
+            fieldPayload,
+            "findResourceById"
+          );
           const findFieldAlreadyAssignedToTeacherByPropertyService =
             mockService(
               teacherFieldsNullPayload,
@@ -5843,6 +5856,7 @@ describe("Schedule maker API", () => {
             teacherFieldPayload,
             "updateFilterResource"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
@@ -5850,6 +5864,7 @@ describe("Schedule maker API", () => {
               ...newTeacherFieldEmptyValues,
               prevField: "",
             });
+
           // assertions
           expect(body).toMatchObject([
             {
@@ -5872,6 +5887,7 @@ describe("Schedule maker API", () => {
             },
           ]);
           expect(statusCode).toBe(400);
+          expect(findExistingField).not.toHaveBeenCalled();
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).not.toHaveBeenCalled();
@@ -5881,6 +5897,10 @@ describe("Schedule maker API", () => {
       describe("teacher_field::put::03 - Passing an invalid type as field value", () => {
         it("should return a not valid value error", async () => {
           // mock services
+          const findExistingField = mockService(
+            fieldPayload,
+            "findResourceById"
+          );
           const findFieldAlreadyAssignedToTeacherByPropertyService =
             mockService(
               teacherFieldsNullPayload,
@@ -5890,6 +5910,7 @@ describe("Schedule maker API", () => {
             teacherFieldPayload,
             "updateFilterResource"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
@@ -5897,6 +5918,7 @@ describe("Schedule maker API", () => {
               ...newTeacherFieldNotValidDataTypes,
               prevField: invalidMockId,
             });
+
           // assertions
           expect(body).toMatchObject([
             {
@@ -5919,25 +5941,65 @@ describe("Schedule maker API", () => {
             },
           ]);
           expect(statusCode).toBe(400);
+          expect(findExistingField).not.toHaveBeenCalled();
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).not.toHaveBeenCalled();
           expect(updateTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("teacher_field::put::04 - Passing a field but not updating it because the field has already been assigned to the teacher", () => {
+      describe("teacher_field::put::04 - Passing a non-existent field ", () => {
         it("should not update a teacher_field", async () => {
           // mock services
+          const findExistingField = mockService(
+            fieldNullPayload,
+            "findResourceById"
+          );
           const findFieldAlreadyAssignedToTeacherByPropertyService =
             mockService(teacherFieldsPayload, "findFilterResourceByProperty");
           const updateTeacherFieldService = mockService(
             teacherFieldPayload,
             "updateFilterResource"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
             .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Field not found",
+            })
+          );
+          expect(statusCode).toBe(404);
+          expect(findExistingField).toHaveBeenCalled();
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).not.toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalled();
+        });
+      });
+      describe("teacher_field::put::05 - Passing a field but not updating it because the field has already been assigned to the teacher", () => {
+        it("should not update a teacher_field", async () => {
+          // mock services
+          const findExistingField = mockService(
+            fieldPayload,
+            "findResourceById"
+          );
+          const findFieldAlreadyAssignedToTeacherByPropertyService =
+            mockService(teacherFieldsPayload, "findFilterResourceByProperty");
+          const updateTeacherFieldService = mockService(
+            teacherFieldPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockTeacherFieldId}`)
+            .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+
           // assertions
           expect(body).toEqual(
             expect.objectContaining({
@@ -5945,15 +6007,20 @@ describe("Schedule maker API", () => {
             })
           );
           expect(statusCode).toBe(409);
+          expect(findExistingField).toHaveBeenCalled();
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).toHaveBeenCalled();
           expect(updateTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("teacher_field::put::05 - Passing a field but not updating it because it does not match one of the filters: _id, school_id , teacher_id or previous field", () => {
+      describe("teacher_field::put::06 - Passing a field but not updating it because it does not match one of the filters: _id, school_id , teacher_id or previous field", () => {
         it("should not update a teacher_field", async () => {
           // mock services
+          const findExistingField = mockService(
+            fieldPayload,
+            "findResourceById"
+          );
           const findFieldAlreadyAssignedToTeacherByPropertyService =
             mockService(
               teacherFieldsNullPayload,
@@ -5963,24 +6030,31 @@ describe("Schedule maker API", () => {
             teacherFieldNullPayload,
             "updateFilterResource"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
             .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+
           // assertions
           expect(body).toEqual(
             expect.objectContaining({ msg: "Teacher_Field not updated" })
           );
           expect(statusCode).toBe(404);
+          expect(findExistingField).toHaveBeenCalled();
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).toHaveBeenCalled();
           expect(updateTeacherFieldService).toHaveBeenCalled();
         });
       });
-      describe("teacher_field::put::06 - Passing a field correctly to update", () => {
+      describe("teacher_field::put::07 - Passing a field correctly to update", () => {
         it("should update a field", async () => {
           // mock services
+          const findExistingField = mockService(
+            fieldPayload,
+            "findResourceById"
+          );
           const findFieldAlreadyAssignedToTeacherByPropertyService =
             mockService(
               teacherFieldsNullPayload,
@@ -5999,6 +6073,7 @@ describe("Schedule maker API", () => {
             expect.objectContaining({ msg: "Teacher_Field updated" })
           );
           expect(statusCode).toBe(200);
+          expect(findExistingField).toHaveBeenCalled();
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).toHaveBeenCalled();
@@ -6323,7 +6398,7 @@ describe("Schedule maker API", () => {
           expect(body).toMatchObject([
             {
               location: "body",
-              msg: "Please add the user's school id",
+              msg: "Please add the school id",
               param: "school_id",
             },
             {
@@ -7061,7 +7136,7 @@ describe("Schedule maker API", () => {
             expect(body).toMatchObject([
               {
                 location: "params",
-                msg: "The teacher_field id is not valid",
+                msg: "The schedule id is not valid",
                 param: "id",
                 value: invalidMockId,
               },
@@ -7153,7 +7228,7 @@ describe("Schedule maker API", () => {
           expect(body).toMatchObject([
             {
               location: "body",
-              msg: "Please add the user's school id",
+              msg: "Please add the school id",
               param: "school_id",
             },
             {
@@ -7754,7 +7829,6 @@ describe("Schedule maker API", () => {
     });
   });
   // continue here --> test the schedule code manually
-  // continue here --> check if the prev resource field is actually necessary in the fields and field_teacher controllers
   // continue here --> create the breaks table code
   describe("Resource => break", () => {
     // end point url

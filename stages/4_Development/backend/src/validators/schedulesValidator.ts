@@ -6,7 +6,7 @@ import { isValidId } from "../services/mongoServices";
 const validateCreateSchedule = [
   check("school_id")
     .exists()
-    .withMessage("Please add the user's school id")
+    .withMessage("Please add the school id")
     .bail()
     .notEmpty()
     .withMessage("The school field is empty")
@@ -206,7 +206,7 @@ const validateGetSchedule = [
         return true;
       }
     })
-    .withMessage(`The teacher_field id is not valid`),
+    .withMessage(`The schedule id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -229,9 +229,19 @@ const validateGetSchedule = [
 ];
 
 const validateUpdateSchedule = [
+  check("id")
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false || typeof value !== "string") {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The schedule id is not valid`),
   check("school_id")
     .exists()
-    .withMessage("Please add the user's school id")
+    .withMessage("Please add the school id")
     .bail()
     .notEmpty()
     .withMessage("The school field is empty")

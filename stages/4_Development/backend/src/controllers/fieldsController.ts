@@ -13,14 +13,15 @@ import {
   updateFilterResource,
 } from "../services/mongoServices";
 
+/* models */
+const schoolModel = "school";
+const fieldModel = "field";
+
 // @desc create a field
 // @route POST /api/v1/fields
 // @access Private
 // @fields: body {school_id:[string] , name:[string]}
 const createField = async ({ body }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
-  const fieldModel = "field";
   /* destructure the fields */
   const { school_id, name } = body;
   /* find if the school already exists */
@@ -56,8 +57,6 @@ const createField = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {school_id:[string]}
 const getFields = async ({ body }: Request, res: Response) => {
-  /* models */
-  const fieldModel = "field";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -80,8 +79,6 @@ const getFields = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getField = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const fieldModel = "field";
   /* destructure the fields */
   const { id: fieldId } = params;
   const { school_id } = body;
@@ -104,12 +101,10 @@ const getField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], name:[string]}
 const updateField = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const fieldModel = "field";
   /* destructure the fields*/
   const { id: fieldId } = params;
   const { school_id, name } = body;
-  /* check if the field already exist for the school */
+  /* check if the field name already exist for the school */
   const filters = [{ school_id: school_id }, { name: name }];
   const fieldsToReturn = "-createdAt -updatedAt";
   const duplicatedFieldNameFound = await findFilterResourceByProperty(
@@ -143,8 +138,6 @@ const updateField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteField = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const fieldModel = "field";
   /* destructure the fields from the params and body */
   const { id: fieldId } = params;
   const { school_id } = body;

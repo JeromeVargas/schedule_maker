@@ -13,13 +13,14 @@ import {
   updateFilterResource,
 } from "../services/mongoServices";
 
+/* models */
+//  const baseResource = "baseResource";
+
 // @desc create a baseResource
 // @route POST /api/v1/baseResources
 // @access Private
 // @fields: body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
-const createBaseResource = async ({ body }: Request, res: Response) => {
-  /* models */
-  //  const baseResource = "baseResource";
+const createBaseResource = async ({ body }: Request, res: Response) => {  
   /* destructure the fields */
 
   // code
@@ -31,8 +32,6 @@ const createBaseResource = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {fieldOne:[string]}
 const getBaseResources = async ({ body }: Request, res: Response) => {
-  /* models */
-  // const baseResource = "baseResource";
   /* destructure the fields */
 
   // code
@@ -43,9 +42,7 @@ const getBaseResources = async ({ body }: Request, res: Response) => {
 // @route GET /api/v1/BaseResources/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
-const getBaseResource = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  // const baseResource = "baseResource";
+const getBaseResource = async ({ params, body }: Request, res: Response) => {  
   /* destructure the fields */
 
   // code
@@ -57,8 +54,6 @@ const getBaseResource = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
 const updateBaseResource = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  // const baseResource = "baseResource";
   /* destructure the fields */
 
   //code
@@ -69,9 +64,7 @@ const updateBaseResource = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v1/BaseResources/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
-const deleteBaseResource = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  // const baseResource = "baseResource";
+const deleteBaseResource = async ({ params, body }: Request, res: Response) => {  
   /* destructure the fields */
 
   // code

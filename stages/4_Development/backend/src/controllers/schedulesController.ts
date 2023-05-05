@@ -13,14 +13,15 @@ import {
   updateFilterResource,
 } from "../services/mongoServices";
 
+/* models */
+const schoolModel = "school";
+const scheduleModel = "schedule";
+
 // @desc create a schedule
 // @route POST /api/v1/schedules
 // @access Private
 // @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const createSchedule = async ({ body }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
-  const scheduleModel = "schedule";
   /* destructure the fields */
   const { school_id, name } = body;
   /* check if the school exists */
@@ -60,8 +61,6 @@ const createSchedule = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {school_id:[string]}
 const getSchedules = async ({ body }: Request, res: Response) => {
-  /* models */
-  const scheduleModel = "schedule";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -84,8 +83,6 @@ const getSchedules = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {schoolId:[string]}
 const getSchedule = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const scheduleModel = "schedule";
   /* destructure the fields */
   const { id: scheduleId } = params;
   const { school_id } = body;
@@ -108,12 +105,10 @@ const getSchedule = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const updateSchedule = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const scheduleModel = "schedule";
   /* destructure the fields*/
   const { id: scheduleId } = params;
   const { school_id, name } = body;
-  /* check if the field already exist for the school */
+  /* check if the name already exist for the school */
   const filters = [{ school_id: school_id }, { name: name }];
   const fieldsToReturn = "-createdAt -updatedAt";
   const duplicatedScheduleFound = await findFilterResourceByProperty(
@@ -147,8 +142,6 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteSchedule = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const scheduleModel = "schedule";
   /* destructure the fields from the params and body */
   const { id: scheduleId } = params;
   const { school_id } = body;

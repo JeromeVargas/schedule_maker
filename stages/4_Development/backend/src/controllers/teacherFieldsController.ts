@@ -11,17 +11,19 @@ import {
   deleteFilterResource,
   findFilterResourceByProperty,
   updateFilterResource,
+  findResourceById,
 } from "../services/mongoServices";
+
+/* models */
+const teacherModel = "teacher";
+const fieldModel = "field";
+const teacherFieldModel = "teacherField";
 
 // @desc create a teacher_field
 // @route POST /api/v1/teacher_fields
 // @access Private
 // @fields: body {school_id:[string] , teacher_id:[string], field_id:[string]}
 const createTeacherField = async ({ body }: Request, res: Response) => {
-  /* models */
-  const teacherModel = "teacher";
-  const fieldModel = "field";
-  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { school_id, teacher_id, field_id } = body;
   /* find if the teacher already exists */
@@ -92,8 +94,6 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {school_id:[string]}
 const getTeacherFields = async ({ body }: Request, res: Response) => {
-  /* models */
-  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -116,8 +116,6 @@ const getTeacherFields = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getTeacherField = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id } = body;
@@ -140,11 +138,19 @@ const getTeacherField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], field_id:[string], prevField:[string]}
 const updateTeacherField = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id, teacher_id, field_id } = body;
+  /* check if the field exists */
+  const fieldFieldsToReturn = "-createdAt -updatedAt";
+  const existingFieldFound = await findResourceById(
+    field_id,
+    fieldFieldsToReturn,
+    fieldModel
+  );
+  if (!existingFieldFound) {
+    throw new NotFoundError("Field not found");
+  }
   /* check if the field has already been assigned to a teacher for the school */
   const filters = [
     { school_id: school_id },
@@ -163,7 +169,11 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
     );
   }
   /* update if the field and school ids are the same one as the one passed and update the field */
-  const filtersUpdate = [{ _id: teacherFieldId }, { school_id: school_id }];
+  const filtersUpdate = [
+    { _id: teacherFieldId },
+    { teacher_id: teacher_id },
+    { school_id: school_id },
+  ];
   const newTeacherFieldAssignment = body;
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
@@ -181,8 +191,6 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteTeacherField = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const teacherFieldModel = "teacherField";
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id } = body;

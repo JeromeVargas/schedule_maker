@@ -11,11 +11,11 @@ const BreakSchema = new Schema<Break>(
       type: Schema.Types.ObjectId,
       required: [true, "must provide a schedule id for the break"],
     },
-    break_start: {
+    breakStart: {
       type: Number,
       required: [true, "must provide a schedule id for the break"],
     },
-    number_minutes: {
+    numberMinutes: {
       type: Number,
       required: [true, "must provide a schedule id for the break"],
     },

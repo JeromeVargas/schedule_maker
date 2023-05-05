@@ -13,13 +13,14 @@ import {
   deleteResource,
 } from "../services/mongoServices";
 
+/* models */
+const schoolModel = "school";
+
 // @desc create a school
 // @route POST /api/v1/schools
 // @access Private
 // @fields: body {name:[string]}
 const createSchool = async ({ body }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* destructure the fields */
   const { name } = body;
   /* find if the school name already exists */
@@ -46,8 +47,6 @@ const createSchool = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: no fields
 const getSchools = async (req: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* get all schools */
   const fieldsToReturn = "-createdAt -updatedAt";
   const schoolsFound = await findAllResources(fieldsToReturn, schoolModel);
@@ -62,8 +61,6 @@ const getSchools = async (req: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]}
 const getSchool = async ({ params }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* destructure the fields*/
   const { id: schoolId } = params;
   /* get the school */
@@ -84,8 +81,6 @@ const getSchool = async ({ params }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {name:[string]}
 const updateSchool = async ({ body, params }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* destructure the fields*/
   const { id: schoolId } = params;
   /* check if there is a duplicate that belongs to someone else */
@@ -112,8 +107,6 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]}}
 const deleteSchool = async ({ params }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
   /* destructure the fields*/
   const { id: schoolId } = params;
   /* delete school */

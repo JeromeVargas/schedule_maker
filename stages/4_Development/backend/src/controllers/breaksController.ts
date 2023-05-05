@@ -13,13 +13,14 @@ import {
   updateFilterResource,
 } from "../services/mongoServices";
 
+/* models */
+const breakModel = "break";
+
 // @desc create a break
 // @route POST /api/v1/breaks
 // @access Private
 // @fields: body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
 const createBreak = async ({ body }: Request, res: Response) => {
-  /* models */
-  //  const break = "break";
   /* destructure the fields */
 
   // code
@@ -31,8 +32,6 @@ const createBreak = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body {fieldOne:[string]}
 const getBreaks = async ({ body }: Request, res: Response) => {
-  /* models */
-  // const break = "break";
   /* destructure the fields */
 
   // code
@@ -44,8 +43,6 @@ const getBreaks = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {field:[string]}
 const getBreak = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  // const break = "break";
   /* destructure the fields */
 
   // code
@@ -57,8 +54,6 @@ const getBreak = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
 const updateBreak = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  // const break = "break";
   /* destructure the fields */
 
   //code
@@ -70,8 +65,6 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
 const deleteBreak = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  // const break = "break";
   /* destructure the fields */
 
   // code

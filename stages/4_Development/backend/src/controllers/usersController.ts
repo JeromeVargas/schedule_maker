@@ -14,15 +14,15 @@ import {
   findFilterResourceByProperty,
 } from "../services/mongoServices";
 
+/* models */
+const schoolModel = "school";
+const userModel = "user";
+
 // @desc create a user
 // @route POST /api/v1/users
 // @access Private
 // @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const createUser = async ({ body }: Request, res: Response) => {
-  /* models */
-  const schoolModel = "school";
-  const userModel = "user";
-
   /* destructure the fields */
   const { school_id, email } = body;
   /* check if the school exists */
@@ -60,8 +60,6 @@ const createUser = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: body: {school_id:[string]}
 const getUsers = async ({ body }: Request, res: Response) => {
-  /* models */
-  const userModel = "user";
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -84,8 +82,6 @@ const getUsers = async ({ body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getUser = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const userModel = "user";
   /* destructure the fields */
   const { id: userId } = params;
   const { school_id } = body;
@@ -108,8 +104,6 @@ const getUser = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const updateUser = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const userModel = "user";
   /* destructure the fields */
   const { id: userId } = params;
   const { school_id, email } = body;
@@ -124,7 +118,7 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
   if (duplicatedEmail && duplicatedEmail?._id?.toString() !== userId) {
     throw new ConflictError("Please try a different email address");
   }
-  /* check if the field is the same as the one passed and update the user */
+  /* check if the userId is the same as the one passed and update the user */
   const filtersUpdate = [{ _id: userId }, { school_id: school_id }];
   const newUser = body;
   const fieldUpdated = await updateFilterResource(
@@ -143,8 +137,6 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteUser = async ({ params, body }: Request, res: Response) => {
-  /* models */
-  const userModel = "user";
   /* destructure the fields */
   const { id: userId } = params;
   const { school_id } = body;

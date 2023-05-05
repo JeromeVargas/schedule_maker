@@ -65,6 +65,6 @@ export type Schedule = {
 export type Break = {
   school_id: Types.ObjectId;
   schedule_id: Types.ObjectId;
-  break_start: number;
-  number_minutes: number;
+  breakStart: number;
+  numberMinutes: number;
 };
