@@ -2,7 +2,7 @@
   const baseResourceModel = "baseResource"
   const baseResourceCreated = await insertResource(body, baseResourceModel);  
   if (!baseResourceCreated) {
-    throw new BadRequestError("Field not created!");
+    throw new BadRequestError("baseResource not created!");
   }
 
 /* get all baseResources */

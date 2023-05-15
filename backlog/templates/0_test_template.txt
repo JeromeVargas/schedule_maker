@@ -149,12 +149,12 @@ describe("Resource => baseResource", () => {
           //code
         });
       });
-      describe("baseResource::get::04 - Requesting all fields but not finding any", () => {
+      describe("baseResource::get::04 - Requesting all baseResources but not finding any", () => {
         it("should not get any fields", async () => {
           //code
         });
       });
-      describe("baseResource::get::05 - Requesting all fields correctly", () => {
+      describe("baseResource::get::05 - Requesting all baseResources correctly", () => {
         it("should get all fields", async () => {
           //code
         });
@@ -176,12 +176,12 @@ describe("Resource => baseResource", () => {
           //code
         });
       });
-      describe("baseResource::get/:id::04 - Requesting a field but not finding it", () => {
+      describe("baseResource::get/:id::04 - Requesting a baseResource but not finding it", () => {
         it("should not get a school", async () => {
           //code
         });
       });
-      describe("baseResource::get/:id::05 - Requesting a field correctly", () => {
+      describe("baseResource::get/:id::05 - Requesting a baseResource correctly", () => {
         it("should get a field", async () => {
           //code
         });
@@ -220,7 +220,7 @@ describe("Resource => baseResource", () => {
         //code
       });
     });
-    describe("field::put::07 - Passing a field correctly to update", () => {
+    describe("baseResource::put::07 - Passing a baseResource correctly to update", () => {
       it("should update a baseResource", async () => {
         //code
       });

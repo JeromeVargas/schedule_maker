@@ -47,8 +47,8 @@ const createSchedule = async ({ body }: Request, res: Response) => {
     throw new ConflictError("This field name already exists");
   }
   /* create the schedule  */
-  const userCreated = await insertResource(body, scheduleModel);
-  if (!userCreated) {
+  const scheduleCreated = await insertResource(body, scheduleModel);
+  if (!scheduleCreated) {
     throw new BadRequestError("Schedule not created");
   }
   res
@@ -81,7 +81,7 @@ const getSchedules = async ({ body }: Request, res: Response) => {
 // @desc get the Schedule by id
 // @route GET /api/v1/schedules/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {schoolId:[string]}
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const getSchedule = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: scheduleId } = params;
@@ -111,16 +111,16 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
   /* check if the name already exist for the school */
   const filters = [{ school_id: school_id }, { name: name }];
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicatedScheduleFound = await findFilterResourceByProperty(
+  const duplicatedScheduleNameFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
     scheduleModel
   );
   // if there is at least one record with that name and a different schedule id, it returns true and triggers an error
-  const duplicatedScheduleId = duplicatedScheduleFound?.some(
+  const duplicatedScheduleName = duplicatedScheduleNameFound?.some(
     (schedule: any) => schedule._id.toString() !== scheduleId
   );
-  if (duplicatedScheduleId) {
+  if (duplicatedScheduleName) {
     throw new ConflictError("This schedule name already exists!");
   }
   /* update if the schedule and school ids are the same one as the one passed and update the field */

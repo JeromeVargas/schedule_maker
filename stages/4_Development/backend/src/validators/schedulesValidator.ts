@@ -96,7 +96,6 @@ const validateCreateSchedule = [
     )
     .bail()
     .custom((value, { req }) => {
-      360;
       if (value > req.body.shiftNumberMinutes) {
         return false;
       } else if (value <= req.body.shiftNumberMinutes) {

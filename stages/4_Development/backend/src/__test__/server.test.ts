@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 
 import { server, connection } from "../server";
 import * as MongoServices from "../services/mongoServices";
+import notFound404Middleware from "../middleware/not-found";
 
 describe("Schedule maker API", () => {
   // mock services
@@ -412,7 +413,7 @@ describe("Schedule maker API", () => {
             // assertions
             expect(body).toEqual(
               expect.objectContaining({
-                _id: expect.any(String),
+                _id: validMockSchoolId,
                 name: "school 001",
               })
             );
@@ -1601,8 +1602,8 @@ describe("Schedule maker API", () => {
             // assertions
             expect(body).toEqual(
               expect.objectContaining({
-                _id: expect.any(String),
-                school_id: expect.any(String),
+                _id: validMockUserId,
+                school_id: validMockSchoolId,
                 firstName: "Jerome",
                 lastName: "Vargas",
                 email: "jerome@gmail.com",
@@ -3380,9 +3381,9 @@ describe("Schedule maker API", () => {
             expect(statusCode).toBe(200);
             expect(body).toEqual(
               expect.objectContaining({
-                _id: expect.any(String),
-                user_id: expect.any(String),
-                coordinator_id: expect.any(String),
+                _id: validMockTeacherId,
+                user_id: validMockUserId,
+                coordinator_id: validMockCoordinatorId,
                 contractType: "full-time",
                 hoursAssignable: 60,
                 hoursAssigned: 60,
@@ -4660,7 +4661,7 @@ describe("Schedule maker API", () => {
             // assertions
             expect(body).toEqual(
               expect.objectContaining({
-                _id: expect.any(String),
+                _id: validMockFieldId,
                 name: "Mathematics",
               })
             );
@@ -5123,7 +5124,7 @@ describe("Schedule maker API", () => {
 
     // test blocks
     describe("POST /teacher_field ", () => {
-      describe("teacher_field::post::01 - Passing a field with missing fields", () => {
+      describe("teacher_field::post::01 - Passing a teacher with missing fields", () => {
         it("should return a field needed error", async () => {
           let findDuplicatedTeacherFieldByIdService = mockService(
             teacherPayload,
@@ -5173,7 +5174,7 @@ describe("Schedule maker API", () => {
           expect(insertTeacherFieldService).not.toHaveBeenCalled();
         });
       });
-      describe("teacher_field::post::02 - Passing a field with empty fields", () => {
+      describe("teacher_field::post::02 - Passing a teacher with empty fields", () => {
         it("should return an empty field error", async () => {
           let findDuplicatedTeacherFieldByIdService = mockService(
             teacherPayload,
@@ -5775,10 +5776,10 @@ describe("Schedule maker API", () => {
 
             // assertions
             expect(body).toMatchObject({
-              _id: expect.any(String),
-              field_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
+              _id: validMockTeacherFieldId,
+              field_id: validMockFieldId,
+              school_id: validMockSchoolId,
+              teacher_id: validMockTeacherId,
             });
             expect(statusCode).toBe(200);
             expect(findTeacherFieldByIdService).toHaveBeenCalled();
@@ -7081,10 +7082,12 @@ describe("Schedule maker API", () => {
               schedulesNullPayload,
               "findFilterResourceByProperty"
             );
+
             // api call
             const { statusCode, body } = await supertest(server)
               .get(`${endPointUrl}${validMockScheduleId}`)
               .send({ school_i: validMockSchoolId });
+
             // assertions
             expect(body).toMatchObject([
               {
@@ -7104,10 +7107,12 @@ describe("Schedule maker API", () => {
               schedulesNullPayload,
               "findFilterResourceByProperty"
             );
+
             // api call
             const { statusCode, body } = await supertest(server)
               .get(`${endPointUrl}${validMockScheduleId}`)
               .send({ school_id: "" });
+
             // assertions
             expect(body).toMatchObject([
               {
@@ -7132,6 +7137,7 @@ describe("Schedule maker API", () => {
             const { statusCode, body } = await supertest(server)
               .get(`${endPointUrl}${invalidMockId}`)
               .send({ school_id: invalidMockId });
+
             // assertions
             expect(body).toMatchObject([
               {
@@ -7158,10 +7164,12 @@ describe("Schedule maker API", () => {
               schedulesNullPayload,
               "findFilterResourceByProperty"
             );
+
             // api call
             const { statusCode, body } = await supertest(server)
               .get(`${endPointUrl}${validMockScheduleId}`)
               .send({ school_id: validMockSchoolId });
+
             // assertions
             expect(body).toEqual(
               expect.objectContaining({
@@ -7179,14 +7187,16 @@ describe("Schedule maker API", () => {
               schedulePayload,
               "findFilterResourceByProperty"
             );
+
             // api call
             const { statusCode, body } = await supertest(server)
               .get(`${endPointUrl}${validMockScheduleId}`)
               .send({ school_id: validMockSchoolId });
+
             // assertions
             expect(body).toMatchObject({
-              _id: expect.any(String),
-              school_id: expect.any(String),
+              _id: validMockScheduleId,
+              school_id: validMockSchoolId,
               classUnitMinutes: 40,
               dayStart: 420,
               friday: true,
@@ -7828,60 +7838,92 @@ describe("Schedule maker API", () => {
       });
     });
   });
-  // continue here --> test the schedule code manually
-  // continue here --> create the breaks table code
+
   describe("Resource => break", () => {
     // end point url
     const endPointUrl = "/api/v1/breaks/";
 
     // inputs
     const validMockBreakId = new Types.ObjectId().toString();
+    const otherValidBreakMockId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
+    const validMockScheduleId = new Types.ObjectId().toString();
     //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newBreak = {
       school_id: validMockSchoolId,
-      name: "Mathematics",
+      schedule_id: validMockScheduleId,
+      breakStart: 600,
+      numberMinutes: 40,
     };
     const newBreakMissingValues = {
       school_i: validMockSchoolId,
-      nam: "Mathematics",
+      schedule_i: validMockScheduleId,
+      breakStar: 600,
+      numberMinute: 40,
     };
     const newBreakEmptyValues = {
       school_id: "",
-      name: "",
+      schedule_id: "",
+      breakStart: "",
+      numberMinutes: "",
     };
     const newBreakNotValidDataTypes = {
       school_id: 9769231419,
-      name: 1234567890,
-    };
-    const newBreakWrongLengthValues = {
-      school_id: validMockSchoolId,
-      name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+      schedule_id: 9769231419,
+      breakStart: "hello",
+      numberMinutes: "hello",
     };
 
     // payloads
+    const schedulePayload = {
+      _id: validMockScheduleId,
+      school_id: {
+        _id: validMockSchoolId,
+        name: "School 001",
+      },
+      name: "Schedule 001",
+      dayStart: 420,
+      shiftNumberMinutes: 360,
+      classUnitMinutes: 40,
+      monday: true,
+      tuesday: true,
+      wednesday: true,
+      thursday: true,
+      friday: true,
+      saturday: true,
+      sunday: true,
+    };
+    const scheduleNullPayload = null;
     const breakPayload = {
       _id: validMockBreakId,
       school_id: validMockSchoolId,
-      name: "Mathematics",
+      schedule_id: validMockScheduleId,
+      breakStart: 600,
+      numberMinutes: 40,
     };
     const breakNullPayload = null;
     const breaksPayload = [
       {
         _id: new Types.ObjectId().toString(),
         school_id: new Types.ObjectId().toString(),
-        name: "Mathematics",
+        schedule_id: new Types.ObjectId().toString(),
+        breakStart: 600,
+        numberMinutes: 40,
       },
       {
         _id: new Types.ObjectId().toString(),
         school_id: new Types.ObjectId().toString(),
-        name: "Language",
+        schedule_id: new Types.ObjectId().toString(),
+        breakStart: 600,
+        numberMinutes: 20,
       },
       {
         _id: new Types.ObjectId().toString(),
         school_id: new Types.ObjectId().toString(),
-        name: "Physics",
+        schedule_id: new Types.ObjectId().toString(),
+        breakStart: 600,
+        numberMinutes: 30,
       },
     ];
     const breaksNullPayload: any[] = [];
@@ -7890,58 +7932,197 @@ describe("Schedule maker API", () => {
     describe("POST /break ", () => {
       describe("break::post::01 - Passing missing fields", () => {
         it("should return a missing fields error", async () => {
-          //code
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newBreakMissingValues);
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the schedule id",
+              param: "schedule_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the break day start time",
+              param: "breakStart",
+            },
+            {
+              location: "body",
+              msg: "Please add the break number of minutes",
+              param: "numberMinutes",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
         });
       });
       describe("break::post::02 - Passing fields with empty values", () => {
         it("should return an empty fields error", async () => {
-          //code
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newBreakEmptyValues);
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The schedule id field is empty",
+              param: "schedule_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The start field is empty",
+              param: "breakStart",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The break number of minutes field is empty",
+              param: "numberMinutes",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
         });
       });
       describe("break::post::03 - Passing an invalid type as a value", () => {
         it("should return a not valid value error", async () => {
-          //code
-        });
-      });
-      describe("break::post::04 - Passing too long or short input values", () => {
-        it("should return an invalid length input value error", async () => {
-          //code
-        });
-      });
-      describe("break::post::05 - Passing an non-existent school in the body", () => {
-        it("should return a non-existent school error", async () => {
-          //code
-        });
-      });
-      describe("break::post::06 - Passing an existing value", () => {
-        it("should return a duplicated field error", async () => {
-          //code
-        });
-      });
-      describe("break::post::07 - Passing a break but not being created", () => {
-        it("should not create a field", async () => {
-          //code
-        });
-      });
-      describe.skip("break::post::08 - Passing a break correctly to create", () => {
-        it("should create a field", async () => {
           // mock services
-          // let findDuplicatedBreakByIdService = mockService(
-          //   breakPayload,
-          //   "findPopulateResourceById"
-          // );
-          // findDuplicatedBreakByIdService = mockService(
-          //   breakPayload,
-          //   "findPopulateResourceById"
-          // );
-          // const findBreakByPropertyService = mockService(
-          //   breaksNullPayload,
-          //   "findFilterResourceByProperty"
-          // );
-          // const insertBreakService = mockService(
-          //   BreakPayload,
-          //   "insertResource"
-          // );
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newBreakNotValidDataTypes);
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: 9769231419,
+            },
+            {
+              location: "body",
+              msg: "The schedule id is not valid",
+              param: "schedule_id",
+              value: 9769231419,
+            },
+            {
+              location: "body",
+              msg: "start value is not valid",
+              param: "breakStart",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "break number of minutes value is not valid",
+              param: "numberMinutes",
+              value: "hello",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::post::04 - Passing break start time after 23:59", () => {
+        it("should return an day exceeding break start time error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send({ ...newBreak, breakStart: 1440 });
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The break start time must must not exceed the 23:59 hours",
+              param: "breakStart",
+              value: 1440,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::post::05 - Passing an non-existent schedule in the body", () => {
+        it("should return a non-existent schedule error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            scheduleNullPayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -7951,15 +8132,181 @@ describe("Schedule maker API", () => {
           // assertions
           expect(body).toEqual(
             expect.objectContaining({
-              msg: "Break created successfully!",
+              msg: "Please make sure the schedule exists",
+            })
+          );
+          expect(statusCode).toBe(404);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::post::06 - Passing a non-existing school", () => {
+        it("should return a non-existent school error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            { ...schedulePayload, school_id: null },
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newBreak);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please make sure the school exists",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::post::07 - Passing non-matching value", () => {
+        it("should return a non-matching school id error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send({ ...newBreak, school_id: otherValidBreakMockId });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please make sure the schedule belongs to the school",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::post::08 - Passing a break start time that starts earlier than the school shift day start time", () => {
+        it("should return a break start time error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send({ ...newBreak, breakStart: 419 });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please take into account that the break start time cannot be earlier than the schedule start time",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::post::09 - Passing a break number of minutes too long to fit in the schedule shift, allowing to have a class before and after", () => {
+        it("should return an break number of minutes not fitting the schedule length error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            //@ts-ignore
+            .send({ ...newBreak, numberMinutes: 281 });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::post::10 - Passing a break but not being created", () => {
+        it("should not create a field", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakNullPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newBreak);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Break not created!",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).toHaveBeenCalled();
+        });
+      });
+      describe("break::post::11 - Passing a break correctly to create", () => {
+        it("should create a field", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newBreak);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Break created!",
             })
           );
           expect(statusCode).toBe(200);
-          // expect(findDuplicatedBreakByIdService).toHaveBeenCalledTimes(
-          //   2
-          // );
-          // expect(findBreakByPropertyService).toHaveBeenCalled();
-          // expect(insertBreakService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).toHaveBeenCalled();
         });
       });
     });
@@ -7968,54 +8315,274 @@ describe("Schedule maker API", () => {
       describe("break - GET", () => {
         describe("break::get::01 - Passing missing fields", () => {
           it("should return a missing values error", async () => {
-            //code
+            // mock services
+            const findAllBreaksService = mockService(
+              breaksNullPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_i: validMockSchoolId });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findAllBreaksService).not.toHaveBeenCalled();
           });
         });
         describe("break::get::02 - passing fields with empty values", () => {
           it("should return an empty values error", async () => {
-            //code
+            // mock services
+            const findAllBreaksService = mockService(
+              breaksNullPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: "" });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findAllBreaksService).not.toHaveBeenCalled();
           });
         });
         describe("break::get::03 - passing invalid ids", () => {
           it("should return an invalid id error", async () => {
-            //code
+            // mock services
+            const findAllBreaksService = mockService(
+              breaksNullPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: invalidMockId });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findAllBreaksService).not.toHaveBeenCalled();
           });
         });
         describe("break::get::04 - Requesting all fields but not finding any", () => {
           it("should not get any fields", async () => {
-            //code
+            // mock services
+            const findAllBreaksService = mockService(
+              breaksNullPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: validMockSchoolId });
+
+            // assertions
+            expect(body).toEqual(
+              expect.objectContaining({ msg: "No breaks found" })
+            );
+            expect(statusCode).toBe(404);
+            expect(findAllBreaksService).toHaveBeenCalled();
           });
         });
         describe("break::get::05 - Requesting all fields correctly", () => {
           it("should get all fields", async () => {
-            //code
+            // mock services
+            const findAllBreaksService = mockService(
+              breaksPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: validMockSchoolId });
+
+            // assertions
+            expect(body).toMatchObject([
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                schedule_id: expect.any(String),
+                breakStart: 600,
+                numberMinutes: 40,
+              },
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                schedule_id: expect.any(String),
+                breakStart: 600,
+                numberMinutes: 20,
+              },
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                schedule_id: expect.any(String),
+                breakStart: 600,
+                numberMinutes: 30,
+              },
+            ]);
+            expect(statusCode).toBe(200);
+            expect(findAllBreaksService).toHaveBeenCalled();
           });
         });
       });
       describe("break - GET/:id", () => {
         describe("break::get/:id::01 - Passing missing fields", () => {
           it("should return a missing values error", async () => {
-            //code
+            // mock services
+            const findBreakByIdService = mockService(
+              breakPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockBreakId}`)
+              .send({ school_i: validMockSchoolId });
+
+            // assertions
+            expect(body).toEqual(
+              expect.objectContaining([
+                {
+                  location: "body",
+                  msg: "Please add a school id",
+                  param: "school_id",
+                },
+              ])
+            );
+            expect(statusCode).toBe(400);
+            expect(findBreakByIdService).not.toHaveBeenCalled();
           });
         });
         describe("break::get/:id::02 - Passing fields with empty values", () => {
           it("should return an empty values error", async () => {
-            //code
+            // mock services
+            const findBreakByIdService = mockService(
+              breakPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockBreakId}`)
+              .send({ school_id: "" });
+
+            // assertions
+            expect(body).toEqual(
+              expect.objectContaining([
+                {
+                  location: "body",
+                  msg: "The school id field is empty",
+                  param: "school_id",
+                  value: "",
+                },
+              ])
+            );
+            expect(statusCode).toBe(400);
+            expect(findBreakByIdService).not.toHaveBeenCalled();
           });
         });
         describe("break::get/:id::03 - Passing invalid ids", () => {
           it("should return an invalid id error", async () => {
-            //code
+            // mock services
+            const findBreakByIdService = mockService(
+              breakPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockBreakId}`)
+              .send({ school_id: invalidMockId });
+
+            // assertions
+            expect(body).toEqual(
+              expect.objectContaining([
+                {
+                  location: "body",
+                  msg: "The school id is not valid",
+                  param: "school_id",
+                  value: invalidMockId,
+                },
+              ])
+            );
+            expect(statusCode).toBe(400);
+            expect(findBreakByIdService).not.toHaveBeenCalled();
           });
         });
         describe("break::get/:id::04 - Requesting a field but not finding it", () => {
           it("should not get a school", async () => {
-            //code
+            // mock services
+            const findBreakByIdService = mockService(
+              breaksNullPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockBreakId}`)
+              .send({ school_id: validMockSchoolId });
+
+            // assertions
+            expect(body).toEqual(
+              expect.objectContaining({
+                msg: "Break not found",
+              })
+            );
+            expect(statusCode).toBe(404);
+            expect(findBreakByIdService).toHaveBeenCalled();
           });
         });
         describe("break::get/:id::05 - Requesting a field correctly", () => {
           it("should get a field", async () => {
-            //code
+            // mock services
+            const findBreakByIdService = mockService(
+              breakPayload,
+              "findFilterResourceByProperty"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockBreakId}`)
+              .send({ school_id: validMockSchoolId });
+
+            // assertions
+            expect(body).toMatchObject({
+              _id: validMockBreakId,
+              school_id: validMockSchoolId,
+              schedule_id: validMockScheduleId,
+              breakStart: 600,
+              numberMinutes: 40,
+            });
+            expect(statusCode).toBe(200);
+            expect(findBreakByIdService).toHaveBeenCalled();
           });
         });
       });
@@ -8024,37 +8591,380 @@ describe("Schedule maker API", () => {
     describe("PUT /break ", () => {
       describe("break::put::01 - Passing missing fields", () => {
         it("should return a missing fields error", async () => {
-          //code
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const updateBreakService = mockService(
+            breakNullPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send(newBreakMissingValues);
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the schedule id",
+              param: "schedule_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the break day start time",
+              param: "breakStart",
+            },
+            {
+              location: "body",
+              msg: "Please add the break number of minutes",
+              param: "numberMinutes",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalled();
         });
       });
       describe("break::put::02 - Passing fields with empty values", () => {
         it("should return an empty field error", async () => {
-          //code
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const updateBreakService = mockService(
+            breakNullPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send(newBreakEmptyValues);
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The schedule id field is empty",
+              param: "schedule_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The start field is empty",
+              param: "breakStart",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The break number of minutes field is empty",
+              param: "numberMinutes",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalled();
         });
       });
       describe("break::put::03 - Passing an invalid type as field value", () => {
         it("should return a not valid value error", async () => {
-          //code
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const updateBreakService = mockService(
+            breakNullPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send(newBreakNotValidDataTypes);
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: 9769231419,
+            },
+            {
+              location: "body",
+              msg: "The schedule id is not valid",
+              param: "schedule_id",
+              value: 9769231419,
+            },
+            {
+              location: "body",
+              msg: "start value is not valid",
+              param: "breakStart",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "break number of minutes value is not valid",
+              param: "numberMinutes",
+              value: "hello",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalled();
         });
       });
-      describe("break::put::04 - Passing too long or short input values", () => {
+      describe("break::put::04 - Passing break start time after 23:59", () => {
+        it("should return an day exceeding break start time error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send({ ...newBreak, breakStart: 1440 });
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The break start time must must not exceed the 23:59 hours",
+              param: "breakStart",
+              value: 1440,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::put::05 - Passing an non-existent schedule in the body", () => {
+        it("should return a non-existent schedule error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            scheduleNullPayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send(newBreak);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please make sure the schedule exists",
+            })
+          );
+          expect(statusCode).toBe(404);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::put::06 - Passing a non-existing school", () => {
+        it("should return a non-existent school error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            { ...schedulePayload, school_id: null },
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send(newBreak);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please make sure the school exists",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::put::07 - Passing non-matching value", () => {
+        it("should return a non-matching school id error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const insertBreakService = mockService(
+            breakPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send({ ...newBreak, school_id: otherValidBreakMockId });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please make sure the schedule belongs to the school",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::put::08 - Passing a break start time that starts earlier than the school shift day start time", () => {
         it("should return an invalid length input value error", async () => {
-          //code
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const updateBreakService = mockService(
+            breakNullPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send({ ...newBreak, breakStart: 419 });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please take into account that the break start time cannot be earlier than the schedule start time",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalled();
         });
       });
-      describe("break::put::05 - Passing a break but not updating it because break already exist", () => {
+      describe("break::put::09 - Passing a break number of minutes too long to fit in the schedule shift, allowing to have a class before and after", () => {
+        it("should return an break number of minutes not fitting the schedule length error", async () => {
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const updateBreakService = mockService(
+            breakNullPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send({ ...newBreak, numberMinutes: 281 });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalled();
+        });
+      });
+      describe("break::put::10 - Passing a break but not updating it because it does not match the filters", () => {
         it("should not update a break", async () => {
-          //code
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const updateBreakService = mockService(
+            breakNullPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send(newBreak);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Break not updated",
+            })
+          );
+          expect(statusCode).toBe(404);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(updateBreakService).toHaveBeenCalled();
         });
       });
-      describe("break::put::06 - Passing a break but not updating it because it does not match the filters", () => {
-        it("should not update a break", async () => {
-          //code
-        });
-      });
-      describe("field::put::07 - Passing a field correctly to update", () => {
+      describe("break::put::11 - Passing a break correctly to update", () => {
         it("should update a break", async () => {
-          //code
+          // mock services
+          const findPopulateExistingScheduleByIdService = mockService(
+            schedulePayload,
+            "findPopulateResourceById"
+          );
+          const updateBreakService = mockService(
+            breakPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockBreakId}`)
+            .send(newBreak);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "Break updated!",
+            })
+          );
+          expect(statusCode).toBe(200);
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(updateBreakService).toHaveBeenCalled();
         });
       });
     });
@@ -8062,29 +8972,134 @@ describe("Schedule maker API", () => {
     describe("DELETE /break ", () => {
       describe("break::delete::01 - Passing missing fields", () => {
         it("should return a missing fields error", async () => {
-          //code
+          // mock services
+          const deleteBreakService = mockService(
+            breakNullPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockBreakId}`)
+            .send({ school_i: validMockSchoolId });
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(deleteBreakService).not.toHaveBeenCalled();
         });
       });
       describe("break::delete::02 - Passing fields with empty values", () => {
         it("should return a empty fields error", async () => {
-          //code
+          // mock services
+          const deleteBreakService = mockService(
+            breakNullPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockBreakId}`)
+            .send({ school_id: "" });
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(deleteBreakService).not.toHaveBeenCalled();
         });
       });
       describe("break::delete::03 - Passing invalid ids", () => {
         it("should return an invalid id error", async () => {
-          //code
+          // mock services
+          const deleteBreakService = mockService(
+            breakNullPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${invalidMockId}`)
+            .send({ school_id: invalidMockId });
+
+          // assertions
+          expect(body).toMatchObject([
+            {
+              location: "params",
+              msg: "The break id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(deleteBreakService).not.toHaveBeenCalled();
         });
       });
       describe("break::delete::04 - Passing a break id but not deleting it", () => {
         it("should not delete a school", async () => {
-          //code
+          // mock services
+          const deleteBreakService = mockService(
+            breakNullPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockBreakId}`)
+            .send({ school_id: validMockSchoolId });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({ msg: "Break not deleted" })
+          );
+          expect(statusCode).toBe(404);
+          expect(deleteBreakService).toHaveBeenCalled();
         });
       });
       describe("break::delete::05 - Passing a break id correctly to delete", () => {
         it("should delete a field", async () => {
-          //code
+          // mock services
+          const deleteBreakService = mockService(
+            breakPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockBreakId}`)
+            .send({ school_id: validMockSchoolId });
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({ msg: "Break deleted" })
+          );
+          expect(statusCode).toBe(200);
+          expect(deleteBreakService).toHaveBeenCalled();
         });
       });
     });
   });
+  // continue here --> check if you can test the arguments passed in the services to avoid having to recreate the test to check if the models passed are correct
+  // continue here --> create more template lines for the initial tests and controller, one for each action
+  // continue here --> check if the isInt validator is more fitting than the isNum one
+  // continue here --> check check referential equality with toMatchObject within the object deep copy
+  // continue here --> create the levels table code
 });

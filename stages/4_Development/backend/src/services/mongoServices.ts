@@ -5,6 +5,7 @@ import TeacherModel from "../models/teacherModel";
 import FieldModel from "../models/fieldModel";
 import TeacherFieldModel from "../models/teacherFieldModel";
 import ScheduleModel from "../models/scheduleModel";
+import BreakModel from "../models/breaksModel";
 
 const models = {
   school: SchoolModel,
@@ -13,6 +14,7 @@ const models = {
   field: FieldModel,
   teacherField: TeacherFieldModel,
   schedule: ScheduleModel,
+  break: BreakModel,
 } as const;
 
 // helper functions

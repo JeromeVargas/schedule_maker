@@ -93,7 +93,13 @@
                     - update ✅
                     - delete ✅
 
-                - schedule ⌛⏳⌛
+                - schedule ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
+
+                - break ⌛⏳⌛
                     - create ⌛⏳⌛
                     - read ⌛⏳⌛
                     - update ⌛⏳⌛
