@@ -13,7 +13,7 @@ const validateCreateTeacher = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -29,7 +29,7 @@ const validateCreateTeacher = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -46,7 +46,7 @@ const validateCreateTeacher = [
     .isString()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -180,7 +180,7 @@ const validateGetTeachers = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -196,7 +196,7 @@ const validateGetTeacher = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -212,7 +212,7 @@ const validateGetTeacher = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -228,7 +228,7 @@ const validateUpdateTeacher = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -244,7 +244,7 @@ const validateUpdateTeacher = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -261,7 +261,7 @@ const validateUpdateTeacher = [
     .isString()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -278,7 +278,7 @@ const validateUpdateTeacher = [
     .isString()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -406,7 +406,7 @@ const validateDeleteTeacher = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -422,7 +422,7 @@ const validateDeleteTeacher = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;

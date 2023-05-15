@@ -13,7 +13,7 @@ const validateCreateSchedule = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -183,7 +183,7 @@ const validateGetSchedules = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -199,7 +199,7 @@ const validateGetSchedule = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -215,7 +215,7 @@ const validateGetSchedule = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -231,7 +231,7 @@ const validateUpdateSchedule = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -247,7 +247,7 @@ const validateUpdateSchedule = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -412,7 +412,7 @@ const validateDeleteSchedule = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -428,7 +428,7 @@ const validateDeleteSchedule = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;

@@ -13,7 +13,7 @@ const validateCreateField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -46,7 +46,7 @@ const validateGetFields = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -62,7 +62,7 @@ const validateGetField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -78,7 +78,7 @@ const validateGetField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -94,7 +94,7 @@ const validateUpdateField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -110,7 +110,7 @@ const validateUpdateField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -137,7 +137,7 @@ const validateDeleteField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -153,7 +153,7 @@ const validateDeleteField = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;

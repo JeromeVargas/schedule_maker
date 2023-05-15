@@ -19,7 +19,7 @@ const models = {
 
 // helper functions
 const isValidId = (id: string) => {
-  return isValidObjectId(id);
+  return isValidObjectId(id) && typeof id === "string";
 };
 
 // CRUD services

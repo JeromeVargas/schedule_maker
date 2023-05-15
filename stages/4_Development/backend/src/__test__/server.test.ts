@@ -8701,11 +8701,17 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockBreakId}`)
+            .put(`${endPointUrl}${invalidMockId}`)
             .send(newBreakNotValidDataTypes);
 
           // assertions
           expect(body).toMatchObject([
+            {
+              location: "params",
+              msg: "The schedule id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
             {
               location: "body",
               msg: "The school id is not valid",
@@ -9097,9 +9103,8 @@ describe("Schedule maker API", () => {
       });
     });
   });
-  // continue here --> check if you can test the arguments passed in the services to avoid having to recreate the test to check if the models passed are correct
   // continue here --> create more template lines for the initial tests and controller, one for each action
-  // continue here --> check if the isInt validator is more fitting than the isNum one
+  // continue here --> check if you can test the arguments passed in the services to avoid having to recreate the test to check if the models passed are correct
   // continue here --> check check referential equality with toMatchObject within the object deep copy
   // continue here --> create the levels table code
 });

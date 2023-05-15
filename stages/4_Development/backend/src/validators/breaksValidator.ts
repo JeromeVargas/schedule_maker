@@ -13,7 +13,7 @@ const validateCreateBreak = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -29,7 +29,7 @@ const validateCreateBreak = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -79,7 +79,7 @@ const validateGetBreaks = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -95,7 +95,7 @@ const validateGetBreak = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -111,7 +111,7 @@ const validateGetBreak = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -124,6 +124,16 @@ const validateGetBreak = [
 ];
 
 const validateUpdateBreak = [
+  check("id")
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false || typeof value !== "string") {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The schedule id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
@@ -133,7 +143,7 @@ const validateUpdateBreak = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -149,7 +159,7 @@ const validateUpdateBreak = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -196,7 +206,7 @@ const validateDeleteBreak = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
@@ -212,7 +222,7 @@ const validateDeleteBreak = [
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
