@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../errors/bad-request";
-import ConflictError from "../errors/conflict";
 import NotFoundError from "../errors/not-found";
 
 import {
   insertResource,
-  findResourceById,
   findPopulateResourceById,
   findFilterAllResources,
   deleteFilterResource,
@@ -165,7 +163,6 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
   }
   /* update break */
   const filtersUpdate = [{ _id: breakId }, { school_id: school_id }];
-  const breakModel = "break";
   const breakUpdated = await updateFilterResource(
     filtersUpdate,
     body,

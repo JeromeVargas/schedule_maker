@@ -11,20 +11,70 @@ const validateCreateBaseResource = [
 ];
 
 const validateGetBaseResources = [
-  // code
+  check("school_id")
+    .exists()
+    .withMessage("Please add a school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
 const validateGetBaseResource = [
-  // code
+  check("id")
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The baseResource id is not valid`),
+  check("school_id")
+    .exists()
+    .withMessage("Please add a school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
 const validateUpdateBaseResource = [
+  check("id")
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The baseResource id is not valid`),
   // code
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
@@ -32,7 +82,32 @@ const validateUpdateBaseResource = [
 ];
 
 const validateDeleteBaseResource = [
-  // code
+  check("id")
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The baseResource id is not valid`),
+  check("school_id")
+    .exists()
+    .withMessage("Please add a school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

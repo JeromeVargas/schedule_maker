@@ -1548,15 +1548,13 @@ describe("Schedule maker API", () => {
                 location: "params",
                 msg: "The user id is not valid",
                 param: "id",
-                //cspell:disable-next-line
-                value: "invalidMockId",
+                value: invalidMockId,
               },
               {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
-                //cspell:disable-next-line
-                value: "invalidMockId",
+                value: invalidMockId,
               },
             ]);
             expect(statusCode).toBe(400);
@@ -3325,15 +3323,13 @@ describe("Schedule maker API", () => {
                 location: "params",
                 msg: "The teacher id is not valid",
                 param: "id",
-                //cspell:disable-next-line
-                value: "invalidMockId",
+                value: invalidMockId,
               },
               {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
-                //cspell:disable-next-line
-                value: "invalidMockId",
+                value: invalidMockId,
               },
             ]);
             expect(statusCode).toBe(400);
@@ -4607,15 +4603,13 @@ describe("Schedule maker API", () => {
                 location: "params",
                 msg: "The field id is not valid",
                 param: "id",
-                //cspell:disable-next-line
-                value: "invalidMockId",
+                value: invalidMockId,
               },
               {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
-                //cspell:disable-next-line
-                value: "invalidMockId",
+                value: invalidMockId,
               },
             ]);
             expect(statusCode).toBe(400);
@@ -8317,7 +8311,7 @@ describe("Schedule maker API", () => {
           it("should return a missing values error", async () => {
             // mock services
             const findAllBreaksService = mockService(
-              breaksNullPayload,
+              breaksPayload,
               "findFilterAllResources"
             );
 
@@ -8342,7 +8336,7 @@ describe("Schedule maker API", () => {
           it("should return an empty values error", async () => {
             // mock services
             const findAllBreaksService = mockService(
-              breaksNullPayload,
+              breaksPayload,
               "findFilterAllResources"
             );
 
@@ -8368,7 +8362,7 @@ describe("Schedule maker API", () => {
           it("should return an invalid id error", async () => {
             // mock services
             const findAllBreaksService = mockService(
-              breaksNullPayload,
+              breaksPayload,
               "findFilterAllResources"
             );
 
@@ -8519,20 +8513,24 @@ describe("Schedule maker API", () => {
 
             // api call
             const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${validMockBreakId}`)
+              .get(`${endPointUrl}${invalidMockId}`)
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining([
-                {
-                  location: "body",
-                  msg: "The school id is not valid",
-                  param: "school_id",
-                  value: invalidMockId,
-                },
-              ])
-            );
+            expect(body).toMatchObject([
+              {
+                location: "params",
+                msg: "The break id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ]);
             expect(statusCode).toBe(400);
             expect(findBreakByIdService).not.toHaveBeenCalled();
           });
@@ -8708,7 +8706,7 @@ describe("Schedule maker API", () => {
           expect(body).toMatchObject([
             {
               location: "params",
-              msg: "The schedule id is not valid",
+              msg: "The break id is not valid",
               param: "id",
               value: invalidMockId,
             },
@@ -9103,7 +9101,6 @@ describe("Schedule maker API", () => {
       });
     });
   });
-  // continue here --> create more template lines for the initial tests and controller, one for each action
   // continue here --> check if you can test the arguments passed in the services to avoid having to recreate the test to check if the models passed are correct
   // continue here --> check check referential equality with toMatchObject within the object deep copy
   // continue here --> create the levels table code

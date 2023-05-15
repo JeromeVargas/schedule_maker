@@ -101,7 +101,7 @@ const validateGetBreak = [
         return true;
       }
     })
-    .withMessage(`The schedule id is not valid`),
+    .withMessage(`The break id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -127,13 +127,13 @@ const validateUpdateBreak = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
-      if (validId === false || typeof value !== "string") {
+      if (validId === false) {
         return false;
       } else if (validId === true) {
         return true;
       }
     })
-    .withMessage(`The schedule id is not valid`),
+    .withMessage(`The break id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
