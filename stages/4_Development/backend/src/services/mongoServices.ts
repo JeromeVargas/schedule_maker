@@ -26,9 +26,8 @@ const isValidId = (id: string) => {
 // @desc insert a resource in database
 // @params resource, resource name
 const insertResource = <T>(resource: T, resourceName: keyof typeof models) => {
-  const model = models[resourceName];
   // @ts-ignore
-  const resourceInsert = model.create(resource);
+  const resourceInsert = models[resourceName].create(resource);
   return resourceInsert;
 };
 
@@ -38,9 +37,8 @@ const findAllResources = (
   fieldsToReturn: string,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
   // @ts-ignore
-  const resourceFound = model
+  const resourceFound = models[resourceName]
     // @ts-ignore
     .find()
     .select(fieldsToReturn)
@@ -56,9 +54,7 @@ const findFilterAllResources = (
   fieldsToReturn: string,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
-  // @ts-ignore
-  const resourceFound = model
+  const resourceFound = models[resourceName]
     // @ts-ignore
     .find(filters)
     .select(fieldsToReturn)
@@ -76,9 +72,7 @@ const findPopulateFilterAllResources = (
   fieldsToReturnPopulate: string,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
-  // @ts-ignore
-  const resourceFound = model
+  const resourceFound = models[resourceName]
     // @ts-ignore
     .find({ _id: { $in: filters } })
     .select(fieldsToReturn)
@@ -95,9 +89,7 @@ const findResourceById = (
   fieldsToReturn: string,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
-  // @ts-ignore
-  const resourceFound = model
+  const resourceFound = models[resourceName]
     // @ts-ignore
     .findById(resourceId)
     .select(fieldsToReturn)
@@ -115,9 +107,7 @@ const findPopulateResourceById = (
   fieldsToReturnPopulate: string,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
-  // @ts-ignore
-  const resourceFound = model
+  const resourceFound = models[resourceName]
     // @ts-ignore
     .findById(resourceId)
     .select(fieldsToReturn)
@@ -134,8 +124,7 @@ const findResourceByProperty = (
   fieldsToReturn: string,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
-  const resourceFound = model
+  const resourceFound = models[resourceName]
     // @ts-ignore
     .findOne(filters)
     .collation({ locale: "en", strength: 2 })
@@ -152,8 +141,7 @@ const findFilterResourceByProperty = (
   fieldsToReturn: string,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
-  const resourcesFound = model
+  const resourcesFound = models[resourceName]
     // @ts-ignore
     .find({ $and: filters })
     .collation({ locale: "en", strength: 2 })
@@ -170,12 +158,15 @@ const updateResource = <T>(
   resource: T,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
   // @ts-ignore
-  const resourceUpdated = model.findByIdAndUpdate(resourceId, resource, {
-    new: true,
-    runValidators: true,
-  });
+  const resourceUpdated = models[resourceName].findByIdAndUpdate(
+    resourceId,
+    resource,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   return resourceUpdated;
 };
@@ -187,12 +178,15 @@ const updateFilterResource = <T>(
   resource: T,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
   // @ts-ignore
-  const resourceUpdated = model.findOneAndUpdate({ $and: filters }, resource, {
-    new: true,
-    runValidators: true,
-  });
+  const resourceUpdated = models[resourceName].findOneAndUpdate(
+    { $and: filters },
+    resource,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   return resourceUpdated;
 };
@@ -203,8 +197,7 @@ const deleteResource = (
   resourceId: string,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
-  const resourceDeleted = model
+  const resourceDeleted = models[resourceName]
     .findOneAndRemove({ _id: resourceId })
     .lean()
     .exec();
@@ -217,8 +210,10 @@ const deleteFilterResource = (
   filters: any,
   resourceName: keyof typeof models
 ) => {
-  const model = models[resourceName];
-  const resourceDeleted = model.findOneAndDelete(filters).lean().exec();
+  const resourceDeleted = models[resourceName]
+    .findOneAndDelete(filters)
+    .lean()
+    .exec();
   return resourceDeleted;
 };
 

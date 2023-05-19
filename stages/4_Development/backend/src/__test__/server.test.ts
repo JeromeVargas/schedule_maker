@@ -11484,6 +11484,5 @@ describe("Schedule maker API", () => {
     });
   });
   // continue here --> check referential equality with toMatchObject within the object deep copy, also check if you can use to replace the equals.expect instances
-  // continue here --> refactor the mongo services to make them just a call to the data base without any other code
   // continue here --> create the levels table code
 });
