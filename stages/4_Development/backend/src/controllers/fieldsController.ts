@@ -45,7 +45,8 @@ const createField = async ({ body }: Request, res: Response) => {
     throw new ConflictError("This field name already exists");
   }
   /* create school */
-  const fieldCreated = await insertResource(body, fieldModel);
+  const newField = body;
+  const fieldCreated = await insertResource(newField, fieldModel);
   if (!fieldCreated) {
     throw new BadRequestError("Field not created!");
   }
@@ -60,7 +61,7 @@ const getFields = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
-  const filters = { school_id: school_id };
+  const filters = { school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
   const fieldsFound = await findFilterAllResources(
     filters,

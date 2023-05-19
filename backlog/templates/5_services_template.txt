@@ -1,12 +1,10 @@
-/* create baseResource */
-  const baseResourceModel = "baseResource"
+/* create baseResource */  
   const baseResourceCreated = await insertResource(body, baseResourceModel);  
   if (!baseResourceCreated) {
     throw new BadRequestError("baseResource not created!");
   }
 
-/* get all baseResources */
-  const baseResourceModel = "baseResource"
+/* get all baseResources */  
   const fieldsToReturn = "-password -createdAt -updatedAt";
   const baseResourcesFound = await findAllResources(fieldsToReturn, baseResourceModel);
   if (!baseResourcesFound || baseResourcesFound.length === 0) {
@@ -15,8 +13,7 @@
 
 /* filter all resources by baseResource property */
   const filters = { baseResource_id: baseResource_id };
-  const fieldsToReturn = "-password -createdAt -updatedAt";
-  const baseResourceModel = "baseResource"
+  const fieldsToReturn = "-password -createdAt -updatedAt";  
   const fieldsFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
@@ -27,8 +24,7 @@
   const baseResourceSearchCriteria = [baseResource_id, baseResource_id];
   const baseResourceFieldsToReturn = "-password -createdAt -updatedAt";
   const baseResourceFieldsToPopulate = "property";
-  const baseResourceFieldsToReturnPopulate = "-_id -createdAt -updatedAt";
-  const baseResourceModel = "baseResource"
+  const baseResourceFieldsToReturnPopulate = "-_id -createdAt -updatedAt";  
   const existingBaseResource = await findPopulateFilterAllResources(
     baseResourceSearchCriteria,
     baseResourceFieldsToReturn,
@@ -45,8 +41,7 @@
   }
 
 /* get the baseResource by id */
-  const fieldsToReturn = "-createdAt -updatedAt";
-  const baseResourceModel = "baseResource"
+  const fieldsToReturn = "-createdAt -updatedAt";  
   const baseResourceFound = await findResourceById(
     baseResourceId,
     fieldsToReturn,
@@ -59,8 +54,7 @@
 /* find baseResource by id, and populate its properties */
   const fieldsToReturnBaseResource = "-createdAt -updatedAt";
   const fieldsToPopulateBaseResource = "property";
-  const fieldsToReturnPopulateBaseResource = "-password -createdAt -updatedAt";
-  const baseResourceModel = "baseResource"
+  const fieldsToReturnPopulateBaseResource = "-password -createdAt -updatedAt";  
   const baseResourceFound = await findPopulateResourceById(
     baseResource_id,
     fieldsToReturnBaseResource,
@@ -74,8 +68,7 @@
 
 /* find baseResource by property */
   const searchCriteria = { property };
-  const fieldsToReturn = "-password -createdAt -updatedAt";
-  const baseResourceModel = "baseResource"
+  const fieldsToReturn = "-password -createdAt -updatedAt";  
   const duplicatedBaseResource = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
@@ -86,8 +79,7 @@
   }
 
 /* find baseResource by properties for the entity */
-  const filters = [{ property_id: school_id }, { name: name }];
-  const baseResourceModel = "baseResource"
+  const filters = [{ property_id: school_id }, { name: name }];  
   const duplicatedBaseResource = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
@@ -97,8 +89,7 @@
     throw new ConflictError("This baseResource name already exists");
   }
 
-/* update baseResource by id */
-  const baseResourceModel = "baseResource"
+/* update baseResource by id */  
   const baseResourceUpdated = await updateResource(baseResourceId, body, baseResourceModel);
   if (!baseResourceUpdated) {
     throw new NotFoundError("BaseResource not updated");
@@ -110,8 +101,7 @@
     { property_id: property_id },
     { prevProperty: prevProperty },
   ];
-  const newBaseResource = { property_id: property_id, property: property };
-  const baseResourceModel = "baseResource"
+  const newBaseResource = { property_id: property_id, property: property };  
   const baseResourceUpdated = await updateFilterResource(
     filtersUpdate,
     newBaseResource,
@@ -121,15 +111,13 @@
     throw new NotFoundError("BaseResource not updated");
   }
 
-/* delete baseResource */
-  const baseResourceModel = "baseResource"
+/* delete baseResource */  
   const baseResourceDeleted = await deleteResource(baseResourceId, baseResourceModel);
   if (!baseResourceDeleted) {
     throw new NotFoundError("BaseResource not deleted");
   }
 
-/* delete field if properties are the same one as the one passed */
-  const baseResourceModel = "baseResource"
+/* delete field if properties are the same one as the one passed */  
   const filtersDelete = { _id: baseResourceId, property: property };
   const baseResourceDeleted = await deleteFilterResource(filtersDelete, baseResourceModel);
   if (!baseResourceDeleted) {

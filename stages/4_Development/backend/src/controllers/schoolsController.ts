@@ -35,7 +35,8 @@ const createSchool = async ({ body }: Request, res: Response) => {
     throw new ConflictError("This school name already exists");
   }
   /* create school */
-  const schoolCreated = await insertResource(body, schoolModel);
+  const newSchool = body;
+  const schoolCreated = await insertResource(newSchool, schoolModel);
   if (!schoolCreated) {
     throw new BadRequestError("School not created");
   }

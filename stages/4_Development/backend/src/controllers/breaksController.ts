@@ -63,7 +63,8 @@ const createBreak = async ({ body }: Request, res: Response) => {
     );
   }
   /* create break */
-  const breakCreated = await insertResource(body, breakModel);
+  const newBreak = body;
+  const breakCreated = await insertResource(newBreak, breakModel);
   if (!breakCreated) {
     throw new BadRequestError("Break not created!");
   }
@@ -163,9 +164,10 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
   }
   /* update break */
   const filtersUpdate = [{ _id: breakId }, { school_id: school_id }];
+  const newBreak = body;
   const breakUpdated = await updateFilterResource(
     filtersUpdate,
-    body,
+    newBreak,
     breakModel
   );
   if (!breakUpdated) {

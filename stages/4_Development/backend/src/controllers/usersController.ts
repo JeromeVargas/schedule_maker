@@ -48,7 +48,8 @@ const createUser = async ({ body }: Request, res: Response) => {
     throw new ConflictError("Please try a different email address");
   }
   /* create the user */
-  const userCreated = await insertResource(body, userModel);
+  const newUser = body;
+  const userCreated = await insertResource(newUser, userModel);
   if (!userCreated) {
     throw new BadRequestError("User not created");
   }

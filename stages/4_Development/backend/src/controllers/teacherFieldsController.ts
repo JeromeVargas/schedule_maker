@@ -42,7 +42,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     throw new BadRequestError("Please make sure the teacher exists");
   }
   /* find if the field already exists */
-  const fieldsToReturnField = "-name -createdAt -updatedAt";
+  const fieldsToReturnField = "-createdAt -updatedAt";
   const fieldsToPopulateField = "school_id";
   const fieldsToReturnPopulateField = "_id -name -createdAt -updatedAt";
   const fieldFound = await findPopulateResourceById(
@@ -80,7 +80,11 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     );
   }
   /* create the teacher_field record */
-  const teacherFieldCreated = await insertResource(body, teacherFieldModel);
+  const newTeacherField = body;
+  const teacherFieldCreated = await insertResource(
+    newTeacherField,
+    teacherFieldModel
+  );
   if (!teacherFieldCreated) {
     throw new BadRequestError("Teacher_Field not created!");
   }
@@ -136,7 +140,7 @@ const getTeacherField = async ({ params, body }: Request, res: Response) => {
 // @desc update a teacher_field
 // @route PUT /api/v1/teacher_fields/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], field_id:[string], prevField:[string]}
+// @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], field_id:[string]}
 const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: teacherFieldId } = params;

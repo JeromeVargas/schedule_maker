@@ -83,7 +83,8 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     throw new ConflictError("User is already a teacher");
   }
   /* create the teacher */
-  const teacherCreated = await insertResource(body, teacherModel);
+  const newTeacher = body;
+  const teacherCreated = await insertResource(newTeacher, teacherModel);
   if (!teacherCreated) {
     throw new BadRequestError("Teacher not created");
   }
@@ -100,7 +101,7 @@ const getTeachers = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
-  const filters = { school_id: school_id };
+  const filters = { school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
   const teachersFound = await findFilterAllResources(
     filters,

@@ -3,17 +3,32 @@ import { Types } from "mongoose";
 
 import { server, connection } from "../server";
 import * as MongoServices from "../services/mongoServices";
-import notFound404Middleware from "../middleware/not-found";
 
 describe("Schedule maker API", () => {
-  // mock services
+  /* mock services */
+  // just one return
   const mockService = (payload: unknown, service: string) => {
     return (
       jest
         // @ts-ignore
         .spyOn(MongoServices, service)
         // @ts-ignore
-        .mockReturnValueOnce(payload)
+        .mockReturnValue(payload)
+    );
+  };
+  // multiple returns
+  const mockServiceMultipleReturns = (
+    firstPayload: unknown,
+    secondPayload: unknown,
+    service: string
+  ) => {
+    return (
+      jest
+        // @ts-ignore
+        .spyOn(MongoServices, service)
+        // @ts-ignore
+        .mockReturnValueOnce(firstPayload)
+        .mockReturnValueOnce(secondPayload)
     );
   };
 
@@ -101,7 +116,18 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedSchoolNameByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-_id -createdAt -updatedAt",
+            "school"
+          );
           expect(insertSchoolService).not.toHaveBeenCalled();
+          expect(insertSchoolService).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::post::02 - Passing a school with empty fields", () => {
@@ -134,7 +160,18 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedSchoolNameByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-_id -createdAt -updatedAt",
+            "school"
+          );
           expect(insertSchoolService).not.toHaveBeenCalled();
+          expect(insertSchoolService).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::post::03 - Passing an invalid type as field value", () => {
@@ -167,7 +204,18 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedSchoolNameByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-_id -createdAt -updatedAt",
+            "school"
+          );
           expect(insertSchoolService).not.toHaveBeenCalled();
+          expect(insertSchoolService).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::post::04 - Passing too long or short input values", () => {
@@ -201,7 +249,18 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedSchoolNameByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-_id -createdAt -updatedAt",
+            "school"
+          );
           expect(insertSchoolService).not.toHaveBeenCalled();
+          expect(insertSchoolService).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::post::05 - Passing an existing school name", () => {
@@ -229,7 +288,18 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findDuplicatedSchoolNameByPropertyService).toHaveBeenCalled();
+          expect(
+            findDuplicatedSchoolNameByPropertyService
+          ).toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-_id -createdAt -updatedAt",
+            "school"
+          );
           expect(insertSchoolService).not.toHaveBeenCalled();
+          expect(insertSchoolService).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::post::06 - Passing a school but not being created", () => {
@@ -257,7 +327,18 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findDuplicatedSchoolNameByPropertyService).toHaveBeenCalled();
+          expect(
+            findDuplicatedSchoolNameByPropertyService
+          ).toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-_id -createdAt -updatedAt",
+            "school"
+          );
           expect(insertSchoolService).toHaveBeenCalled();
+          expect(insertSchoolService).toHaveBeenCalledWith(
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::post::07 - Passing a school correctly to create", () => {
@@ -283,7 +364,18 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(201);
           expect(findDuplicatedSchoolNameByPropertyService).toHaveBeenCalled();
+          expect(
+            findDuplicatedSchoolNameByPropertyService
+          ).toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-_id -createdAt -updatedAt",
+            "school"
+          );
           expect(insertSchoolService).toHaveBeenCalled();
+          expect(insertSchoolService).toHaveBeenCalledWith(
+            { name: "school 001" },
+            "school"
+          );
         });
       });
     });
@@ -311,6 +403,10 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findAllSchoolsService).toHaveBeenCalled();
+            expect(findAllSchoolsService).toHaveBeenCalledWith(
+              "-createdAt -updatedAt",
+              "school"
+            );
           });
         });
         describe("school::get::02 - Requesting all schools correctly", () => {
@@ -343,6 +439,10 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(200);
             expect(findAllSchoolsService).toHaveBeenCalled();
+            expect(findAllSchoolsService).toHaveBeenCalledWith(
+              "-createdAt -updatedAt",
+              "school"
+            );
           });
         });
       });
@@ -372,6 +472,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findSchoolByIdService).not.toHaveBeenCalled();
+            expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+              validMockSchoolId,
+              "-createdAt -updatedAt",
+              "school"
+            );
           });
         });
         describe("school::get/:id::02 - Requesting a school but not finding it", () => {
@@ -395,6 +500,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findSchoolByIdService).toHaveBeenCalled();
+            expect(findSchoolByIdService).toHaveBeenCalledWith(
+              validMockSchoolId,
+              "-createdAt -updatedAt",
+              "school"
+            );
           });
         });
         describe("school::get/:id::03 - Requesting a school correctly", () => {
@@ -419,6 +529,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(200);
             expect(findSchoolByIdService).toHaveBeenCalled();
+            expect(findSchoolByIdService).toHaveBeenCalledWith(
+              validMockSchoolId,
+              "-createdAt -updatedAt",
+              "school"
+            );
           });
         });
       });
@@ -454,7 +569,19 @@ describe("Schedule maker API", () => {
           expect(
             findSchoolNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findSchoolNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(updateSchoolService).not.toHaveBeenCalled();
+          expect(updateSchoolService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::put::02 - Passing a school with empty fields", () => {
@@ -487,7 +614,19 @@ describe("Schedule maker API", () => {
           expect(
             findSchoolNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findSchoolNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(updateSchoolService).not.toHaveBeenCalled();
+          expect(updateSchoolService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::put::03 - Passing an invalid type as field value", () => {
@@ -527,7 +666,19 @@ describe("Schedule maker API", () => {
           expect(
             findSchoolNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findSchoolNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(updateSchoolService).not.toHaveBeenCalled();
+          expect(updateSchoolService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::put::04 - Passing too long or short input values", () => {
@@ -561,7 +712,19 @@ describe("Schedule maker API", () => {
           expect(
             findSchoolNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findSchoolNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(updateSchoolService).not.toHaveBeenCalled();
+          expect(updateSchoolService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::put::05 - Passing an existing school name", () => {
@@ -589,7 +752,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findSchoolNameDuplicatedByPropertyService).toHaveBeenCalled();
+          expect(
+            findSchoolNameDuplicatedByPropertyService
+          ).toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(updateSchoolService).not.toHaveBeenCalled();
+          expect(updateSchoolService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::put::06 - Passing a school but not updating it", () => {
@@ -617,7 +792,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(findSchoolNameDuplicatedByPropertyService).toHaveBeenCalled();
+          expect(
+            findSchoolNameDuplicatedByPropertyService
+          ).toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(updateSchoolService).toHaveBeenCalled();
+          expect(updateSchoolService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            { name: "school 001" },
+            "school"
+          );
         });
       });
       describe("school::put::07 - Passing a school correctly to update", () => {
@@ -643,7 +830,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(findSchoolNameDuplicatedByPropertyService).toHaveBeenCalled();
+          expect(
+            findSchoolNameDuplicatedByPropertyService
+          ).toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(updateSchoolService).toHaveBeenCalled();
+          expect(updateSchoolService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            { name: "school 001" },
+            "school"
+          );
         });
       });
     });
@@ -674,6 +873,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteSchoolService).not.toHaveBeenCalled();
+          expect(deleteSchoolService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "school"
+          );
         });
       });
       describe("school::delete::02 - Passing a school id but not deleting it", () => {
@@ -697,6 +900,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(deleteSchoolService).toHaveBeenCalled();
+          expect(deleteSchoolService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "school"
+          );
         });
       });
       describe("school::delete::03 - Passing a school id correctly to delete", () => {
@@ -718,6 +925,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(deleteSchoolService).toHaveBeenCalled();
+          expect(deleteSchoolService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "school"
+          );
         });
       });
     });
@@ -737,7 +948,6 @@ describe("Schedule maker API", () => {
       school_id: validMockSchoolId,
       firstName: "Jerome",
       lastName: "Vargas",
-      school: validMockSchoolId,
       email: "jerome@gmail.com",
       password: "12341234",
       role: "coordinator",
@@ -920,10 +1130,23 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: userPayload.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(insertUserService).not.toHaveBeenCalled();
+          expect(insertUserService).not.toHaveBeenCalledWith(newUser, "user");
         });
       });
       describe("user::post::02 - Passing a user with empty fields", () => {
@@ -996,10 +1219,23 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: userPayload.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(insertUserService).not.toHaveBeenCalled();
+          expect(insertUserService).not.toHaveBeenCalledWith(newUser, "user");
         });
       });
       describe("user::post::03 - Passing an invalid type as field value", () => {
@@ -1074,10 +1310,23 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: userPayload.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(insertUserService).not.toHaveBeenCalled();
+          expect(insertUserService).not.toHaveBeenCalledWith(newUser, "user");
         });
       });
       describe("user::post::04 - Passing too long or short input values", () => {
@@ -1133,10 +1382,23 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: userPayload.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(insertUserService).not.toHaveBeenCalled();
+          expect(insertUserService).not.toHaveBeenCalledWith(newUser, "user");
         });
       });
       describe("user::post::05 - Passing wrong school id, email, role or status", () => {
@@ -1187,11 +1449,25 @@ describe("Schedule maker API", () => {
               value: "activo",
             },
           ]);
+          expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: userPayload.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(insertUserService).not.toHaveBeenCalled();
+          expect(insertUserService).not.toHaveBeenCalledWith(newUser, "user");
         });
       });
       describe("user::post::06 - Passing an non-existing school", () => {
@@ -1220,10 +1496,23 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: userPayload.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(insertUserService).not.toHaveBeenCalled();
+          expect(insertUserService).not.toHaveBeenCalledWith(newUser, "user");
         });
       });
       describe("user::post::07 -  Passing an existing user's email", () => {
@@ -1252,8 +1541,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalledWith(
+            { email: userPayload.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(insertUserService).not.toHaveBeenCalled();
+          expect(insertUserService).not.toHaveBeenCalledWith(newUser, "user");
         });
       });
       describe("user::post::08 - Passing a user but not being created", () => {
@@ -1285,8 +1585,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalledWith(
+            { email: userPayload.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(insertUserService).toHaveBeenCalled();
+          expect(insertUserService).toHaveBeenCalledWith(newUser, "user");
         });
       });
       describe("user::post::09 - Passing a user correctly to create", () => {
@@ -1313,8 +1624,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(201);
           expect(findSchoolByIdService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalledWith(
+            { email: userPayload.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(insertUserService).toHaveBeenCalled();
+          expect(insertUserService).toHaveBeenCalledWith(newUser, "user");
         });
       });
     });
@@ -1345,6 +1667,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllUsersService).not.toHaveBeenCalled();
+            expect(findAllUsersService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "user"
+            );
           });
         });
         describe("user::get::02 - passing a school with empty values", () => {
@@ -1371,6 +1698,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllUsersService).not.toHaveBeenCalled();
+            expect(findAllUsersService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "user"
+            );
           });
         });
         describe("user::get::03 - Passing an invalid school id in the body", () => {
@@ -1398,6 +1730,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllUsersService).not.toHaveBeenCalled();
+            expect(findAllUsersService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "user"
+            );
           });
         });
         describe("user::get::04 - Requesting all users but not finding any", () => {
@@ -1421,6 +1758,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findAllUsersService).toHaveBeenCalled();
+            expect(findAllUsersService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "user"
+            );
           });
         });
         describe("user::get::05 - Requesting all users", () => {
@@ -1473,6 +1815,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(200);
             expect(findAllUsersService).toHaveBeenCalled();
+            expect(findAllUsersService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "user"
+            );
           });
         });
       });
@@ -1501,6 +1848,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findUserByPropertyService).not.toHaveBeenCalled();
+            expect(findUserByPropertyService).not.toHaveBeenCalledWith(
+              [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+              "-password -createdAt -updatedAt",
+              "user"
+            );
           });
         });
         describe("user::get/:id::02 - passing a school with empty values", () => {
@@ -1527,6 +1879,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findUserByPropertyService).not.toHaveBeenCalled();
+            expect(findUserByPropertyService).not.toHaveBeenCalledWith(
+              [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+              "-password -createdAt -updatedAt",
+              "user"
+            );
           });
         });
         describe("user::get/:id::03 - Passing an invalid user and school ids", () => {
@@ -1559,6 +1916,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findUserByPropertyService).not.toHaveBeenCalled();
+            expect(findUserByPropertyService).not.toHaveBeenCalledWith(
+              [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+              "-password -createdAt -updatedAt",
+              "user"
+            );
           });
         });
         describe("user::get/:id::04 - Requesting a user but not finding it", () => {
@@ -1582,6 +1944,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findUserByPropertyService).toHaveBeenCalled();
+            expect(findUserByPropertyService).toHaveBeenCalledWith(
+              [{ _id: validMockUserId }, { school_id: otherValidMockUserId }],
+              "-password -createdAt -updatedAt",
+              "user"
+            );
           });
         });
         describe("user::get/:id::05 - Requesting a user correctly", () => {
@@ -1612,6 +1979,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(200);
             expect(findUserByPropertyService).toHaveBeenCalled();
+            expect(findUserByPropertyService).toHaveBeenCalledWith(
+              [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+              "-password -createdAt -updatedAt",
+              "user"
+            );
           });
         });
       });
@@ -1682,7 +2054,19 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: newUser.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateUserService).not.toHaveBeenCalled();
+          expect(updateUserService).not.toHaveBeenCalledWith(
+            [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+            newUser,
+            "user"
+          );
         });
       });
       describe("user::put::02 - Passing a user with empty fields", () => {
@@ -1757,7 +2141,19 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: newUser.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateUserService).not.toHaveBeenCalled();
+          expect(updateUserService).not.toHaveBeenCalledWith(
+            [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+            newUser,
+            "user"
+          );
         });
       });
       describe("user::put::03 - Passing an invalid type as field value", () => {
@@ -1840,7 +2236,19 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: newUser.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateUserService).not.toHaveBeenCalled();
+          expect(updateUserService).not.toHaveBeenCalledWith(
+            [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+            newUser,
+            "user"
+          );
         });
       });
       describe("user::put::04 - Passing too long or short input values", () => {
@@ -1897,7 +2305,19 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: newUser.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateUserService).not.toHaveBeenCalled();
+          expect(updateUserService).not.toHaveBeenCalledWith(
+            [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+            newUser,
+            "user"
+          );
         });
       });
       describe("user::put::05 - Passing wrong email, role or status", () => {
@@ -1951,7 +2371,19 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedUserEmailByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedUserEmailByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { email: newUser.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateUserService).not.toHaveBeenCalled();
+          expect(updateUserService).not.toHaveBeenCalledWith(
+            [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+            newUser,
+            "user"
+          );
         });
       });
       describe("user::put::06 - Passing an existing user's email", () => {
@@ -1979,7 +2411,17 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalledWith(
+            { email: newUser.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateUserService).not.toHaveBeenCalled();
+          expect(updateUserService).not.toHaveBeenCalledWith(
+            [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+            newUser,
+            "user"
+          );
         });
       });
       describe("user::put::07 - Passing a user but not updating it", () => {
@@ -2007,7 +2449,17 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalledWith(
+            { email: newUser.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateUserService).toHaveBeenCalled();
+          expect(updateUserService).toHaveBeenCalledWith(
+            [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+            newUser,
+            "user"
+          );
         });
       });
       describe("user::put::08 - Passing a user correctly to update", () => {
@@ -2033,7 +2485,17 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalledWith(
+            { email: newUser.email },
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateUserService).toHaveBeenCalled();
+          expect(updateUserService).toHaveBeenCalledWith(
+            [{ _id: validMockUserId }, { school_id: validMockSchoolId }],
+            newUser,
+            "user"
+          );
         });
       });
     });
@@ -2063,6 +2525,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteUserService).not.toHaveBeenCalled();
+          expect(deleteUserService).not.toHaveBeenCalledWith(
+            { _id: validMockUserId, school_id: validMockSchoolId },
+            "user"
+          );
         });
       });
       describe("user::delete::02 - passing a school with empty values", () => {
@@ -2089,6 +2555,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteUserService).not.toHaveBeenCalled();
+          expect(deleteUserService).not.toHaveBeenCalledWith(
+            { _id: validMockUserId, school_id: validMockSchoolId },
+            "user"
+          );
         });
       });
       describe("user::delete::03 - Passing an invalid user and school ids", () => {
@@ -2123,9 +2593,13 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteUserService).not.toHaveBeenCalled();
+          expect(deleteUserService).not.toHaveBeenCalledWith(
+            { _id: validMockUserId, school_id: validMockSchoolId },
+            "user"
+          );
         });
       });
-      describe("user::delete::05 - Passing a user id but not deleting it", () => {
+      describe("user::delete::04 - Passing a user id but not deleting it", () => {
         it("should not delete a user", async () => {
           // mock services
           const deleteUserService = mockService(
@@ -2146,9 +2620,13 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(deleteUserService).toHaveBeenCalled();
+          expect(deleteUserService).toHaveBeenCalledWith(
+            { _id: validMockUserId, school_id: validMockSchoolId },
+            "user"
+          );
         });
       });
-      describe("user::delete::06 - Passing a user id correctly to delete", () => {
+      describe("user::delete::05 - Passing a user id correctly to delete", () => {
         it("should delete a user", async () => {
           // mock services
           const deleteUserService = mockService(
@@ -2167,6 +2645,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(deleteUserService).toHaveBeenCalled();
+          expect(deleteUserService).toHaveBeenCalledWith(
+            { _id: validMockUserId, school_id: validMockSchoolId },
+            "user"
+          );
         });
       });
     });
@@ -2460,8 +2942,24 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).not.toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::02 - Passing a teacher with empty fields", () => {
@@ -2568,8 +3066,24 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).not.toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::03 - Passing an invalid type as field value", () => {
@@ -2682,8 +3196,24 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).not.toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::04 - Passing wrong contract type, hours assignable or hours assigned input values", () => {
@@ -2714,21 +3244,21 @@ describe("Schedule maker API", () => {
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The teacher's user id is not valid",
               param: "user_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The coordinator's id is not valid",
               param: "coordinator_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
@@ -2752,8 +3282,24 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).not.toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).not.toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::05 - Not finding a user", () => {
@@ -2785,8 +3331,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::06 - Passing an inactive user", () => {
@@ -2819,8 +3381,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::07 - Passing a user with no teaching functions assigned", () => {
@@ -2855,8 +3433,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::08 - The user's school does not exists", () => {
@@ -2894,8 +3488,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::09 - Not finding a coordinator", () => {
@@ -2927,8 +3537,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::10 - Passing a user with a role different from coordinator", () => {
@@ -2963,8 +3589,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::11 - Passing an inactive coordinator", () => {
@@ -2998,8 +3640,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).not.toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::12 - user already a teacher", () => {
@@ -3031,8 +3689,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).not.toHaveBeenCalled();
+          expect(insertTeacherService).not.toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::13 - Passing a teacher but not being created", () => {
@@ -3064,8 +3738,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).toHaveBeenCalled();
+          expect(insertTeacherService).toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::14 - Passing a teacher correctly to create", () => {
@@ -3095,8 +3785,24 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(201);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
+          expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
+            [validMockUserId, validMockCoordinatorId],
+            "-password -createdAt -updatedAt",
+            "school_id",
+            "-_id -createdAt -updatedAt",
+            "user"
+          );
           expect(findTeacherByIdPropertyService).toHaveBeenCalled();
+          expect(findTeacherByIdPropertyService).toHaveBeenCalledWith(
+            { user_id: validMockUserId },
+            "-createdAt -updatedAt",
+            "teacher"
+          );
           expect(insertTeacherService).toHaveBeenCalled();
+          expect(insertTeacherService).toHaveBeenCalledWith(
+            newTeacher,
+            "teacher"
+          );
         });
       });
     });
@@ -3126,6 +3832,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllTeachersService).not.toHaveBeenCalled();
+            expect(findAllTeachersService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
         describe("teacher::get::02 - passing a school with empty values", () => {
@@ -3152,6 +3863,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllTeachersService).not.toHaveBeenCalled();
+            expect(findAllTeachersService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
         describe("teacher::get::03 - Passing an invalid school id in the body", () => {
@@ -3179,6 +3895,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllTeachersService).not.toHaveBeenCalled();
+            expect(findAllTeachersService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
         describe("teacher::get::04 - Requesting all teachers but not finding any", () => {
@@ -3202,6 +3923,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findAllTeachersService).toHaveBeenCalled();
+            expect(findAllTeachersService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
         describe("teacher::get::05 - Requesting all teachers", () => {
@@ -3249,9 +3975,15 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(200);
             expect(findAllTeachersService).toHaveBeenCalled();
+            expect(findAllTeachersService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
       });
+
       describe("teacher - GET/:id", () => {
         describe("teacher::get/:id::01 - passing a school with missing values", () => {
           it("should return a missing values error", async () => {
@@ -3276,6 +4008,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findTeacherByPropertyService).not.toHaveBeenCalled();
+            expect(findTeacherByPropertyService).not.toHaveBeenCalledWith(
+              [{ _id: validMockTeacherId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
         describe("teacher::get/:id::02 - passing a school with empty values", () => {
@@ -3302,6 +4039,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findTeacherByPropertyService).not.toHaveBeenCalled();
+            expect(findTeacherByPropertyService).not.toHaveBeenCalledWith(
+              [{ _id: validMockTeacherId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
         describe("teacher::get/:id::03 - Passing an invalid user and school id", () => {
@@ -3334,6 +4076,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findTeacherByPropertyService).not.toHaveBeenCalled();
+            expect(findTeacherByPropertyService).not.toHaveBeenCalledWith(
+              [{ _id: validMockTeacherId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
         describe("teacher::get/:id::04 - Requesting a teacher but not finding it", () => {
@@ -3346,7 +4093,7 @@ describe("Schedule maker API", () => {
 
             // api call
             const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${validMockUserId}`)
+              .get(`${endPointUrl}${validMockTeacherId}`)
               .send({ school_id: validMockSchoolId });
 
             // assertions
@@ -3356,12 +4103,16 @@ describe("Schedule maker API", () => {
               })
             );
             expect(statusCode).toBe(404);
-
             expect(findTeacherByPropertyService).toHaveBeenCalled();
+            expect(findTeacherByPropertyService).toHaveBeenCalledWith(
+              [{ _id: validMockTeacherId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
         describe("teacher::get/:id::05 - Requesting a teacher correctly", () => {
-          it("should get a user", async () => {
+          it("should get a teacher", async () => {
             // mock services
             const findTeacherByPropertyService = mockService(
               teacherPayload,
@@ -3370,7 +4121,7 @@ describe("Schedule maker API", () => {
 
             // api call
             const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${validMockUserId}`)
+              .get(`${endPointUrl}${validMockTeacherId}`)
               .send({ school_id: validMockSchoolId });
 
             // assertions
@@ -3386,13 +4137,18 @@ describe("Schedule maker API", () => {
               })
             );
             expect(findTeacherByPropertyService).toHaveBeenCalled();
+            expect(findTeacherByPropertyService).toHaveBeenCalledWith(
+              [{ _id: validMockTeacherId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "teacher"
+            );
           });
         });
       });
     });
 
     describe("PUT /teacher ", () => {
-      describe("teacher::put::01 - Passing a user with missing fields", () => {
+      describe("teacher::put::01 - Passing a teacher with missing fields", () => {
         it("should return a field needed error", async () => {
           // mock services
           const findCoordinatorByIdService = mockService(
@@ -3479,7 +4235,21 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).not.toHaveBeenCalled();
+          expect(findCoordinatorByIdService).not.toHaveBeenCalledWith(
+            validMockCoordinatorId,
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateTeacherService).not.toHaveBeenCalled();
+          expect(updateTeacherService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherId },
+              { user_id: validMockUserId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::put::02 - Passing a user with empty fields", () => {
@@ -3582,7 +4352,21 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).not.toHaveBeenCalled();
+          expect(findCoordinatorByIdService).not.toHaveBeenCalledWith(
+            validMockCoordinatorId,
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateTeacherService).not.toHaveBeenCalled();
+          expect(updateTeacherService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherId },
+              { user_id: validMockUserId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::put::03 - Passing an invalid type as field value", () => {
@@ -3697,7 +4481,21 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).not.toHaveBeenCalled();
+          expect(findCoordinatorByIdService).not.toHaveBeenCalledWith(
+            validMockCoordinatorId,
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateTeacherService).not.toHaveBeenCalled();
+          expect(updateTeacherService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherId },
+              { user_id: validMockUserId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::put::04 - Passing wrong contract type, hours assignable or hours assigned", () => {
@@ -3763,7 +4561,21 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).not.toHaveBeenCalled();
+          expect(findCoordinatorByIdService).not.toHaveBeenCalledWith(
+            validMockCoordinatorId,
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateTeacherService).not.toHaveBeenCalled();
+          expect(updateTeacherService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherId },
+              { user_id: validMockUserId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::put::05 - Not finding a coordinator", () => {
@@ -3791,7 +4603,21 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
+          expect(findCoordinatorByIdService).toHaveBeenCalledWith(
+            validMockCoordinatorId,
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateTeacherService).not.toHaveBeenCalled();
+          expect(updateTeacherService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherId },
+              { user_id: validMockUserId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::put::06 - Passing a non coordinator user as coordinator", () => {
@@ -3819,7 +4645,21 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
+          expect(findCoordinatorByIdService).toHaveBeenCalledWith(
+            validMockCoordinatorId,
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateTeacherService).not.toHaveBeenCalled();
+          expect(updateTeacherService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherId },
+              { user_id: validMockUserId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::post::07 - Passing an inactive coordinator", () => {
@@ -3836,7 +4676,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockUserId}`)
+            .put(`${endPointUrl}${validMockTeacherId}`)
             .send(newTeacher);
 
           // assertions
@@ -3847,7 +4687,21 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
+          expect(findCoordinatorByIdService).toHaveBeenCalledWith(
+            validMockCoordinatorId,
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateTeacherService).not.toHaveBeenCalled();
+          expect(updateTeacherService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherId },
+              { user_id: validMockUserId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::put::08 - Passing a teacher but not updating it", () => {
@@ -3864,7 +4718,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockUserId}`)
+            .put(`${endPointUrl}${validMockTeacherId}`)
             .send(newTeacher);
 
           // assertions
@@ -3875,7 +4729,21 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
+          expect(findCoordinatorByIdService).toHaveBeenCalledWith(
+            validMockCoordinatorId,
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateTeacherService).toHaveBeenCalled();
+          expect(updateTeacherService).toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherId },
+              { user_id: validMockUserId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacher,
+            "teacher"
+          );
         });
       });
       describe("teacher::put::09 - Passing a teacher correctly to update", () => {
@@ -3892,7 +4760,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockUserId}`)
+            .put(`${endPointUrl}${validMockTeacherId}`)
             .send(newTeacher);
 
           // assertions
@@ -3901,7 +4769,21 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
+          expect(findCoordinatorByIdService).toHaveBeenCalledWith(
+            validMockCoordinatorId,
+            "-password -createdAt -updatedAt",
+            "user"
+          );
           expect(updateTeacherService).toHaveBeenCalled();
+          expect(updateTeacherService).toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherId },
+              { user_id: validMockUserId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacher,
+            "teacher"
+          );
         });
       });
     });
@@ -3932,6 +4814,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteTeacherService).not.toHaveBeenCalled();
+          expect(deleteTeacherService).not.toHaveBeenCalledWith(
+            { _id: validMockTeacherId, school_id: validMockSchoolId },
+            "teacher"
+          );
         });
       });
       describe("teacher::delete::02 - passing a school with empty values", () => {
@@ -3960,6 +4846,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteTeacherService).not.toHaveBeenCalled();
+          expect(deleteTeacherService).not.toHaveBeenCalledWith(
+            { _id: validMockTeacherId, school_id: validMockSchoolId },
+            "teacher"
+          );
         });
       });
       describe("teacher::delete::03 - Passing invalid teacher or school id", () => {
@@ -3996,6 +4886,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteTeacherService).not.toHaveBeenCalled();
+          expect(deleteTeacherService).not.toHaveBeenCalledWith(
+            { _id: validMockTeacherId, school_id: validMockSchoolId },
+            "teacher"
+          );
         });
       });
       describe("teacher::delete::04 - Passing a teacher but not deleting it", () => {
@@ -4008,7 +4902,7 @@ describe("Schedule maker API", () => {
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}${validMockUserId}`)
+            .delete(`${endPointUrl}${validMockTeacherId}`)
             .send({
               school_id: validMockSchoolId,
             });
@@ -4019,6 +4913,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(deleteTeacherService).toHaveBeenCalled();
+          expect(deleteTeacherService).toHaveBeenCalledWith(
+            { _id: validMockTeacherId, school_id: validMockSchoolId },
+            "teacher"
+          );
         });
       });
       describe("teacher::delete::05 - Passing a teacher correctly to delete", () => {
@@ -4042,6 +4940,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(deleteTeacherService).toHaveBeenCalled();
+          expect(deleteTeacherService).toHaveBeenCalledWith(
+            { _id: validMockTeacherId, school_id: validMockSchoolId },
+            "teacher"
+          );
         });
       });
     });
@@ -4112,7 +5014,7 @@ describe("Schedule maker API", () => {
             fieldPayload,
             "findResourceById"
           );
-          const findDuplicatedFieldsByPropertyService = mockService(
+          const findDuplicatedFieldByPropertyService = mockService(
             fieldsNullPayload,
             "findFilterResourceByProperty"
           );
@@ -4141,8 +5043,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
-          expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(insertFieldService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalledWith(
+            newField,
+            "field"
+          );
         });
       });
       describe("field::post::02 - Passing a field with empty fields", () => {
@@ -4152,7 +5068,7 @@ describe("Schedule maker API", () => {
             fieldPayload,
             "findResourceById"
           );
-          const findDuplicatedFieldsByPropertyService = mockService(
+          const findDuplicatedFieldByPropertyService = mockService(
             fieldsNullPayload,
             "findFilterResourceByProperty"
           );
@@ -4183,8 +5099,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
-          expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(insertFieldService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalledWith(
+            newField,
+            "field"
+          );
         });
       });
       describe("field::post::03 - Passing an invalid type as a value", () => {
@@ -4194,7 +5124,7 @@ describe("Schedule maker API", () => {
             fieldPayload,
             "findResourceById"
           );
-          const findDuplicatedFieldsByPropertyService = mockService(
+          const findDuplicatedFieldByPropertyService = mockService(
             fieldsNullPayload,
             "findFilterResourceByProperty"
           );
@@ -4225,8 +5155,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
-          expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(insertFieldService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalledWith(
+            newField,
+            "field"
+          );
         });
       });
       describe("field::post::04 - Passing too long or short input values", () => {
@@ -4236,7 +5180,7 @@ describe("Schedule maker API", () => {
             fieldPayload,
             "findResourceById"
           );
-          const findDuplicatedFieldsByPropertyService = mockService(
+          const findDuplicatedFieldByPropertyService = mockService(
             fieldsNullPayload,
             "findFilterResourceByProperty"
           );
@@ -4262,8 +5206,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
-          expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(insertFieldService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalledWith(
+            newField,
+            "field"
+          );
         });
       });
       describe("field::post::05 - Passing an non-existent school in the body", () => {
@@ -4273,7 +5231,7 @@ describe("Schedule maker API", () => {
             fieldNullPayload,
             "findResourceById"
           );
-          const findDuplicatedFieldsByPropertyService = mockService(
+          const findDuplicatedFieldByPropertyService = mockService(
             fieldsNullPayload,
             "findFilterResourceByProperty"
           );
@@ -4295,8 +5253,22 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).toHaveBeenCalled();
-          expect(findDuplicatedFieldsByPropertyService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedFieldByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(insertFieldService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalledWith(
+            newField,
+            "field"
+          );
         });
       });
       describe("field::post::06 - Passing an existing field name", () => {
@@ -4306,7 +5278,7 @@ describe("Schedule maker API", () => {
             fieldPayload,
             "findResourceById"
           );
-          const findDuplicatedFieldsByPropertyService = mockService(
+          const findDuplicatedFieldByPropertyService = mockService(
             [fieldPayload],
             "findFilterResourceByProperty"
           );
@@ -4326,8 +5298,22 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
-          expect(findDuplicatedFieldsByPropertyService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(findDuplicatedFieldByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedFieldByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(insertFieldService).not.toHaveBeenCalled();
+          expect(insertFieldService).not.toHaveBeenCalledWith(
+            newField,
+            "field"
+          );
         });
       });
       describe("field::post::07 - Passing a field but not being created", () => {
@@ -4337,7 +5323,7 @@ describe("Schedule maker API", () => {
             fieldPayload,
             "findResourceById"
           );
-          const findDuplicatedFieldsByPropertyService = mockService(
+          const findDuplicatedFieldByPropertyService = mockService(
             fieldsNullPayload,
             "findFilterResourceByProperty"
           );
@@ -4357,8 +5343,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).toHaveBeenCalled();
-          expect(findDuplicatedFieldsByPropertyService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(findDuplicatedFieldByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedFieldByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(insertFieldService).toHaveBeenCalled();
+          expect(insertFieldService).toHaveBeenCalledWith(newField, "field");
         });
       });
       describe("field::post::08 - Passing a field correctly to create", () => {
@@ -4388,8 +5385,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(201);
           expect(findSchoolByIdService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findDuplicatedFieldByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedFieldByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(insertFieldService).toHaveBeenCalled();
+          expect(insertFieldService).toHaveBeenCalledWith(newField, "field");
         });
       });
     });
@@ -4419,6 +5427,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllFieldsService).not.toHaveBeenCalled();
+            expect(findAllFieldsService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
         describe("field::get::02 - passing a field with empty values", () => {
@@ -4445,6 +5458,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllFieldsService).not.toHaveBeenCalled();
+            expect(findAllFieldsService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
         describe("field::get::03 - passing and invalid school id", () => {
@@ -4472,6 +5490,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllFieldsService).not.toHaveBeenCalled();
+            expect(findAllFieldsService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
         describe("field::get::04 - Requesting all fields but not finding any", () => {
@@ -4495,6 +5518,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findAllFieldsService).toHaveBeenCalled();
+            expect(findAllFieldsService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
         describe("field::get::05 - Requesting all fields correctly", () => {
@@ -4530,6 +5558,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(200);
             expect(findAllFieldsService).toHaveBeenCalled();
+            expect(findAllFieldsService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
       });
@@ -4557,6 +5590,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findFieldByIdService).not.toHaveBeenCalled();
+            expect(findFieldByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
         describe("field::get/:id::02 - Passing a field with empty values", () => {
@@ -4583,6 +5621,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findFieldByIdService).not.toHaveBeenCalled();
+            expect(findFieldByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
         describe("field::get/:id::03 - Passing an invalid field and school ids in the url", () => {
@@ -4614,6 +5657,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findFieldByIdService).not.toHaveBeenCalled();
+            expect(findFieldByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
         describe("field::get/:id::04 - Requesting a field but not finding it", () => {
@@ -4637,6 +5685,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findFieldByIdService).toHaveBeenCalled();
+            expect(findFieldByIdService).toHaveBeenCalledWith(
+              [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
         describe("field::get/:id::05 - Requesting a field correctly", () => {
@@ -4661,6 +5714,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(200);
             expect(findFieldByIdService).toHaveBeenCalled();
+            expect(findFieldByIdService).toHaveBeenCalledWith(
+              [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "field"
+            );
           });
         });
       });
@@ -4682,7 +5740,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockFieldId}`)
-            .send({ ...newFieldMissingValues, prevNam: "Science" });
+            .send(newFieldMissingValues);
 
           // assertions
           expect(body).toMatchObject([
@@ -4701,7 +5759,19 @@ describe("Schedule maker API", () => {
           expect(
             findFieldNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findFieldNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(updateFieldService).not.toHaveBeenCalled();
+          expect(updateFieldService).not.toHaveBeenCalledWith(
+            [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+            newField,
+            "field"
+          );
         });
       });
       describe("field::put::02 - Passing a field with empty fields", () => {
@@ -4719,7 +5789,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockFieldId}`)
-            .send({ ...newFieldEmptyValues, prevName: "" });
+            .send(newFieldEmptyValues);
 
           //assertions
           expect(body).toMatchObject([
@@ -4740,7 +5810,19 @@ describe("Schedule maker API", () => {
           expect(
             findFieldNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findFieldNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(updateFieldService).not.toHaveBeenCalled();
+          expect(updateFieldService).not.toHaveBeenCalledWith(
+            [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+            newField,
+            "field"
+          );
         });
       });
       describe("field::put::03 - Passing an invalid type as field value", () => {
@@ -4758,7 +5840,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockFieldId}`)
-            .send({ ...newFieldNotValidDataTypes, prevName: 12341234 });
+            .send(newFieldNotValidDataTypes);
 
           //assertions
           expect(body).toMatchObject([
@@ -4779,7 +5861,19 @@ describe("Schedule maker API", () => {
           expect(
             findFieldNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findFieldNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(updateFieldService).not.toHaveBeenCalled();
+          expect(updateFieldService).not.toHaveBeenCalledWith(
+            [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+            newField,
+            "field"
+          );
         });
       });
       describe("field::put::04 - Passing too long or short input values", () => {
@@ -4797,11 +5891,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockFieldId}`)
-            .send({
-              ...newFieldWrongLengthValues,
-              prevName:
-                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-            });
+            .send(newFieldWrongLengthValues);
 
           // assertions
           expect(body).toMatchObject([
@@ -4817,10 +5907,22 @@ describe("Schedule maker API", () => {
           expect(
             findFieldNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findFieldNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(updateFieldService).not.toHaveBeenCalled();
+          expect(updateFieldService).not.toHaveBeenCalledWith(
+            [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+            newField,
+            "field"
+          );
         });
       });
-      describe("field::put::05 - Passing a field but not updating it because the field name, prevName, already exists for the school", () => {
+      describe("field::put::05 - Passing a field but not updating it because the field name, already exists for the school", () => {
         it("should not update a field", async () => {
           // mock services
           const findFieldNameDuplicatedByPropertyService = mockService(
@@ -4835,7 +5937,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockFieldId}`)
-            .send({ ...newField, prevName: "Science" });
+            .send(newField);
 
           // assertions
           expect(body).toEqual(
@@ -4845,10 +5947,20 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalled();
+          expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(updateFieldService).not.toHaveBeenCalled();
+          expect(updateFieldService).not.toHaveBeenCalledWith(
+            [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+            newField,
+            "field"
+          );
         });
       });
-      describe("field::put::06 - Passing a field but not updating it because it does not match one of the filters: _id, school_id or previous name", () => {
+      describe("field::put::06 - Passing a field but not updating it because it does not match one of the filters: _id, school_id", () => {
         it("should not update a field", async () => {
           // mock services
           const findFieldNameDuplicatedByPropertyService = mockService(
@@ -4863,7 +5975,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockFieldId}`)
-            .send({ ...newField, prevName: "Science" });
+            .send(newField);
 
           // assertions
           expect(body).toEqual(
@@ -4873,7 +5985,17 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalled();
+          expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(updateFieldService).toHaveBeenCalled();
+          expect(updateFieldService).toHaveBeenCalledWith(
+            [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+            newField,
+            "field"
+          );
         });
       });
       describe("field::put::07 - Passing a field correctly to update", () => {
@@ -4891,7 +6013,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockFieldId}`)
-            .send({ ...newField, prevName: "Science" });
+            .send(newField);
 
           // assertions
           expect(body).toEqual(
@@ -4899,7 +6021,17 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalled();
+          expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newField.name }],
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(updateFieldService).toHaveBeenCalled();
+          expect(updateFieldService).toHaveBeenCalledWith(
+            [{ _id: validMockFieldId }, { school_id: validMockSchoolId }],
+            newField,
+            "field"
+          );
         });
       });
     });
@@ -4928,6 +6060,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteFieldService).not.toHaveBeenCalled();
+          expect(deleteFieldService).not.toHaveBeenCalledWith(
+            { _id: validMockFieldId, school_id: validMockSchoolId },
+            "field"
+          );
         });
       });
       describe("field::delete::02 - Passing a field with empty fields", () => {
@@ -4954,6 +6090,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteFieldService).not.toHaveBeenCalled();
+          expect(deleteFieldService).not.toHaveBeenCalledWith(
+            { _id: validMockFieldId, school_id: validMockSchoolId },
+            "field"
+          );
         });
       });
       describe("field::delete::03 - Passing an invalid field and school ids", () => {
@@ -4988,6 +6128,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteFieldService).not.toHaveBeenCalled();
+          expect(deleteFieldService).not.toHaveBeenCalledWith(
+            { _id: validMockFieldId, school_id: validMockSchoolId },
+            "field"
+          );
         });
       });
       describe("field::delete::04 - Passing a field id but not deleting it", () => {
@@ -5009,6 +6153,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(deleteFieldService).toHaveBeenCalled();
+          expect(deleteFieldService).toHaveBeenCalledWith(
+            { _id: validMockFieldId, school_id: validMockSchoolId },
+            "field"
+          );
         });
       });
       describe("field::delete::05 - Passing a field id correctly to delete", () => {
@@ -5030,6 +6178,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(deleteFieldService).toHaveBeenCalled();
+          expect(deleteFieldService).toHaveBeenCalledWith(
+            { _id: validMockFieldId, school_id: validMockSchoolId },
+            "field"
+          );
         });
       });
     });
@@ -5120,14 +6272,13 @@ describe("Schedule maker API", () => {
     describe("POST /teacher_field ", () => {
       describe("teacher_field::post::01 - Passing a teacher with missing fields", () => {
         it("should return a field needed error", async () => {
-          let findDuplicatedTeacherFieldByIdService = mockService(
-            teacherPayload,
-            "findPopulateResourceById"
-          );
-          findDuplicatedTeacherFieldByIdService = mockService(
-            fieldPayload,
-            "findPopulateResourceById"
-          );
+          // mock services
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              teacherPayload,
+              fieldPayload,
+              "findPopulateResourceById"
+            );
           const findTeacherFieldByPropertyService = mockService(
             teacherFieldsNullPayload,
             "findFilterResourceByProperty"
@@ -5164,20 +6315,52 @@ describe("Schedule maker API", () => {
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             0
           );
+          expect(
+            findDuplicatedTeacherFieldByIdService
+          ).not.toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(
+            findDuplicatedTeacherFieldByIdService
+          ).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
           expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
           expect(insertTeacherFieldService).not.toHaveBeenCalled();
+          expect(insertTeacherFieldService).not.toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::post::02 - Passing a teacher with empty fields", () => {
         it("should return an empty field error", async () => {
-          let findDuplicatedTeacherFieldByIdService = mockService(
-            teacherPayload,
-            "findPopulateResourceById"
-          );
-          findDuplicatedTeacherFieldByIdService = mockService(
-            fieldPayload,
-            "findPopulateResourceById"
-          );
+          // mock services
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              teacherPayload,
+              fieldPayload,
+              "findPopulateResourceById"
+            );
           const findTeacherFieldByPropertyService = mockService(
             teacherFieldsNullPayload,
             "findFilterResourceByProperty"
@@ -5217,20 +6400,52 @@ describe("Schedule maker API", () => {
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             0
           );
+          expect(
+            findDuplicatedTeacherFieldByIdService
+          ).not.toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(
+            findDuplicatedTeacherFieldByIdService
+          ).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
           expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
           expect(insertTeacherFieldService).not.toHaveBeenCalled();
+          expect(insertTeacherFieldService).not.toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::post::03 - Passing an invalid type as a value", () => {
         it("should return a not valid value error", async () => {
-          let findDuplicatedTeacherFieldByIdService = mockService(
-            teacherPayload,
-            "findPopulateResourceById"
-          );
-          findDuplicatedTeacherFieldByIdService = mockService(
-            fieldPayload,
-            "findPopulateResourceById"
-          );
+          // mock services
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              teacherPayload,
+              fieldPayload,
+              "findPopulateResourceById"
+            );
           const findTeacherFieldByPropertyService = mockService(
             teacherFieldsNullPayload,
             "findFilterResourceByProperty"
@@ -5270,20 +6485,52 @@ describe("Schedule maker API", () => {
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             0
           );
+          expect(
+            findDuplicatedTeacherFieldByIdService
+          ).not.toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(
+            findDuplicatedTeacherFieldByIdService
+          ).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
           expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
           expect(insertTeacherFieldService).not.toHaveBeenCalled();
+          expect(insertTeacherFieldService).not.toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::post::04 - Passing an non-existent teacher in the body", () => {
-        it("should return a non-existent school error", async () => {
-          let findDuplicatedTeacherFieldByIdService = mockService(
-            teacherNullPayload,
-            "findPopulateResourceById"
-          );
-          findDuplicatedTeacherFieldByIdService = mockService(
-            fieldPayload,
-            "findPopulateResourceById"
-          );
+        it("should return a non-existent teacher error", async () => {
+          // mock services
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              teacherNullPayload,
+              fieldPayload,
+              "findPopulateResourceById"
+            );
           const findTeacherFieldByPropertyService = mockService(
             teacherFieldsNullPayload,
             "findFilterResourceByProperty"
@@ -5308,20 +6555,50 @@ describe("Schedule maker API", () => {
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             1
           );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(
+            findDuplicatedTeacherFieldByIdService
+          ).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
           expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
           expect(insertTeacherFieldService).not.toHaveBeenCalled();
+          expect(insertTeacherFieldService).not.toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::post::05 - Passing an non-existent field in the body", () => {
-        it("should return a non-existent school error", async () => {
-          let findDuplicatedTeacherFieldByIdService = mockService(
-            teacherPayload,
-            "findPopulateResourceById"
-          );
-          findDuplicatedTeacherFieldByIdService = mockService(
-            fieldNullPayload,
-            "findPopulateResourceById"
-          );
+        it("should return a non-existent field error", async () => {
+          // mock services
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              teacherPayload,
+              fieldNullPayload,
+              "findPopulateResourceById"
+            );
           const findTeacherFieldByPropertyService = mockService(
             teacherFieldsNullPayload,
             "findFilterResourceByProperty"
@@ -5346,20 +6623,48 @@ describe("Schedule maker API", () => {
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
           );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
           expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
           expect(insertTeacherFieldService).not.toHaveBeenCalled();
+          expect(insertTeacherFieldService).not.toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
-      describe("teacher_field::post::06 - Passing an field or teacher that do not match the school id", () => {
+      describe("teacher_field::post::06 - Passing a teacher that do not match the school id", () => {
         it("should return a non-existent school error", async () => {
-          let findDuplicatedTeacherFieldByIdService = mockService(
-            { ...teacherPayload, school_id: otherValidMockFieldId },
-            "findPopulateResourceById"
-          );
-          findDuplicatedTeacherFieldByIdService = mockService(
-            { ...fieldPayload, school_id: otherValidMockFieldId },
-            "findPopulateResourceById"
-          );
+          // mock services
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              { ...teacherPayload, school_id: otherValidMockFieldId },
+              fieldPayload,
+              "findPopulateResourceById"
+            );
           const findTeacherFieldByPropertyService = mockService(
             teacherFieldsNullPayload,
             "findFilterResourceByProperty"
@@ -5384,21 +6689,114 @@ describe("Schedule maker API", () => {
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
           );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
           expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
           expect(insertTeacherFieldService).not.toHaveBeenCalled();
+          expect(insertTeacherFieldService).not.toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
-      describe("teacher_field::post::07 - teacher has the field already assigned", () => {
+      describe("teacher_field::post::07 - Passing a field that do not match the school id", () => {
+        it("should return a non-existent school error", async () => {
+          // mock services
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              teacherPayload,
+              { ...fieldPayload, school_id: otherValidMockFieldId },
+              "findPopulateResourceById"
+            );
+          const findTeacherFieldByPropertyService = mockService(
+            teacherFieldsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const insertTeacherFieldService = mockService(
+            teacherFieldPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newTeacherField);
+
+          // assertions
+          expect(body).toEqual(
+            expect.objectContaining({
+              msg: "The resources do not belong to this school",
+            })
+          );
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
+            2
+          );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
+          expect(insertTeacherFieldService).not.toHaveBeenCalled();
+          expect(insertTeacherFieldService).not.toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
+        });
+      });
+      describe("teacher_field::post::08 - teacher has the field already assigned", () => {
         it("should return an already assigned field", async () => {
           // mock services
-          let findDuplicatedTeacherFieldByIdService = mockService(
-            teacherPayload,
-            "findPopulateResourceById"
-          );
-          findDuplicatedTeacherFieldByIdService = mockService(
-            fieldPayload,
-            "findPopulateResourceById"
-          );
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              teacherPayload,
+              fieldPayload,
+              "findPopulateResourceById"
+            );
           const findTeacherFieldByPropertyService = mockService(
             teacherFieldsPayload,
             "findFilterResourceByProperty"
@@ -5423,21 +6821,48 @@ describe("Schedule maker API", () => {
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
           );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
           expect(findTeacherFieldByPropertyService).toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
           expect(insertTeacherFieldService).not.toHaveBeenCalled();
+          expect(insertTeacherFieldService).not.toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
-      describe("teacher_field::post::08 - Passing a teacher_field but not being created", () => {
+      describe("teacher_field::post::09 - Passing a teacher_field but not being created", () => {
         it("should not create a teacher_field", async () => {
           // mock services
-          let findDuplicatedTeacherFieldByIdService = mockService(
-            teacherPayload,
-            "findPopulateResourceById"
-          );
-          findDuplicatedTeacherFieldByIdService = mockService(
-            fieldPayload,
-            "findPopulateResourceById"
-          );
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              teacherPayload,
+              fieldPayload,
+              "findPopulateResourceById"
+            );
           const findTeacherFieldByPropertyService = mockService(
             teacherFieldsNullPayload,
             "findFilterResourceByProperty"
@@ -5462,21 +6887,48 @@ describe("Schedule maker API", () => {
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
           );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
           expect(findTeacherFieldByPropertyService).toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
           expect(insertTeacherFieldService).toHaveBeenCalled();
+          expect(insertTeacherFieldService).toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
-      describe("teacher_field::post::09 - Passing a teacher_field correctly to create", () => {
+      describe("teacher_field::post::10 - Passing a teacher_field correctly to create", () => {
         it("should create a teacher_field", async () => {
           // mock services
-          let findDuplicatedTeacherFieldByIdService = mockService(
-            teacherPayload,
-            "findPopulateResourceById"
-          );
-          findDuplicatedTeacherFieldByIdService = mockService(
-            fieldPayload,
-            "findPopulateResourceById"
-          );
+          const findDuplicatedTeacherFieldByIdService =
+            mockServiceMultipleReturns(
+              teacherPayload,
+              fieldPayload,
+              "findPopulateResourceById"
+            );
           const findTeacherFieldByPropertyService = mockService(
             teacherFieldsNullPayload,
             "findFilterResourceByProperty"
@@ -5501,8 +6953,37 @@ describe("Schedule maker API", () => {
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
           );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockTeacherId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "teacher"
+          );
+          expect(findDuplicatedTeacherFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "_id -name -createdAt -updatedAt",
+            "field"
+          );
           expect(findTeacherFieldByPropertyService).toHaveBeenCalled();
+          expect(findTeacherFieldByPropertyService).toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-name -createdAt -updatedAt",
+            "teacherField"
+          );
           expect(insertTeacherFieldService).toHaveBeenCalled();
+          expect(insertTeacherFieldService).toHaveBeenCalledWith(
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
     });
@@ -5532,6 +7013,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllTeacherFieldsService).not.toHaveBeenCalled();
+            expect(findAllTeacherFieldsService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
         describe("teacher_field::get::02 - passing a field with empty values", () => {
@@ -5558,6 +7044,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllTeacherFieldsService).not.toHaveBeenCalled();
+            expect(findAllTeacherFieldsService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
         describe("teacher_field::get::03 - passing and invalid school id", () => {
@@ -5584,6 +7075,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllTeacherFieldsService).not.toHaveBeenCalled();
+            expect(findAllTeacherFieldsService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
         describe("teacher_field::get::04 - Requesting all fields but not finding any", () => {
@@ -5607,6 +7103,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findAllTeacherFieldsService).toHaveBeenCalled();
+            expect(findAllTeacherFieldsService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
         describe("teacher_field::get::05 - Requesting all teacher_fields correctly", () => {
@@ -5645,6 +7146,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(200);
             expect(findAllTeacherFieldsService).toHaveBeenCalled();
+            expect(findAllTeacherFieldsService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
       });
@@ -5672,6 +7178,14 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findTeacherFieldByIdService).not.toHaveBeenCalled();
+            expect(findTeacherFieldByIdService).not.toHaveBeenCalledWith(
+              [
+                { _id: validMockTeacherFieldId },
+                { school_id: validMockSchoolId },
+              ],
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
         describe("teacher_field::get/:id::02 - Passing fields with empty values", () => {
@@ -5698,6 +7212,14 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findTeacherFieldByIdService).not.toHaveBeenCalled();
+            expect(findTeacherFieldByIdService).not.toHaveBeenCalledWith(
+              [
+                { _id: validMockTeacherFieldId },
+                { school_id: validMockSchoolId },
+              ],
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
         describe("teacher_field::get/:id::03 - Passing an invalid teacher_field and school ids", () => {
@@ -5730,6 +7252,14 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findTeacherFieldByIdService).not.toHaveBeenCalled();
+            expect(findTeacherFieldByIdService).not.toHaveBeenCalledWith(
+              [
+                { _id: validMockTeacherFieldId },
+                { school_id: validMockSchoolId },
+              ],
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
         describe("teacher_field::get/:id::04 - Requesting a field but not finding it", () => {
@@ -5742,7 +7272,7 @@ describe("Schedule maker API", () => {
 
             // api call
             const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${validMockFieldId}`)
+              .get(`${endPointUrl}${validMockTeacherFieldId}`)
               .send({ school_id: validMockSchoolId });
 
             // assertions
@@ -5753,6 +7283,14 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findTeacherFieldByIdService).toHaveBeenCalled();
+            expect(findTeacherFieldByIdService).toHaveBeenCalledWith(
+              [
+                { _id: validMockTeacherFieldId },
+                { school_id: validMockSchoolId },
+              ],
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
         describe("teacher_field::get/:id::05 - Requesting a field correctly", () => {
@@ -5777,6 +7315,14 @@ describe("Schedule maker API", () => {
             });
             expect(statusCode).toBe(200);
             expect(findTeacherFieldByIdService).toHaveBeenCalled();
+            expect(findTeacherFieldByIdService).toHaveBeenCalledWith(
+              [
+                { _id: validMockTeacherFieldId },
+                { school_id: validMockSchoolId },
+              ],
+              "-createdAt -updatedAt",
+              "teacherField"
+            );
           });
         });
       });
@@ -5803,11 +7349,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
-            .send({
-              ...newTeacherFieldMissingValues,
-              //cspell:disable-next-line
-              prevFiel: otherValidMockFieldId,
-            });
+            .send(newTeacherFieldMissingValues);
 
           // assertions
           expect(body).toMatchObject([
@@ -5829,10 +7371,35 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findExistingField).not.toHaveBeenCalled();
+          expect(findExistingField).not.toHaveBeenCalledWith(
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-createdAt -updatedAt",
+            "teacherField"
+          );
           expect(updateTeacherFieldService).not.toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherFieldId },
+              { teacher_id: validMockTeacherId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
       describe("field::put::02 - Passing fields with empty fields", () => {
@@ -5855,10 +7422,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
-            .send({
-              ...newTeacherFieldEmptyValues,
-              prevField: "",
-            });
+            .send(newTeacherFieldEmptyValues);
 
           // assertions
           expect(body).toMatchObject([
@@ -5883,10 +7447,35 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findExistingField).not.toHaveBeenCalled();
+          expect(findExistingField).not.toHaveBeenCalledWith(
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-createdAt -updatedAt",
+            "teacherField"
+          );
           expect(updateTeacherFieldService).not.toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherFieldId },
+              { teacher_id: validMockTeacherId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::put::03 - Passing an invalid type as field value", () => {
@@ -5909,10 +7498,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
-            .send({
-              ...newTeacherFieldNotValidDataTypes,
-              prevField: invalidMockId,
-            });
+            .send(newTeacherFieldNotValidDataTypes);
 
           // assertions
           expect(body).toMatchObject([
@@ -5937,10 +7523,35 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findExistingField).not.toHaveBeenCalled();
+          expect(findExistingField).not.toHaveBeenCalledWith(
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-createdAt -updatedAt",
+            "teacherField"
+          );
           expect(updateTeacherFieldService).not.toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherFieldId },
+              { teacher_id: validMockTeacherId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::put::04 - Passing a non-existent field ", () => {
@@ -5960,7 +7571,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
-            .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+            .send(newTeacherField);
 
           // assertions
           expect(body).toEqual(
@@ -5970,10 +7581,35 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(findExistingField).toHaveBeenCalled();
+          expect(findExistingField).toHaveBeenCalledWith(
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-createdAt -updatedAt",
+            "teacherField"
+          );
           expect(updateTeacherFieldService).not.toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherFieldId },
+              { teacher_id: validMockTeacherId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::put::05 - Passing a field but not updating it because the field has already been assigned to the teacher", () => {
@@ -5993,7 +7629,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
-            .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+            .send(newTeacherField);
 
           // assertions
           expect(body).toEqual(
@@ -6003,13 +7639,38 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findExistingField).toHaveBeenCalled();
+          expect(findExistingField).toHaveBeenCalledWith(
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).toHaveBeenCalled();
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-createdAt -updatedAt",
+            "teacherField"
+          );
           expect(updateTeacherFieldService).not.toHaveBeenCalled();
+          expect(updateTeacherFieldService).not.toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherFieldId },
+              { teacher_id: validMockTeacherId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
-      describe("teacher_field::put::06 - Passing a field but not updating it because it does not match one of the filters: _id, school_id , teacher_id or previous field", () => {
+      describe("teacher_field::put::06 - Passing a field but not updating it because it does not match one of the filters: _id, school_id or teacher_id", () => {
         it("should not update a teacher_field", async () => {
           // mock services
           const findExistingField = mockService(
@@ -6029,7 +7690,7 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
-            .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+            .send(newTeacherField);
 
           // assertions
           expect(body).toEqual(
@@ -6037,10 +7698,35 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(findExistingField).toHaveBeenCalled();
+          expect(findExistingField).toHaveBeenCalledWith(
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).toHaveBeenCalled();
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-createdAt -updatedAt",
+            "teacherField"
+          );
           expect(updateTeacherFieldService).toHaveBeenCalled();
+          expect(updateTeacherFieldService).toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherFieldId },
+              { teacher_id: validMockTeacherId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::put::07 - Passing a field correctly to update", () => {
@@ -6062,17 +7748,42 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
-            .send({ ...newTeacherField, prevField: otherValidMockFieldId });
+            .send(newTeacherField);
           // assertions
           expect(body).toEqual(
             expect.objectContaining({ msg: "Teacher_Field updated" })
           );
           expect(statusCode).toBe(200);
           expect(findExistingField).toHaveBeenCalled();
+          expect(findExistingField).toHaveBeenCalledWith(
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "field"
+          );
           expect(
             findFieldAlreadyAssignedToTeacherByPropertyService
           ).toHaveBeenCalled();
+          expect(
+            findFieldAlreadyAssignedToTeacherByPropertyService
+          ).toHaveBeenCalledWith(
+            [
+              { school_id: validMockSchoolId },
+              { teacher_id: validMockTeacherId },
+              { field_id: validMockFieldId },
+            ],
+            "-createdAt -updatedAt",
+            "teacherField"
+          );
           expect(updateTeacherFieldService).toHaveBeenCalled();
+          expect(updateTeacherFieldService).toHaveBeenCalledWith(
+            [
+              { _id: validMockTeacherFieldId },
+              { teacher_id: validMockTeacherId },
+              { school_id: validMockSchoolId },
+            ],
+            newTeacherField,
+            "teacherField"
+          );
         });
       });
     });
@@ -6101,6 +7812,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteTeacherFieldService).not.toHaveBeenCalled();
+          expect(deleteTeacherFieldService).not.toHaveBeenCalledWith(
+            { _id: validMockTeacherFieldId, school_id: validMockSchoolId },
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::delete::02 - Passing fields with empty fields", () => {
@@ -6127,6 +7842,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteTeacherFieldService).not.toHaveBeenCalled();
+          expect(deleteTeacherFieldService).not.toHaveBeenCalledWith(
+            { _id: validMockTeacherFieldId, school_id: validMockSchoolId },
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::delete::03 - Passing an invalid teacher_field and school ids", () => {
@@ -6159,6 +7878,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteTeacherFieldService).not.toHaveBeenCalled();
+          expect(deleteTeacherFieldService).not.toHaveBeenCalledWith(
+            { _id: validMockTeacherFieldId, school_id: validMockSchoolId },
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::delete::04 - Passing a teacher_field id but not deleting it", () => {
@@ -6180,6 +7903,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(deleteTeacherFieldService).toHaveBeenCalled();
+          expect(deleteTeacherFieldService).toHaveBeenCalledWith(
+            { _id: validMockTeacherFieldId, school_id: validMockSchoolId },
+            "teacherField"
+          );
         });
       });
       describe("teacher_field::delete::05 - Passing a teacher_field id correctly to delete", () => {
@@ -6201,6 +7928,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(deleteTeacherFieldService).toHaveBeenCalled();
+          expect(deleteTeacherFieldService).toHaveBeenCalledWith(
+            { _id: validMockTeacherFieldId, school_id: validMockSchoolId },
+            "teacherField"
+          );
         });
       });
     });
@@ -6454,8 +8185,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findFilterScheduleByPropertyService).not.toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).not.toHaveBeenCalled();
+          expect(insertScheduleService).not.toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::post::02 - Passing fields with empty values", () => {
@@ -6544,8 +8289,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findFilterScheduleByPropertyService).not.toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).not.toHaveBeenCalled();
+          expect(insertScheduleService).not.toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::post::03 - Passing an invalid type as a value", () => {
@@ -6634,8 +8393,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findFilterScheduleByPropertyService).not.toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).not.toHaveBeenCalled();
+          expect(insertScheduleService).not.toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::post::04 - The day start value exceeds the limit for a day", () => {
@@ -6682,8 +8455,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findFilterScheduleByPropertyService).not.toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).not.toHaveBeenCalled();
+          expect(insertScheduleService).not.toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::post::05 - The class unit value exceeds the limit for a shift", () => {
@@ -6722,8 +8509,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findFilterScheduleByPropertyService).not.toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).not.toHaveBeenCalled();
+          expect(insertScheduleService).not.toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::post::06 - Passing too long or short input values", () => {
@@ -6760,8 +8561,22 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).not.toHaveBeenCalled();
+          expect(findSchoolByIdService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findFilterScheduleByPropertyService).not.toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).not.toHaveBeenCalled();
+          expect(insertScheduleService).not.toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::post::07 - Passing an non-existent school in the body", () => {
@@ -6793,8 +8608,22 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findFilterScheduleByPropertyService).not.toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).not.toHaveBeenCalled();
+          expect(insertScheduleService).not.toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::post::08 - Passing an already existing schedule name", () => {
@@ -6826,8 +8655,22 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findFilterScheduleByPropertyService).toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).not.toHaveBeenCalled();
+          expect(insertScheduleService).not.toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::post::09 - Passing a schedule but not being created", () => {
@@ -6859,8 +8702,22 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
           expect(findFilterScheduleByPropertyService).toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).toHaveBeenCalled();
+          expect(insertScheduleService).toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::post::10 - Passing a schedule correctly to create", () => {
@@ -6870,7 +8727,7 @@ describe("Schedule maker API", () => {
             schoolPayload,
             "findResourceById"
           );
-          const findFilterScheduleByIdProperty = mockService(
+          const findFilterScheduleByPropertyService = mockService(
             schedulesNullPayload,
             "findFilterResourceByProperty"
           );
@@ -6892,8 +8749,22 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(201);
           expect(findSchoolByIdService).toHaveBeenCalled();
-          expect(findFilterScheduleByIdProperty).toHaveBeenCalled();
+          expect(findSchoolByIdService).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(findFilterScheduleByPropertyService).toHaveBeenCalled();
+          expect(findFilterScheduleByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertScheduleService).toHaveBeenCalled();
+          expect(insertScheduleService).toHaveBeenCalledWith(
+            newSchedule,
+            "schedule"
+          );
         });
       });
     });
@@ -6923,6 +8794,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllSchedulesService).not.toHaveBeenCalled();
+            expect(findAllSchedulesService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
         describe("schedule::get::02 - passing fields with empty values", () => {
@@ -6950,6 +8826,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllSchedulesService).not.toHaveBeenCalled();
+            expect(findAllSchedulesService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
         describe("schedule::get::03 - passing invalid ids", () => {
@@ -6977,6 +8858,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllSchedulesService).not.toHaveBeenCalled();
+            expect(findAllSchedulesService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
         describe("schedule::get::04 - Requesting all fields but not finding any", () => {
@@ -7000,6 +8886,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findAllSchedulesService).toHaveBeenCalled();
+            expect(findAllSchedulesService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
         describe("schedule::get::05 - Requesting all fields correctly", () => {
@@ -7065,6 +8956,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(200);
             expect(findAllSchedulesService).toHaveBeenCalled();
+            expect(findAllSchedulesService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
       });
@@ -7092,6 +8988,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findScheduleByIdService).not.toHaveBeenCalled();
+            expect(findScheduleByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
         describe("schedule::get/:id::02 - Passing fields with empty values", () => {
@@ -7118,6 +9019,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findScheduleByIdService).not.toHaveBeenCalled();
+            expect(findScheduleByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
         describe("schedule::get/:id::03 - Passing invalid ids", () => {
@@ -7149,6 +9055,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findScheduleByIdService).not.toHaveBeenCalled();
+            expect(findScheduleByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
         describe("schedule::get/:id::04 - Requesting a field but not finding it", () => {
@@ -7172,6 +9083,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findScheduleByIdService).toHaveBeenCalled();
+            expect(findScheduleByIdService).toHaveBeenCalledWith(
+              [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
         describe("schedule::get/:id::05 - Requesting a field correctly", () => {
@@ -7205,6 +9121,11 @@ describe("Schedule maker API", () => {
             });
             expect(statusCode).toBe(200);
             expect(findScheduleByIdService).toHaveBeenCalled();
+            expect(findScheduleByIdService).toHaveBeenCalledWith(
+              [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "schedule"
+            );
           });
         });
       });
@@ -7295,7 +9216,19 @@ describe("Schedule maker API", () => {
           expect(
             findScheduleNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findScheduleNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateScheduleService).not.toHaveBeenCalled();
+          expect(updateScheduleService).not.toHaveBeenCalledWith(
+            [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::put::02 - Passing fields with empty values", () => {
@@ -7394,7 +9327,19 @@ describe("Schedule maker API", () => {
           expect(
             findScheduleNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findScheduleNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateScheduleService).not.toHaveBeenCalled();
+          expect(updateScheduleService).not.toHaveBeenCalledWith(
+            [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::put::03 - Passing an invalid type as field value", () => {
@@ -7493,7 +9438,19 @@ describe("Schedule maker API", () => {
           expect(
             findScheduleNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findScheduleNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateScheduleService).not.toHaveBeenCalled();
+          expect(updateScheduleService).not.toHaveBeenCalledWith(
+            [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::put::04 - The day start value exceeds the limit for a day", () => {
@@ -7541,7 +9498,19 @@ describe("Schedule maker API", () => {
           expect(
             findScheduleNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findScheduleNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateScheduleService).not.toHaveBeenCalled();
+          expect(updateScheduleService).not.toHaveBeenCalledWith(
+            [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::put::05 - The class unit value exceeds the limit for a shift", () => {
@@ -7579,7 +9548,19 @@ describe("Schedule maker API", () => {
           expect(
             findScheduleNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findScheduleNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateScheduleService).not.toHaveBeenCalled();
+          expect(updateScheduleService).not.toHaveBeenCalledWith(
+            [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::put::06 - Passing too long or short input values", () => {
@@ -7614,7 +9595,19 @@ describe("Schedule maker API", () => {
           expect(
             findScheduleNameDuplicatedByPropertyService
           ).not.toHaveBeenCalled();
+          expect(
+            findScheduleNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateScheduleService).not.toHaveBeenCalled();
+          expect(updateScheduleService).not.toHaveBeenCalledWith(
+            [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::put::07 - Passing a schedule but not updating it because schedule name already exist", () => {
@@ -7644,7 +9637,19 @@ describe("Schedule maker API", () => {
           expect(
             findScheduleNameDuplicatedByPropertyService
           ).toHaveBeenCalled();
+          expect(
+            findScheduleNameDuplicatedByPropertyService
+          ).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateScheduleService).not.toHaveBeenCalled();
+          expect(updateScheduleService).not.toHaveBeenCalledWith(
+            [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::put::08 - Passing a schedule but not updating it because it does not match the filters", () => {
@@ -7672,7 +9677,19 @@ describe("Schedule maker API", () => {
           expect(
             findScheduleNameDuplicatedByPropertyService
           ).toHaveBeenCalled();
+          expect(
+            findScheduleNameDuplicatedByPropertyService
+          ).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateScheduleService).toHaveBeenCalled();
+          expect(updateScheduleService).toHaveBeenCalledWith(
+            [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+            newSchedule,
+            "schedule"
+          );
         });
       });
       describe("schedule::put::09 - Passing a schedule correctly to update", () => {
@@ -7700,7 +9717,19 @@ describe("Schedule maker API", () => {
           expect(
             findScheduleNameDuplicatedByPropertyService
           ).toHaveBeenCalled();
+          expect(
+            findScheduleNameDuplicatedByPropertyService
+          ).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSchedule.name }],
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateScheduleService).toHaveBeenCalled();
+          expect(updateScheduleService).toHaveBeenCalledWith(
+            [{ _id: validMockScheduleId }, { school_id: validMockSchoolId }],
+            newSchedule,
+            "schedule"
+          );
         });
       });
     });
@@ -7729,6 +9758,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteScheduleService).not.toHaveBeenCalled();
+          expect(deleteScheduleService).not.toHaveBeenCalledWith(
+            { _id: validMockScheduleId, school_id: validMockSchoolId },
+            "schedule"
+          );
         });
       });
       describe("schedule::delete::02 - Passing fields with empty values", () => {
@@ -7754,6 +9787,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteScheduleService).not.toHaveBeenCalled();
+          expect(deleteScheduleService).not.toHaveBeenCalledWith(
+            { _id: validMockScheduleId, school_id: validMockSchoolId },
+            "schedule"
+          );
         });
       });
       describe("schedule::delete::03 - Passing invalid ids", () => {
@@ -7786,6 +9823,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteScheduleService).not.toHaveBeenCalled();
+          expect(deleteScheduleService).not.toHaveBeenCalledWith(
+            { _id: validMockScheduleId, school_id: validMockSchoolId },
+            "schedule"
+          );
         });
       });
       describe("schedule::delete::04 - Passing a schedule id but not deleting it", () => {
@@ -7807,6 +9848,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(deleteScheduleService).toHaveBeenCalled();
+          expect(deleteScheduleService).toHaveBeenCalledWith(
+            { _id: validMockScheduleId, school_id: validMockSchoolId },
+            "schedule"
+          );
         });
       });
       describe("schedule::delete::05 - Passing a schedule id correctly to delete", () => {
@@ -7828,6 +9873,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(deleteScheduleService).toHaveBeenCalled();
+          expect(deleteScheduleService).toHaveBeenCalledWith(
+            { _id: validMockScheduleId, school_id: validMockSchoolId },
+            "schedule"
+          );
         });
       });
     });
@@ -7968,7 +10017,20 @@ describe("Schedule maker API", () => {
           expect(
             findPopulateExistingScheduleByIdService
           ).not.toHaveBeenCalled();
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalledWith(
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::post::02 - Passing fields with empty values", () => {
@@ -8019,7 +10081,20 @@ describe("Schedule maker API", () => {
           expect(
             findPopulateExistingScheduleByIdService
           ).not.toHaveBeenCalled();
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalledWith(
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::post::03 - Passing an invalid type as a value", () => {
@@ -8070,7 +10145,20 @@ describe("Schedule maker API", () => {
           expect(
             findPopulateExistingScheduleByIdService
           ).not.toHaveBeenCalled();
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalledWith(
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::post::04 - Passing break start time after 23:59", () => {
@@ -8103,7 +10191,20 @@ describe("Schedule maker API", () => {
           expect(
             findPopulateExistingScheduleByIdService
           ).not.toHaveBeenCalled();
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalledWith(
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::post::05 - Passing an non-existent schedule in the body", () => {
@@ -8131,7 +10232,18 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalledWith(
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::post::06 - Passing a non-existing school", () => {
@@ -8159,7 +10271,18 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalledWith(
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::post::07 - Passing non-matching value", () => {
@@ -8187,7 +10310,18 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalledWith(
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::post::08 - Passing a break start time that starts earlier than the school shift day start time", () => {
@@ -8215,7 +10349,18 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalledWith(
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::post::09 - Passing a break number of minutes too long to fit in the schedule shift, allowing to have a class before and after", () => {
@@ -8244,7 +10389,18 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).not.toHaveBeenCalled();
+          expect(insertBreakService).not.toHaveBeenCalledWith(
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::post::10 - Passing a break but not being created", () => {
@@ -8272,7 +10428,15 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).toHaveBeenCalled();
+          expect(insertBreakService).toHaveBeenCalledWith(newBreak, "break");
         });
       });
       describe("break::post::11 - Passing a break correctly to create", () => {
@@ -8300,7 +10464,15 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            validMockScheduleId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(insertBreakService).toHaveBeenCalled();
+          expect(insertBreakService).toHaveBeenCalledWith(newBreak, "break");
         });
       });
     });
@@ -8330,6 +10502,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllBreaksService).not.toHaveBeenCalled();
+            expect(findAllBreaksService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
         describe("break::get::02 - passing fields with empty values", () => {
@@ -8356,6 +10533,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllBreaksService).not.toHaveBeenCalled();
+            expect(findAllBreaksService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
         describe("break::get::03 - passing invalid ids", () => {
@@ -8382,6 +10564,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findAllBreaksService).not.toHaveBeenCalled();
+            expect(findAllBreaksService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
         describe("break::get::04 - Requesting all fields but not finding any", () => {
@@ -8403,6 +10590,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findAllBreaksService).toHaveBeenCalled();
+            expect(findAllBreaksService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
         describe("break::get::05 - Requesting all fields correctly", () => {
@@ -8444,6 +10636,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(200);
             expect(findAllBreaksService).toHaveBeenCalled();
+            expect(findAllBreaksService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
       });
@@ -8473,6 +10670,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(400);
             expect(findBreakByIdService).not.toHaveBeenCalled();
+            expect(findBreakByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
         describe("break::get/:id::02 - Passing fields with empty values", () => {
@@ -8501,6 +10703,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(400);
             expect(findBreakByIdService).not.toHaveBeenCalled();
+            expect(findBreakByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
         describe("break::get/:id::03 - Passing invalid ids", () => {
@@ -8533,6 +10740,11 @@ describe("Schedule maker API", () => {
             ]);
             expect(statusCode).toBe(400);
             expect(findBreakByIdService).not.toHaveBeenCalled();
+            expect(findBreakByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
         describe("break::get/:id::04 - Requesting a field but not finding it", () => {
@@ -8556,6 +10768,11 @@ describe("Schedule maker API", () => {
             );
             expect(statusCode).toBe(404);
             expect(findBreakByIdService).toHaveBeenCalled();
+            expect(findBreakByIdService).toHaveBeenCalledWith(
+              [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
         describe("break::get/:id::05 - Requesting a field correctly", () => {
@@ -8581,6 +10798,11 @@ describe("Schedule maker API", () => {
             });
             expect(statusCode).toBe(200);
             expect(findBreakByIdService).toHaveBeenCalled();
+            expect(findBreakByIdService).toHaveBeenCalledWith(
+              [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "break"
+            );
           });
         });
       });
@@ -8631,7 +10853,21 @@ describe("Schedule maker API", () => {
           expect(
             findPopulateExistingScheduleByIdService
           ).not.toHaveBeenCalled();
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateBreakService).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::put::02 - Passing fields with empty values", () => {
@@ -8682,7 +10918,21 @@ describe("Schedule maker API", () => {
           expect(
             findPopulateExistingScheduleByIdService
           ).not.toHaveBeenCalled();
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateBreakService).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::put::03 - Passing an invalid type as field value", () => {
@@ -8739,7 +10989,21 @@ describe("Schedule maker API", () => {
           expect(
             findPopulateExistingScheduleByIdService
           ).not.toHaveBeenCalled();
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateBreakService).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::put::04 - Passing break start time after 23:59", () => {
@@ -8749,9 +11013,9 @@ describe("Schedule maker API", () => {
             schedulePayload,
             "findPopulateResourceById"
           );
-          const insertBreakService = mockService(
+          const updateBreakService = mockService(
             breakPayload,
-            "insertResource"
+            "updateFilterResource"
           );
 
           // api call
@@ -8772,7 +11036,21 @@ describe("Schedule maker API", () => {
           expect(
             findPopulateExistingScheduleByIdService
           ).not.toHaveBeenCalled();
-          expect(insertBreakService).not.toHaveBeenCalled();
+          expect(
+            findPopulateExistingScheduleByIdService
+          ).not.toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
+          expect(updateBreakService).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::put::05 - Passing an non-existent schedule in the body", () => {
@@ -8782,9 +11060,9 @@ describe("Schedule maker API", () => {
             scheduleNullPayload,
             "findPopulateResourceById"
           );
-          const insertBreakService = mockService(
+          const updateBreakService = mockService(
             breakPayload,
-            "insertResource"
+            "updateFilterResource"
           );
 
           // api call
@@ -8800,7 +11078,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
-          expect(insertBreakService).not.toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
+          expect(updateBreakService).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::put::06 - Passing a non-existing school", () => {
@@ -8810,9 +11100,9 @@ describe("Schedule maker API", () => {
             { ...schedulePayload, school_id: null },
             "findPopulateResourceById"
           );
-          const insertBreakService = mockService(
+          const updateBreakService = mockService(
             breakPayload,
-            "insertResource"
+            "updateFilterResource"
           );
 
           // api call
@@ -8828,19 +11118,31 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
-          expect(insertBreakService).not.toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
+          expect(updateBreakService).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
-      describe("break::put::07 - Passing non-matching value", () => {
+      describe("break::put::07 - Passing non-matching school", () => {
         it("should return a non-matching school id error", async () => {
           // mock services
           const findPopulateExistingScheduleByIdService = mockService(
             schedulePayload,
             "findPopulateResourceById"
           );
-          const insertBreakService = mockService(
+          const updateBreakService = mockService(
             breakPayload,
-            "insertResource"
+            "updateFilterResource"
           );
 
           // api call
@@ -8856,7 +11158,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
-          expect(insertBreakService).not.toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
+          expect(updateBreakService).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::put::08 - Passing a break start time that starts earlier than the school shift day start time", () => {
@@ -8884,7 +11198,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateBreakService).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::put::09 - Passing a break number of minutes too long to fit in the schedule shift, allowing to have a class before and after", () => {
@@ -8912,7 +11238,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateBreakService).not.toHaveBeenCalled();
+          expect(updateBreakService).not.toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::put::10 - Passing a break but not updating it because it does not match the filters", () => {
@@ -8940,7 +11278,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateBreakService).toHaveBeenCalled();
+          expect(updateBreakService).toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
       describe("break::put::11 - Passing a break correctly to update", () => {
@@ -8968,7 +11318,19 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
+          expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
+            newBreak.schedule_id,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "schedule"
+          );
           expect(updateBreakService).toHaveBeenCalled();
+          expect(updateBreakService).toHaveBeenCalledWith(
+            [{ _id: validMockBreakId }, { school_id: validMockSchoolId }],
+            newBreak,
+            "break"
+          );
         });
       });
     });
@@ -8997,6 +11359,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteBreakService).not.toHaveBeenCalled();
+          expect(deleteBreakService).not.toHaveBeenCalledWith(
+            { _id: validMockBreakId, school_id: validMockSchoolId },
+            "break"
+          );
         });
       });
       describe("break::delete::02 - Passing fields with empty values", () => {
@@ -9023,6 +11389,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteBreakService).not.toHaveBeenCalled();
+          expect(deleteBreakService).not.toHaveBeenCalledWith(
+            { _id: validMockBreakId, school_id: validMockSchoolId },
+            "break"
+          );
         });
       });
       describe("break::delete::03 - Passing invalid ids", () => {
@@ -9055,6 +11425,10 @@ describe("Schedule maker API", () => {
           ]);
           expect(statusCode).toBe(400);
           expect(deleteBreakService).not.toHaveBeenCalled();
+          expect(deleteBreakService).not.toHaveBeenCalledWith(
+            { _id: validMockBreakId, school_id: validMockSchoolId },
+            "break"
+          );
         });
       });
       describe("break::delete::04 - Passing a break id but not deleting it", () => {
@@ -9076,6 +11450,10 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(404);
           expect(deleteBreakService).toHaveBeenCalled();
+          expect(deleteBreakService).toHaveBeenCalledWith(
+            { _id: validMockBreakId, school_id: validMockSchoolId },
+            "break"
+          );
         });
       });
       describe("break::delete::05 - Passing a break id correctly to delete", () => {
@@ -9097,11 +11475,15 @@ describe("Schedule maker API", () => {
           );
           expect(statusCode).toBe(200);
           expect(deleteBreakService).toHaveBeenCalled();
+          expect(deleteBreakService).toHaveBeenCalledWith(
+            { _id: validMockBreakId, school_id: validMockSchoolId },
+            "break"
+          );
         });
       });
     });
   });
-  // continue here --> check if you can test the arguments passed in the services to avoid having to recreate the test to check if the models passed are correct
-  // continue here --> check check referential equality with toMatchObject within the object deep copy
+  // continue here --> check referential equality with toMatchObject within the object deep copy, also check if you can use to replace the equals.expect instances
+  // continue here --> refactor the mongo services to make them just a call to the data base without any other code
   // continue here --> create the levels table code
 });

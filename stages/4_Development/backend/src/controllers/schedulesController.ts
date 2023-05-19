@@ -47,7 +47,8 @@ const createSchedule = async ({ body }: Request, res: Response) => {
     throw new ConflictError("This field name already exists");
   }
   /* create the schedule  */
-  const scheduleCreated = await insertResource(body, scheduleModel);
+  const newSchedule = body;
+  const scheduleCreated = await insertResource(newSchedule, scheduleModel);
   if (!scheduleCreated) {
     throw new BadRequestError("Schedule not created");
   }
