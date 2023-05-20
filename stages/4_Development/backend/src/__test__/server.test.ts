@@ -105,13 +105,14 @@ describe("Schedule maker API", () => {
             .send(newSchoolMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school name",
               param: "name",
             },
           ]);
+
           expect(statusCode).toBe(400);
           expect(
             findDuplicatedSchoolNameByPropertyService
@@ -148,7 +149,7 @@ describe("Schedule maker API", () => {
             .send(newSchoolEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school name field is empty",
@@ -192,7 +193,7 @@ describe("Schedule maker API", () => {
             .send(newSchoolNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school name is not valid",
@@ -236,7 +237,7 @@ describe("Schedule maker API", () => {
             .send(newSchoolWrongLengthValues);
 
           //assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The name must not exceed 100 characters",
@@ -281,11 +282,9 @@ describe("Schedule maker API", () => {
             .send(newSchool);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "This school name already exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "This school name already exists",
+          });
           expect(statusCode).toBe(409);
           expect(findDuplicatedSchoolNameByPropertyService).toHaveBeenCalled();
           expect(
@@ -320,11 +319,9 @@ describe("Schedule maker API", () => {
             .send(newSchool);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "School not created",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "School not created",
+          });
           expect(statusCode).toBe(400);
           expect(findDuplicatedSchoolNameByPropertyService).toHaveBeenCalled();
           expect(
@@ -359,9 +356,10 @@ describe("Schedule maker API", () => {
             .send(newSchool);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "School created successfully!" })
-          );
+          expect(body).toStrictEqual({
+            msg: "School created successfully!",
+          });
+
           expect(statusCode).toBe(201);
           expect(findDuplicatedSchoolNameByPropertyService).toHaveBeenCalled();
           expect(
@@ -396,11 +394,9 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "No schools found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "No schools found",
+            });
             expect(statusCode).toBe(404);
             expect(findAllSchoolsService).toHaveBeenCalled();
             expect(findAllSchoolsService).toHaveBeenCalledWith(
@@ -423,7 +419,7 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 _id: expect.any(String),
                 name: "school 001",
@@ -461,7 +457,7 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "params",
                 msg: "The school id is not valid",
@@ -493,11 +489,9 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "School not found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "School not found",
+            });
             expect(statusCode).toBe(404);
             expect(findSchoolByIdService).toHaveBeenCalled();
             expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -521,12 +515,10 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                _id: validMockSchoolId,
-                name: "school 001",
-              })
-            );
+            expect(body).toStrictEqual({
+              _id: validMockSchoolId,
+              name: "school 001",
+            });
             expect(statusCode).toBe(200);
             expect(findSchoolByIdService).toHaveBeenCalled();
             expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -558,7 +550,7 @@ describe("Schedule maker API", () => {
             .send(newSchoolMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a name",
@@ -602,7 +594,7 @@ describe("Schedule maker API", () => {
             .send(newSchoolEmptyValues);
 
           //assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The name field is empty",
@@ -647,7 +639,7 @@ describe("Schedule maker API", () => {
             .send(newSchoolNotValidDataTypes);
 
           //assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The school id is not valid",
@@ -699,7 +691,7 @@ describe("Schedule maker API", () => {
             .send(newSchoolWrongLengthValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The name must not exceed 100 characters",
@@ -745,11 +737,9 @@ describe("Schedule maker API", () => {
             .send(newSchool);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "This school name already exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "This school name already exists",
+          });
           expect(statusCode).toBe(409);
           expect(findSchoolNameDuplicatedByPropertyService).toHaveBeenCalled();
           expect(
@@ -785,11 +775,9 @@ describe("Schedule maker API", () => {
             .send(newSchool);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "School not updated",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "School not updated",
+          });
           expect(statusCode).toBe(404);
           expect(findSchoolNameDuplicatedByPropertyService).toHaveBeenCalled();
           expect(
@@ -825,9 +813,7 @@ describe("Schedule maker API", () => {
             .send(newSchool);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "School updated" })
-          );
+          expect(body).toStrictEqual({ msg: "School updated" });
           expect(statusCode).toBe(200);
           expect(findSchoolNameDuplicatedByPropertyService).toHaveBeenCalled();
           expect(
@@ -862,7 +848,7 @@ describe("Schedule maker API", () => {
             .send();
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The school id is not valid",
@@ -893,11 +879,9 @@ describe("Schedule maker API", () => {
             .send();
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "School not deleted",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "School not deleted",
+          });
           expect(statusCode).toBe(404);
           expect(deleteSchoolService).toHaveBeenCalled();
           expect(deleteSchoolService).toHaveBeenCalledWith(
@@ -920,9 +904,7 @@ describe("Schedule maker API", () => {
             .send();
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "School deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "School deleted" });
           expect(statusCode).toBe(200);
           expect(deleteSchoolService).toHaveBeenCalled();
           expect(deleteSchoolService).toHaveBeenCalledWith(
@@ -1018,7 +1000,6 @@ describe("Schedule maker API", () => {
       firstName: "Jerome",
       lastName: "Vargas",
       email: "jerome@gmail.com",
-      password: "12341234",
       role: "coordinator",
       status: "active",
       hasTeachingFunc: true,
@@ -1086,7 +1067,7 @@ describe("Schedule maker API", () => {
             .send(newUserMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               msg: "Please add the user's school id",
               param: "school_id",
@@ -1167,7 +1148,7 @@ describe("Schedule maker API", () => {
             .send(newUserEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               msg: "The school field is empty",
               param: "school_id",
@@ -1257,7 +1238,7 @@ describe("Schedule maker API", () => {
             .send(newUserNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -1348,7 +1329,7 @@ describe("Schedule maker API", () => {
             .send(newUserWrongLengthValues);
 
           //assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -1420,7 +1401,7 @@ describe("Schedule maker API", () => {
             .send(newUserWrongValues);
 
           //assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -1489,11 +1470,9 @@ describe("Schedule maker API", () => {
             .send(newUser);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please create the school first",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please create the school first",
+          });
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -1534,11 +1513,9 @@ describe("Schedule maker API", () => {
             .send(newUser);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please try a different email address",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please try a different email address",
+          });
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -1578,11 +1555,9 @@ describe("Schedule maker API", () => {
             .send(newUser);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "User not created",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "User not created",
+          });
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -1619,9 +1594,7 @@ describe("Schedule maker API", () => {
             .send(newUser);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "User created successfully!" })
-          );
+          expect(body).toStrictEqual({ msg: "User created successfully!" });
           expect(statusCode).toBe(201);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -1658,7 +1631,7 @@ describe("Schedule maker API", () => {
               .send({ school_i: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -1688,7 +1661,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -1719,7 +1692,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id is not valid",
@@ -1751,11 +1724,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "No users found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "No users found",
+            });
             expect(statusCode).toBe(404);
             expect(findAllUsersService).toHaveBeenCalled();
             expect(findAllUsersService).toHaveBeenCalledWith(
@@ -1779,7 +1750,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 _id: expect.any(String),
                 email: "jerome@gmail.com",
@@ -1839,7 +1810,7 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -1869,7 +1840,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -1900,7 +1871,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "params",
                 msg: "The user id is not valid",
@@ -1937,11 +1908,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: otherValidMockUserId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "User not found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "User not found",
+            });
             expect(statusCode).toBe(404);
             expect(findUserByPropertyService).toHaveBeenCalled();
             expect(findUserByPropertyService).toHaveBeenCalledWith(
@@ -1965,18 +1934,16 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                _id: validMockUserId,
-                school_id: validMockSchoolId,
-                firstName: "Jerome",
-                lastName: "Vargas",
-                email: "jerome@gmail.com",
-                status: "active",
-                role: "coordinator",
-                hasTeachingFunc: true,
-              })
-            );
+            expect(body).toStrictEqual({
+              _id: validMockUserId,
+              school_id: validMockSchoolId,
+              firstName: "Jerome",
+              lastName: "Vargas",
+              email: "jerome@gmail.com",
+              status: "active",
+              role: "coordinator",
+              hasTeachingFunc: true,
+            });
             expect(statusCode).toBe(200);
             expect(findUserByPropertyService).toHaveBeenCalled();
             expect(findUserByPropertyService).toHaveBeenCalledWith(
@@ -2008,7 +1975,7 @@ describe("Schedule maker API", () => {
             .send(newUserMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add the user's school id",
@@ -2087,7 +2054,7 @@ describe("Schedule maker API", () => {
             .send(newUserEmptyValues);
 
           //assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school field is empty",
@@ -2174,7 +2141,7 @@ describe("Schedule maker API", () => {
             .send(newUserNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The user id is not valid",
@@ -2269,7 +2236,7 @@ describe("Schedule maker API", () => {
             .send(newUserWrongLengthValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -2338,7 +2305,7 @@ describe("Schedule maker API", () => {
             .send(newUserWrongValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -2404,11 +2371,9 @@ describe("Schedule maker API", () => {
             .send(newUser);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please try a different email address",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please try a different email address",
+          });
           expect(statusCode).toBe(409);
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalled();
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalledWith(
@@ -2442,11 +2407,9 @@ describe("Schedule maker API", () => {
             .send(newUser);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "User not updated",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "User not updated",
+          });
           expect(statusCode).toBe(404);
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalled();
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalledWith(
@@ -2480,9 +2443,7 @@ describe("Schedule maker API", () => {
             .send(newUser);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "User updated" })
-          );
+          expect(body).toStrictEqual({ msg: "User updated" });
           expect(statusCode).toBe(200);
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalled();
           expect(findDuplicatedUserEmailByPropertyService).toHaveBeenCalledWith(
@@ -2516,7 +2477,7 @@ describe("Schedule maker API", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -2545,7 +2506,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -2575,7 +2536,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The user id is not valid",
@@ -2613,11 +2574,9 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "User not deleted",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "User not deleted",
+          });
           expect(statusCode).toBe(404);
           expect(deleteUserService).toHaveBeenCalled();
           expect(deleteUserService).toHaveBeenCalledWith(
@@ -2640,9 +2599,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "User deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "User deleted" });
           expect(statusCode).toBe(200);
           expect(deleteUserService).toHaveBeenCalled();
           expect(deleteUserService).toHaveBeenCalledWith(
@@ -2790,22 +2747,6 @@ describe("Schedule maker API", () => {
       hoursAssigned: 60,
     };
     const teacherNullPayload = null;
-    const userPayload = {
-      _id: validMockUserId,
-      school_id: validMockSchoolId,
-      firstName: "Jerome",
-      lastName: "Vargas",
-      email: "jerome@gmail.com",
-      password: "12341234",
-      role: "teacher",
-      status: "active",
-      hasTeachingFunc: true,
-    };
-    const userNullPayload = null;
-    const schoolPayload = {
-      _id: validMockSchoolId,
-      name: "school 001",
-    };
     const coordinatorPayload = {
       _id: validMockCoordinatorId,
       school_id: validMockSchoolId,
@@ -2873,7 +2814,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add the user's school id",
@@ -2984,7 +2925,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -3108,7 +3049,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -3238,7 +3179,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherWrongValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -3324,11 +3265,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please create the base user first",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please create the base user first",
+          });
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3376,9 +3315,7 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "The user is not active" })
-          );
+          expect(body).toStrictEqual({ msg: "The user is not active" });
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3426,11 +3363,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "The user does not have teaching functions assigned",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "The user does not have teaching functions assigned",
+          });
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3481,11 +3416,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please create the school first",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please create the school first",
+          });
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3530,11 +3463,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please pass an existent coordinator",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please pass an existent coordinator",
+          });
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3582,11 +3513,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please pass a user with a coordinator role",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please pass a user with a coordinator role",
+          });
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3633,11 +3562,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please pass an active coordinator",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please pass an active coordinator",
+          });
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3682,11 +3609,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "User is already a teacher",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "User is already a teacher",
+          });
           expect(statusCode).toBe(409);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3731,11 +3656,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Teacher not created",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Teacher not created",
+          });
           expect(statusCode).toBe(400);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3780,9 +3703,7 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Teacher created successfully!" })
-          );
+          expect(body).toStrictEqual({ msg: "Teacher created successfully!" });
           expect(statusCode).toBe(201);
           expect(findUserSchoolCoordinator).toHaveBeenCalled();
           expect(findUserSchoolCoordinator).toHaveBeenCalledWith(
@@ -3823,7 +3744,7 @@ describe("Schedule maker API", () => {
               .send({ school_i: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -3853,7 +3774,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -3884,7 +3805,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id is not valid",
@@ -3916,11 +3837,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "No teachers found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "No teachers found",
+            });
             expect(statusCode).toBe(404);
             expect(findAllTeachersService).toHaveBeenCalled();
             expect(findAllTeachersService).toHaveBeenCalledWith(
@@ -3944,7 +3863,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 _id: expect.any(String),
                 contractType: "full-time",
@@ -3999,7 +3918,7 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -4029,7 +3948,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -4060,7 +3979,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "params",
                 msg: "The teacher id is not valid",
@@ -4097,11 +4016,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "Teacher not found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "Teacher not found",
+            });
             expect(statusCode).toBe(404);
             expect(findTeacherByPropertyService).toHaveBeenCalled();
             expect(findTeacherByPropertyService).toHaveBeenCalledWith(
@@ -4126,16 +4043,15 @@ describe("Schedule maker API", () => {
 
             // assertions
             expect(statusCode).toBe(200);
-            expect(body).toEqual(
-              expect.objectContaining({
-                _id: validMockTeacherId,
-                user_id: validMockUserId,
-                coordinator_id: validMockCoordinatorId,
-                contractType: "full-time",
-                hoursAssignable: 60,
-                hoursAssigned: 60,
-              })
-            );
+            expect(body).toStrictEqual({
+              _id: validMockTeacherId,
+              school_id: validMockSchoolId,
+              user_id: validMockUserId,
+              coordinator_id: validMockCoordinatorId,
+              contractType: "full-time",
+              hoursAssignable: 60,
+              hoursAssigned: 60,
+            });
             expect(findTeacherByPropertyService).toHaveBeenCalled();
             expect(findTeacherByPropertyService).toHaveBeenCalledWith(
               [{ _id: validMockTeacherId }, { school_id: validMockSchoolId }],
@@ -4166,7 +4082,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add the school id",
@@ -4270,7 +4186,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherEmptyValues);
 
           //assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -4387,7 +4303,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -4516,7 +4432,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherWrongValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -4596,11 +4512,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please pass an existent coordinator",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please pass an existent coordinator",
+          });
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
           expect(findCoordinatorByIdService).toHaveBeenCalledWith(
@@ -4638,11 +4552,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please pass a user with a coordinator role",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please pass a user with a coordinator role",
+          });
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
           expect(findCoordinatorByIdService).toHaveBeenCalledWith(
@@ -4680,11 +4592,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please pass an active coordinator",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please pass an active coordinator",
+          });
           expect(statusCode).toBe(400);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
           expect(findCoordinatorByIdService).toHaveBeenCalledWith(
@@ -4722,11 +4632,9 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Teacher not updated",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Teacher not updated",
+          });
           expect(statusCode).toBe(404);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
           expect(findCoordinatorByIdService).toHaveBeenCalledWith(
@@ -4764,9 +4672,7 @@ describe("Schedule maker API", () => {
             .send(newTeacher);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Teacher updated" })
-          );
+          expect(body).toStrictEqual({ msg: "Teacher updated" });
           expect(statusCode).toBe(200);
           expect(findCoordinatorByIdService).toHaveBeenCalled();
           expect(findCoordinatorByIdService).toHaveBeenCalledWith(
@@ -4805,7 +4711,7 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -4836,7 +4742,7 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -4868,7 +4774,7 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The teacher's id is not valid",
@@ -4908,9 +4814,7 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Teacher not deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Teacher not deleted" });
           expect(statusCode).toBe(404);
           expect(deleteTeacherService).toHaveBeenCalled();
           expect(deleteTeacherService).toHaveBeenCalledWith(
@@ -4935,9 +4839,7 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Teacher deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Teacher deleted" });
           expect(statusCode).toBe(200);
           expect(deleteTeacherService).toHaveBeenCalled();
           expect(deleteTeacherService).toHaveBeenCalledWith(
@@ -5029,7 +4931,7 @@ describe("Schedule maker API", () => {
             .send(newFieldMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -5083,7 +4985,7 @@ describe("Schedule maker API", () => {
             .send(newFieldEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -5139,7 +5041,7 @@ describe("Schedule maker API", () => {
             .send(newFieldNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -5195,7 +5097,7 @@ describe("Schedule maker API", () => {
             .send(newFieldWrongLengthValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The field name must not exceed 100 characters",
@@ -5246,11 +5148,9 @@ describe("Schedule maker API", () => {
             .send(newField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure the school exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure the school exists",
+          });
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -5293,9 +5193,7 @@ describe("Schedule maker API", () => {
             .send(newField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "This field name already exists" })
-          );
+          expect(body).toStrictEqual({ msg: "This field name already exists" });
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -5338,9 +5236,7 @@ describe("Schedule maker API", () => {
             .send(newField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Field not created!" })
-          );
+          expect(body).toStrictEqual({ msg: "Field not created!" });
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -5380,9 +5276,7 @@ describe("Schedule maker API", () => {
             .send(newField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Field created successfully!" })
-          );
+          expect(body).toStrictEqual({ msg: "Field created successfully!" });
           expect(statusCode).toBe(201);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -5418,7 +5312,7 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -5448,7 +5342,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -5479,7 +5373,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id is not valid",
@@ -5511,11 +5405,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "No fields found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "No fields found",
+            });
             expect(statusCode).toBe(404);
             expect(findAllFieldsService).toHaveBeenCalled();
             expect(findAllFieldsService).toHaveBeenCalledWith(
@@ -5539,7 +5431,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 _id: expect.any(String),
                 name: "Mathematics",
@@ -5581,7 +5473,7 @@ describe("Schedule maker API", () => {
               .send();
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -5611,7 +5503,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -5641,7 +5533,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "params",
                 msg: "The field id is not valid",
@@ -5678,11 +5570,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "Field not found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "Field not found",
+            });
             expect(statusCode).toBe(404);
             expect(findFieldByIdService).toHaveBeenCalled();
             expect(findFieldByIdService).toHaveBeenCalledWith(
@@ -5706,12 +5596,11 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                _id: validMockFieldId,
-                name: "Mathematics",
-              })
-            );
+            expect(body).toStrictEqual({
+              _id: validMockFieldId,
+              school_id: validMockSchoolId,
+              name: "Mathematics",
+            });
             expect(statusCode).toBe(200);
             expect(findFieldByIdService).toHaveBeenCalled();
             expect(findFieldByIdService).toHaveBeenCalledWith(
@@ -5743,7 +5632,7 @@ describe("Schedule maker API", () => {
             .send(newFieldMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -5792,7 +5681,7 @@ describe("Schedule maker API", () => {
             .send(newFieldEmptyValues);
 
           //assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -5843,7 +5732,7 @@ describe("Schedule maker API", () => {
             .send(newFieldNotValidDataTypes);
 
           //assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -5894,7 +5783,7 @@ describe("Schedule maker API", () => {
             .send(newFieldWrongLengthValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The name must not exceed 100 characters",
@@ -5940,11 +5829,9 @@ describe("Schedule maker API", () => {
             .send(newField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "This field name already exists!",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "This field name already exists!",
+          });
           expect(statusCode).toBe(409);
           expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalled();
           expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalledWith(
@@ -5978,11 +5865,9 @@ describe("Schedule maker API", () => {
             .send(newField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Field not updated",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Field not updated",
+          });
           expect(statusCode).toBe(404);
           expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalled();
           expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalledWith(
@@ -6016,9 +5901,7 @@ describe("Schedule maker API", () => {
             .send(newField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Field updated" })
-          );
+          expect(body).toStrictEqual({ msg: "Field updated" });
           expect(statusCode).toBe(200);
           expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalled();
           expect(findFieldNameDuplicatedByPropertyService).toHaveBeenCalledWith(
@@ -6051,7 +5934,7 @@ describe("Schedule maker API", () => {
             .send();
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -6080,7 +5963,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -6110,7 +5993,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The field id is not valid",
@@ -6148,9 +6031,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Field not deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Field not deleted" });
           expect(statusCode).toBe(404);
           expect(deleteFieldService).toHaveBeenCalled();
           expect(deleteFieldService).toHaveBeenCalledWith(
@@ -6173,9 +6054,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Field deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Field deleted" });
           expect(statusCode).toBe(200);
           expect(deleteFieldService).toHaveBeenCalled();
           expect(deleteFieldService).toHaveBeenCalledWith(
@@ -6294,7 +6173,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherFieldMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -6376,7 +6255,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherFieldEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -6461,7 +6340,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherFieldNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -6546,11 +6425,9 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure the teacher exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure the teacher exists",
+          });
           expect(statusCode).toBe(400);
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             1
@@ -6614,11 +6491,9 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure the field exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure the field exists",
+          });
           expect(statusCode).toBe(400);
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
@@ -6680,11 +6555,9 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "The resources do not belong to this school",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "The resources do not belong to this school",
+          });
           expect(statusCode).toBe(400);
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
@@ -6746,11 +6619,9 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "The resources do not belong to this school",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "The resources do not belong to this school",
+          });
           expect(statusCode).toBe(400);
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
@@ -6812,11 +6683,9 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "This teacher has already been assigned this field",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "This teacher has already been assigned this field",
+          });
           expect(statusCode).toBe(409);
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
@@ -6878,11 +6747,9 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Teacher_Field not created!",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Teacher_Field not created!",
+          });
           expect(statusCode).toBe(400);
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
@@ -6944,11 +6811,9 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Teacher_Field created successfully!",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Teacher_Field created successfully!",
+          });
           expect(statusCode).toBe(201);
           expect(findDuplicatedTeacherFieldByIdService).toHaveBeenCalledTimes(
             2
@@ -7004,7 +6869,7 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -7034,7 +6899,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -7065,7 +6930,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id is not valid",
@@ -7096,11 +6961,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "No fields assigned to any teachers found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "No fields assigned to any teachers found",
+            });
             expect(statusCode).toBe(404);
             expect(findAllTeacherFieldsService).toHaveBeenCalled();
             expect(findAllTeacherFieldsService).toHaveBeenCalledWith(
@@ -7124,7 +6987,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 _id: expect.any(String),
                 field_id: expect.any(String),
@@ -7169,7 +7032,7 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -7202,7 +7065,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -7236,7 +7099,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "params",
                 msg: "The teacher_field id is not valid",
@@ -7276,11 +7139,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "Teacher_Field not found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "Teacher_Field not found",
+            });
             expect(statusCode).toBe(404);
             expect(findTeacherFieldByIdService).toHaveBeenCalled();
             expect(findTeacherFieldByIdService).toHaveBeenCalledWith(
@@ -7307,7 +7168,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject({
+            expect(body).toStrictEqual({
               _id: validMockTeacherFieldId,
               field_id: validMockFieldId,
               school_id: validMockSchoolId,
@@ -7352,7 +7213,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherFieldMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -7425,7 +7286,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherFieldEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -7501,7 +7362,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherFieldNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -7574,11 +7435,9 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Field not found",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Field not found",
+          });
           expect(statusCode).toBe(404);
           expect(findExistingField).toHaveBeenCalled();
           expect(findExistingField).toHaveBeenCalledWith(
@@ -7632,11 +7491,9 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "This field has already been assigned to the teacher!",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "This field has already been assigned to the teacher!",
+          });
           expect(statusCode).toBe(409);
           expect(findExistingField).toHaveBeenCalled();
           expect(findExistingField).toHaveBeenCalledWith(
@@ -7693,9 +7550,7 @@ describe("Schedule maker API", () => {
             .send(newTeacherField);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Teacher_Field not updated" })
-          );
+          expect(body).toStrictEqual({ msg: "Teacher_Field not updated" });
           expect(statusCode).toBe(404);
           expect(findExistingField).toHaveBeenCalled();
           expect(findExistingField).toHaveBeenCalledWith(
@@ -7750,9 +7605,7 @@ describe("Schedule maker API", () => {
             .put(`${endPointUrl}${validMockTeacherFieldId}`)
             .send(newTeacherField);
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Teacher_Field updated" })
-          );
+          expect(body).toStrictEqual({ msg: "Teacher_Field updated" });
           expect(statusCode).toBe(200);
           expect(findExistingField).toHaveBeenCalled();
           expect(findExistingField).toHaveBeenCalledWith(
@@ -7803,7 +7656,7 @@ describe("Schedule maker API", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -7832,7 +7685,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -7862,7 +7715,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The teacher_field id is not valid",
@@ -7898,9 +7751,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Teacher_Field not deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Teacher_Field not deleted" });
           expect(statusCode).toBe(404);
           expect(deleteTeacherFieldService).toHaveBeenCalled();
           expect(deleteTeacherFieldService).toHaveBeenCalledWith(
@@ -7923,9 +7774,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Teacher_Field deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Teacher_Field deleted" });
           expect(statusCode).toBe(200);
           expect(deleteTeacherFieldService).toHaveBeenCalled();
           expect(deleteTeacherFieldService).toHaveBeenCalledWith(
@@ -8121,7 +7970,7 @@ describe("Schedule maker API", () => {
             .send(newScheduleMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add the school id",
@@ -8225,66 +8074,78 @@ describe("Schedule maker API", () => {
             .send(newScheduleEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school field is empty",
               param: "school_id",
+              value: "",
             },
             {
               location: "body",
               msg: "The schedule name field is empty",
               param: "name",
+              value: "",
             },
             {
               location: "body",
               msg: "The day start field is empty",
               param: "dayStart",
+              value: "",
             },
             {
               location: "body",
               msg: "The number of minutes field is empty",
               param: "shiftNumberMinutes",
+              value: "",
             },
             {
               location: "body",
               msg: "The class unit length field is empty",
               param: "classUnitMinutes",
+              value: "",
             },
             {
               location: "body",
               msg: "The monday field is empty",
               param: "monday",
+              value: "",
             },
             {
               location: "body",
               msg: "The tuesday field is empty",
               param: "tuesday",
+              value: "",
             },
             {
               location: "body",
               msg: "The wednesday field is empty",
               param: "wednesday",
+              value: "",
             },
             {
               location: "body",
               msg: "The thursday field is empty",
               param: "thursday",
+              value: "",
             },
             {
               location: "body",
               msg: "The friday field is empty",
               param: "friday",
+              value: "",
             },
             {
               location: "body",
               msg: "The saturday field is empty",
               param: "saturday",
+              value: "",
             },
             {
               location: "body",
               msg: "The sunday field is empty",
               param: "sunday",
+              value: "",
             },
           ]);
           expect(statusCode).toBe(400);
@@ -8329,66 +8190,78 @@ describe("Schedule maker API", () => {
             .send(newScheduleNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The schedule name is not valid",
               param: "name",
+              value: 432,
             },
             {
               location: "body",
               msg: "day start value is not valid",
               param: "dayStart",
+              value: "hello",
             },
             {
               location: "body",
               msg: "number of minutes value is not valid",
               param: "shiftNumberMinutes",
+              value: "hello",
             },
             {
               location: "body",
               msg: "class unit length value is not valid",
               param: "classUnitMinutes",
+              value: "hello",
             },
             {
               location: "body",
               msg: "monday value is not valid",
               param: "monday",
+              value: "hello",
             },
             {
               location: "body",
               msg: "tuesday value is not valid",
               param: "tuesday",
+              value: "hello",
             },
             {
               location: "body",
               msg: "wednesday value is not valid",
               param: "wednesday",
+              value: "hello",
             },
             {
               location: "body",
               msg: "thursday value is not valid",
               param: "thursday",
+              value: "hello",
             },
             {
               location: "body",
               msg: "friday value is not valid",
               param: "friday",
+              value: "hello",
             },
             {
               location: "body",
               msg: "saturday value is not valid",
               param: "saturday",
+              value: "hello",
             },
             {
               location: "body",
               msg: "sunday value is not valid",
               param: "sunday",
+              value: "hello",
             },
           ]);
           expect(statusCode).toBe(400);
@@ -8433,7 +8306,7 @@ describe("Schedule maker API", () => {
             .send({ ...newSchedule, dayStart: 1440 });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school start time must must not exceed the 23:59 hours",
@@ -8499,7 +8372,7 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "There is not enough time available to allocate any class in the shift",
@@ -8549,7 +8422,7 @@ describe("Schedule maker API", () => {
             .send(newScheduleWrongLengthValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The schedule name must not exceed 100 characters",
@@ -8601,11 +8474,9 @@ describe("Schedule maker API", () => {
             .send(newSchedule);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please create the school first",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please create the school first",
+          });
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -8648,11 +8519,9 @@ describe("Schedule maker API", () => {
             .send(newSchedule);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "This field name already exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "This field name already exists",
+          });
           expect(statusCode).toBe(409);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -8695,11 +8564,9 @@ describe("Schedule maker API", () => {
             .send(newSchedule);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Schedule not created",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Schedule not created",
+          });
           expect(statusCode).toBe(400);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -8742,11 +8609,9 @@ describe("Schedule maker API", () => {
             .send(newSchedule);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Schedule created successfully!",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Schedule created successfully!",
+          });
           expect(statusCode).toBe(201);
           expect(findSchoolByIdService).toHaveBeenCalled();
           expect(findSchoolByIdService).toHaveBeenCalledWith(
@@ -8785,7 +8650,7 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -8815,7 +8680,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id is not valid",
@@ -8847,7 +8712,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id is not valid",
@@ -8879,11 +8744,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "No schedules found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "No schedules found",
+            });
             expect(statusCode).toBe(404);
             expect(findAllSchedulesService).toHaveBeenCalled();
             expect(findAllSchedulesService).toHaveBeenCalledWith(
@@ -8907,7 +8770,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 _id: expect.any(String),
                 school_id: expect.any(String),
@@ -8979,7 +8842,7 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -9009,7 +8872,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -9039,7 +8902,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "params",
                 msg: "The schedule id is not valid",
@@ -9076,11 +8939,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "Schedule not found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "Schedule not found",
+            });
             expect(statusCode).toBe(404);
             expect(findScheduleByIdService).toHaveBeenCalled();
             expect(findScheduleByIdService).toHaveBeenCalledWith(
@@ -9104,7 +8965,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject({
+            expect(body).toStrictEqual({
               _id: validMockScheduleId,
               school_id: validMockSchoolId,
               classUnitMinutes: 40,
@@ -9150,7 +9011,7 @@ describe("Schedule maker API", () => {
             .send(newScheduleMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add the school id",
@@ -9249,7 +9110,7 @@ describe("Schedule maker API", () => {
             .send(newScheduleEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school field is empty",
@@ -9360,7 +9221,7 @@ describe("Schedule maker API", () => {
             .send(newScheduleNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -9474,7 +9335,7 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school start time must must not exceed the 23:59 hours",
@@ -9536,7 +9397,7 @@ describe("Schedule maker API", () => {
             });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "There is not enough time available to allocate any class in the shift",
@@ -9581,7 +9442,7 @@ describe("Schedule maker API", () => {
             .send(newScheduleWrongLengthValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The schedule name must not exceed 100 characters",
@@ -9628,11 +9489,9 @@ describe("Schedule maker API", () => {
             .send(newSchedule);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "This schedule name already exists!",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "This schedule name already exists!",
+          });
           expect(statusCode).toBe(409);
           expect(
             findScheduleNameDuplicatedByPropertyService
@@ -9670,9 +9529,7 @@ describe("Schedule maker API", () => {
             .send(newSchedule);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Schedule not updated" })
-          );
+          expect(body).toStrictEqual({ msg: "Schedule not updated" });
           expect(statusCode).toBe(404);
           expect(
             findScheduleNameDuplicatedByPropertyService
@@ -9710,9 +9567,7 @@ describe("Schedule maker API", () => {
             .send(newSchedule);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Schedule updated" })
-          );
+          expect(body).toStrictEqual({ msg: "Schedule updated" });
           expect(statusCode).toBe(200);
           expect(
             findScheduleNameDuplicatedByPropertyService
@@ -9749,7 +9604,7 @@ describe("Schedule maker API", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -9778,11 +9633,12 @@ describe("Schedule maker API", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
               param: "school_id",
+              value: "",
             },
           ]);
           expect(statusCode).toBe(400);
@@ -9807,7 +9663,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The schedule id is not valid",
@@ -9843,9 +9699,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Schedule not deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Schedule not deleted" });
           expect(statusCode).toBe(404);
           expect(deleteScheduleService).toHaveBeenCalled();
           expect(deleteScheduleService).toHaveBeenCalledWith(
@@ -9868,9 +9722,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Schedule deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Schedule deleted" });
           expect(statusCode).toBe(200);
           expect(deleteScheduleService).toHaveBeenCalled();
           expect(deleteScheduleService).toHaveBeenCalledWith(
@@ -9991,7 +9843,7 @@ describe("Schedule maker API", () => {
             .send(newBreakMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add the school id",
@@ -10051,7 +9903,7 @@ describe("Schedule maker API", () => {
             .send(newBreakEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -10115,7 +9967,7 @@ describe("Schedule maker API", () => {
             .send(newBreakNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id is not valid",
@@ -10179,7 +10031,7 @@ describe("Schedule maker API", () => {
             .send({ ...newBreak, breakStart: 1440 });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The break start time must must not exceed the 23:59 hours",
@@ -10225,11 +10077,9 @@ describe("Schedule maker API", () => {
             .send(newBreak);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure the schedule exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure the schedule exists",
+          });
           expect(statusCode).toBe(404);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -10264,11 +10114,9 @@ describe("Schedule maker API", () => {
             .send(newBreak);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure the school exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure the school exists",
+          });
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -10303,11 +10151,9 @@ describe("Schedule maker API", () => {
             .send({ ...newBreak, school_id: otherValidBreakMockId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure the schedule belongs to the school",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure the schedule belongs to the school",
+          });
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -10342,11 +10188,9 @@ describe("Schedule maker API", () => {
             .send({ ...newBreak, breakStart: 419 });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please take into account that the break start time cannot be earlier than the schedule start time",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please take into account that the break start time cannot be earlier than the schedule start time",
+          });
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -10382,11 +10226,9 @@ describe("Schedule maker API", () => {
             .send({ ...newBreak, numberMinutes: 281 });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break",
+          });
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -10421,11 +10263,9 @@ describe("Schedule maker API", () => {
             .send(newBreak);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Break not created!",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Break not created!",
+          });
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -10457,11 +10297,9 @@ describe("Schedule maker API", () => {
             .send(newBreak);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Break created!",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Break created!",
+          });
           expect(statusCode).toBe(200);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -10493,7 +10331,7 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "Please add a school id",
@@ -10523,7 +10361,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id field is empty",
@@ -10554,7 +10392,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "body",
                 msg: "The school id is not valid",
@@ -10585,9 +10423,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({ msg: "No breaks found" })
-            );
+            expect(body).toStrictEqual({ msg: "No breaks found" });
             expect(statusCode).toBe(404);
             expect(findAllBreaksService).toHaveBeenCalled();
             expect(findAllBreaksService).toHaveBeenCalledWith(
@@ -10611,7 +10447,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 _id: expect.any(String),
                 school_id: expect.any(String),
@@ -10659,15 +10495,13 @@ describe("Schedule maker API", () => {
               .send({ school_i: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining([
-                {
-                  location: "body",
-                  msg: "Please add a school id",
-                  param: "school_id",
-                },
-              ])
-            );
+            expect(body).toStrictEqual([
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ]);
             expect(statusCode).toBe(400);
             expect(findBreakByIdService).not.toHaveBeenCalled();
             expect(findBreakByIdService).not.toHaveBeenCalledWith(
@@ -10691,16 +10525,14 @@ describe("Schedule maker API", () => {
               .send({ school_id: "" });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining([
-                {
-                  location: "body",
-                  msg: "The school id field is empty",
-                  param: "school_id",
-                  value: "",
-                },
-              ])
-            );
+            expect(body).toStrictEqual([
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ]);
             expect(statusCode).toBe(400);
             expect(findBreakByIdService).not.toHaveBeenCalled();
             expect(findBreakByIdService).not.toHaveBeenCalledWith(
@@ -10724,7 +10556,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: invalidMockId });
 
             // assertions
-            expect(body).toMatchObject([
+            expect(body).toStrictEqual([
               {
                 location: "params",
                 msg: "The break id is not valid",
@@ -10761,11 +10593,9 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toEqual(
-              expect.objectContaining({
-                msg: "Break not found",
-              })
-            );
+            expect(body).toStrictEqual({
+              msg: "Break not found",
+            });
             expect(statusCode).toBe(404);
             expect(findBreakByIdService).toHaveBeenCalled();
             expect(findBreakByIdService).toHaveBeenCalledWith(
@@ -10789,7 +10619,7 @@ describe("Schedule maker API", () => {
               .send({ school_id: validMockSchoolId });
 
             // assertions
-            expect(body).toMatchObject({
+            expect(body).toStrictEqual({
               _id: validMockBreakId,
               school_id: validMockSchoolId,
               schedule_id: validMockScheduleId,
@@ -10827,7 +10657,7 @@ describe("Schedule maker API", () => {
             .send(newBreakMissingValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add the school id",
@@ -10888,7 +10718,7 @@ describe("Schedule maker API", () => {
             .send(newBreakEmptyValues);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -10953,7 +10783,7 @@ describe("Schedule maker API", () => {
             .send(newBreakNotValidDataTypes);
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The break id is not valid",
@@ -11024,7 +10854,7 @@ describe("Schedule maker API", () => {
             .send({ ...newBreak, breakStart: 1440 });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The break start time must must not exceed the 23:59 hours",
@@ -11071,11 +10901,9 @@ describe("Schedule maker API", () => {
             .send(newBreak);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure the schedule exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure the schedule exists",
+          });
           expect(statusCode).toBe(404);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -11111,11 +10939,9 @@ describe("Schedule maker API", () => {
             .send(newBreak);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure the school exists",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure the school exists",
+          });
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -11151,11 +10977,9 @@ describe("Schedule maker API", () => {
             .send({ ...newBreak, school_id: otherValidBreakMockId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure the schedule belongs to the school",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure the schedule belongs to the school",
+          });
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -11191,11 +11015,9 @@ describe("Schedule maker API", () => {
             .send({ ...newBreak, breakStart: 419 });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please take into account that the break start time cannot be earlier than the schedule start time",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please take into account that the break start time cannot be earlier than the schedule start time",
+          });
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -11231,11 +11053,9 @@ describe("Schedule maker API", () => {
             .send({ ...newBreak, numberMinutes: 281 });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break",
+          });
           expect(statusCode).toBe(400);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -11271,11 +11091,9 @@ describe("Schedule maker API", () => {
             .send(newBreak);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Break not updated",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Break not updated",
+          });
           expect(statusCode).toBe(404);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -11311,11 +11129,9 @@ describe("Schedule maker API", () => {
             .send(newBreak);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Break updated!",
-            })
-          );
+          expect(body).toStrictEqual({
+            msg: "Break updated!",
+          });
           expect(statusCode).toBe(200);
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalled();
           expect(findPopulateExistingScheduleByIdService).toHaveBeenCalledWith(
@@ -11350,7 +11166,7 @@ describe("Schedule maker API", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "Please add a school id",
@@ -11379,7 +11195,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "body",
               msg: "The school id field is empty",
@@ -11409,7 +11225,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toMatchObject([
+          expect(body).toStrictEqual([
             {
               location: "params",
               msg: "The break id is not valid",
@@ -11445,9 +11261,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Break not deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Break not deleted" });
           expect(statusCode).toBe(404);
           expect(deleteBreakService).toHaveBeenCalled();
           expect(deleteBreakService).toHaveBeenCalledWith(
@@ -11470,9 +11284,7 @@ describe("Schedule maker API", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "Break deleted" })
-          );
+          expect(body).toStrictEqual({ msg: "Break deleted" });
           expect(statusCode).toBe(200);
           expect(deleteBreakService).toHaveBeenCalled();
           expect(deleteBreakService).toHaveBeenCalledWith(
@@ -11483,6 +11295,7 @@ describe("Schedule maker API", () => {
       });
     });
   });
-  // continue here --> check referential equality with toMatchObject within the object deep copy, also check if you can use to replace the equals.expect instances
+  // continue here --> add doc strings to the validators
+  // continue here --> add more code to the templates, specially test template adding the calledWith expectations
   // continue here --> create the levels table code
 });
