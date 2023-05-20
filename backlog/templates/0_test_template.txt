@@ -109,14 +109,16 @@ describe("Resource => baseResource", () => {
             .send(newBaseResource);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
+          expect(body).toStrictEqual(
+            {
                msg: "BaseResource post endpoint working!",
-             })
+             }
             );          
           expect(statusCode).toBe(200);
         //   expect(findPopulateExistingOtherResourceByIdService).toHaveBeenCalled();
+        //   expect(findPopulateExistingOtherResourceByIdService).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");
         //   expect(insertBaseResourceService).toHaveBeenCalled();          
+        //   expect(insertBaseResourceService).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");          
       });
     });
   });
@@ -125,109 +127,129 @@ describe("Resource => baseResource", () => {
     describe("baseResource - GET", () => {
       describe("baseResource::get::01 - Passing missing fields", () => {
         it("should return a missing values error", async () => {
-          // mock services
-          const findAllBaseResourcesService = mockService(
-            baseResourcesPayload,
-            "findFilterAllResources"
-          );
+        //   // mock services
+        //   const findAllBaseResourcesService = mockService(
+        //     baseResourcesPayload,
+        //     "findFilterAllResources"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_i: validMockSchoolId });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .get(`${endPointUrl}`)
+        //     .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toMatchObject([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
-          expect(statusCode).toBe(400);
-          expect(findAllBaseResourcesService).not.toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual([
+        //     {
+        //       location: "body",
+        //       msg: "Please add a school id",
+        //       param: "school_id",
+        //     },
+        //   ]);
+        //   expect(statusCode).toBe(400);
+        //   expect(findAllBaseResourcesService).not.toHaveBeenCalled();
+        //   expect(findAllBaseResourcesService).not.toHaveBeenCalledWith(
+        //       { school_id: validMockSchoolId },
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });
       });
       describe("baseResource::get::02 - passing fields with empty values", () => {
         it("should return an empty values error", async () => {
-          // mock services
-          const findAllBaseResourcesService = mockService(
-            baseResourcesNullPayload,
-            "findFilterAllResources"
-          );
+        // // mock services
+        //   const findAllBaseResourcesService = mockService(
+        //     baseResourcesNullPayload,
+        //     "findFilterAllResources"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .get(`${endPointUrl}`)
+        //     .send({ school_id: "" });
 
-          // assertions
-          expect(body).toMatchObject([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
-          expect(statusCode).toBe(400);
-          expect(findAllBaseResourcesService).not.toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual([
+        //     {
+        //       location: "body",
+        //       msg: "The school id field is empty",
+        //       param: "school_id",
+        //       value: "",
+        //     },
+        //   ]);
+        //   expect(statusCode).toBe(400);
+        //   expect(findAllBaseResourcesService).not.toHaveBeenCalled();
+        //   expect(findAllBaseResourcesService).not.toHaveBeenCalledWith(
+        //       { school_id: validMockSchoolId },
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });
       });
       describe("baseResource::get::03 - passing invalid ids", () => {
         it("should return an invalid id error", async () => {
-          // mock services
-          const findAllBaseResourceService = mockService(
-            baseResourcesPayload,
-            "findFilterAllResources"
-          );
+        //   // mock services
+        //   const findAllBaseResourceService = mockService(
+        //     baseResourcesPayload,
+        //     "findFilterAllResources"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .get(`${endPointUrl}`)
+        //     .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toMatchObject([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
-          expect(statusCode).toBe(400);
-          expect(findAllBaseResourceService).not.toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual([
+        //     {
+        //       location: "body",
+        //       msg: "The school id is not valid",
+        //       param: "school_id",
+        //       value: invalidMockId,
+        //     },
+        //   ]);
+        //   expect(statusCode).toBe(400);
+        //   expect(findAllBaseResourcesService).not.toHaveBeenCalled();
+        //   expect(findAllBaseResourcesService).not.toHaveBeenCalledWith(
+        //       { school_id: validMockSchoolId },
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });
       });
       describe("baseResource::get::04 - Requesting all baseResources but not finding any", () => {
         it("should not get any fields", async () => {
-          // mock services
-          const findAllBaseResourcesService = mockService(
-            baseResourcesNullPayload,
-            "findFilterAllResources"
-          );
+        //   // mock services
+        //   const findAllBaseResourcesService = mockService(
+        //     baseResourcesNullPayload,
+        //     "findFilterAllResources"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .get(`${endPointUrl}`)
+        //     .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "No baseResources found" })
-          );
-          expect(statusCode).toBe(404);
-          expect(findAllBaseResourcesService).toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual(
+        //     { msg: "No baseResources found" }
+        //   );
+        //   expect(statusCode).toBe(404);
+        //   expect(findAllBaseResourcesService).toHaveBeenCalled();
+        //   expect(findAllBaseResourcesService).toHaveBeenCalledWith(
+        //       { school_id: validMockSchoolId },
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });
       });
       describe("baseResource::get::05 - Requesting all baseResources correctly", () => {
         it("should get all fields", async () => {
-          // mock services
-          const findAllBaseResourcesService = mockService(
-            baseResourcesPayload,
-            "findFilterAllResources"
-          );
+        //   // mock services
+        //   const findAllBaseResourcesService = mockService(
+        //     baseResourcesPayload,
+        //     "findFilterAllResources"
+        //   );
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -235,126 +257,156 @@ describe("Resource => baseResource", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toMatchObject(baseResourcesPayload);
+          expect(body).toStrictEqual(
+            {
+               msg: "BaseResource get endpoint working!",
+             }
+            );          
+        //   expect(body).toStrictEqual(baseResourcesPayload);
           expect(statusCode).toBe(200);
-          expect(findAllBaseResourcesService).toHaveBeenCalled();
+        //   expect(findAllBaseResourcesService).toHaveBeenCalled();
+        //   expect(findAllBaseResourcesService).toHaveBeenCalledWith(
+        //       { school_id: validMockSchoolId },
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });        
       });
     });
     describe("baseResource - GET/:id", () => {
       describe("baseResource::get/:id::01 - Passing missing fields", () => {
         it("should return a missing values error", async () => {
-          // mock services
-          const findBaseResourceByIdService = mockService(
-            baseResourcePayload,
-            "findFilterResourceByProperty"
-          );
+        //   // mock services
+        //   const findBaseResourceByIdService = mockService(
+        //     baseResourcePayload,
+        //     "findFilterResourceByProperty"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockBaseResourceId}`)
-            .send({ school_i: validMockSchoolId });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .get(`${endPointUrl}${validMockBaseResourceId}`)
+        //     .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toEqual(
-            expect.objectContaining([
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ])
-          );
-          expect(statusCode).toBe(400);
-          expect(findBaseResourceByIdService).not.toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual(
+        //     [
+        //       {
+        //         location: "body",
+        //         msg: "Please add a school id",
+        //         param: "school_id",
+        //       },
+        //     ]
+        //   );
+        //   expect(statusCode).toBe(400);
+        //   expect(findBaseResourceByIdService).not.toHaveBeenCalled();
+        //   expect(findBaseResourceByIdService).not.toHaveBeenCalledWith(
+        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });
       });
       describe("baseResource::get/:id::02 - Passing fields with empty values", () => {
         it("should return an empty values error", async () => {
-          // mock services
-          const findBaseResourceByIdService = mockService(
-            baseResourcePayload,
-            "findFilterResourceByProperty"
-          );
+        //   // mock services
+        //   const findBaseResourceByIdService = mockService(
+        //     baseResourcePayload,
+        //     "findFilterResourceByProperty"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockBaseResourceId}`)
-            .send({ school_id: "" });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .get(`${endPointUrl}${validMockBaseResourceId}`)
+        //     .send({ school_id: "" });
 
-          // assertions
-          expect(body).toEqual(
-            expect.objectContaining([
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ])
-          );
-          expect(statusCode).toBe(400);
-          expect(findBaseResourceByIdService).not.toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual(
+        //     [
+        //       {
+        //         location: "body",
+        //         msg: "The school id field is empty",
+        //         param: "school_id",
+        //         value: "",
+        //       },
+        //     ]
+        //   );
+        //   expect(statusCode).toBe(400);
+        //   expect(findBaseResourceByIdService).not.toHaveBeenCalled();
+        //   expect(findBaseResourceByIdService).not.toHaveBeenCalledWith(
+        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });
       });
       describe("baseResource::get/:id::03 - Passing invalid ids", () => {
         it("should return an invalid id error", async () => {
-          // mock services
-          const findBaseResourceByIdService = mockService(
-            baseResourcePayload,
-            "findFilterResourceByProperty"
-          );
+        //   // mock services
+        //   const findBaseResourceByIdService = mockService(
+        //     baseResourcePayload,
+        //     "findFilterResourceByProperty"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockBaseResourceId}`)
-            .send({ school_id: invalidMockId });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .get(`${endPointUrl}${validMockBaseResourceId}`)
+        //     .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toEqual(
-            expect.objectContaining([
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ])
-          );
-          expect(statusCode).toBe(400);
-            expect(findBaseResourceByIdService).not.toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual(
+        //     [
+        //       {
+        //         location: "body",
+        //         msg: "The school id is not valid",
+        //         param: "school_id",
+        //         value: invalidMockId,
+        //       },
+        //     ]
+        //   );
+        //   expect(statusCode).toBe(400);
+        //   expect(findBaseResourceByIdService).not.toHaveBeenCalled();
+        //   expect(findBaseResourceByIdService).not.toHaveBeenCalledWith(
+        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });
       });
       describe("baseResource::get/:id::04 - Requesting a baseResource but not finding it", () => {
         it("should not get a school", async () => {
-          // mock services
-          const findBreakByIdService = mockService(
-            breaksNullPayload,
-            "findFilterResourceByProperty"
-          );
+        //   // mock services
+        //   const findBreakByIdService = mockService(
+        //     breaksNullPayload,
+        //     "findFilterResourceByProperty"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockBreakId}`)
-            .send({ school_id: validMockSchoolId });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .get(`${endPointUrl}${validMockBaseResourceId}`)
+        //     .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
-              msg: "Break not found",
-            })
-          );
-          expect(statusCode).toBe(404);
-          expect(findBreakByIdService).toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual(
+        //     {
+        //       msg: "Break not found",
+        //     }
+        //   );
+        //   expect(statusCode).toBe(404);
+        //   expect(findBaseResourceByIdService).toHaveBeenCalled();
+        //   expect(findBaseResourceByIdService).toHaveBeenCalledWith(
+        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });
       });
       describe("baseResource::get/:id::05 - Requesting a baseResource correctly", () => {
         it("should get a field", async () => {
-          // mock services
-          const findBaseResourceByIdService = mockService(
-            baseResourcePayload,
-            "findFilterResourceByProperty"
-          );
+        //   // mock services
+        //   const findBaseResourceByIdService = mockService(
+        //     baseResourcePayload,
+        //     "findFilterResourceByProperty"
+        //   );
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -362,9 +414,19 @@ describe("Resource => baseResource", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toMatchObject(baseResourcePayload);
+          expect(body).toStrictEqual(
+            {
+               msg: "BaseResource get/:id endpoint working!",
+             }
+            );          
+        //   expect(body).toStrictEqual(baseResourcePayload);
           expect(statusCode).toBe(200);
-          expect(findBaseResourceByIdService).toHaveBeenCalled();
+        //   expect(findBaseResourceByIdService).toHaveBeenCalled();
+        //   expect(findBaseResourceByIdService).toHaveBeenCalledWith(
+        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //       "-createdAt -updatedAt",
+        //       "BaseResource"
+        //     );
         });
       });
     });
@@ -419,14 +481,16 @@ describe("Resource => baseResource", () => {
             .send(newBaseResource);
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({
+          expect(body).toStrictEqual(
+            {
                msg: "BaseResource put endpoint working!",
-             })
+             }
             );          
           expect(statusCode).toBe(200);
         //   expect(findPopulateExistingOtherResourceByIdService).toHaveBeenCalled();
+        //   expect(findPopulateExistingOtherResourceByIdService).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");
         //   expect(updateBaseResourceService).toHaveBeenCalled();
+        //   expect(updateBaseResourceService).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");
       });
     });
   });
@@ -434,115 +498,123 @@ describe("Resource => baseResource", () => {
   describe("DELETE /baseResource ", () => {
     describe("baseResource::delete::01 - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
-        // mock services
-        const deleteBaseResourceService = mockService(
-            baseResourceNullPayload,
-            "deleteFilterResource"
-          );
+        // // mock services
+        // const deleteBaseResourceService = mockService(
+        //     baseResourceNullPayload,
+        //     "deleteFilterResource"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}${validMockBaseResourceId}`)
-            .send({ school_i: validMockSchoolId });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .delete(`${endPointUrl}${validMockBaseResourceId}`)
+        //     .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toMatchObject([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
-          expect(statusCode).toBe(400);
-          expect(deleteBaseResourceService).not.toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual([
+        //     {
+        //       location: "body",
+        //       msg: "Please add a school id",
+        //       param: "school_id",
+        //     },
+        //   ]);
+        //   expect(statusCode).toBe(400);
+        //   expect(deleteBaseResourceService).not.toHaveBeenCalled();
+        //   expect(deleteBaseResourceService).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //     "schedule");
       });
     });
     describe("baseResource::delete::02 - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
-        // mock services
-        const deleteBaseResourceService = mockService(
-            baseResourceNullPayload,
-            "deleteFilterResource"
-          );
+        // // mock services
+        // const deleteBaseResourceService = mockService(
+        //     baseResourceNullPayload,
+        //     "deleteFilterResource"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}${validMockBaseResourceId}`)
-            .send({ school_id: "" });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .delete(`${endPointUrl}${validMockBaseResourceId}`)
+        //     .send({ school_id: "" });
 
-          // assertions
-          expect(body).toMatchObject([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
-          expect(statusCode).toBe(400);
-          expect(deleteBaseResourceService).not.toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual([
+        //     {
+        //       location: "body",
+        //       msg: "The school id field is empty",
+        //       param: "school_id",
+        //       value: "",
+        //     },
+        //   ]);
+        //   expect(statusCode).toBe(400);
+        //   expect(deleteBaseResourceService).not.toHaveBeenCalled();
+        //   expect(deleteBaseResourceService).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //     "schedule");
       });
     });
     describe("baseResource::delete::03 - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
-        // mock services
-        const deleteBaseResourceService = mockService(
-            baseResourceNullPayload,
-            "deleteFilterResource"
-          );
+        // // mock services
+        // const deleteBaseResourceService = mockService(
+        //     baseResourceNullPayload,
+        //     "deleteFilterResource"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .delete(`${endPointUrl}${invalidMockId}`)
+        //     .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toMatchObject([
-            {
-              location: "params",
-              msg: "The baseResource id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
-          expect(statusCode).toBe(400);
-          expect(deleteBaseResourceService).not.toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual([
+        //     {
+        //       location: "params",
+        //       msg: "The baseResource id is not valid",
+        //       param: "id",
+        //       value: invalidMockId,
+        //     },
+        //     {
+        //       location: "body",
+        //       msg: "The school id is not valid",
+        //       param: "school_id",
+        //       value: invalidMockId,
+        //     },
+        //   ]);
+        //   expect(statusCode).toBe(400);
+        //   expect(deleteBaseResourceService).not.toHaveBeenCalled();
+        //   expect(deleteBaseResourceService).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //     "schedule");
       });
     });
     describe("baseResource::delete::04 - Passing a baseResource id but not deleting it", () => {
       it("should not delete a school", async () => {
-        // mock services
-        const deleteBaseResourceService = mockService(
-            baseResourceNullPayload,
-            "deleteFilterResource"
-          );
+        // // mock services
+        // const deleteBaseResourceService = mockService(
+        //     baseResourceNullPayload,
+        //     "deleteFilterResource"
+        //   );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}${validMockBaseResourceId}`)
-            .send({ school_id: validMockSchoolId });
+        //   // api call
+        //   const { statusCode, body } = await supertest(server)
+        //     .delete(`${endPointUrl}${validMockBaseResourceId}`)
+        //     .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "BaseResource not deleted" })
-          );
-          expect(statusCode).toBe(404);
-          expect(deleteBaseResourceService).toHaveBeenCalled();
+        //   // assertions
+        //   expect(body).toStrictEqual(
+        //     { msg: "BaseResource not deleted" }
+        //   );
+        //   expect(statusCode).toBe(404);
+        //   expect(deleteBaseResourceService).toHaveBeenCalled();
+        //   expect(deleteBaseResourceService).toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //     "schedule");
       });
     });
     describe("baseResource::delete::05 - Passing a baseResource id correctly to delete", () => {
       it("should delete a field", async () => {
         // mock services
-        const deleteBaseResourceService = mockService(
-            baseResourcePayload,
-            "deleteFilterResource"
-          );
+        // const deleteBaseResourceService = mockService(
+        //     baseResourcePayload,
+        //     "deleteFilterResource"
+        //   );
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -550,11 +622,18 @@ describe("Resource => baseResource", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toEqual(
-            expect.objectContaining({ msg: "BaseResource deleted" })
-          );
+          expect(body).toStrictEqual(
+            {
+               msg: "BaseResource delete endpoint working!",
+             }
+            );          
+        //   expect(body).toStrictEqual(
+        // { msg: "BaseResource deleted" }
+        //   );
           expect(statusCode).toBe(200);
-          expect(deleteBaseResourceService).toHaveBeenCalled();
+        //   expect(deleteBaseResourceService).toHaveBeenCalled();
+        //   expect(deleteBaseResourceService).toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //     "schedule");
       });
     });
   });

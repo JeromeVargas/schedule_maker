@@ -3,6 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
+// @fields: body: {fieldOne:[string], fieldTwo:[string], fieldThree:[string], fieldFour:[string], fieldFive:[string], fieldSix:[string], fieldSeven:[string], fieldEight:[boolean]}
 const validateCreateBaseResource = [
   // code
   (req: Request, res: Response, next: NextFunction) => {
@@ -10,6 +11,7 @@ const validateCreateBaseResource = [
   },
 ];
 
+// @fields: body: {school_id:[string]}
 const validateGetBaseResources = [
   check("school_id")
     .exists()
@@ -32,6 +34,7 @@ const validateGetBaseResources = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const validateGetBaseResource = [
   check("id")
     .custom((value) => {
@@ -64,6 +67,7 @@ const validateGetBaseResource = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {fieldOne:[string], fieldTwo:[string], fieldThree:[string], fieldFour:[string], fieldFive:[string], fieldSix:[string], fieldSeven:[string], fieldEight:[boolean]}
 const validateUpdateBaseResource = [
   check("id")
     .custom((value) => {
@@ -81,6 +85,7 @@ const validateUpdateBaseResource = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const validateDeleteBaseResource = [
   check("id")
     .custom((value) => {

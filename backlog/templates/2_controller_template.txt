@@ -21,53 +21,14 @@ import {
 // @access Private
 // @fields: body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
 const createBaseResource = async ({ body }: Request, res: Response) => {  
-  /* destructure the fields */
-  // const { school_id, schedule_id, numberMinutes, breakStart } = body;
-  // /* find schedule by id, and populate its properties */
-  // const fieldsToReturnSchedule = "-createdAt -updatedAt";
-  // const fieldsToPopulateSchedule = "school_id";
-  // const fieldsToReturnPopulateSchedule = "-createdAt -updatedAt";
-  // const scheduleFound = await findPopulateResourceById(
-  //   schedule_id,
-  //   fieldsToReturnSchedule,
-  //   fieldsToPopulateSchedule,
-  //   fieldsToReturnPopulateSchedule,
-  //   scheduleModel
-  // );
-  // if (!scheduleFound) {
-  //   throw new NotFoundError("Please make sure the schedule exists");
+  // /* destructure the fields */
+
+  // /* create baseResource */
+  // const baseResourceCreated = await insertResource(body, baseResourceModel);
+  // if (!baseResourceCreated) {
+  //   throw new BadRequestError("BaseResource not created!");
   // }
-  // /* check if the school exists*/
-  // if (scheduleFound?.school_id?.toString() == null) {
-  //   throw new BadRequestError("Please make sure the school exists");
-  // }
-  // /* check if the passed school id is the same as the schedule school id*/
-  // if (scheduleFound?.school_id?._id?.toString() !== school_id) {
-  //   throw new BadRequestError(
-  //     "Please make sure the schedule belongs to the school"
-  //   );
-  // }
-  // /* check if the break start starts earlier than the day shift start */
-  // if (scheduleFound.dayStart > breakStart) {
-  //   throw new BadRequestError(
-  //     "Please take into account that the break start time cannot be earlier than the schedule start time"
-  //   );
-  // }
-  // /* check if the break fits within the schedule shift leaving room for at least a one-unit class before and after */
-  // if (
-  //   scheduleFound.shiftNumberMinutes <
-  //   scheduleFound.classUnitMinutes * 2 + numberMinutes
-  // ) {
-  //   throw new BadRequestError(
-  //     "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break"
-  //   );
-  // }
-  // /* create break */
-  // const breakCreated = await insertResource(body, breakModel);
-  // if (!breakCreated) {
-  //   throw new BadRequestError("Break not created!");
-  // }
-  // res.status(StatusCodes.OK).json({ msg: "Break created!" });
+  // res.status(StatusCodes.OK).json({ msg: "BaseResource created!" });
   res.status(StatusCodes.OK).json({ msg: "BaseResource post endpoint working!" });  
 };
 
@@ -91,6 +52,8 @@ const getBaseResources = async ({ body }: Request, res: Response) => {
 //     throw new NotFoundError("No baseResources found");
 //   }
 //   res.status(StatusCodes.OK).json(baseResourcesFound);
+  res.status(StatusCodes.OK).json({ msg: "BaseResource get endpoint working!" });  
+
 };
 
 // @desc get the BaseResource by id
@@ -113,6 +76,7 @@ const getBaseResource = async ({ params, body }: Request, res: Response) => {
 //   throw new NotFoundError("BaseResource not found");
 // }
 // res.status(StatusCodes.OK).json(breakFound);
+  res.status(StatusCodes.OK).json({ msg: "BaseResource get/:id endpoint working!" });  
 };
 
 // @desc update a BaseResource
@@ -121,47 +85,9 @@ const getBaseResource = async ({ params, body }: Request, res: Response) => {
 // @fields: params: {id:[string]},  body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
 const updateBaseResource = async ({ params, body }: Request, res: Response) => {
   // /* destructure the fields */
+  
 // const { id: baseResourceId } = params;
-// const { school_id, schedule_id, numberMinutes, baseResourceStart } = body;
-// /* find schedule by id, and populate its properties */
-// const fieldsToReturnSchedule = "-createdAt -updatedAt";
-// const fieldsToPopulateSchedule = "school_id";
-// const fieldsToReturnPopulateSchedule = "-createdAt -updatedAt";
-// const scheduleFound = await findPopulateResourceById(
-//   schedule_id,
-//   fieldsToReturnSchedule,
-//   fieldsToPopulateSchedule,
-//   fieldsToReturnPopulateSchedule,
-//   scheduleModel
-// );
-// if (!scheduleFound) {
-//   throw new NotFoundError("Please make sure the schedule exists");
-// }
-// /* check if the school exists*/
-// if (scheduleFound?.school_id?.toString() == null) {
-//   throw new BadRequestError("Please make sure the school exists");
-// }
-// /* check if the passed school id is the same as the schedule school id*/
-// if (scheduleFound?.school_id?._id?.toString() !== school_id) {
-//   throw new BadRequestError(
-//     "Please make sure the schedule belongs to the school"
-//   );
-// }
-// /* check if the baseResource start starts earlier than the day shift start */
-// if (scheduleFound.dayStart > baseResourceStart) {
-//   throw new BadRequestError(
-//     "Please take into account that the baseResource start time cannot be earlier than the schedule start time"
-//   );
-// }
-// /* check if the baseResource fits within the schedule shift leaving room for at least a one-unit class before and after */
-// if (
-//   scheduleFound.shiftNumberMinutes <
-//   scheduleFound.classUnitMinutes * 2 + numberMinutes
-// ) {
-//   throw new BadRequestError(
-//     "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the baseResource"
-//   );
-// }
+// const {  } = body;
 // /* update baseResource */
 // const filtersUpdate = [{ _id: baseResourceId }, { school_id: school_id }];
 // const baseResourceUpdated = await updateFilterResource(
@@ -191,6 +117,7 @@ const deleteBaseResource = async ({ params, body }: Request, res: Response) => {
 //   throw new NotFoundError("BaseResource not deleted");
 // }
 // res.status(StatusCodes.OK).json({ msg: "BaseResource deleted" });
+  res.status(StatusCodes.OK).json({ msg: "BaseResource delete endpoint working!" });  
 };
 
 export {
