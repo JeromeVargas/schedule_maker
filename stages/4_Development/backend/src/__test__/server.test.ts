@@ -11295,7 +11295,6 @@ describe("Schedule maker API", () => {
       });
     });
   });
-  // continue here --> add doc strings to the validators
-  // continue here --> add more code to the templates, specially test template adding the calledWith expectations
+  // continue here --> add more code to the templates, specially test template adding the calledWith expectations and strick equality
   // continue here --> create the levels table code
 });

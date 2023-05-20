@@ -3,6 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
+// @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const validateCreateUser = [
   check("school_id")
     .exists()
@@ -105,6 +106,7 @@ const validateCreateUser = [
   },
 ];
 
+// @fields: body: {school_id:[string]}
 const validateGetUsers = [
   check("school_id")
     .exists()
@@ -127,6 +129,7 @@ const validateGetUsers = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const validateGetUser = [
   check("id")
     .custom((value) => {
@@ -159,6 +162,7 @@ const validateGetUser = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const validateUpdateUser = [
   check("id")
     .custom((value) => {
@@ -170,22 +174,6 @@ const validateUpdateUser = [
       }
     })
     .withMessage(`The user id is not valid`),
-  check("school_id")
-    .exists()
-    .withMessage("Please add the user's school id")
-    .bail()
-    .notEmpty()
-    .withMessage("The school field is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false) {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The school id is not valid`),
   check("firstName")
     .exists()
     .withMessage("Please add the user's first name")
@@ -208,6 +196,22 @@ const validateUpdateUser = [
     .withMessage("The last name is not valid")
     .isLength({ min: 1, max: 50 })
     .withMessage("The last name must not exceed 50 characters"),
+  check("school_id")
+    .exists()
+    .withMessage("Please add the user's school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   check("email")
     .exists()
     .withMessage("Please add the user's email")
@@ -272,6 +276,7 @@ const validateUpdateUser = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const validateDeleteUser = [
   check("id")
     .custom((value) => {

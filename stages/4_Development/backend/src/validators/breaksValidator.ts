@@ -3,6 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
+// @fields: body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
 const validateCreateBreak = [
   check("school_id")
     .exists()
@@ -69,6 +70,7 @@ const validateCreateBreak = [
   },
 ];
 
+// @fields: body {school_id:[string]}
 const validateGetBreaks = [
   check("school_id")
     .exists()
@@ -91,6 +93,7 @@ const validateGetBreaks = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const validateGetBreak = [
   check("id")
     .custom((value) => {
@@ -123,6 +126,7 @@ const validateGetBreak = [
   },
 ];
 
+// @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
 const validateUpdateBreak = [
   check("id")
     .custom((value) => {
@@ -202,6 +206,7 @@ const validateUpdateBreak = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const validateDeleteBreak = [
   check("id")
     .custom((value) => {

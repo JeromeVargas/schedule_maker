@@ -3,6 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
+// @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const validateCreateSchedule = [
   check("school_id")
     .exists()
@@ -173,6 +174,7 @@ const validateCreateSchedule = [
   },
 ];
 
+// @fields: body {school_id:[string]}
 const validateGetSchedules = [
   check("school_id")
     .exists()
@@ -195,6 +197,7 @@ const validateGetSchedules = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const validateGetSchedule = [
   check("id")
     .custom((value) => {
@@ -227,6 +230,7 @@ const validateGetSchedule = [
   },
 ];
 
+// @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const validateUpdateSchedule = [
   check("id")
     .custom((value) => {
@@ -408,6 +412,7 @@ const validateUpdateSchedule = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const validateDeleteSchedule = [
   check("id")
     .custom((value) => {

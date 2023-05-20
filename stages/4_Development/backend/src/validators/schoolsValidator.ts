@@ -3,6 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
+// @fields: body {name:[string]}
 const validateCreateSchool = [
   check("name")
     .exists()
@@ -20,6 +21,7 @@ const validateCreateSchool = [
   },
 ];
 
+// @fields: params: {id:[string]}
 const validateGetSchool = [
   check("id")
     .custom((value) => {
@@ -36,6 +38,7 @@ const validateGetSchool = [
   },
 ];
 
+// @fields: params: {id:[string]},  body: {name:[string]}
 const validateUpdateSchool = [
   check("id")
     .custom((value) => {
@@ -63,6 +66,7 @@ const validateUpdateSchool = [
   },
 ];
 
+// @fields: params: {id:[string]}}
 const validateDeleteSchool = [
   check("id")
     .custom((value) => {
