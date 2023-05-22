@@ -5,16 +5,11 @@ import ConflictError from "../errors/conflict";
 import NotFoundError from "../errors/not-found";
 
 import {
-  insertResource,
-  findResourceById,
-  findFilterAllResources,
-  deleteFilterResource,
-  findFilterResourceByProperty,
-  updateFilterResource,
+  
 } from "../services/mongoServices";
 
 /* models */
-//  const baseResource = "baseResource";
+//  const baseResourceModel = "baseResource";
 
 // @desc create a baseResource
 // @route POST /api/v1/baseResources
@@ -24,7 +19,8 @@ const createBaseResource = async ({ body }: Request, res: Response) => {
   // /* destructure the fields */
 
   // /* create baseResource */
-  // const baseResourceCreated = await insertResource(body, baseResourceModel);
+  // const newBaseResource = body
+  // const baseResourceCreated = await insertResource(newBaseResource, baseResourceModel);
   // if (!baseResourceCreated) {
   //   throw new BadRequestError("BaseResource not created!");
   // }
@@ -75,7 +71,7 @@ const getBaseResource = async ({ params, body }: Request, res: Response) => {
 // if (baseResourceFound?.length === 0) {
 //   throw new NotFoundError("BaseResource not found");
 // }
-// res.status(StatusCodes.OK).json(breakFound);
+// res.status(StatusCodes.OK).json(baseResourceFound);
   res.status(StatusCodes.OK).json({ msg: "BaseResource get/:id endpoint working!" });  
 };
 
@@ -89,10 +85,11 @@ const updateBaseResource = async ({ params, body }: Request, res: Response) => {
 // const { id: baseResourceId } = params;
 // const {  } = body;
 // /* update baseResource */
+// const newBaseResource = body
 // const filtersUpdate = [{ _id: baseResourceId }, { school_id: school_id }];
 // const baseResourceUpdated = await updateFilterResource(
 //   filtersUpdate,
-//   body,
+//   newBaseResource,
 //   baseResourceModel
 // );
 // if (!baseResourceUpdated) {

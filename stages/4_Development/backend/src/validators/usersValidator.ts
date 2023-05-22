@@ -174,6 +174,22 @@ const validateUpdateUser = [
       }
     })
     .withMessage(`The user id is not valid`),
+  check("school_id")
+    .exists()
+    .withMessage("Please add the user's school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
   check("firstName")
     .exists()
     .withMessage("Please add the user's first name")
@@ -196,22 +212,6 @@ const validateUpdateUser = [
     .withMessage("The last name is not valid")
     .isLength({ min: 1, max: 50 })
     .withMessage("The last name must not exceed 50 characters"),
-  check("school_id")
-    .exists()
-    .withMessage("Please add the user's school id")
-    .bail()
-    .notEmpty()
-    .withMessage("The school field is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false) {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The school id is not valid`),
   check("email")
     .exists()
     .withMessage("Please add the user's email")

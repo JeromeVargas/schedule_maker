@@ -109,7 +109,7 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: scheduleId } = params;
   const { school_id, name } = body;
-  /* check if the name already exist for the school */
+  /* check if the schedule name already exist for the school */
   const filters = [{ school_id: school_id }, { name: name }];
   const fieldsToReturn = "-createdAt -updatedAt";
   const duplicatedScheduleNameFound = await findFilterResourceByProperty(

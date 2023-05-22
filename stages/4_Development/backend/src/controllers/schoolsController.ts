@@ -96,7 +96,8 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
     throw new ConflictError("This school name already exists");
   }
   /* update school */
-  const schoolUpdated = await updateResource(schoolId, body, schoolModel);
+  const newSchool = body;
+  const schoolUpdated = await updateResource(schoolId, newSchool, schoolModel);
   if (!schoolUpdated) {
     throw new NotFoundError("School not updated");
   }

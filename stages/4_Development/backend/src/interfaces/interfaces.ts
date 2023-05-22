@@ -68,3 +68,9 @@ export type Break = {
   breakStart: number;
   numberMinutes: number;
 };
+
+export type Level = {
+  school_id: Types.ObjectId;
+  schedule_id: Types.ObjectId;
+  name: string;
+};

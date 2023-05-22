@@ -93,7 +93,7 @@ describe("Resource => baseResource", () => {
     });
     describe("baseResource::post::08 - Passing a baseResource correctly to create", () => {
       it("should create a field", async () => {
-        // mock services
+        // // mock services
         // const findPopulateExistingOtherResourceByIdService = mockService(
         //     otherBaseResourcePayload,
         //     "findPopulateResourceById"
@@ -151,7 +151,7 @@ describe("Resource => baseResource", () => {
         //   expect(findAllBaseResourcesService).not.toHaveBeenCalledWith(
         //       { school_id: validMockSchoolId },
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });
       });
@@ -182,7 +182,7 @@ describe("Resource => baseResource", () => {
         //   expect(findAllBaseResourcesService).not.toHaveBeenCalledWith(
         //       { school_id: validMockSchoolId },
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });
       });
@@ -213,7 +213,7 @@ describe("Resource => baseResource", () => {
         //   expect(findAllBaseResourcesService).not.toHaveBeenCalledWith(
         //       { school_id: validMockSchoolId },
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });
       });
@@ -239,7 +239,7 @@ describe("Resource => baseResource", () => {
         //   expect(findAllBaseResourcesService).toHaveBeenCalledWith(
         //       { school_id: validMockSchoolId },
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });
       });
@@ -268,7 +268,7 @@ describe("Resource => baseResource", () => {
         //   expect(findAllBaseResourcesService).toHaveBeenCalledWith(
         //       { school_id: validMockSchoolId },
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });        
       });
@@ -302,7 +302,7 @@ describe("Resource => baseResource", () => {
         //   expect(findBaseResourceByIdService).not.toHaveBeenCalledWith(
         //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });
       });
@@ -335,7 +335,7 @@ describe("Resource => baseResource", () => {
         //   expect(findBaseResourceByIdService).not.toHaveBeenCalledWith(
         //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });
       });
@@ -368,15 +368,15 @@ describe("Resource => baseResource", () => {
         //   expect(findBaseResourceByIdService).not.toHaveBeenCalledWith(
         //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });
       });
       describe("baseResource::get/:id::04 - Requesting a baseResource but not finding it", () => {
         it("should not get a school", async () => {
         //   // mock services
-        //   const findBreakByIdService = mockService(
-        //     breaksNullPayload,
+        //   const findBaseResourceByIdService = mockService(
+        //     baseResourcesNullPayload,
         //     "findFilterResourceByProperty"
         //   );
 
@@ -388,7 +388,7 @@ describe("Resource => baseResource", () => {
         //   // assertions
         //   expect(body).toStrictEqual(
         //     {
-        //       msg: "Break not found",
+        //       msg: "BaseResource not found",
         //     }
         //   );
         //   expect(statusCode).toBe(404);
@@ -396,7 +396,7 @@ describe("Resource => baseResource", () => {
         //   expect(findBaseResourceByIdService).toHaveBeenCalledWith(
         //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });
       });
@@ -425,7 +425,7 @@ describe("Resource => baseResource", () => {
         //   expect(findBaseResourceByIdService).toHaveBeenCalledWith(
         //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
         //       "-createdAt -updatedAt",
-        //       "BaseResource"
+        //       "baseResource"
         //     );
         });
       });
@@ -465,7 +465,7 @@ describe("Resource => baseResource", () => {
     });
     describe("baseResource::put::07 - Passing a baseResource correctly to update", () => {
       it("should update a baseResource", async () => {
-        // mock services
+        // // mock services
         // const findPopulateExistingOtherResourceByIdService = mockService(
         //     otherResourcePayload,
         //     "findPopulateResourceById"
@@ -520,7 +520,7 @@ describe("Resource => baseResource", () => {
         //   expect(statusCode).toBe(400);
         //   expect(deleteBaseResourceService).not.toHaveBeenCalled();
         //   expect(deleteBaseResourceService).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
-        //     "schedule");
+        //     "baseResource");
       });
     });
     describe("baseResource::delete::02 - Passing fields with empty values", () => {
@@ -548,7 +548,7 @@ describe("Resource => baseResource", () => {
         //   expect(statusCode).toBe(400);
         //   expect(deleteBaseResourceService).not.toHaveBeenCalled();
         //   expect(deleteBaseResourceService).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
-        //     "schedule");
+        //     "baseResource");
       });
     });
     describe("baseResource::delete::03 - Passing invalid ids", () => {
@@ -582,7 +582,7 @@ describe("Resource => baseResource", () => {
         //   expect(statusCode).toBe(400);
         //   expect(deleteBaseResourceService).not.toHaveBeenCalled();
         //   expect(deleteBaseResourceService).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
-        //     "schedule");
+        //     "baseResource");
       });
     });
     describe("baseResource::delete::04 - Passing a baseResource id but not deleting it", () => {
@@ -605,12 +605,12 @@ describe("Resource => baseResource", () => {
         //   expect(statusCode).toBe(404);
         //   expect(deleteBaseResourceService).toHaveBeenCalled();
         //   expect(deleteBaseResourceService).toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
-        //     "schedule");
+        //     "baseResource");
       });
     });
     describe("baseResource::delete::05 - Passing a baseResource id correctly to delete", () => {
       it("should delete a field", async () => {
-        // mock services
+        // // mock services
         // const deleteBaseResourceService = mockService(
         //     baseResourcePayload,
         //     "deleteFilterResource"
@@ -633,7 +633,7 @@ describe("Resource => baseResource", () => {
           expect(statusCode).toBe(200);
         //   expect(deleteBaseResourceService).toHaveBeenCalled();
         //   expect(deleteBaseResourceService).toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
-        //     "schedule");
+        //     "baseResource");
       });
     });
   });
