@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
-import validateResult from "../helpers/validateHelper";
+import validateResult from "../lib/helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
 // @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}

@@ -12700,7 +12700,7 @@ describe("Schedule maker API", () => {
       });
     });
 
-    describe.only("DELETE /level ", () => {
+    describe("DELETE /level ", () => {
       describe("level::delete::01 - Passing missing fields", () => {
         it("should return a missing fields error", async () => {
           // mock services
