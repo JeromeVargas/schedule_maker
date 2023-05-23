@@ -34,7 +34,7 @@ const createLevel = async ({ body }: Request, res: Response) => {
     levelModel
   );
   if (duplicatedName?.length !== 0) {
-    throw new ConflictError("This field name already exists");
+    throw new ConflictError("This group name already exists");
   }
   /* find schedule by id, and populate its properties */
   const fieldsToReturnSchedule = "-createdAt -updatedAt";

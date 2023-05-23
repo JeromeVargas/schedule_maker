@@ -44,7 +44,7 @@ const createSchedule = async ({ body }: Request, res: Response) => {
     scheduleModel
   );
   if (duplicatedName?.length !== 0) {
-    throw new ConflictError("This field name already exists");
+    throw new ConflictError("This schedule name already exists");
   }
   /* create the schedule  */
   const newSchedule = body;
