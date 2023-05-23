@@ -5,7 +5,7 @@ const SchoolSchema = new Schema<School>(
   {
     name: {
       type: String,
-      required: [true, "must provide name for the task"],
+      required: [true, "must provide name for the school"],
       unique: true,
     },
   },

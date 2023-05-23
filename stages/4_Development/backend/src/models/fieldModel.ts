@@ -10,7 +10,7 @@ const SchoolSchema = new Schema<Field>(
     },
     name: {
       type: String,
-      required: [true, "must provide name for the task"],
+      required: [true, "must provide name for the field"],
     },
   },
   {

@@ -5,16 +5,15 @@ const LevelSchema = new Schema<Level>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
-      required: [true, "must provide a school id for the break"],
+      required: [true, "must provide a school id for the level"],
     },
     schedule_id: {
       type: Schema.Types.ObjectId,
-      required: [true, "must provide a schedule id for the break"],
+      required: [true, "must provide a schedule id for the level"],
     },
     name: {
       type: String,
-      required: [true, "must provide name for the task"],
-      unique: true,
+      required: [true, "must provide name for the level"],
     },
   },
   {
