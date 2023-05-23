@@ -1,8 +1,13 @@
 import { Schema, model } from "mongoose";
 import { Resource } from "../interfaces/interfaces";
 
-const ResourceSchema = new Schema <Resource>(
+const ResourceSchema = new Schema <Resource>(  
   {
+    school_id: {
+      type: Schema.Types.ObjectId,
+      ref: "School",
+      required: [true, "must provide a school id for the baseResource"],
+    },
     name: {
       type: String,
       required: [true, "must provide name for the baseResource"],

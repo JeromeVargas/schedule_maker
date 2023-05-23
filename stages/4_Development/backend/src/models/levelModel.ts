@@ -5,6 +5,7 @@ const LevelSchema = new Schema<Level>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
+      ref: "School",
       required: [true, "must provide a school id for the level"],
     },
     schedule_id: {

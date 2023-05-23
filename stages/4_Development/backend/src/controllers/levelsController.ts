@@ -6,7 +6,6 @@ import NotFoundError from "../errors/not-found";
 
 import {
   insertResource,
-  findResourceById,
   findFilterAllResources,
   deleteFilterResource,
   findFilterResourceByProperty,
