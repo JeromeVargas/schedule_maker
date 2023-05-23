@@ -5,6 +5,7 @@ describe("Resource => baseResource", () => {
   // inputs
   const validMockBaseResourceId = new Types.ObjectId().toString();
   const validMockSchoolId = new Types.ObjectId().toString();
+  const otherValidMockBaseResourceId = new Types.ObjectId().toString();
   //cspell:disable-next-line
   const invalidMockId = "63c5dcac78b868f80035asdf";
   const newBaseResource = {

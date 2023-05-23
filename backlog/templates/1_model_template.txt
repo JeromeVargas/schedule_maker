@@ -5,8 +5,7 @@ const ResourceSchema = new Schema <Resource>(
   {
     name: {
       type: String,
-      required: [true, "must provide name for the task"],
-      unique: true,
+      required: [true, "must provide name for the baseResource"],
     },
   },
   {

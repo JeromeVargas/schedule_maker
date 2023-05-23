@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
-import validateResult from "../helpers/validateHelper";
+import validateResult from "../lib/helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
 // @fields: body: {fieldOne:[string], fieldTwo:[string], fieldThree:[string], fieldFour:[string], fieldFive:[string], fieldSix:[string], fieldSeven:[string], fieldEight:[boolean]}
