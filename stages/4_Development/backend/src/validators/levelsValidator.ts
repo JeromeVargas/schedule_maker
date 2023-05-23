@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../lib/helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
-// @fields: body: {fieldOne:[string], fieldTwo:[string], fieldThree:[string], fieldFour:[string], fieldFive:[string], fieldSix:[string], fieldSeven:[string], fieldEight:[boolean]}
+// @fields: body {school_id:[string] , schedule_id:[string], name:[string]}
 const validateCreateLevel = [
   check("school_id")
     .exists()
@@ -109,7 +109,7 @@ const validateGetLevel = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {fieldOne:[string], fieldTwo:[string], fieldThree:[string], fieldFour:[string], fieldFive:[string], fieldSix:[string], fieldSeven:[string], fieldEight:[boolean]}
+// @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string]}
 const validateUpdateLevel = [
   check("id")
     .custom((value) => {
@@ -169,7 +169,7 @@ const validateUpdateLevel = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
+// @fields: body {school_id:[string] , schedule_id:[string], name:[string]}
 const validateDeleteLevel = [
   check("id")
     .custom((value) => {

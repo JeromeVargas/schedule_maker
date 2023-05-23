@@ -116,7 +116,7 @@ const getLevel = async ({ params, body }: Request, res: Response) => {
 // @desc update a Level
 // @route PUT /api/v1/Levels/:id
 // @access Private
-// @fields: params: {id:[string]},  body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
+// @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string]}
 const updateLevel = async ({ params, body }: Request, res: Response) => {
   // /* destructure the fields */
   const { id: levelId } = params;
