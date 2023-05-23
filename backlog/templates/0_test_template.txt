@@ -1,4 +1,4 @@
-describe("Resource => baseResource", () => {
+describe("Resource => BaseResource", () => {
   // end point url
   const endPointUrl = "/api/v1/baseResources/";
 
@@ -88,12 +88,12 @@ describe("Resource => baseResource", () => {
       });
     });
     describe("baseResource::post::07 - Passing a baseResource but not being created", () => {
-      it("should not create a field", async () => {
+      it("should not create a baseResource", async () => {
         //code
       });
     });
     describe("baseResource::post::08 - Passing a baseResource correctly to create", () => {
-      it("should create a field", async () => {
+      it("should create a baseResource", async () => {
         // // mock services
         // const findPopulateExistingOtherResourceByIdService = mockService(
         //     otherBaseResourcePayload,
@@ -350,12 +350,18 @@ describe("Resource => baseResource", () => {
 
         //   // api call
         //   const { statusCode, body } = await supertest(server)
-        //     .get(`${endPointUrl}${validMockBaseResourceId}`)
+        //     .get(`${endPointUrl}${invalidMockId}`)
         //     .send({ school_id: invalidMockId });
 
         //   // assertions
         //   expect(body).toStrictEqual(
         //     [
+        //      {
+        //        location: "params",
+        //        msg: "The baseResource id is not valid",
+        //         param: "id",
+        //         value: invalidMockId,
+        //       },
         //       {
         //         location: "body",
         //         msg: "The school id is not valid",

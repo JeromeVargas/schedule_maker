@@ -99,11 +99,24 @@
                     - update ✅
                     - delete ✅
 
-                - break ⌛⏳⌛
+                - break ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
+                     
+                - level ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
+                
+                - group ⌛⏳⌛
                     - create ⌛⏳⌛
                     - read ⌛⏳⌛
                     - update ⌛⏳⌛
                     - delete ⌛⏳⌛
+                     
 
                 - auth
                     - login

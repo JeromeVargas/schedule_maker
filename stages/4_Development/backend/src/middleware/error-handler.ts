@@ -1,5 +1,3 @@
-// 5.0 create a custom error handler
-
 import { NextFunction, Request, Response } from "express";
 
 import { CustomAPIError } from "../errors";
