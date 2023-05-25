@@ -190,7 +190,7 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get::03 - passing invalid ids", () => {
         it("should return an invalid id error", async () => {
         //   // mock services
-        //   const findAllBaseResourceService = mockService(
+        //   const findAllBaseResourcesService = mockService(
         //     baseResourcesPayload,
         //     "findFilterAllResources"
         //   );

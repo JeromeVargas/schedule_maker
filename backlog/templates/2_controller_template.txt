@@ -104,7 +104,7 @@ res.status(StatusCodes.OK).json({ msg: "BaseResource put endpoint working!" });
 // @access Private
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
 const deleteBaseResource = async ({ params, body }: Request, res: Response) => {  
-  /* destructure the fields from the params and body */
+//  /* destructure the fields from the params and body */
 // const { id: baseResourceId } = params;
 // const { school_id } = body;
 // /* delete baseResource */

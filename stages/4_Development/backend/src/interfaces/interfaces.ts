@@ -74,3 +74,10 @@ export type Level = {
   schedule_id: Types.ObjectId;
   name: string;
 };
+
+export type Group = {
+  school_id: Types.ObjectId;
+  level_id: Types.ObjectId;
+  name: string;
+  numberStudents: number;
+};

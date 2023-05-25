@@ -7,6 +7,7 @@ import TeacherFieldModel from "../models/teacherFieldModel";
 import ScheduleModel from "../models/scheduleModel";
 import BreakModel from "../models/breakModel";
 import LevelModel from "../models/levelModel";
+import GroupModel from "../models/groupModel";
 
 const models = {
   school: SchoolModel,
@@ -17,6 +18,7 @@ const models = {
   schedule: ScheduleModel,
   break: BreakModel,
   level: LevelModel,
+  group: GroupModel,
 } as const;
 
 // helper functions
