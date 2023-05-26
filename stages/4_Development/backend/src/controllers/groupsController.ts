@@ -23,7 +23,7 @@ const levelModel = "level";
 // @fields: body {school_id:[string] , schedule_id:[string], name:[string], numberStudents:[number]}
 const createGroup = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { school_id, level_id, name } = body;
+  const { school_id, level_id, name, numberStudents } = body;
   /* check if the level name already exists for this school */
   const groupFilters = [{ school_id: school_id }, { name: name }];
   const groupFieldsToReturn = "-createdAt -updatedAt";
@@ -47,6 +47,7 @@ const createGroup = async ({ body }: Request, res: Response) => {
     fieldsToReturnPopulateLevel,
     levelModel
   );
+  console.log(levelFound);
   if (!levelFound) {
     throw new NotFoundError("Please make sure the level exists");
   }
@@ -58,6 +59,13 @@ const createGroup = async ({ body }: Request, res: Response) => {
   if (levelFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
       "Please make sure the level belongs to the school"
+    );
+  }
+  /* check if the number of students is larger than the max allowed number of students */
+  const maxNumberStudentsPerGroup = levelFound?.school_id?.groupMaxNumStudents;
+  if (numberStudents > maxNumberStudentsPerGroup) {
+    throw new BadRequestError(
+      `Please take into account that the number of students cannot exceed ${levelFound?.school_id?.groupMaxNumStudents} students`
     );
   }
   /* create group */
@@ -120,7 +128,7 @@ const getGroup = async ({ params, body }: Request, res: Response) => {
 const updateGroup = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: groupId } = params;
-  const { school_id, level_id, name } = body;
+  const { school_id, level_id, name, numberStudents } = body;
   /* check if the group name already exists for this school */
   const groupFilters = [{ school_id: school_id }, { name: name }];
   const groupFieldsToReturn = "-createdAt -updatedAt";
@@ -157,6 +165,13 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
   if (levelFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
       "Please make sure the level belongs to the school"
+    );
+  }
+  /* check if the number of students is larger than the max allowed number of students */
+  const maxNumberStudentsPerGroup = levelFound?.school_id?.groupMaxNumStudents;
+  if (numberStudents > maxNumberStudentsPerGroup) {
+    throw new BadRequestError(
+      `Please take into account that the number of students cannot exceed ${levelFound?.school_id?.groupMaxNumStudents} students`
     );
   }
   /* update group */

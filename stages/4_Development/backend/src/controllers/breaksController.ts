@@ -147,7 +147,7 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
       "Please make sure the schedule belongs to the school"
     );
   }
-  /* check if the break start starts earlier than the day shift start */
+  /* check if the break start begins earlier than the day shift start */
   if (scheduleFound.dayStart > breakStart) {
     throw new BadRequestError(
       "Please take into account that the break start time cannot be earlier than the schedule start time"

@@ -6,7 +6,6 @@ import NotFoundError from "../errors/not-found";
 
 import {
   insertResource,
-  findResourceById,
   findResourceByProperty,
   findFilterAllResources,
   findPopulateFilterAllResources,
@@ -30,7 +29,7 @@ const createTeacher = async ({ body }: Request, res: Response) => {
   const userSearchCriteria = [user_id, coordinator_id];
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
-  const userFieldsToReturnPopulate = "-_id -createdAt -updatedAt";
+  const userFieldsToReturnPopulate = "-createdAt -updatedAt";
   const existingUserSchoolCoordinator = await findPopulateFilterAllResources(
     userSearchCriteria,
     userFieldsToReturn,
@@ -53,9 +52,9 @@ const createTeacher = async ({ body }: Request, res: Response) => {
       "The user does not have teaching functions assigned"
     );
   }
-  /* check if the school exists*/
+  // check if the user school exists/
   if (!existingUser?.school_id) {
-    throw new BadRequestError("Please create the school first");
+    throw new BadRequestError("Please create the user's school first");
   }
   /* check if the coordinator exists, has a coordinator role and it is active */
   // if there is not at least one record with an existing coordinator id property, it returns false and triggers an error
@@ -70,6 +69,10 @@ const createTeacher = async ({ body }: Request, res: Response) => {
   }
   if (existingCoordinator?.status !== "active") {
     throw new BadRequestError("Please pass an active coordinator");
+  }
+  // check if the coordinator school exists/
+  if (!existingCoordinator?.school_id) {
+    throw new BadRequestError("Please create the coordinator's school first");
   }
   /* check if the user is already a teacher */
   const teacherSearchCriteria = { user_id };
@@ -146,9 +149,12 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
   const { id: teacherId } = params;
   const { school_id, user_id, coordinator_id } = body;
   /* check if coordinator exists, has the role and is active  */
-  const coordinatorSearchCriteria = coordinator_id;
+  const coordinatorSearchCriteria = {
+    _id: coordinator_id,
+    school_id: school_id,
+  };
   const coordinatorFieldsToReturn = "-password -createdAt -updatedAt";
-  const existingCoordinator = await findResourceById(
+  const existingCoordinator = await findResourceByProperty(
     coordinatorSearchCriteria,
     coordinatorFieldsToReturn,
     userModel

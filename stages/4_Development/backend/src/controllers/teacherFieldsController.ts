@@ -29,7 +29,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
   /* find if the teacher already exists */
   const fieldsToReturnTeacher = "-createdAt -updatedAt";
   const fieldsToPopulateTeacher = "school_id";
-  const fieldsToReturnPopulateTeacher = "_id -name -createdAt -updatedAt";
+  const fieldsToReturnPopulateTeacher = "-createdAt -updatedAt";
   const teacherFound = await findPopulateResourceById(
     teacher_id,
     fieldsToReturnTeacher,
@@ -44,7 +44,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
   /* find if the field already exists */
   const fieldsToReturnField = "-createdAt -updatedAt";
   const fieldsToPopulateField = "school_id";
-  const fieldsToReturnPopulateField = "_id -name -createdAt -updatedAt";
+  const fieldsToReturnPopulateField = "-createdAt -updatedAt";
   const fieldFound = await findPopulateResourceById(
     field_id,
     fieldsToReturnField,
@@ -172,7 +172,7 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
       "This field has already been assigned to the teacher!"
     );
   }
-  /* update if the field and school ids are the same one as the one passed and update the field */
+  /* update if the teacher and school ids are the same one as the one passed and update the field */
   const filtersUpdate = [
     { _id: teacherFieldId },
     { teacher_id: teacher_id },
