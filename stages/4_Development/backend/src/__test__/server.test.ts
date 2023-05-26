@@ -46,41 +46,50 @@ describe("Schedule maker API", () => {
     const validMockSchoolId = new Types.ObjectId().toString();
     const otherValidMockSchoolId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "invalidMockId";
+    const invalidMockId = "63c5dcac78b868f80035asdf";
     const newSchool = {
       name: "school 001",
+      groupMaxNumStudents: 40,
     };
     const newSchoolMissingValues = {
       nam: "school 001",
+      groupMaxNumStudent: 40,
     };
     const newSchoolEmptyValues = {
       name: "",
+      groupMaxNumStudents: "",
     };
     const newSchoolNotValidDataTypes = {
       name: 1234567890,
+      groupMaxNumStudents: "hello",
     };
     const newSchoolWrongLengthValues = {
       name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+      groupMaxNumStudents: 40,
     };
 
     // payloads
     const schoolPayload = {
       _id: validMockSchoolId,
       name: "school 001",
+      groupMaxNumStudents: 40,
     };
     const schoolNullPayload = null;
     const schoolsPayload = [
       {
         _id: new Types.ObjectId().toString(),
         name: "school 001",
+        groupMaxNumStudents: 40,
       },
       {
         _id: new Types.ObjectId().toString(),
         name: "school 002",
+        groupMaxNumStudents: 40,
       },
       {
         _id: new Types.ObjectId().toString(),
         name: "school 003",
+        groupMaxNumStudents: 40,
       },
     ];
     const schoolsNullPayload = null;
@@ -111,6 +120,11 @@ describe("Schedule maker API", () => {
               msg: "Please add a school name",
               param: "name",
             },
+            {
+              location: "body",
+              msg: "Please add the group max number of students",
+              param: "groupMaxNumStudents",
+            },
           ]);
 
           expect(statusCode).toBe(400);
@@ -120,13 +134,13 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).not.toHaveBeenCalledWith(
-            { name: "school 001" },
-            "-_id -createdAt -updatedAt",
+            { name: newSchool.name },
+            "-createdAt -updatedAt",
             "school"
           );
           expect(insertSchoolService).not.toHaveBeenCalled();
           expect(insertSchoolService).not.toHaveBeenCalledWith(
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
@@ -156,6 +170,12 @@ describe("Schedule maker API", () => {
               param: "name",
               value: "",
             },
+            {
+              location: "body",
+              msg: "The group max number of students field is empty",
+              param: "groupMaxNumStudents",
+              value: "",
+            },
           ]);
           expect(statusCode).toBe(400);
           expect(
@@ -164,13 +184,13 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).not.toHaveBeenCalledWith(
-            { name: "school 001" },
-            "-_id -createdAt -updatedAt",
+            { name: newSchool.name },
+            "-createdAt -updatedAt",
             "school"
           );
           expect(insertSchoolService).not.toHaveBeenCalled();
           expect(insertSchoolService).not.toHaveBeenCalledWith(
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
@@ -200,6 +220,12 @@ describe("Schedule maker API", () => {
               param: "name",
               value: 1234567890,
             },
+            {
+              location: "body",
+              msg: "group  max  number of students value is not valid",
+              param: "groupMaxNumStudents",
+              value: "hello",
+            },
           ]);
           expect(statusCode).toBe(400);
           expect(
@@ -208,13 +234,13 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).not.toHaveBeenCalledWith(
-            { name: "school 001" },
-            "-_id -createdAt -updatedAt",
+            { name: newSchool.name },
+            "-createdAt -updatedAt",
             "school"
           );
           expect(insertSchoolService).not.toHaveBeenCalled();
           expect(insertSchoolService).not.toHaveBeenCalledWith(
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
@@ -253,18 +279,62 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).not.toHaveBeenCalledWith(
-            { name: "school 001" },
-            "-_id -createdAt -updatedAt",
+            { name: newSchool.name },
+            "-createdAt -updatedAt",
             "school"
           );
           expect(insertSchoolService).not.toHaveBeenCalled();
           expect(insertSchoolService).not.toHaveBeenCalledWith(
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
       });
-      describe("school::post::05 - Passing an existing school name", () => {
+      describe("school::post::05 - Passing a group max number of students above the max allowed of 1000 students", () => {
+        it("should return a group max number of students above the allowed number error", async () => {
+          // mock services
+          const findDuplicatedSchoolNameByPropertyService = mockService(
+            schoolNullPayload,
+            "findResourceByProperty"
+          );
+          const insertSchoolService = mockService(
+            schoolPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send({ ...newSchool, groupMaxNumStudents: 1001 });
+
+          //assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "group max number of students must not exceed 1000 students",
+              param: "groupMaxNumStudents",
+              value: 1001,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findDuplicatedSchoolNameByPropertyService
+          ).not.toHaveBeenCalled();
+          expect(
+            findDuplicatedSchoolNameByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: newSchool.name },
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(insertSchoolService).not.toHaveBeenCalled();
+          expect(insertSchoolService).not.toHaveBeenCalledWith(
+            newSchool,
+            "school"
+          );
+        });
+      });
+      describe("school::post::06 - Passing an existing school name", () => {
         it("should return a duplicated school error", async () => {
           // mock services
           const findDuplicatedSchoolNameByPropertyService = mockService(
@@ -290,18 +360,18 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).toHaveBeenCalledWith(
-            { name: "school 001" },
-            "-_id -createdAt -updatedAt",
+            { name: newSchool.name },
+            "-createdAt -updatedAt",
             "school"
           );
           expect(insertSchoolService).not.toHaveBeenCalled();
           expect(insertSchoolService).not.toHaveBeenCalledWith(
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
       });
-      describe("school::post::06 - Passing a school but not being created", () => {
+      describe("school::post::07 - Passing a school but not being created", () => {
         it("should not create a school", async () => {
           // mock services
           const findDuplicatedSchoolNameByPropertyService = mockService(
@@ -327,18 +397,15 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).toHaveBeenCalledWith(
-            { name: "school 001" },
-            "-_id -createdAt -updatedAt",
+            { name: newSchool.name },
+            "-createdAt -updatedAt",
             "school"
           );
           expect(insertSchoolService).toHaveBeenCalled();
-          expect(insertSchoolService).toHaveBeenCalledWith(
-            { name: "school 001" },
-            "school"
-          );
+          expect(insertSchoolService).toHaveBeenCalledWith(newSchool, "school");
         });
       });
-      describe("school::post::07 - Passing a school correctly to create", () => {
+      describe("school::post::08 - Passing a school correctly to create", () => {
         it("should create a school", async () => {
           // mock services
           const findDuplicatedSchoolNameByPropertyService = mockService(
@@ -365,15 +432,12 @@ describe("Schedule maker API", () => {
           expect(
             findDuplicatedSchoolNameByPropertyService
           ).toHaveBeenCalledWith(
-            { name: "school 001" },
-            "-_id -createdAt -updatedAt",
+            { name: newSchool.name },
+            "-createdAt -updatedAt",
             "school"
           );
           expect(insertSchoolService).toHaveBeenCalled();
-          expect(insertSchoolService).toHaveBeenCalledWith(
-            { name: "school 001" },
-            "school"
-          );
+          expect(insertSchoolService).toHaveBeenCalledWith(newSchool, "school");
         });
       });
     });
@@ -423,14 +487,17 @@ describe("Schedule maker API", () => {
               {
                 _id: expect.any(String),
                 name: "school 001",
+                groupMaxNumStudents: 40,
               },
               {
                 _id: expect.any(String),
                 name: "school 002",
+                groupMaxNumStudents: 40,
               },
               {
                 _id: expect.any(String),
                 name: "school 003",
+                groupMaxNumStudents: 40,
               },
             ]);
             expect(statusCode).toBe(200);
@@ -518,6 +585,7 @@ describe("Schedule maker API", () => {
             expect(body).toStrictEqual({
               _id: validMockSchoolId,
               name: "school 001",
+              groupMaxNumStudents: 40,
             });
             expect(statusCode).toBe(200);
             expect(findSchoolByIdService).toHaveBeenCalled();
@@ -556,6 +624,11 @@ describe("Schedule maker API", () => {
               msg: "Please add a name",
               param: "name",
             },
+            {
+              location: "body",
+              msg: "Please add the group max number of students",
+              param: "groupMaxNumStudents",
+            },
           ]);
           expect(statusCode).toBe(400);
           expect(
@@ -564,14 +637,14 @@ describe("Schedule maker API", () => {
           expect(
             findSchoolNameDuplicatedByPropertyService
           ).not.toHaveBeenCalledWith(
-            { name: "school 001" },
+            { name: newSchool.name },
             "-createdAt -updatedAt",
             "school"
           );
           expect(updateSchoolService).not.toHaveBeenCalled();
           expect(updateSchoolService).not.toHaveBeenCalledWith(
             validMockSchoolId,
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
@@ -601,6 +674,12 @@ describe("Schedule maker API", () => {
               param: "name",
               value: "",
             },
+            {
+              location: "body",
+              msg: "The group max number of students field is empty",
+              param: "groupMaxNumStudents",
+              value: "",
+            },
           ]);
           expect(statusCode).toBe(400);
           expect(
@@ -609,14 +688,14 @@ describe("Schedule maker API", () => {
           expect(
             findSchoolNameDuplicatedByPropertyService
           ).not.toHaveBeenCalledWith(
-            { name: "school 001" },
+            { name: newSchool.name },
             "-createdAt -updatedAt",
             "school"
           );
           expect(updateSchoolService).not.toHaveBeenCalled();
           expect(updateSchoolService).not.toHaveBeenCalledWith(
             validMockSchoolId,
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
@@ -645,13 +724,19 @@ describe("Schedule maker API", () => {
               msg: "The school id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The school name is not valid",
               param: "name",
               value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "group  max  number of students value is not valid",
+              param: "groupMaxNumStudents",
+              value: "hello",
             },
           ]);
           expect(statusCode).toBe(400);
@@ -668,7 +753,7 @@ describe("Schedule maker API", () => {
           expect(updateSchoolService).not.toHaveBeenCalled();
           expect(updateSchoolService).not.toHaveBeenCalledWith(
             validMockSchoolId,
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
@@ -714,12 +799,57 @@ describe("Schedule maker API", () => {
           expect(updateSchoolService).not.toHaveBeenCalled();
           expect(updateSchoolService).not.toHaveBeenCalledWith(
             validMockSchoolId,
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
       });
-      describe("school::put::05 - Passing an existing school name", () => {
+      describe("school::put::05 - Passing a group max number of students above the max allowed of 1000 students", () => {
+        it("should return a group max number of students above the allowed number error", async () => {
+          // mock services
+          const findSchoolNameDuplicatedByPropertyService = mockService(
+            schoolNullPayload,
+            "findResourceByProperty"
+          );
+          const updateSchoolService = mockService(
+            schoolNullPayload,
+            "updateResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSchoolId}`)
+            .send({ ...newSchool, groupMaxNumStudents: 1001 });
+
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "group max number of students must not exceed 1000 students",
+              param: "groupMaxNumStudents",
+              value: 1001,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(
+            findSchoolNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalled();
+          expect(
+            findSchoolNameDuplicatedByPropertyService
+          ).not.toHaveBeenCalledWith(
+            { name: "school 001" },
+            "-createdAt -updatedAt",
+            "school"
+          );
+          expect(updateSchoolService).not.toHaveBeenCalled();
+          expect(updateSchoolService).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            newSchool,
+            "school"
+          );
+        });
+      });
+      describe("school::put::06 - Passing an existing school name", () => {
         it("should not update a school", async () => {
           // mock services
           const findSchoolNameDuplicatedByPropertyService = mockService(
@@ -745,19 +875,19 @@ describe("Schedule maker API", () => {
           expect(
             findSchoolNameDuplicatedByPropertyService
           ).toHaveBeenCalledWith(
-            { name: "school 001" },
+            { name: newSchool.name },
             "-createdAt -updatedAt",
             "school"
           );
           expect(updateSchoolService).not.toHaveBeenCalled();
           expect(updateSchoolService).not.toHaveBeenCalledWith(
             validMockSchoolId,
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
       });
-      describe("school::put::06 - Passing a school but not updating it", () => {
+      describe("school::put::07 - Passing a school but not updating it", () => {
         it("should not update a school", async () => {
           // mock services
           const findSchoolNameDuplicatedByPropertyService = mockService(
@@ -783,19 +913,19 @@ describe("Schedule maker API", () => {
           expect(
             findSchoolNameDuplicatedByPropertyService
           ).toHaveBeenCalledWith(
-            { name: "school 001" },
+            { name: newSchool.name },
             "-createdAt -updatedAt",
             "school"
           );
           expect(updateSchoolService).toHaveBeenCalled();
           expect(updateSchoolService).toHaveBeenCalledWith(
             validMockSchoolId,
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
       });
-      describe("school::put::07 - Passing a school correctly to update", () => {
+      describe("school::put::08 - Passing a school correctly to update", () => {
         it("should update a school", async () => {
           // mock services
           const findSchoolNameDuplicatedByPropertyService = mockService(
@@ -819,14 +949,14 @@ describe("Schedule maker API", () => {
           expect(
             findSchoolNameDuplicatedByPropertyService
           ).toHaveBeenCalledWith(
-            { name: "school 001" },
+            { name: newSchool.name },
             "-createdAt -updatedAt",
             "school"
           );
           expect(updateSchoolService).toHaveBeenCalled();
           expect(updateSchoolService).toHaveBeenCalledWith(
             validMockSchoolId,
-            { name: "school 001" },
+            newSchool,
             "school"
           );
         });
@@ -854,7 +984,7 @@ describe("Schedule maker API", () => {
               msg: "The school id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
           ]);
           expect(statusCode).toBe(400);
@@ -925,7 +1055,7 @@ describe("Schedule maker API", () => {
     const validMockSchoolId = new Types.ObjectId().toString();
     const otherValidMockUserId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "invalidMockId";
+    const invalidMockId = "63c5dcac78b868f80035asdf";
     const newUser = {
       school_id: validMockSchoolId,
       firstName: "Jerome",
@@ -1244,7 +1374,7 @@ describe("Schedule maker API", () => {
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
@@ -1401,7 +1531,7 @@ describe("Schedule maker API", () => {
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
@@ -1692,7 +1822,7 @@ describe("Schedule maker API", () => {
                 msg: "The school id is not valid",
                 param: "school_id",
                 //cspell:disable-next-line
-                value: "invalidMockId",
+                value: invalidMockId,
               },
             ]);
             expect(statusCode).toBe(400);
@@ -2141,14 +2271,14 @@ describe("Schedule maker API", () => {
               msg: "The user id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
@@ -2299,7 +2429,7 @@ describe("Schedule maker API", () => {
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
@@ -2530,14 +2660,14 @@ describe("Schedule maker API", () => {
               msg: "The user id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
           ]);
           expect(statusCode).toBe(400);
@@ -2608,7 +2738,7 @@ describe("Schedule maker API", () => {
     const validMockCoordinatorId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "invalidMockId";
+    const invalidMockId = "63c5dcac78b868f80035asdf";
     const newTeacher = {
       school_id: validMockSchoolId,
       user_id: validMockUserId,
@@ -3799,7 +3929,7 @@ describe("Schedule maker API", () => {
                 msg: "The school id is not valid",
                 param: "school_id",
                 //cspell:disable-next-line
-                value: "invalidMockId",
+                value: invalidMockId,
               },
             ]);
             expect(statusCode).toBe(400);
@@ -4426,21 +4556,21 @@ describe("Schedule maker API", () => {
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The teacher's user id is not valid",
               param: "user_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The coordinator's id is not valid",
               param: "coordinator_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
@@ -4768,14 +4898,14 @@ describe("Schedule maker API", () => {
               msg: "The teacher's id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
           ]);
           expect(statusCode).toBe(400);
@@ -4847,7 +4977,7 @@ describe("Schedule maker API", () => {
     const validMockFieldId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "invalidMockId";
+    const invalidMockId = "63c5dcac78b868f80035asdf";
     const newField = {
       school_id: validMockSchoolId,
       name: "Mathematics",
@@ -5367,7 +5497,7 @@ describe("Schedule maker API", () => {
                 msg: "The school id is not valid",
                 param: "school_id",
                 //cspell:disable-next-line
-                value: "invalidMockId",
+                value: invalidMockId,
               },
             ]);
             expect(statusCode).toBe(400);
@@ -5987,14 +6117,14 @@ describe("Schedule maker API", () => {
               msg: "The field id is not valid",
               param: "id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
               //cspell:disable-next-line
-              value: "invalidMockId",
+              value: invalidMockId,
             },
           ]);
           expect(statusCode).toBe(400);
@@ -6067,7 +6197,7 @@ describe("Schedule maker API", () => {
     const validMockFieldId = new Types.ObjectId().toString();
     const otherValidMockFieldId = new Types.ObjectId().toString();
     //cspell:disable-next-line
-    const invalidMockId = "invalidMockId";
+    const invalidMockId = "63c5dcac78b868f80035asdf";
     const newTeacherField = {
       school_id: validMockSchoolId,
       teacher_id: validMockTeacherId,
@@ -14260,6 +14390,7 @@ describe("Schedule maker API", () => {
             msg: "Group not updated",
           });
           expect(statusCode).toBe(404);
+          //cspell:disable-next-line
           expect(findDuplicatedGroupNameByPropertyService).toHaveBeenCalled();
           expect(findDuplicatedGroupNameByPropertyService).toHaveBeenCalledWith(
             [{ school_id: validMockSchoolId }, { name: newGroup.name }],
@@ -14303,6 +14434,7 @@ describe("Schedule maker API", () => {
             .put(`${endPointUrl}${validMockGroupId}`)
             .send(newGroup);
 
+          //cspell:disable-next-line
           // assertions
           expect(body).toStrictEqual({
             msg: "Group updated!",
@@ -14471,4 +14603,8 @@ describe("Schedule maker API", () => {
   });
   // continue here --> add the max number of students to the school entity and refactor the other entities to adapt
   // continue here --> create the subjects entity code
+  // continue here --> work on the resource payload pass to create or update, rigth now is just the body
+  // continue here --> work on the json entity.parse.failed
+  // continue here --> refactor names, specially those in the test file
+  // continue here --> separate files by entitys
 });

@@ -25,7 +25,7 @@ const createSchool = async ({ body }: Request, res: Response) => {
   const { name } = body;
   /* find if the school name already exists */
   const searchCriteria = { name };
-  const fieldsToReturn = "-_id -createdAt -updatedAt";
+  const fieldsToReturn = "-createdAt -updatedAt";
   const duplicatedSchool = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,

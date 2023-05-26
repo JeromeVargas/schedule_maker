@@ -8,6 +8,10 @@ const SchoolSchema = new Schema<School>(
       required: [true, "must provide name for the school"],
       unique: true,
     },
+    groupMaxNumStudents: {
+      type: Number,
+      required: [true, "must provide a group number of students"],
+    },
   },
   {
     timestamps: true,

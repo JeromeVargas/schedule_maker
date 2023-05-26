@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 
 export type School = {
   name: string;
+  groupMaxNumStudents: number;
 };
 
 export type Role = "headmaster" | "coordinator" | "teacher";

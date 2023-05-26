@@ -16,6 +16,25 @@ const validateCreateSchool = [
     .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters"),
+  check("groupMaxNumStudents")
+    .exists()
+    .withMessage("Please add the group max number of students")
+    .bail()
+    .notEmpty()
+    .withMessage("The group max number of students field is empty")
+    .bail()
+    .isNumeric()
+    .withMessage("group  max  number of students value is not valid")
+    .bail()
+    .custom((value) => {
+      const maxNumberStudentsPerGroup = 1000;
+      if (value > maxNumberStudentsPerGroup) {
+        return false;
+      } else if (value <= maxNumberStudentsPerGroup) {
+        return true;
+      }
+    })
+    .withMessage(`group max number of students must not exceed 1000 students`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -61,6 +80,25 @@ const validateUpdateSchool = [
     .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters"),
+  check("groupMaxNumStudents")
+    .exists()
+    .withMessage("Please add the group max number of students")
+    .bail()
+    .notEmpty()
+    .withMessage("The group max number of students field is empty")
+    .bail()
+    .isNumeric()
+    .withMessage("group  max  number of students value is not valid")
+    .bail()
+    .custom((value) => {
+      const maxNumberStudentsPerGroup = 1000;
+      if (value > maxNumberStudentsPerGroup) {
+        return false;
+      } else if (value <= maxNumberStudentsPerGroup) {
+        return true;
+      }
+    })
+    .withMessage(`group max number of students must not exceed 1000 students`),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
