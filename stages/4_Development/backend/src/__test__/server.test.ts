@@ -45,7 +45,6 @@ describe("Schedule maker API", () => {
     // inputs
     const validMockSchoolId = new Types.ObjectId().toString();
     const otherValidMockSchoolId = new Types.ObjectId().toString();
-    //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newSchool = {
       name: "school 001",
@@ -529,7 +528,7 @@ describe("Schedule maker API", () => {
                 location: "params",
                 msg: "The school id is not valid",
                 param: "id",
-                //cspell:disable-next-line
+
                 value: invalidMockId,
               },
             ]);
@@ -723,7 +722,7 @@ describe("Schedule maker API", () => {
               location: "params",
               msg: "The school id is not valid",
               param: "id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
@@ -983,7 +982,7 @@ describe("Schedule maker API", () => {
               location: "params",
               msg: "The school id is not valid",
               param: "id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
           ]);
@@ -1054,7 +1053,6 @@ describe("Schedule maker API", () => {
     const validMockUserId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
     const otherValidMockUserId = new Types.ObjectId().toString();
-    //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newUser = {
       school_id: validMockSchoolId,
@@ -1067,16 +1065,12 @@ describe("Schedule maker API", () => {
       hasTeachingFunc: true,
     };
     const newUserMissingValues = {
-      //cspell:disable-next-line
       school_i: validMockSchoolId,
       firstNam: "Jerome",
       lastNam: "Vargas",
-      //cspell:disable-next-line
       emai: "jerome@gmail.com",
-      //cspell:disable-next-line
       passwor: "12341234",
       rol: "coordinator",
-      //cspell:disable-next-line
       statu: "active",
       hasTeachingFun: true,
     };
@@ -1116,9 +1110,7 @@ describe("Schedule maker API", () => {
       lastName: "Vargas",
       email: "jerome@gmail",
       password: "12341234",
-      //cspell:disable-next-line
       role: "coordinador",
-      //cspell:disable-next-line
       status: "activo",
       hasTeachingFunc: true,
     };
@@ -1164,9 +1156,7 @@ describe("Schedule maker API", () => {
       {
         _id: new Types.ObjectId().toString(),
         school_id: new Types.ObjectId().toString(),
-        //cspell:disable-next-line
         firstName: "Ania",
-        //cspell:disable-next-line
         lastName: "Kubow",
         email: "ania@yahoo.com",
         role: "teacher",
@@ -1373,7 +1363,7 @@ describe("Schedule maker API", () => {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
@@ -1530,7 +1520,7 @@ describe("Schedule maker API", () => {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
@@ -1543,14 +1533,14 @@ describe("Schedule maker API", () => {
               location: "body",
               msg: "the role provided is not a valid option",
               param: "role",
-              //cspell:disable-next-line
+
               value: "coordinador",
             },
             {
               location: "body",
               msg: "the status provided is not a valid option",
               param: "status",
-              //cspell:disable-next-line
+
               value: "activo",
             },
           ]);
@@ -1751,7 +1741,7 @@ describe("Schedule maker API", () => {
             // api call
             const { statusCode, body } = await supertest(server)
               .get(`${endPointUrl}`)
-              //cspell:disable-next-line
+
               .send({ school_i: invalidMockId });
 
             // assertions
@@ -1821,7 +1811,7 @@ describe("Schedule maker API", () => {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
-                //cspell:disable-next-line
+
                 value: invalidMockId,
               },
             ]);
@@ -1898,10 +1888,10 @@ describe("Schedule maker API", () => {
               {
                 _id: expect.any(String),
                 email: "ania@yahoo.com",
-                //cspell:disable-next-line
+
                 firstName: "Ania",
                 hasTeachingFunc: true,
-                //cspell:disable-next-line
+
                 lastName: "Kubow",
                 role: "teacher",
                 school_id: expect.any(String),
@@ -1930,7 +1920,7 @@ describe("Schedule maker API", () => {
             // api call
             const { statusCode, body } = await supertest(server)
               .get(`${endPointUrl}${validMockUserId}`)
-              //cspell:disable-next-line
+
               .send({ school_i: validMockSchoolId });
 
             // assertions
@@ -2270,14 +2260,14 @@ describe("Schedule maker API", () => {
               location: "params",
               msg: "The user id is not valid",
               param: "id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
@@ -2428,7 +2418,7 @@ describe("Schedule maker API", () => {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
@@ -2441,14 +2431,14 @@ describe("Schedule maker API", () => {
               location: "body",
               msg: "the role provided is not a valid option",
               param: "role",
-              //cspell:disable-next-line
+
               value: "coordinador",
             },
             {
               location: "body",
               msg: "the status provided is not a valid option",
               param: "status",
-              //cspell:disable-next-line
+
               value: "activo",
             },
           ]);
@@ -2591,7 +2581,6 @@ describe("Schedule maker API", () => {
           // api call
           const { statusCode, body } = await supertest(server)
             .delete(`${endPointUrl}${validMockUserId}`)
-            //cspell: disable-next-line
             .send({ school_i: validMockSchoolId });
 
           // assertions
@@ -2659,14 +2648,14 @@ describe("Schedule maker API", () => {
               location: "params",
               msg: "The user id is not valid",
               param: "id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
           ]);
@@ -2737,7 +2726,6 @@ describe("Schedule maker API", () => {
     const validMockTeacherId = new Types.ObjectId().toString();
     const validMockCoordinatorId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
-    //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newTeacher = {
       school_id: validMockSchoolId,
@@ -2756,27 +2744,18 @@ describe("Schedule maker API", () => {
     };
     const newTeacherMissingValues = {
       school_i: validMockSchoolId,
-      //cspell:disable-next-line
+
       user_i: validMockUserId,
       coordinator_i: validMockCoordinatorId,
       contractTyp: "full-time",
-      //cspell:disable-next-line
       hoursAssignabl: 60,
-      //cspell:disable-next-line
       hoursAssigne: 60,
-      //cspell:disable-next-line
       monda: true,
-      //cspell:disable-next-line
       tuesda: true,
-      //cspell:disable-next-line
       wednesda: true,
-      //cspell:disable-next-line
       thursda: true,
-      //cspell:disable-next-line
       frida: true,
-      //cspell:disable-next-line
       saturda: true,
-      //cspell:disable-next-line
       sunda: true,
     };
     const newTeacherEmptyValues = {
@@ -2813,7 +2792,6 @@ describe("Schedule maker API", () => {
       school_id: invalidMockId,
       user_id: invalidMockId,
       coordinator_id: invalidMockId,
-      //cspell:disable-next-line
       contractType: "tiempo-completo",
       hoursAssignable: 71,
       hoursAssigned: 72,
@@ -2836,7 +2814,7 @@ describe("Schedule maker API", () => {
       {
         _id: validMockUserId,
         school_id: schoolPayload,
-        //cspell:disable-next-line
+
         firstName: "Mtuts",
         lastName: "Tuts",
         email: "mtuts@hello.com",
@@ -3303,28 +3281,28 @@ describe("Schedule maker API", () => {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "The teacher's user id is not valid",
               param: "user_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "The coordinator's id is not valid",
               param: "coordinator_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "the contract type provided is not a valid option",
               param: "contractType",
-              //cspell:disable-next-line
+
               value: "tiempo-completo",
             },
             {
@@ -3979,7 +3957,7 @@ describe("Schedule maker API", () => {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
-                //cspell:disable-next-line
+
                 value: invalidMockId,
               },
             ]);
@@ -4615,29 +4593,29 @@ describe("Schedule maker API", () => {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "The teacher's user id is not valid",
               param: "user_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "The coordinator's id is not valid",
               param: "coordinator_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "the contract type provided is not a valid option",
-              //cspell:disable-next-line
+
               param: "contractType",
-              //cspell:disable-next-line
+
               value: "tiempo-completo",
             },
             {
@@ -4975,14 +4953,14 @@ describe("Schedule maker API", () => {
               location: "params",
               msg: "The teacher's id is not valid",
               param: "id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
           ]);
@@ -5054,7 +5032,6 @@ describe("Schedule maker API", () => {
     // inputs
     const validMockFieldId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
-    //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newField = {
       school_id: validMockSchoolId,
@@ -5574,7 +5551,7 @@ describe("Schedule maker API", () => {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
-                //cspell:disable-next-line
+
                 value: invalidMockId,
               },
             ]);
@@ -6194,14 +6171,14 @@ describe("Schedule maker API", () => {
               location: "params",
               msg: "The field id is not valid",
               param: "id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
             {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-              //cspell:disable-next-line
+
               value: invalidMockId,
             },
           ]);
@@ -6274,7 +6251,6 @@ describe("Schedule maker API", () => {
     const validMockCoordinatorId = new Types.ObjectId().toString();
     const validMockFieldId = new Types.ObjectId().toString();
     const otherValidMockFieldId = new Types.ObjectId().toString();
-    //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newTeacherField = {
       school_id: validMockSchoolId,
@@ -7994,7 +7970,6 @@ describe("Schedule maker API", () => {
     // inputs
     const validMockScheduleId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
-    //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newSchedule = {
       school_id: validMockSchoolId,
@@ -8015,19 +7990,19 @@ describe("Schedule maker API", () => {
       nam: "Schedule 001",
       day_star: 420,
       shift_number_minute: 360,
-      //cspell:disable-next-line
+
       class_unit_minute: 40,
-      //cspell:disable-next-line
+
       monda: true,
-      //cspell:disable-next-line
+
       tuesda: true,
-      //cspell:disable-next-line
+
       wednesda: true,
-      //cspell:disable-next-line
+
       thursda: true,
-      //cspell:disable-next-line
+
       frida: true,
-      //cspell:disable-next-line
+
       saturda: true,
       sunda: true,
     };
@@ -8061,7 +8036,6 @@ describe("Schedule maker API", () => {
     };
     const newScheduleWrongLengthValues = {
       school_id: validMockSchoolId,
-      //cspell:disable-next-line
       name: "fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkjsdfi07879sdf0fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkj879sdf01",
       dayStart: 420,
       shiftNumberMinutes: 360,
@@ -8629,7 +8603,6 @@ describe("Schedule maker API", () => {
               msg: "The schedule name must not exceed 100 characters",
               param: "name",
               value:
-                //cspell:disable-next-line
                 "fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkjsdfi07879sdf0fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkj879sdf01",
             },
           ]);
@@ -8886,7 +8859,7 @@ describe("Schedule maker API", () => {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
-                //cspell:disable-next-line
+
                 value: invalidMockId,
               },
             ]);
@@ -8918,7 +8891,7 @@ describe("Schedule maker API", () => {
                 location: "body",
                 msg: "The school id is not valid",
                 param: "school_id",
-                //cspell:disable-next-line
+
                 value: "63c5dcac78b868f80035asdf",
               },
             ]);
@@ -9649,7 +9622,6 @@ describe("Schedule maker API", () => {
               msg: "The schedule name must not exceed 100 characters",
               param: "name",
               value:
-                //cspell:disable-next-line
                 "fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkjsdfi07879sdf0fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkj879sdf01",
             },
           ]);
@@ -9944,7 +9916,6 @@ describe("Schedule maker API", () => {
     const otherValidBreakMockId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
     const validMockScheduleId = new Types.ObjectId().toString();
-    //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newBreak = {
       school_id: validMockSchoolId,
@@ -11508,7 +11479,6 @@ describe("Schedule maker API", () => {
     const validMockSchoolId = new Types.ObjectId().toString();
     const validMockScheduleId = new Types.ObjectId().toString();
     const otherValidMockLevelId = new Types.ObjectId().toString();
-    //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newLevel = {
       school_id: validMockSchoolId,
@@ -13063,7 +13033,6 @@ describe("Schedule maker API", () => {
     const otherValidMockGroupId = new Types.ObjectId().toString();
     const validMockLevelId = new Types.ObjectId().toString();
     const validMockSchoolId = new Types.ObjectId().toString();
-    //cspell:disable-next-line
     const invalidMockId = "63c5dcac78b868f80035asdf";
     const newGroup = {
       school_id: validMockSchoolId,
@@ -14404,7 +14373,7 @@ describe("Schedule maker API", () => {
             "level"
           );
           expect(updateGroupService).not.toHaveBeenCalled();
-          //cspell:disable-next-line
+
           expect(updateGroupService).not.toHaveBeenCalledWith(
             [{ _id: validMockGroupId }, { school_id: validMockSchoolId }],
             newGroup,
@@ -14534,7 +14503,7 @@ describe("Schedule maker API", () => {
             msg: `Please take into account that the number of students cannot exceed ${levelPayload.school_id.groupMaxNumStudents} students`,
           });
           expect(statusCode).toBe(400);
-          //cspell:disable-next-line
+
           expect(findDuplicatedGroupNameByPropertyService).toHaveBeenCalled();
           expect(findDuplicatedGroupNameByPropertyService).toHaveBeenCalledWith(
             [{ school_id: validMockSchoolId }, { name: newGroup.name }],
@@ -14583,7 +14552,7 @@ describe("Schedule maker API", () => {
             msg: "Group not updated",
           });
           expect(statusCode).toBe(404);
-          //cspell:disable-next-line
+
           expect(findDuplicatedGroupNameByPropertyService).toHaveBeenCalled();
           expect(findDuplicatedGroupNameByPropertyService).toHaveBeenCalledWith(
             [{ school_id: validMockSchoolId }, { name: newGroup.name }],
@@ -14627,7 +14596,6 @@ describe("Schedule maker API", () => {
             .put(`${endPointUrl}${validMockGroupId}`)
             .send(newGroup);
 
-          //cspell:disable-next-line
           // assertions
           expect(body).toStrictEqual({
             msg: "Group updated!",
@@ -14794,11 +14762,1915 @@ describe("Schedule maker API", () => {
       });
     });
   });
-  // continue here --> add the max number of students to the school entity and refactor the other entities to adapt
-  // continue here --> create the subjects entity code
+
+  describe("Resource => subject", () => {
+    // end point url
+    const endPointUrl = "/api/v1/subjects/";
+
+    // inputs
+    const validMockSubjectId = new Types.ObjectId().toString();
+    const validMockSchoolId = new Types.ObjectId().toString();
+    const validMockGroupId = new Types.ObjectId().toString();
+    const validMockLevelId = new Types.ObjectId().toString();
+    const validMockFieldId = new Types.ObjectId().toString();
+    const otherValidMockSubjectId = new Types.ObjectId().toString();
+    const invalidMockId = "63c5dcac78b868f80035asdf";
+    const newSubject = {
+      school_id: validMockSchoolId,
+      group_id: validMockGroupId,
+      field_id: validMockFieldId,
+      name: "Mathematics 101",
+      classUnits: 30,
+      frequency: 2,
+    };
+    const newSubjectMissingValues = {
+      school_i: validMockSchoolId,
+      group_i: validMockGroupId,
+      field_i: validMockFieldId,
+      nam: "Mathematics 101",
+      classUnit: 30,
+      frequenc: 2,
+    };
+    const newSubjectEmptyValues = {
+      school_id: "",
+      group_id: "",
+      field_id: "",
+      name: "",
+      classUnits: "",
+      frequency: "",
+    };
+    const newSubjectNotValidDataTypes = {
+      school_id: invalidMockId,
+      group_id: invalidMockId,
+      field_id: invalidMockId,
+      name: 92334428,
+      classUnits: "hello",
+      frequency: "hello",
+    };
+    const newSubjectWrongLengthValues = {
+      school_id: validMockSchoolId,
+      group_id: validMockGroupId,
+      field_id: validMockFieldId,
+      name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+      classUnits: 1234567890,
+      frequency: 1234567890,
+    };
+
+    // payloads
+    const subjectPayload = {
+      _id: validMockSubjectId,
+      school_id: validMockSchoolId,
+      group_id: validMockGroupId,
+      field_id: validMockFieldId,
+      name: "Mathematics 101",
+      classUnits: 30,
+      frequency: 2,
+    };
+    const subjectNullPayload = null;
+    const schoolPayload = {
+      _id: validMockSchoolId,
+      name: "school 001",
+      groupMaxNumStudents: 40,
+    };
+    const groupPayload = {
+      _id: validMockGroupId,
+      school_id: schoolPayload,
+      level_id: validMockLevelId,
+      name: "Group 001",
+      numberStudents: 40,
+    };
+    const fieldPayload = {
+      _id: validMockFieldId,
+      school_id: schoolPayload,
+      name: "Mathematics",
+    };
+    const fieldNullPayload = null;
+    const groupNullPayload = null;
+    const subjectsPayload = [
+      {
+        _id: new Types.ObjectId().toString(),
+        school_id: new Types.ObjectId().toString(),
+        group_id: new Types.ObjectId().toString(),
+        field_id: new Types.ObjectId().toString(),
+        name: "Mathematics 101",
+        classUnits: 30,
+        frequency: 2,
+      },
+      {
+        _id: new Types.ObjectId().toString(),
+        school_id: new Types.ObjectId().toString(),
+        group_id: new Types.ObjectId().toString(),
+        field_id: new Types.ObjectId().toString(),
+        name: "Language 101",
+        classUnits: 30,
+        frequency: 2,
+      },
+      {
+        _id: new Types.ObjectId().toString(),
+        school_id: new Types.ObjectId().toString(),
+        group_id: new Types.ObjectId().toString(),
+        field_id: new Types.ObjectId().toString(),
+        name: "Physics 101",
+        classUnits: 30,
+        frequency: 2,
+      },
+    ];
+    const subjectsNullPayload: any[] = [];
+
+    // test blocks
+    describe("POST /subject ", () => {
+      describe("subject::post::01 - Passing missing fields", () => {
+        it("should return a missing fields error", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            [subjectPayload],
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newSubjectMissingValues);
+
+          // assertions;
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the group id",
+              param: "group_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the field id",
+              param: "field_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a subject name",
+              param: "name",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of class units",
+              param: "classUnits",
+            },
+            {
+              location: "body",
+              msg: "Please add the subject class frequency",
+              param: "frequency",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).not.toHaveBeenCalled();
+          expect(insertGroupService).not.toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::post::02 - Passing fields with empty values", () => {
+        it("should return an empty fields error", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            [subjectPayload],
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newSubjectEmptyValues);
+
+          // assertions;
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The group id field is empty",
+              param: "group_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The field id field is empty",
+              param: "field_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject name field is empty",
+              param: "name",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The number of class units field is empty",
+              param: "classUnits",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject class frequency field is empty",
+              param: "frequency",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).not.toHaveBeenCalled();
+          expect(insertGroupService).not.toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::post::03 - Passing an invalid type as a value", () => {
+        it("should return a not valid value error", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            [subjectPayload],
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newSubjectNotValidDataTypes);
+
+          // assertions;
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The group id is not valid",
+              param: "group_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The field id is not valid",
+              param: "field_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The subject name is not valid",
+              param: "name",
+              value: 92334428,
+            },
+            {
+              location: "body",
+              msg: "number of class units value is not valid",
+              param: "classUnits",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "subject class frequency value is not valid",
+              param: "frequency",
+              value: "hello",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).not.toHaveBeenCalled();
+          expect(insertGroupService).not.toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::post::04 - Passing too long or short input values", () => {
+        it("should return an invalid length input value error", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            [subjectPayload],
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newSubjectWrongLengthValues);
+
+          // assertions;
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The subject name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+            {
+              location: "body",
+              msg: "The number of class units not exceed 9 digits",
+              param: "classUnits",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The subject class frequency not exceed 9 digits",
+              param: "frequency",
+              value: 1234567890,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).not.toHaveBeenCalled();
+          expect(insertGroupService).not.toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::post::05 - Passing a duplicated subject name value", () => {
+        it("should return a duplicated field error", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "This subject name already exists",
+          });
+          expect(statusCode).toBe(409);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).not.toHaveBeenCalled();
+          expect(insertGroupService).not.toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::post::06 - Passing an non-existent group in the body", () => {
+        it("should return a non-existent school error", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupNullPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "Please make sure the group exists",
+          });
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(1);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).not.toHaveBeenCalled();
+          expect(insertGroupService).not.toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::post::07 - Passing an non-existent field in the body", () => {
+        it("should return a non-existent school error", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldNullPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "Please make sure the field exists",
+          });
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(2);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).not.toHaveBeenCalled();
+          expect(insertGroupService).not.toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::post::08 - Passing an non-existent school in the body", () => {
+        it("should return a non-existent school error", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send({ ...newSubject, school_id: otherValidMockSubjectId });
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "The resources do not belong to this school",
+          });
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: otherValidMockSubjectId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(2);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).not.toHaveBeenCalled();
+          expect(insertGroupService).not.toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::post::09 - Passing a subject but not being created", () => {
+        it("should not create a field", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectNullPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "Subject not created!",
+          });
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(2);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).toHaveBeenCalled();
+          expect(insertGroupService).toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::post::10 - Passing a subject correctly to create", () => {
+        it("should create a field", async () => {
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const insertGroupService = mockService(
+            subjectPayload,
+            "insertResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .post(`${endPointUrl}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "Subject created!",
+          });
+          expect(statusCode).toBe(201);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(2);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(insertGroupService).toHaveBeenCalled();
+          expect(insertGroupService).toHaveBeenCalledWith(
+            newSubject,
+            "subject"
+          );
+        });
+      });
+    });
+
+    describe("GET /subject ", () => {
+      describe("subject - GET", () => {
+        describe("subject::get::01 - Passing missing fields", () => {
+          it("should return a missing values error", async () => {
+            // mock services
+            const findAllSubjectsService = mockService(
+              subjectsPayload,
+              "findFilterAllResources"
+            );
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_i: validMockSchoolId });
+            // assertions
+            expect(body).toStrictEqual([
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findAllSubjectsService).not.toHaveBeenCalled();
+            expect(findAllSubjectsService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+        describe("subject::get::02 - passing fields with empty values", () => {
+          it("should return an empty values error", async () => {
+            // mock services
+            const findAllSubjectsService = mockService(
+              subjectsNullPayload,
+              "findFilterAllResources"
+            );
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: "" });
+            // assertions
+            expect(body).toStrictEqual([
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findAllSubjectsService).not.toHaveBeenCalled();
+            expect(findAllSubjectsService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+        describe("subject::get::03 - passing invalid ids", () => {
+          it("should return an invalid id error", async () => {
+            // mock services
+            const findAllSubjectsService = mockService(
+              subjectsPayload,
+              "findFilterAllResources"
+            );
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: invalidMockId });
+            // assertions
+            expect(body).toStrictEqual([
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findAllSubjectsService).not.toHaveBeenCalled();
+            expect(findAllSubjectsService).not.toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+        describe("subject::get::04 - Requesting all subjects but not finding any", () => {
+          it("should not get any fields", async () => {
+            // mock services
+            const findAllSubjectsService = mockService(
+              subjectsNullPayload,
+              "findFilterAllResources"
+            );
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: validMockSchoolId });
+            // assertions
+            expect(body).toStrictEqual({ msg: "No subjects found" });
+            expect(statusCode).toBe(404);
+            expect(findAllSubjectsService).toHaveBeenCalled();
+            expect(findAllSubjectsService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+        describe("subject::get::05 - Requesting all subjects correctly", () => {
+          it("should get all fields", async () => {
+            // mock services
+            const findAllSubjectsService = mockService(
+              subjectsPayload,
+              "findFilterAllResources"
+            );
+
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}`)
+              .send({ school_id: validMockSchoolId });
+
+            // assertions
+            expect(body).toStrictEqual(subjectsPayload);
+            expect(statusCode).toBe(200);
+            expect(findAllSubjectsService).toHaveBeenCalled();
+            expect(findAllSubjectsService).toHaveBeenCalledWith(
+              { school_id: validMockSchoolId },
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+      });
+      describe("subject - GET/:id", () => {
+        describe("subject::get/:id::01 - Passing missing fields", () => {
+          it("should return a missing values error", async () => {
+            // mock services
+            const findSubjectByIdService = mockService(
+              subjectPayload,
+              "findFilterResourceByProperty"
+            );
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockSubjectId}`)
+              .send({ school_i: validMockSchoolId });
+            // assertions
+            expect(body).toStrictEqual([
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findSubjectByIdService).not.toHaveBeenCalled();
+            expect(findSubjectByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+        describe("subject::get/:id::02 - Passing fields with empty values", () => {
+          it("should return an empty values error", async () => {
+            // mock services
+            const findSubjectByIdService = mockService(
+              subjectPayload,
+              "findFilterResourceByProperty"
+            );
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockSubjectId}`)
+              .send({ school_id: "" });
+            // assertions
+            expect(body).toStrictEqual([
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findSubjectByIdService).not.toHaveBeenCalled();
+            expect(findSubjectByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+        describe("subject::get/:id::03 - Passing invalid ids", () => {
+          it("should return an invalid id error", async () => {
+            // mock services
+            const findSubjectByIdService = mockService(
+              subjectPayload,
+              "findFilterResourceByProperty"
+            );
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockSubjectId}`)
+              .send({ school_id: invalidMockId });
+            // assertions
+            expect(body).toStrictEqual([
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ]);
+            expect(statusCode).toBe(400);
+            expect(findSubjectByIdService).not.toHaveBeenCalled();
+            expect(findSubjectByIdService).not.toHaveBeenCalledWith(
+              [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+        describe("subject::get/:id::04 - Requesting a subject but not finding it", () => {
+          it("should not get a school", async () => {
+            // mock services
+            const findSubjectByIdService = mockService(
+              subjectsNullPayload,
+              "findFilterResourceByProperty"
+            );
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockSubjectId}`)
+              .send({ school_id: validMockSchoolId });
+            // assertions
+            expect(body).toStrictEqual({
+              msg: "Subject not found",
+            });
+            expect(statusCode).toBe(404);
+            expect(findSubjectByIdService).toHaveBeenCalled();
+            expect(findSubjectByIdService).toHaveBeenCalledWith(
+              [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+        describe("subject::get/:id::05 - Requesting a subject correctly", () => {
+          it("should get a field", async () => {
+            // mock services
+            const findSubjectByIdService = mockService(
+              subjectPayload,
+              "findFilterResourceByProperty"
+            );
+            // api call
+            const { statusCode, body } = await supertest(server)
+              .get(`${endPointUrl}${validMockSubjectId}`)
+              .send({ school_id: validMockSchoolId });
+            // assertions
+            expect(body).toStrictEqual(subjectPayload);
+            expect(statusCode).toBe(200);
+            expect(findSubjectByIdService).toHaveBeenCalled();
+            expect(findSubjectByIdService).toHaveBeenCalledWith(
+              [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+              "-createdAt -updatedAt",
+              "subject"
+            );
+          });
+        });
+      });
+    });
+
+    describe("PUT /subject ", () => {
+      describe("subject::put::01 - Passing missing fields", () => {
+        it("should return a missing fields error", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send(newSubjectMissingValues);
+
+          // assertions;
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the group id",
+              param: "group_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the field id",
+              param: "field_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a subject name",
+              param: "name",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of class units",
+              param: "classUnits",
+            },
+            {
+              location: "body",
+              msg: "Please add the subject class frequency",
+              param: "frequency",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).not.toHaveBeenCalled();
+          expect(updateFilterSubjectService).not.toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::put::02 - Passing fields with empty values", () => {
+        it("should return an empty field error", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send(newSubjectEmptyValues);
+
+          // assertions;
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The group id field is empty",
+              param: "group_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The field id field is empty",
+              param: "field_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject name field is empty",
+              param: "name",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The number of class units field is empty",
+              param: "classUnits",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject class frequency field is empty",
+              param: "frequency",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).not.toHaveBeenCalled();
+          expect(updateFilterSubjectService).not.toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::put::03 - Passing an invalid type as field value", () => {
+        it("should return a not valid value error", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send(newSubjectNotValidDataTypes);
+
+          // assertions;
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The group id is not valid",
+              param: "group_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The field id is not valid",
+              param: "field_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The subject name is not valid",
+              param: "name",
+              value: 92334428,
+            },
+            {
+              location: "body",
+              msg: "number of class units value is not valid",
+              param: "classUnits",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "subject class frequency value is not valid",
+              param: "frequency",
+              value: "hello",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).not.toHaveBeenCalled();
+          expect(updateFilterSubjectService).not.toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::put::04 - Passing too long or short input values", () => {
+        it("should return an invalid length input value error", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send(newSubjectWrongLengthValues);
+
+          // assertions;
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The subject name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+            {
+              location: "body",
+              msg: "The number of class units not exceed 9 digits",
+              param: "classUnits",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The subject class frequency not exceed 9 digits",
+              param: "frequency",
+              value: 1234567890,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).not.toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).not.toHaveBeenCalled();
+          expect(updateFilterSubjectService).not.toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::put::05 - Passing a duplicated subject name value", () => {
+        it("should return a duplicated field error", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "This subject name already exists",
+          });
+          expect(statusCode).toBe(409);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(0);
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).not.toHaveBeenCalled();
+          expect(updateFilterSubjectService).not.toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::put::06 - Passing an non-existent group in the body", () => {
+        it("should return a non-existent school error", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupNullPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "Please make sure the group exists",
+          });
+          expect(statusCode).toBe(404);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(1);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).not.toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).not.toHaveBeenCalled();
+          expect(updateFilterSubjectService).not.toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::put::07 - Passing an non-existent field in the body", () => {
+        it("should return a non-existent school error", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldNullPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "Please make sure the field exists",
+          });
+          expect(statusCode).toBe(404);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(2);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).not.toHaveBeenCalled();
+          expect(updateFilterSubjectService).not.toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::put::08 - Passing an non-existent school in the body", () => {
+        it("should return a non-existent school error", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send({ ...newSubject, school_id: otherValidMockSubjectId });
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "The resources do not belong to this school",
+          });
+          expect(statusCode).toBe(400);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: otherValidMockSubjectId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(2);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).not.toHaveBeenCalled();
+          expect(updateFilterSubjectService).not.toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::put::09 - Passing a subject but not being created", () => {
+        it("should not update a subject", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectNullPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "Subject not updated",
+          });
+          expect(statusCode).toBe(404);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(2);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).toHaveBeenCalled();
+          expect(updateFilterSubjectService).toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+      describe("subject::put::10 - Passing a subject correctly to update", () => {
+        it("should update a subject", async () => {
+          // mock services
+          const findDuplicatedNameByPropertyService = mockService(
+            subjectsNullPayload,
+            "findFilterResourceByProperty"
+          );
+          const findGroupFieldByIdService = mockServiceMultipleReturns(
+            groupPayload,
+            fieldPayload,
+            "findPopulateResourceById"
+          );
+          const updateFilterSubjectService = mockService(
+            subjectPayload,
+            "updateFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSubjectId}`)
+            .send(newSubject);
+
+          // assertions;
+          expect(body).toStrictEqual({
+            msg: "Subject updated!",
+          });
+          expect(statusCode).toBe(200);
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalled();
+          expect(findDuplicatedNameByPropertyService).toHaveBeenCalledWith(
+            [{ school_id: validMockSchoolId }, { name: newSubject.name }],
+            "-createdAt -updatedAt",
+            "subject"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenCalledTimes(2);
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            1,
+            validMockGroupId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "group"
+          );
+          expect(findGroupFieldByIdService).toHaveBeenNthCalledWith(
+            2,
+            validMockFieldId,
+            "-createdAt -updatedAt",
+            "school_id",
+            "-createdAt -updatedAt",
+            "field"
+          );
+          expect(updateFilterSubjectService).toHaveBeenCalled();
+          expect(updateFilterSubjectService).toHaveBeenCalledWith(
+            [{ _id: validMockSubjectId }, { school_id: validMockSchoolId }],
+            newSubject,
+            "subject"
+          );
+        });
+      });
+    });
+
+    describe("DELETE /subject ", () => {
+      describe("subject::delete::01 - Passing missing fields", () => {
+        it("should return a missing fields error", async () => {
+          // mock services
+          const deleteSubjectService = mockService(
+            subjectNullPayload,
+            "deleteFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockSubjectId}`)
+            .send({ school_i: validMockSchoolId });
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(deleteSubjectService).not.toHaveBeenCalled();
+          expect(deleteSubjectService).not.toHaveBeenCalledWith(
+            { _id: validMockSubjectId, school_id: validMockSchoolId },
+            "subject"
+          );
+        });
+      });
+      describe("subject::delete::02 - Passing fields with empty values", () => {
+        it("should return a empty fields error", async () => {
+          // mock services
+          const deleteSubjectService = mockService(
+            subjectNullPayload,
+            "deleteFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockSubjectId}`)
+            .send({ school_id: "" });
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(deleteSubjectService).not.toHaveBeenCalled();
+          expect(deleteSubjectService).not.toHaveBeenCalledWith(
+            { _id: validMockSubjectId, school_id: validMockSchoolId },
+            "subject"
+          );
+        });
+      });
+      describe("subject::delete::03 - Passing invalid ids", () => {
+        it("should return an invalid id error", async () => {
+          // mock services
+          const deleteSubjectService = mockService(
+            subjectNullPayload,
+            "deleteFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${invalidMockId}`)
+            .send({ school_id: invalidMockId });
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "params",
+              msg: "The subject id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(deleteSubjectService).not.toHaveBeenCalled();
+          expect(deleteSubjectService).not.toHaveBeenCalledWith(
+            { _id: validMockSubjectId, school_id: validMockSchoolId },
+            "subject"
+          );
+        });
+      });
+      describe("subject::delete::04 - Passing a subject id but not deleting it", () => {
+        it("should not delete a school", async () => {
+          // mock services
+          const deleteSubjectService = mockService(
+            subjectNullPayload,
+            "deleteFilterResource"
+          );
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockSubjectId}`)
+            .send({ school_id: validMockSchoolId });
+          // assertions
+          expect(body).toStrictEqual({ msg: "Subject not deleted" });
+          expect(statusCode).toBe(404);
+          expect(deleteSubjectService).toHaveBeenCalled();
+          expect(deleteSubjectService).toHaveBeenCalledWith(
+            { _id: validMockSubjectId, school_id: validMockSchoolId },
+            "subject"
+          );
+        });
+      });
+      describe("subject::delete::05 - Passing a subject id correctly to delete", () => {
+        it("should delete a field", async () => {
+          // mock services
+          const deleteSubjectService = mockService(
+            subjectPayload,
+            "deleteFilterResource"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .delete(`${endPointUrl}${validMockSubjectId}`)
+            .send({ school_id: validMockSchoolId });
+
+          // assertions
+          expect(body).toStrictEqual({ msg: "Subject deleted" });
+          expect(statusCode).toBe(200);
+          expect(deleteSubjectService).toHaveBeenCalled();
+          expect(deleteSubjectService).toHaveBeenCalledWith(
+            { _id: validMockSubjectId, school_id: validMockSchoolId },
+            "subject"
+          );
+        });
+      });
+    });
+  });
+  // continue here --> create the classes entity code
+  // remove any code that is too complicated regarding calculations in the controllers, specially schedule and break ones
   // continue here --> work on the resource payload pass to create or update, right now is just the body
   // continue here --> check if findFilterResourceByProperty is necessary and can be replaced be findResourceByProperty
   // continue here --> work on the json entity.parse.failed
   // continue here --> refactor names, specially those in the test file
-  // continue here --> separate files by entitys
+  // continue here --> refactor all the any type instances
+  // continue here --> separate files by entities
 });

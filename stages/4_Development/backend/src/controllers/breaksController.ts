@@ -22,7 +22,12 @@ const scheduleModel = "schedule";
 // @fields: body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
 const createBreak = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { school_id, schedule_id, numberMinutes, breakStart } = body;
+  const {
+    school_id,
+    schedule_id,
+    numberMinutes: breakNumberMinutes,
+    breakStart,
+  } = body;
   /* find schedule by id, and populate its properties */
   const fieldsToReturnSchedule = "-createdAt -updatedAt";
   const fieldsToPopulateSchedule = "school_id";
@@ -54,9 +59,11 @@ const createBreak = async ({ body }: Request, res: Response) => {
     );
   }
   /* check if the break fits within the schedule shift leaving room for at least a one-unit class before and after */
+  const { shiftNumberMinutes, classUnitMinutes } = scheduleFound;
+  const minNumberClassesBeforeAfter = 2;
   if (
-    scheduleFound.shiftNumberMinutes <
-    scheduleFound.classUnitMinutes * 2 + numberMinutes
+    shiftNumberMinutes <
+    classUnitMinutes * minNumberClassesBeforeAfter + breakNumberMinutes
   ) {
     throw new BadRequestError(
       "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break"
@@ -122,7 +129,12 @@ const getBreak = async ({ params, body }: Request, res: Response) => {
 const updateBreak = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: breakId } = params;
-  const { school_id, schedule_id, numberMinutes, breakStart } = body;
+  const {
+    school_id,
+    schedule_id,
+    numberMinutes: breakNumberMinutes,
+    breakStart,
+  } = body;
   /* find schedule by id, and populate its properties */
   const fieldsToReturnSchedule = "-createdAt -updatedAt";
   const fieldsToPopulateSchedule = "school_id";
@@ -154,9 +166,11 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
     );
   }
   /* check if the break fits within the schedule shift leaving room for at least a one-unit class before and after */
+  const { shiftNumberMinutes, classUnitMinutes } = scheduleFound;
+  const minNumberClassesBeforeAfter = 2;
   if (
-    scheduleFound.shiftNumberMinutes <
-    scheduleFound.classUnitMinutes * 2 + numberMinutes
+    shiftNumberMinutes <
+    classUnitMinutes * minNumberClassesBeforeAfter + breakNumberMinutes
   ) {
     throw new BadRequestError(
       "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break"

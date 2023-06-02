@@ -66,6 +66,35 @@
     throw new BadRequestError("Please make sure the baseResource exists");
   }  
 
+/* find baseResource and its nested resources by id, and populate its properties */
+  const fieldsToReturnBaseResource = "-createdAt -updatedAt";
+  const fieldsToNestedPopulateBaseResource = [
+    {
+      path: "school_id",
+      select: fieldsToReturnBaseResource,
+      model: "School",
+    },
+    {
+      path: "nestedObject01_id",
+      select: fieldsToReturnBaseResource,
+      model: "nestedObject01",
+      populate: {
+        path: "nestedObject02_id",
+        select: fieldsToReturnBaseResource,
+        model: "nestedObject02",
+      },
+    },
+  ];
+  const baseResourceFound = await findPopulateNestedResourceById(
+    baseResource_id,
+    fieldsToReturnBaseResource,
+    fieldsToNestedPopulateBaseResource,
+    baseResourceModel
+  );
+  if (!baseResourceFound) {
+    throw new BadRequestError("Please make sure the baseResource exists");
+  }
+
 /* find baseResource by property */
   const searchCriteria = { property };
   const fieldsToReturn = "-password -createdAt -updatedAt";  

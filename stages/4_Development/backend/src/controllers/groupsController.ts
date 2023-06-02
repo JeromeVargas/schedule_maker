@@ -32,7 +32,6 @@ const createGroup = async ({ body }: Request, res: Response) => {
     groupFieldsToReturn,
     groupModel
   );
-
   if (duplicatedName?.length !== 0) {
     throw new ConflictError("This group name already exists");
   }
@@ -47,7 +46,6 @@ const createGroup = async ({ body }: Request, res: Response) => {
     fieldsToReturnPopulateLevel,
     levelModel
   );
-  console.log(levelFound);
   if (!levelFound) {
     throw new NotFoundError("Please make sure the level exists");
   }
@@ -61,6 +59,28 @@ const createGroup = async ({ body }: Request, res: Response) => {
       "Please make sure the level belongs to the school"
     );
   }
+  // /* find if the coordinator already exists */
+  // const fieldsToReturnCoordinator = "-createdAt -updatedAt";
+  // const fieldsToPopulateCoordinator = "school_id";
+  // const fieldsToReturnPopulateCoordinator = "-createdAt -updatedAt";
+  // const coordinatorFound = await findPopulateResourceById(
+  //   coordinator_id,
+  //   fieldsToReturnCoordinator,
+  //   fieldsToPopulateCoordinator,
+  //   fieldsToReturnPopulateCoordinator,
+  //   userModel
+  // );
+  // if (!coordinatorFound) {
+  //   throw new BadRequestError("Please make sure the coordinator exists");
+  // }
+  // /* find if the school exists and matches the school in the body */
+  // if (
+  //   groupFound.school_id?._id?.toString() !== school_id ||
+  //   coordinatorFound.school_id?._id?.toString() !== school_id ||
+  //   fieldFound.school_id?._id?.toString() !== school_id
+  // ) {
+  //   throw new BadRequestError("The resources do not belong to this school");
+  // }
   /* check if the number of students is larger than the max allowed number of students */
   const maxNumberStudentsPerGroup = levelFound?.school_id?.groupMaxNumStudents;
   if (numberStudents > maxNumberStudentsPerGroup) {

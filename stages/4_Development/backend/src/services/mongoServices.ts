@@ -8,6 +8,7 @@ import ScheduleModel from "../models/scheduleModel";
 import BreakModel from "../models/breakModel";
 import LevelModel from "../models/levelModel";
 import GroupModel from "../models/groupModel";
+import SubjectModel from "../models/subjectModel";
 
 const models = {
   school: SchoolModel,
@@ -19,6 +20,7 @@ const models = {
   break: BreakModel,
   level: LevelModel,
   group: GroupModel,
+  subject: SubjectModel,
 } as const;
 
 // helper functions
@@ -102,7 +104,7 @@ const findResourceById = (
   return resourceFound;
 };
 
-// @desc find a resource by id and populate the embedded
+// @desc find a resource by id and populate the embedded entities
 // @params resourceId, fields to return, fields to populate, fields to return populate, resourceName
 const findPopulateResourceById = (
   resourceId: string,
@@ -116,6 +118,24 @@ const findPopulateResourceById = (
     .findById(resourceId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
+    .lean()
+    .exec();
+  return resourceFound;
+};
+
+// @desc find a resource by id and populate the embedded nested entities
+// @params resourceId, fields to return, fields to populate, fields to return populate, resourceName
+const findPopulateNestedResourceById = (
+  resourceId: string,
+  fieldsToReturn: string,
+  fieldsToNestedPopulate: any[],
+  resourceName: keyof typeof models
+) => {
+  const resourceFound = models[resourceName]
+    // @ts-ignore
+    .findById(resourceId)
+    .select(fieldsToReturn)
+    .populate(fieldsToNestedPopulate)
     .lean()
     .exec();
   return resourceFound;
@@ -229,6 +249,7 @@ export {
   findPopulateFilterAllResources,
   findResourceById,
   findPopulateResourceById,
+  findPopulateNestedResourceById,
   findResourceByProperty,
   findFilterResourceByProperty,
   updateResource,

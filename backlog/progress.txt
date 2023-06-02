@@ -111,7 +111,13 @@
                     - update ✅
                     - delete ✅
                 
-                - group ⌛⏳⌛
+                - group ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
+                
+                - subject ⌛⏳⌛
                     - create ⌛⏳⌛
                     - read ⌛⏳⌛
                     - update ⌛⏳⌛

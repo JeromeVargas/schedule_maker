@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import { Resource } from "../interfaces/interfaces";
+import { BaseResource } from "../interfaces/interfaces";
 
-const ResourceSchema = new Schema <Resource>(  
+const BaseResourceSchema = new Schema <BaseResource>(  
   {
     school_id: {
       type: Schema.Types.ObjectId,
@@ -19,6 +19,6 @@ const ResourceSchema = new Schema <Resource>(
   }
 );
 
-const ResourceModel = model <Resource>( "Resource", ResourceSchema);
+const BaseResourceModel = model <BaseResource>( "BaseResource", BaseResourceSchema);
 
-export default ResourceModel;
+export default BaseResourceModel;

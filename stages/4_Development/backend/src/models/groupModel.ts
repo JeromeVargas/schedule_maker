@@ -12,6 +12,10 @@ const GroupSchema = new Schema<Group>(
       type: Schema.Types.ObjectId,
       required: [true, "must provide a schedule id for the group"],
     },
+    // coordinator_id: {
+    //   type: Schema.Types.ObjectId,
+    //   required: [true, "must provide a coordinator id for the subject"],
+    // },
     name: {
       type: String,
       required: [true, "must provide name for the group"],

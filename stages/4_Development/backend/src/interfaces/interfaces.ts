@@ -79,6 +79,17 @@ export type Level = {
 export type Group = {
   school_id: Types.ObjectId;
   level_id: Types.ObjectId;
+  // continue here --> move the coordinator from the subject to the group entity
+  // coordinator_id: Types.ObjectId;
   name: string;
   numberStudents: number;
+};
+
+export type Subject = {
+  school_id: Types.ObjectId;
+  group_id: Types.ObjectId;
+  field_id: Types.ObjectId;
+  name: string;
+  classUnits: number;
+  frequency: number;
 };
