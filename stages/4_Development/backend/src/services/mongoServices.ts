@@ -9,6 +9,7 @@ import BreakModel from "../models/breakModel";
 import LevelModel from "../models/levelModel";
 import GroupModel from "../models/groupModel";
 import SubjectModel from "../models/subjectModel";
+import ClassModel from "../models/classModel";
 
 const models = {
   school: SchoolModel,
@@ -21,6 +22,7 @@ const models = {
   level: LevelModel,
   group: GroupModel,
   subject: SubjectModel,
+  class: ClassModel,
 } as const;
 
 // helper functions

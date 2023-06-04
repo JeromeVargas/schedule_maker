@@ -93,3 +93,12 @@ export type Subject = {
   classUnits: number;
   frequency: number;
 };
+
+export type Class = {
+  school_id: Types.ObjectId;
+  subject_id: Types.ObjectId;
+  teacherField_id: Types.ObjectId;
+  startTime: number;
+  groupScheduleSlot: number;
+  teacherScheduleSlot: number;
+};
