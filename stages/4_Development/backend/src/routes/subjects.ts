@@ -5,7 +5,7 @@ import {
   validateGetSubject,
   validateDeleteSubject,
   validateUpdateSubject,
-} from "../validators/subjectsValidator";
+} from "../modules/subject/subjectsValidator";
 
 import {
   createSubject,
@@ -13,7 +13,7 @@ import {
   getSubject,
   updateSubject,
   deleteSubject,
-} from "../controllers/subjectsController";
+} from "../modules/subject/subjectsController";
 
 const router = Router();
 

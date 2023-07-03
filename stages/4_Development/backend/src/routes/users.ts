@@ -5,7 +5,7 @@ import {
   validateGetUsers,
   validateUpdateUser,
   validateDeleteUser,
-} from "../validators/usersValidator";
+} from "../modules/user/usersValidator";
 
 import {
   createUser,
@@ -13,7 +13,7 @@ import {
   getUser,
   updateUser,
   deleteUser,
-} from "../controllers/usersController";
+} from "../modules/user/usersController";
 
 const router = Router();
 
