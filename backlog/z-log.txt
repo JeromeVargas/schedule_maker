@@ -1,25 +1,27 @@
-To do of additional but related tasks to keep in mind, i.e., administrative:
+Administrative:
 
-- Resources work flow
-  - https://www.youtube.com/watch?v=cvYhuowazh0&ab_channel=JesseShowalter
-  - https://www.youtube.com/watch?v=V6nN3jJMbJY&ab_channel=WiredtoDesign
-  - https://www.youtube.com/watch?v=TIV1y11xz7k&ab_channel=chunbuns
-  - https://www.youtube.com/watch?v=4uHxJMCzeGg&ab_channel=DesignCourse
+continue here -->
+continue here -->
 
-- Resources ui layout
-  - https://www.youtube.com/watch?v=iHXB34ZsjHQ&ab_channel=AdrianTwarog
-  - https://www.youtube.com/watch?v=V_cioLTaDvQ&ab_channel=DESIGNR
-  - https://www.youtube.com/watch?v=uZwRVckjQWI&ab_channel=chunbuns
-  - https://www.youtube.com/watch?v=0JeJTGjgcco&ab_channel=AdrianTwarog
-  - https://www.youtube.com/watch?v=1h73MOcH3xA&ab_channel=DesignCode
-  - https://www.youtube.com/watch?v=efmJEzT5G1A&ab_channel=CubertoDesign
-  - https://www.youtube.com/watch?v=_P3CrgFlXhg&ab_channel=freeCodeCamp.org
+for later:
 
-- review the testing, check what info is actually needed
-- remove unnecessary stack error messages if in production
-- password hashing
+- 
 
-. if user is a teacher make sure he / she has teaching functions as true
+Back end:
+
+continue here --> separate files by entities, in a modules folder
+continue here --> check the code manually
+continue here --> separate mongo services and send to the corresponding modules folder, break the abstraction
+continue here --> separate tests by entity and send to the corresponding modules folder
+continue here --> refactor all the @ts-ignore instances
+continue here --> check sanitation express-validator middleware in routes
+continue here --> try to update packages, specially express validator
+continue here --> password hashing
+continue here --> remove unnecessary stack error messages if in production
+
+for later:
+
+- if user is a teacher make sure he / she has teaching functions as true
 - if user is updated as inactive or with no teaching functions, delete teacher
 - delete cascade user, delete teacher assignments
 - creating a teacher directly from the user route
@@ -28,4 +30,11 @@ To do of additional but related tasks to keep in mind, i.e., administrative:
 - not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
 - make sure resources belong to the user/coordinator's school - school middleware
 
+Front End
 
+continue here -->
+continue here -->
+
+for later:
+
+- 

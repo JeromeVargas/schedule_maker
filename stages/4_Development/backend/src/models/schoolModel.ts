@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { School } from "../interfaces/interfaces";
+import { School } from "../typings/types";
 
 const SchoolSchema = new Schema<School>(
   {

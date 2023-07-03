@@ -8,13 +8,16 @@ import {
   findPopulateResourceById,
   findFilterAllResources,
   deleteFilterResource,
-  findFilterResourceByProperty,
   updateFilterResource,
+  findResourceByProperty,
 } from "../services/mongoServices";
 
 /* models */
 const breakModel = "break";
 const scheduleModel = "schedule";
+
+/* global reference */
+const maxMinutesInDay = 1439;
 
 // @desc create a break
 // @route POST /api/v1/breaks
@@ -22,12 +25,11 @@ const scheduleModel = "schedule";
 // @fields: body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
 const createBreak = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const {
-    school_id,
-    schedule_id,
-    numberMinutes: breakNumberMinutes,
-    breakStart,
-  } = body;
+  const { school_id, schedule_id, breakStart, numberMinutes } = body;
+  /* check if the shift starts within a day */
+  if (breakStart > maxMinutesInDay) {
+    throw new BadRequestError("The school shift start must exceed 11:59 p.m.");
+  }
   /* find schedule by id, and populate its properties */
   const fieldsToReturnSchedule = "-createdAt -updatedAt";
   const fieldsToPopulateSchedule = "school_id";
@@ -42,10 +44,6 @@ const createBreak = async ({ body }: Request, res: Response) => {
   if (!scheduleFound) {
     throw new NotFoundError("Please make sure the schedule exists");
   }
-  /* check if the school exists*/
-  if (scheduleFound?.school_id?.toString() == null) {
-    throw new BadRequestError("Please make sure the school exists");
-  }
   /* check if the passed school id is the same as the schedule school id*/
   if (scheduleFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
@@ -58,19 +56,13 @@ const createBreak = async ({ body }: Request, res: Response) => {
       "Please take into account that the break start time cannot be earlier than the schedule start time"
     );
   }
-  /* check if the break fits within the schedule shift leaving room for at least a one-unit class before and after */
-  const { shiftNumberMinutes, classUnitMinutes } = scheduleFound;
-  const minNumberClassesBeforeAfter = 2;
-  if (
-    shiftNumberMinutes <
-    classUnitMinutes * minNumberClassesBeforeAfter + breakNumberMinutes
-  ) {
-    throw new BadRequestError(
-      "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break"
-    );
-  }
   /* create break */
-  const newBreak = body;
+  const newBreak = {
+    school_id: school_id,
+    schedule_id: schedule_id,
+    breakStart: breakStart,
+    numberMinutes: numberMinutes,
+  };
   const breakCreated = await insertResource(newBreak, breakModel);
   if (!breakCreated) {
     throw new BadRequestError("Break not created!");
@@ -106,17 +98,17 @@ const getBreaks = async ({ body }: Request, res: Response) => {
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getBreak = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
-  const { id: breakId } = params;
+  const { id: _id } = params;
   const { school_id } = body;
-  /* get the field */
-  const filters = [{ _id: breakId }, { school_id: school_id }];
+  /* get the break */
+  const searchCriteria = { _id, school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const breakFound = await findFilterResourceByProperty(
-    filters,
+  const breakFound = await findResourceByProperty(
+    searchCriteria,
     fieldsToReturn,
     breakModel
   );
-  if (breakFound?.length === 0) {
+  if (!breakFound) {
     throw new NotFoundError("Break not found");
   }
   res.status(StatusCodes.OK).json(breakFound);
@@ -129,12 +121,11 @@ const getBreak = async ({ params, body }: Request, res: Response) => {
 const updateBreak = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: breakId } = params;
-  const {
-    school_id,
-    schedule_id,
-    numberMinutes: breakNumberMinutes,
-    breakStart,
-  } = body;
+  /* check if the shift starts within a day */
+  const { school_id, schedule_id, breakStart, numberMinutes } = body;
+  if (breakStart > maxMinutesInDay) {
+    throw new BadRequestError("The school shift start must exceed 11:59 p.m.");
+  }
   /* find schedule by id, and populate its properties */
   const fieldsToReturnSchedule = "-createdAt -updatedAt";
   const fieldsToPopulateSchedule = "school_id";
@@ -149,10 +140,6 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
   if (!scheduleFound) {
     throw new NotFoundError("Please make sure the schedule exists");
   }
-  /* check if the school exists*/
-  if (scheduleFound?.school_id?.toString() == null) {
-    throw new BadRequestError("Please make sure the school exists");
-  }
   /* check if the passed school id is the same as the schedule school id*/
   if (scheduleFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
@@ -165,20 +152,14 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
       "Please take into account that the break start time cannot be earlier than the schedule start time"
     );
   }
-  /* check if the break fits within the schedule shift leaving room for at least a one-unit class before and after */
-  const { shiftNumberMinutes, classUnitMinutes } = scheduleFound;
-  const minNumberClassesBeforeAfter = 2;
-  if (
-    shiftNumberMinutes <
-    classUnitMinutes * minNumberClassesBeforeAfter + breakNumberMinutes
-  ) {
-    throw new BadRequestError(
-      "Please make sure there is enough time to have at least 2 one-unit classes one before and one after the break"
-    );
-  }
   /* update break */
   const filtersUpdate = [{ _id: breakId }, { school_id: school_id }];
-  const newBreak = body;
+  const newBreak = {
+    school_id: school_id,
+    schedule_id: schedule_id,
+    breakStart: breakStart,
+    numberMinutes: numberMinutes,
+  };
   const breakUpdated = await updateFilterResource(
     filtersUpdate,
     newBreak,

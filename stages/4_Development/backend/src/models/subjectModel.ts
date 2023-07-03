@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Subject } from "../interfaces/interfaces";
+import { Subject } from "../typings/types";
 
 const SubjectSchema = new Schema<Subject>(
   {
@@ -8,12 +8,19 @@ const SubjectSchema = new Schema<Subject>(
       ref: "School",
       required: [true, "must provide a school id for the subject"],
     },
+    coordinator_id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "must provide a user coordinator id for the subject"],
+    },
     group_id: {
       type: Schema.Types.ObjectId,
+      ref: "Group",
       required: [true, "must provide a group id for the subject"],
     },
     field_id: {
       type: Schema.Types.ObjectId,
+      ref: "Field",
       required: [true, "must provide a field id for the subject"],
     },
     name: {

@@ -44,18 +44,11 @@ const validateCreateBreak = [
     .notEmpty()
     .withMessage("The start field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("start value is not valid")
     .bail()
-    .custom((value) => {
-      const maxMinutesInDay = 1439;
-      if (value > maxMinutesInDay) {
-        return false;
-      } else if (value <= maxMinutesInDay) {
-        return true;
-      }
-    })
-    .withMessage(`The break start time must must not exceed the 23:59 hours`),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The break start time must not exceed 9 digits"),
   check("numberMinutes")
     .exists()
     .withMessage("Please add the break number of minutes")
@@ -63,8 +56,10 @@ const validateCreateBreak = [
     .notEmpty()
     .withMessage("The break number of minutes field is empty")
     .bail()
-    .isNumeric()
-    .withMessage("break number of minutes value is not valid"),
+    .isInt({ min: 0 })
+    .withMessage("break number of minutes value is not valid")
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The break number of minutes must not exceed 9 digits"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -177,18 +172,11 @@ const validateUpdateBreak = [
     .notEmpty()
     .withMessage("The start field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("start value is not valid")
     .bail()
-    .custom((value) => {
-      const maxMinutesInDay = 1439;
-      if (value > maxMinutesInDay) {
-        return false;
-      } else if (value <= maxMinutesInDay) {
-        return true;
-      }
-    })
-    .withMessage(`The break start time must must not exceed the 23:59 hours`),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The break start time must not exceed 9 digits"),
   check("numberMinutes")
     .exists()
     .withMessage("Please add the break number of minutes")
@@ -196,8 +184,10 @@ const validateUpdateBreak = [
     .notEmpty()
     .withMessage("The break number of minutes field is empty")
     .bail()
-    .isNumeric()
-    .withMessage("break number of minutes value is not valid"),
+    .isInt({ min: 0 })
+    .withMessage("break number of minutes value is not valid")
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The break start time must not exceed 9 digits"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

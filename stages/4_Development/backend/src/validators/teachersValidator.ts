@@ -65,7 +65,9 @@ const validateCreateTeacher = [
     .withMessage("contract type is not valid")
     .bail()
     .isIn(["full-time", "part-time", "substitute"])
-    .withMessage("the contract type provided is not a valid option"),
+    .withMessage("the contract type provided is not a valid option")
+    .escape()
+    .trim(),
   check("hoursAssignable")
     .exists()
     .withMessage("Please add the number of hours assignable to the teacher")
@@ -73,18 +75,11 @@ const validateCreateTeacher = [
     .notEmpty()
     .withMessage("The hours assignable field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("hours assignable value is not valid")
     .bail()
-    .custom((value) => {
-      const maxHours = 70;
-      if (value > maxHours) {
-        return false;
-      } else if (value <= maxHours) {
-        return true;
-      }
-    })
-    .withMessage(`hours assignable must not exceed 70 hours`),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The start time must not exceed 9 digits"),
   check("hoursAssigned")
     .exists()
     .withMessage("Please add the number of hours assigned to the teacher")
@@ -92,17 +87,11 @@ const validateCreateTeacher = [
     .notEmpty()
     .withMessage("The hours assigned field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("hours assigned value is not valid")
     .bail()
-    .custom((value, { req }) => {
-      if (value > req.body.hoursAssignable) {
-        return false;
-      } else if (value <= req.body.hoursAssignable) {
-        return true;
-      }
-    })
-    .withMessage("hours assigned must not exceed the hours assignable"),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The start time must not exceed 9 digits"),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")
@@ -300,7 +289,9 @@ const validateUpdateTeacher = [
     .withMessage("contract type is not valid")
     .bail()
     .isIn(["full-time", "part-time", "substitute"])
-    .withMessage("the contract type provided is not a valid option"),
+    .withMessage("the contract type provided is not a valid option")
+    .escape()
+    .trim(),
   check("hoursAssignable")
     .exists()
     .withMessage("Please add the number of hours assignable to the teacher")
@@ -308,18 +299,11 @@ const validateUpdateTeacher = [
     .notEmpty()
     .withMessage("The hours assignable field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("hours assignable value is not valid")
     .bail()
-    .custom((value) => {
-      const maxHours = 70;
-      if (value > maxHours) {
-        return false;
-      } else if (value <= maxHours) {
-        return true;
-      }
-    })
-    .withMessage(`hours assignable must not exceed 70 hours`),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The start time must not exceed 9 digits"),
   check("hoursAssigned")
     .exists()
     .withMessage("Please add the number of hours assigned to the teacher")
@@ -327,17 +311,11 @@ const validateUpdateTeacher = [
     .notEmpty()
     .withMessage("The hours assigned field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("hours assigned value is not valid")
     .bail()
-    .custom((value, { req }) => {
-      if (value > req.body.hoursAssignable) {
-        return false;
-      } else if (value <= req.body.hoursAssignable) {
-        return true;
-      }
-    })
-    .withMessage("hours assigned must not exceed the hours assignable"),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The start time must not exceed 9 digits"),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")

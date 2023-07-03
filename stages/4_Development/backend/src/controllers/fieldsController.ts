@@ -10,8 +10,11 @@ import {
   findFilterAllResources,
   deleteFilterResource,
   findFilterResourceByProperty,
+  findResourceByProperty,
   updateFilterResource,
 } from "../services/mongoServices";
+
+import { Field } from "../typings/types";
 
 /* models */
 const schoolModel = "school";
@@ -34,18 +37,21 @@ const createField = async ({ body }: Request, res: Response) => {
   if (!schoolFound) {
     throw new BadRequestError("Please make sure the school exists");
   }
-  /* find if the field already exists for the school */
-  const filters = [{ school_id: school_id }, { name: name }];
-  const duplicatedField = await findFilterResourceByProperty(
-    filters,
+  /* find if the field name already exists for the school */
+  const searchCriteria = { school_id, name };
+  const duplicateField = await findResourceByProperty(
+    searchCriteria,
     fieldsToReturn,
     fieldModel
   );
-  if (duplicatedField?.length !== 0) {
+  if (duplicateField) {
     throw new ConflictError("This field name already exists");
   }
   /* create school */
-  const newField = body;
+  const newField = {
+    school_id: school_id,
+    name: name,
+  };
   const fieldCreated = await insertResource(newField, fieldModel);
   if (!fieldCreated) {
     throw new BadRequestError("Field not created!");
@@ -81,17 +87,17 @@ const getFields = async ({ body }: Request, res: Response) => {
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
-  const { id: fieldId } = params;
+  const { id: _id } = params;
   const { school_id } = body;
   /* get the field */
-  const filters = [{ _id: fieldId }, { school_id: school_id }];
+  const searchCriteria = { _id, school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const fieldFound = await findFilterResourceByProperty(
-    filters,
+  const fieldFound = await findResourceByProperty(
+    searchCriteria,
     fieldsToReturn,
     fieldModel
   );
-  if (fieldFound?.length === 0) {
+  if (!fieldFound) {
     throw new NotFoundError("Field not found");
   }
   res.status(StatusCodes.OK).json(fieldFound);
@@ -108,21 +114,24 @@ const updateField = async ({ params, body }: Request, res: Response) => {
   /* check if the field name already exist for the school */
   const filters = [{ school_id: school_id }, { name: name }];
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicatedFieldNameFound = await findFilterResourceByProperty(
+  const duplicateFieldNameFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
     fieldModel
   );
   // if there is at least one record with that name and a different field id, it returns true and triggers an error
-  const duplicatedFieldName = duplicatedFieldNameFound?.some(
-    (field: any) => field._id.toString() !== fieldId
+  const duplicateFieldName = duplicateFieldNameFound?.some(
+    (field: Field) => field?._id?.toString() !== fieldId
   );
-  if (duplicatedFieldName) {
+  if (duplicateFieldName) {
     throw new ConflictError("This field name already exists!");
   }
   /* update if the field and school ids are the same one as the one passed and update the field */
   const filtersUpdate = [{ _id: fieldId }, { school_id: school_id }];
-  const newField = body;
+  const newField = {
+    school_id: school_id,
+    name: name,
+  };
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
     newField,

@@ -117,11 +117,23 @@
                     - update ✅
                     - delete ✅
                 
-                - subject ⌛⏳⌛
-                    - create ⌛⏳⌛
-                    - read ⌛⏳⌛
-                    - update ⌛⏳⌛
-                    - delete ⌛⏳⌛
+                - subject ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
+                
+                - group ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
+                
+                - class ✅
+                    - create ✅
+                    - read ✅
+                    - update ✅
+                    - delete ✅
                      
 
                 - auth

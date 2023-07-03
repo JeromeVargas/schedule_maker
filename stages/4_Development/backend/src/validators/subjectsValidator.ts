@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../lib/helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
-// @fields: body: {fieldOne:[string], fieldTwo:[string], fieldThree:[string], fieldFour:[string], fieldFive:[string], fieldSix:[string], fieldSeven:[string], fieldEight:[boolean]}
+// @fields: body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
 const validateCreateSubject = [
   check("school_id")
     .exists()
@@ -21,6 +21,22 @@ const validateCreateSubject = [
       }
     })
     .withMessage(`The school id is not valid`),
+  check("coordinator_id")
+    .exists()
+    .withMessage("Please add the coordinator id")
+    .bail()
+    .notEmpty()
+    .withMessage("The coordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The coordinator id is not valid`),
   check("group_id")
     .exists()
     .withMessage("Please add the group id")
@@ -63,7 +79,9 @@ const validateCreateSubject = [
     .isString()
     .withMessage("The subject name is not valid")
     .isLength({ min: 1, max: 100 })
-    .withMessage("The subject name must not exceed 100 characters"),
+    .withMessage("The subject name must not exceed 100 characters")
+    .escape()
+    .trim(),
   check("classUnits")
     .exists()
     .withMessage("Please add the number of class units")
@@ -71,7 +89,7 @@ const validateCreateSubject = [
     .notEmpty()
     .withMessage("The number of class units field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("number of class units value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The number of class units must not exceed 9 digits"),
@@ -82,7 +100,7 @@ const validateCreateSubject = [
     .notEmpty()
     .withMessage("The subject class frequency field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("subject class frequency value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The subject class frequency must not exceed 9 digits"),
@@ -147,7 +165,7 @@ const validateGetSubject = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {fieldOne:[string], fieldTwo:[string], fieldThree:[string], fieldFour:[string], fieldFive:[string], fieldSix:[string], fieldSeven:[string], fieldEight:[boolean]}
+// @fields: params: {id:[string]},  body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
 const validateUpdateSubject = [
   check("id")
     .custom((value) => {
@@ -175,6 +193,22 @@ const validateUpdateSubject = [
       }
     })
     .withMessage(`The school id is not valid`),
+  check("coordinator_id")
+    .exists()
+    .withMessage("Please add the coordinator id")
+    .bail()
+    .notEmpty()
+    .withMessage("The coordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The coordinator id is not valid`),
   check("group_id")
     .exists()
     .withMessage("Please add the group id")
@@ -217,7 +251,9 @@ const validateUpdateSubject = [
     .isString()
     .withMessage("The subject name is not valid")
     .isLength({ min: 1, max: 100 })
-    .withMessage("The subject name must not exceed 100 characters"),
+    .withMessage("The subject name must not exceed 100 characters")
+    .escape()
+    .trim(),
   check("classUnits")
     .exists()
     .withMessage("Please add the number of class units")
@@ -225,7 +261,7 @@ const validateUpdateSubject = [
     .notEmpty()
     .withMessage("The number of class units field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("number of class units value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The number of class units must not exceed 9 digits"),
@@ -236,7 +272,7 @@ const validateUpdateSubject = [
     .notEmpty()
     .withMessage("The subject class frequency field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("subject class frequency value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The subject class frequency must not exceed 9 digits"),

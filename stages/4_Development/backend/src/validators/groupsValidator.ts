@@ -37,17 +37,35 @@ const validateCreateGroup = [
       }
     })
     .withMessage(`The level id is not valid`),
-  check("name")
+  check("coordinator_id")
     .exists()
-    .withMessage("Please add a level name")
+    .withMessage("Please add the coordinator id")
     .bail()
     .notEmpty()
-    .withMessage("The level name field is empty")
+    .withMessage("The coordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The coordinator id is not valid`),
+  check("name")
+    .exists()
+    .withMessage("Please add a group name")
+    .bail()
+    .notEmpty()
+    .withMessage("The group name field is empty")
     .bail()
     .isString()
-    .withMessage("The level name is not valid")
+    .withMessage("The group name is not valid")
     .isLength({ min: 1, max: 100 })
-    .withMessage("The level name must not exceed 100 characters"),
+    .withMessage("The group name must not exceed 100 characters")
+    .escape()
+    .trim(),
   check("numberStudents")
     .exists()
     .withMessage("Please add the group number of students")
@@ -55,8 +73,10 @@ const validateCreateGroup = [
     .notEmpty()
     .withMessage("The group number of students field is empty")
     .bail()
-    .isNumeric()
-    .withMessage("group number of students value is not valid"),
+    .isInt({ min: 0 })
+    .withMessage("group number of students value is not valid")
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The start time must not exceed 9 digits"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -162,17 +182,35 @@ const validateUpdateGroup = [
       }
     })
     .withMessage(`The level id is not valid`),
-  check("name")
+  check("coordinator_id")
     .exists()
-    .withMessage("Please add a level name")
+    .withMessage("Please add the coordinator id")
     .bail()
     .notEmpty()
-    .withMessage("The level name field is empty")
+    .withMessage("The coordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The coordinator id is not valid`),
+  check("name")
+    .exists()
+    .withMessage("Please add a group name")
+    .bail()
+    .notEmpty()
+    .withMessage("The group name field is empty")
     .bail()
     .isString()
-    .withMessage("The level name is not valid")
+    .withMessage("The group name is not valid")
     .isLength({ min: 1, max: 100 })
-    .withMessage("The level name must not exceed 100 characters"),
+    .withMessage("The group name must not exceed 100 characters")
+    .escape()
+    .trim(),
   check("numberStudents")
     .exists()
     .withMessage("Please add the group number of students")
@@ -180,8 +218,10 @@ const validateUpdateGroup = [
     .notEmpty()
     .withMessage("The group number of students field is empty")
     .bail()
-    .isNumeric()
-    .withMessage("group number of students value is not valid"),
+    .isInt({ min: 0 })
+    .withMessage("group number of students value is not valid")
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The start time must not exceed 9 digits"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

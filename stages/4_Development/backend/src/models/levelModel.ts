@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Level } from "../interfaces/interfaces";
+import { Level } from "../typings/types";
 
 const LevelSchema = new Schema<Level>(
   {

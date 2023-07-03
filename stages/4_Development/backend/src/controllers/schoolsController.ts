@@ -22,20 +22,23 @@ const schoolModel = "school";
 // @fields: body {name:[string]}
 const createSchool = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { name } = body;
+  const { name, groupMaxNumStudents } = body;
   /* find if the school name already exists */
   const searchCriteria = { name };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicatedSchool = await findResourceByProperty(
+  const duplicateSchool = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
     schoolModel
   );
-  if (duplicatedSchool) {
+  if (duplicateSchool) {
     throw new ConflictError("This school name already exists");
   }
   /* create school */
-  const newSchool = body;
+  const newSchool = {
+    name: name,
+    groupMaxNumStudents: groupMaxNumStudents,
+  };
   const schoolCreated = await insertResource(newSchool, schoolModel);
   if (!schoolCreated) {
     throw new BadRequestError("School not created");
@@ -51,7 +54,7 @@ const getSchools = async (req: Request, res: Response) => {
   /* get all schools */
   const fieldsToReturn = "-createdAt -updatedAt";
   const schoolsFound = await findAllResources(fieldsToReturn, schoolModel);
-  if (!schoolsFound || schoolsFound.length === 0) {
+  if (schoolsFound?.length === 0) {
     throw new NotFoundError("No schools found");
   }
   res.status(StatusCodes.OK).json(schoolsFound);
@@ -84,8 +87,9 @@ const getSchool = async ({ params }: Request, res: Response) => {
 const updateSchool = async ({ body, params }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: schoolId } = params;
+  const { name, groupMaxNumStudents } = body;
   /* check if there is a duplicate that belongs to someone else */
-  const searchCriteria = { name: body.name };
+  const searchCriteria = { name: name };
   const fieldsToReturn = "-createdAt -updatedAt";
   const duplicate = await findResourceByProperty(
     searchCriteria,
@@ -96,7 +100,10 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
     throw new ConflictError("This school name already exists");
   }
   /* update school */
-  const newSchool = body;
+  const newSchool = {
+    name: name,
+    groupMaxNumStudents: groupMaxNumStudents,
+  };
   const schoolUpdated = await updateResource(schoolId, newSchool, schoolModel);
   if (!schoolUpdated) {
     throw new NotFoundError("School not updated");

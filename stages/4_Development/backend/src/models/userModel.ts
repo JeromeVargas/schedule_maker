@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { User } from "../interfaces/interfaces";
+import { User } from "../typings/types";
 
 const UserSchema = new Schema<User>(
   {
@@ -19,7 +19,6 @@ const UserSchema = new Schema<User>(
     email: {
       type: String,
       required: [true, "Please provide an email for the user"],
-      unique: true,
     },
     password: {
       type: String,

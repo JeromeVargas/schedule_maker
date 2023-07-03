@@ -15,7 +15,9 @@ const validateCreateSchool = [
     .isString()
     .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
-    .withMessage("The name must not exceed 100 characters"),
+    .withMessage("The name must not exceed 100 characters")
+    .trim()
+    .escape(),
   check("groupMaxNumStudents")
     .exists()
     .withMessage("Please add the group max number of students")
@@ -23,18 +25,11 @@ const validateCreateSchool = [
     .notEmpty()
     .withMessage("The group max number of students field is empty")
     .bail()
-    .isNumeric()
-    .withMessage("group  max  number of students value is not valid")
+    .isInt({ min: 0 })
+    .withMessage("group max number of students value is not valid")
     .bail()
-    .custom((value) => {
-      const maxNumberStudentsPerGroup = 1000;
-      if (value > maxNumberStudentsPerGroup) {
-        return false;
-      } else if (value <= maxNumberStudentsPerGroup) {
-        return true;
-      }
-    })
-    .withMessage(`group max number of students must not exceed 1000 students`),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The start time must not exceed 9 digits"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -79,7 +74,9 @@ const validateUpdateSchool = [
     .isString()
     .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
-    .withMessage("The name must not exceed 100 characters"),
+    .withMessage("The name must not exceed 100 characters")
+    .trim()
+    .escape(),
   check("groupMaxNumStudents")
     .exists()
     .withMessage("Please add the group max number of students")
@@ -87,18 +84,11 @@ const validateUpdateSchool = [
     .notEmpty()
     .withMessage("The group max number of students field is empty")
     .bail()
-    .isNumeric()
-    .withMessage("group  max  number of students value is not valid")
+    .isInt({ min: 0 })
+    .withMessage("group max number of students value is not valid")
     .bail()
-    .custom((value) => {
-      const maxNumberStudentsPerGroup = 1000;
-      if (value > maxNumberStudentsPerGroup) {
-        return false;
-      } else if (value <= maxNumberStudentsPerGroup) {
-        return true;
-      }
-    })
-    .withMessage(`group max number of students must not exceed 1000 students`),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The start time must not exceed 9 digits"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

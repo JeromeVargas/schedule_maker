@@ -1,14 +1,16 @@
 import { Schema, model } from "mongoose";
-import { Teacher_Field } from "../interfaces/interfaces";
+import { Teacher_Field } from "../typings/types";
 
 const SchoolSchema = new Schema<Teacher_Field>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
+      ref: "School",
       required: [true, "must provide name for the task"],
     },
     teacher_id: {
       type: Schema.Types.ObjectId,
+      ref: "Teacher",
       required: [true, "must provide name for the task"],
     },
     field_id: {

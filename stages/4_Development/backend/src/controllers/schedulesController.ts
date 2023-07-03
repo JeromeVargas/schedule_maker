@@ -11,11 +11,16 @@ import {
   deleteFilterResource,
   findFilterResourceByProperty,
   updateFilterResource,
+  findResourceByProperty,
 } from "../services/mongoServices";
+import { Schedule } from "../typings/types";
 
 /* models */
 const schoolModel = "school";
 const scheduleModel = "schedule";
+
+/* global reference */
+const maxMinutesInDay = 1439;
 
 // @desc create a schedule
 // @route POST /api/v1/schedules
@@ -23,7 +28,24 @@ const scheduleModel = "schedule";
 // @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const createSchedule = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { school_id, name } = body;
+  const {
+    school_id,
+    name,
+    dayStart,
+    shiftNumberMinutes,
+    classUnitMinutes,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+  } = body;
+  /* check if the shift starts within a day */
+  if (dayStart > maxMinutesInDay) {
+    throw new BadRequestError("The school shift start must exceed 11:59 p.m.");
+  }
   /* check if the school exists */
   const schoolSearchCriteria = school_id;
   const schoolFieldsToReturn = "-createdAt -updatedAt";
@@ -36,18 +58,31 @@ const createSchedule = async ({ body }: Request, res: Response) => {
     throw new ConflictError("Please create the school first");
   }
   /* check if the schedule name already exists for this school */
-  const scheduleFilters = [{ school_id: school_id }, { name: name }];
-  const scheduleFieldsToReturn = "-createdAt -updatedAt";
-  const duplicatedName = await findFilterResourceByProperty(
-    scheduleFilters,
-    scheduleFieldsToReturn,
+  const searchCriteria = { school_id, name };
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const duplicateName = await findResourceByProperty(
+    searchCriteria,
+    fieldsToReturn,
     scheduleModel
   );
-  if (duplicatedName?.length !== 0) {
+  if (duplicateName) {
     throw new ConflictError("This schedule name already exists");
   }
   /* create the schedule  */
-  const newSchedule = body;
+  const newSchedule = {
+    school_id: school_id,
+    name: name,
+    dayStart: dayStart,
+    shiftNumberMinutes: shiftNumberMinutes,
+    classUnitMinutes: classUnitMinutes,
+    monday: monday,
+    tuesday: tuesday,
+    wednesday: wednesday,
+    thursday: thursday,
+    friday: friday,
+    saturday: saturday,
+    sunday: sunday,
+  };
   const scheduleCreated = await insertResource(newSchedule, scheduleModel);
   if (!scheduleCreated) {
     throw new BadRequestError("Schedule not created");
@@ -85,17 +120,17 @@ const getSchedules = async ({ body }: Request, res: Response) => {
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getSchedule = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
-  const { id: scheduleId } = params;
+  const { id: _id } = params;
   const { school_id } = body;
-  /* get the field */
-  const filters = [{ _id: scheduleId }, { school_id: school_id }];
+  /* get the schedule */
+  const searchCriteria = { _id, school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const scheduleFound = await findFilterResourceByProperty(
-    filters,
+  const scheduleFound = await findResourceByProperty(
+    searchCriteria,
     fieldsToReturn,
     scheduleModel
   );
-  if (scheduleFound?.length === 0) {
+  if (!scheduleFound) {
     throw new NotFoundError("Schedule not found");
   }
   res.status(StatusCodes.OK).json(scheduleFound);
@@ -108,25 +143,55 @@ const getSchedule = async ({ params, body }: Request, res: Response) => {
 const updateSchedule = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: scheduleId } = params;
-  const { school_id, name } = body;
+  const {
+    school_id,
+    name,
+    dayStart,
+    shiftNumberMinutes,
+    classUnitMinutes,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+  } = body;
+  /* check if the shift fits within a day */
+  if (dayStart > maxMinutesInDay) {
+    throw new BadRequestError("The school shift start must exceed 11:59 p.m.");
+  }
   /* check if the schedule name already exist for the school */
   const filters = [{ school_id: school_id }, { name: name }];
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicatedScheduleNameFound = await findFilterResourceByProperty(
+  const duplicateScheduleNameFound = await findFilterResourceByProperty(
     filters,
     fieldsToReturn,
     scheduleModel
   );
   // if there is at least one record with that name and a different schedule id, it returns true and triggers an error
-  const duplicatedScheduleName = duplicatedScheduleNameFound?.some(
-    (schedule: any) => schedule._id.toString() !== scheduleId
+  const duplicateScheduleName = duplicateScheduleNameFound?.some(
+    (schedule: Schedule) => schedule?._id?.toString() !== scheduleId
   );
-  if (duplicatedScheduleName) {
+  if (duplicateScheduleName) {
     throw new ConflictError("This schedule name already exists!");
   }
   /* update if the schedule and school ids are the same one as the one passed and update the field */
   const filtersUpdate = [{ _id: scheduleId }, { school_id: school_id }];
-  const newSchedule = body;
+  const newSchedule = {
+    school_id: school_id,
+    name: name,
+    dayStart: dayStart,
+    shiftNumberMinutes: shiftNumberMinutes,
+    classUnitMinutes: classUnitMinutes,
+    monday: monday,
+    tuesday: tuesday,
+    wednesday: wednesday,
+    thursday: thursday,
+    friday: friday,
+    saturday: saturday,
+    sunday: sunday,
+  };
   const scheduleUpdated = await updateFilterResource(
     filtersUpdate,
     newSchedule,

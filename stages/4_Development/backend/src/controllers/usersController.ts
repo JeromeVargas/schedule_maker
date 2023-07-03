@@ -11,7 +11,6 @@ import {
   findResourceByProperty,
   updateFilterResource,
   deleteFilterResource,
-  findFilterResourceByProperty,
 } from "../services/mongoServices";
 
 /* models */
@@ -24,7 +23,16 @@ const userModel = "user";
 // @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const createUser = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { school_id, email } = body;
+  const {
+    school_id,
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    status,
+    hasTeachingFunc,
+  } = body;
   /* check if the school exists */
   const schoolSearchCriteria = school_id;
   const schoolFieldsToReturn = "-createdAt -updatedAt";
@@ -37,18 +45,27 @@ const createUser = async ({ body }: Request, res: Response) => {
     throw new ConflictError("Please create the school first");
   }
   /* check if the email is already in use */
-  const searchCriteria = { email };
+  const searchCriteria = { email, school_id };
   const fieldsToReturn = "-password -createdAt -updatedAt";
-  const duplicatedUserEmailFound = await findResourceByProperty(
+  const duplicateUserEmailFound = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
     userModel
   );
-  if (duplicatedUserEmailFound) {
+  if (duplicateUserEmailFound) {
     throw new ConflictError("Please try a different email address");
   }
   /* create the user */
-  const newUser = body;
+  const newUser = {
+    school_id: school_id,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+    role: role,
+    status: status,
+    hasTeachingFunc: hasTeachingFunc,
+  };
   const userCreated = await insertResource(newUser, userModel);
   if (!userCreated) {
     throw new BadRequestError("User not created");
@@ -65,7 +82,7 @@ const getUsers = async ({ body }: Request, res: Response) => {
   const { school_id } = body;
   /* filter by school id */
   const filters = { school_id: school_id };
-  const fieldsToReturn = "-createdAt -updatedAt";
+  const fieldsToReturn = "-password -createdAt -updatedAt";
   const usersFound = await findFilterAllResources(
     filters,
     fieldsToReturn,
@@ -84,17 +101,17 @@ const getUsers = async ({ body }: Request, res: Response) => {
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getUser = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
-  const { id: userId } = params;
+  const { id: _id } = params;
   const { school_id } = body;
   /* get the user */
-  const filters = [{ _id: userId }, { school_id: school_id }];
+  const searchCriteria = { _id, school_id };
   const fieldsToReturn = "-password -createdAt -updatedAt";
-  const userFound = await findFilterResourceByProperty(
-    filters,
+  const userFound = await findResourceByProperty(
+    searchCriteria,
     fieldsToReturn,
     userModel
   );
-  if (userFound?.length === 0) {
+  if (!userFound) {
     throw new NotFoundError("User not found");
   }
   res.status(StatusCodes.OK).json(userFound);
@@ -107,21 +124,39 @@ const getUser = async ({ params, body }: Request, res: Response) => {
 const updateUser = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: userId } = params;
-  const { school_id, email } = body;
+  const {
+    school_id,
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    status,
+    hasTeachingFunc,
+  } = body;
   /* check if the user email is already in use by another user */
-  const searchCriteria = { email };
+  const searchCriteria = { email, school_id };
   const fieldsToReturn = "-password -createdAt -updatedAt";
-  const duplicatedEmail = await findResourceByProperty(
+  const duplicateEmail = await findResourceByProperty(
     searchCriteria,
     fieldsToReturn,
     userModel
   );
-  if (duplicatedEmail && duplicatedEmail?._id?.toString() !== userId) {
+  if (duplicateEmail && duplicateEmail?._id?.toString() !== userId) {
     throw new ConflictError("Please try a different email address");
   }
   /* check if the userId is the same as the one passed and update the user */
   const filtersUpdate = [{ _id: userId }, { school_id: school_id }];
-  const newUser = body;
+  const newUser = {
+    school_id: school_id,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+    role: role,
+    status: status,
+    hasTeachingFunc: hasTeachingFunc,
+  };
   const fieldUpdated = await updateFilterResource(
     filtersUpdate,
     newUser,

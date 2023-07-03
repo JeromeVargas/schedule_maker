@@ -31,7 +31,9 @@ const validateCreateUser = [
     .isString()
     .withMessage("The first name is not valid")
     .isLength({ min: 1, max: 50 })
-    .withMessage("The first name must not exceed 50 characters"),
+    .withMessage("The first name must not exceed 50 characters")
+    .trim()
+    .escape(),
   check("lastName")
     .exists()
     .withMessage("Please add the user's last name")
@@ -42,7 +44,9 @@ const validateCreateUser = [
     .isString()
     .withMessage("The last name is not valid")
     .isLength({ min: 1, max: 50 })
-    .withMessage("The last name must not exceed 50 characters"),
+    .withMessage("The last name must not exceed 50 characters")
+    .trim()
+    .escape(),
   check("email")
     .exists()
     .withMessage("Please add the user's email")
@@ -56,7 +60,9 @@ const validateCreateUser = [
     .isEmail()
     .withMessage("please add a correct email address")
     .isLength({ min: 1, max: 50 })
-    .withMessage("The email must not exceed 50 characters"),
+    .withMessage("The email must not exceed 50 characters")
+    .trim()
+    .escape(),
   check("password")
     .exists()
     .withMessage("Please add the user's password")
@@ -67,7 +73,10 @@ const validateCreateUser = [
     .isString()
     .withMessage("The password is not valid")
     .isLength({ min: 8 })
-    .withMessage("The password must be at least 8 characters long"),
+    .withMessage("The password must be at least 8 characters long")
+    .isLength({ max: 128 })
+    .withMessage("The password must not exceed 128 characters")
+    .trim(),
   check("role")
     .exists()
     .withMessage("Please add the user's role")
@@ -79,7 +88,9 @@ const validateCreateUser = [
     .withMessage("role is not valid")
     .bail()
     .isIn(["headmaster", "coordinator", "teacher"])
-    .withMessage("the role provided is not a valid option"),
+    .withMessage("the role provided is not a valid option")
+    .trim()
+    .escape(),
   check("status")
     .exists()
     .withMessage("Please add the user's current status")
@@ -91,7 +102,9 @@ const validateCreateUser = [
     .withMessage("status is not valid")
     .bail()
     .isIn(["active", "inactive", "suspended"])
-    .withMessage("the status provided is not a valid option"),
+    .withMessage("the status provided is not a valid option")
+    .trim()
+    .escape(),
   check("hasTeachingFunc")
     .exists()
     .withMessage("Please add if the user has teaching functions assigned")
@@ -200,7 +213,9 @@ const validateUpdateUser = [
     .isString()
     .withMessage("The first name is not valid")
     .isLength({ min: 1, max: 50 })
-    .withMessage("The first name must not exceed 50 characters"),
+    .withMessage("The first name must not exceed 50 characters")
+    .trim()
+    .escape(),
   check("lastName")
     .exists()
     .withMessage("Please add the user's last name")
@@ -211,7 +226,9 @@ const validateUpdateUser = [
     .isString()
     .withMessage("The last name is not valid")
     .isLength({ min: 1, max: 50 })
-    .withMessage("The last name must not exceed 50 characters"),
+    .withMessage("The last name must not exceed 50 characters")
+    .trim()
+    .escape(),
   check("email")
     .exists()
     .withMessage("Please add the user's email")
@@ -225,7 +242,9 @@ const validateUpdateUser = [
     .isEmail()
     .withMessage("please add a correct email address")
     .isLength({ min: 1, max: 50 })
-    .withMessage("The email must not exceed 50 characters"),
+    .withMessage("The email must not exceed 50 characters")
+    .trim()
+    .escape(),
   check("password")
     .exists()
     .withMessage("Please add the user's password")
@@ -236,7 +255,10 @@ const validateUpdateUser = [
     .isString()
     .withMessage("The password is not valid")
     .isLength({ min: 8 })
-    .withMessage("The password must be at least 8 characters long"),
+    .withMessage("The password must be at least 8 characters long")
+    .isLength({ max: 128 })
+    .withMessage("The password must not exceed 128 characters")
+    .trim(),
   check("role")
     .exists()
     .withMessage("Please add the user's role")
@@ -248,7 +270,9 @@ const validateUpdateUser = [
     .withMessage("role is not valid")
     .bail()
     .isIn(["headmaster", "coordinator", "teacher"])
-    .withMessage("the role provided is not a valid option"),
+    .withMessage("the role provided is not a valid option")
+    .trim()
+    .escape(),
   check("status")
     .exists()
     .withMessage("Please add the user's current status")
@@ -260,7 +284,9 @@ const validateUpdateUser = [
     .withMessage("status is not valid")
     .bail()
     .isIn(["active", "inactive", "suspended"])
-    .withMessage("the status provided is not a valid option"),
+    .withMessage("the status provided is not a valid option")
+    .trim()
+    .escape(),
   check("hasTeachingFunc")
     .exists()
     .withMessage("Please add if the user has teaching functions assigned")
@@ -269,8 +295,7 @@ const validateUpdateUser = [
     .withMessage("The hasTeachingFunc field is empty")
     .bail()
     .isBoolean()
-    .withMessage("hasTeachingFunc value is not valid")
-    .bail(),
+    .withMessage("hasTeachingFunc value is not valid"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

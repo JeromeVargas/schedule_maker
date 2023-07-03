@@ -9,14 +9,17 @@ import {
   findResourceByProperty,
   findFilterAllResources,
   findPopulateFilterAllResources,
-  findFilterResourceByProperty,
   updateFilterResource,
   deleteFilterResource,
 } from "../services/mongoServices";
+import { User } from "../typings/types";
 
 /* models */
 const userModel = "user";
 const teacherModel = "teacher";
+
+/* global reference */
+const maxHours = 70; // number of hours in a week
 
 // @desc create a user
 // @route POST /api/v1/teachers
@@ -24,13 +27,50 @@ const teacherModel = "teacher";
 // @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
 const createTeacher = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { user_id, coordinator_id } = body;
+  const {
+    school_id,
+    coordinator_id,
+    user_id,
+    contractType,
+    hoursAssignable,
+    hoursAssigned,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+  } = body;
+  /* check if hours assignable do not exceed the max allowed number of hours */
+  if (hoursAssignable > maxHours) {
+    throw new BadRequestError(
+      `hours assignable must not exceed ${maxHours} hours`
+    );
+  }
+  /* check if hours assigned do not exceed the hours assignable */
+  if (hoursAssigned > hoursAssignable) {
+    throw new BadRequestError(
+      `hours assigned must not exceed the hours assignable, ${hoursAssignable} hours`
+    );
+  }
+  /* check if the user is already a teacher */
+  const teacherSearchCriteria = { user_id, school_id };
+  const teacherFieldsToReturn = "-createdAt -updatedAt";
+  const existingTeacher = await findResourceByProperty(
+    teacherSearchCriteria,
+    teacherFieldsToReturn,
+    teacherModel
+  );
+  if (existingTeacher) {
+    throw new ConflictError("User is already a teacher");
+  }
   /* check if the user exists, is active and has teaching functions */
   const userSearchCriteria = [user_id, coordinator_id];
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
   const userFieldsToReturnPopulate = "-createdAt -updatedAt";
-  const existingUserSchoolCoordinator = await findPopulateFilterAllResources(
+  const existingUserCoordinator = await findPopulateFilterAllResources(
     userSearchCriteria,
     userFieldsToReturn,
     userFieldsToPopulate,
@@ -38,8 +78,8 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     userModel
   );
   // if there is not at least one record with an existing user id property, it returns false and triggers an error
-  const existingUser = existingUserSchoolCoordinator?.find(
-    (user: any) => user?._id == user_id
+  const existingUser = existingUserCoordinator?.find(
+    (user: User) => user?._id?.toString() === user_id
   );
   if (!existingUser) {
     throw new BadRequestError("Please create the base user first");
@@ -53,13 +93,13 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     );
   }
   // check if the user school exists/
-  if (!existingUser?.school_id) {
-    throw new BadRequestError("Please create the user's school first");
+  if (existingUser?.school_id?._id.toString() !== school_id) {
+    throw new BadRequestError("Please make sure the user's school is correct");
   }
   /* check if the coordinator exists, has a coordinator role and it is active */
   // if there is not at least one record with an existing coordinator id property, it returns false and triggers an error
-  const existingCoordinator = existingUserSchoolCoordinator?.find(
-    (user: any) => user?._id == coordinator_id
+  const existingCoordinator = existingUserCoordinator?.find(
+    (user: User) => user?._id?.toString() === coordinator_id
   );
   if (!existingCoordinator) {
     throw new BadRequestError("Please pass an existent coordinator");
@@ -71,22 +111,27 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     throw new BadRequestError("Please pass an active coordinator");
   }
   // check if the coordinator school exists/
-  if (!existingCoordinator?.school_id) {
-    throw new BadRequestError("Please create the coordinator's school first");
-  }
-  /* check if the user is already a teacher */
-  const teacherSearchCriteria = { user_id };
-  const teacherFieldsToReturn = "-createdAt -updatedAt";
-  const existingTeacher = await findResourceByProperty(
-    teacherSearchCriteria,
-    teacherFieldsToReturn,
-    teacherModel
-  );
-  if (existingTeacher) {
-    throw new ConflictError("User is already a teacher");
+  if (existingCoordinator?.school_id?._id.toString() !== school_id) {
+    throw new BadRequestError(
+      "Please make sure the coordinator's school is correct"
+    );
   }
   /* create the teacher */
-  const newTeacher = body;
+  const newTeacher = {
+    school_id: school_id,
+    coordinator_id: coordinator_id,
+    user_id: user_id,
+    contractType: contractType,
+    hoursAssignable: hoursAssignable,
+    hoursAssigned: hoursAssigned,
+    monday: monday,
+    tuesday: tuesday,
+    wednesday: wednesday,
+    thursday: thursday,
+    friday: friday,
+    saturday: saturday,
+    sunday: sunday,
+  };
   const teacherCreated = await insertResource(newTeacher, teacherModel);
   if (!teacherCreated) {
     throw new BadRequestError("Teacher not created");
@@ -124,17 +169,17 @@ const getTeachers = async ({ body }: Request, res: Response) => {
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getTeacher = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
-  const { id: teacherId } = params;
+  const { id: _id } = params;
   const { school_id } = body;
   /* get the teacher */
-  const filters = [{ _id: teacherId }, { school_id: school_id }];
+  const searchCriteria = { _id, school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const teacherFound = await findFilterResourceByProperty(
-    filters,
+  const teacherFound = await findResourceByProperty(
+    searchCriteria,
     fieldsToReturn,
     teacherModel
   );
-  if (teacherFound?.length === 0) {
+  if (!teacherFound) {
     throw new NotFoundError("Teacher not found");
   }
   res.status(StatusCodes.OK).json(teacherFound);
@@ -147,7 +192,33 @@ const getTeacher = async ({ params, body }: Request, res: Response) => {
 const updateTeacher = async ({ body, params }: Request, res: Response) => {
   /* destructure the fields */
   const { id: teacherId } = params;
-  const { school_id, user_id, coordinator_id } = body;
+  const {
+    school_id,
+    coordinator_id,
+    user_id,
+    contractType,
+    hoursAssignable,
+    hoursAssigned,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+  } = body;
+  /* check if hours assignable do not exceed the max allowed number of hours */
+  if (hoursAssignable > maxHours) {
+    throw new BadRequestError(
+      `hours assignable must not exceed ${maxHours} hours`
+    );
+  }
+  /* check if hours assigned do not exceed the hours assignable */
+  if (hoursAssigned > hoursAssignable) {
+    throw new BadRequestError(
+      `hours assigned must not exceed the hours assignable, ${hoursAssignable} hours`
+    );
+  }
   /* check if coordinator exists, has the role and is active  */
   const coordinatorSearchCriteria = {
     _id: coordinator_id,
@@ -174,7 +245,21 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
     { user_id: user_id },
     { school_id: school_id },
   ];
-  const newTeacher = body;
+  const newTeacher = {
+    school_id: school_id,
+    coordinator_id: coordinator_id,
+    user_id: user_id,
+    contractType: contractType,
+    hoursAssignable: hoursAssignable,
+    hoursAssigned: hoursAssigned,
+    monday: monday,
+    tuesday: tuesday,
+    wednesday: wednesday,
+    thursday: thursday,
+    friday: friday,
+    saturday: saturday,
+    sunday: sunday,
+  };
   const teacherUpdated = await updateFilterResource(
     filtersUpdate,
     newTeacher,

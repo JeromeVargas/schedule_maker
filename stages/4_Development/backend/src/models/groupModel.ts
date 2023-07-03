@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Group } from "../interfaces/interfaces";
+import { Group } from "../typings/types";
 
 const GroupSchema = new Schema<Group>(
   {
@@ -12,10 +12,11 @@ const GroupSchema = new Schema<Group>(
       type: Schema.Types.ObjectId,
       required: [true, "must provide a schedule id for the group"],
     },
-    // coordinator_id: {
-    //   type: Schema.Types.ObjectId,
-    //   required: [true, "must provide a coordinator id for the subject"],
-    // },
+    coordinator_id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "must provide a coordinator id for the group"],
+    },
     name: {
       type: String,
       required: [true, "must provide name for the group"],

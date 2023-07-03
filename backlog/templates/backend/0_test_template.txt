@@ -4,9 +4,8 @@ describe("Resource => BaseResource", () => {
 
   // inputs
   const validMockBaseResourceId = new Types.ObjectId().toString();
-  const validMockSchoolId = new Types.ObjectId().toString();
-  const otherValidMockBaseResourceId = new Types.ObjectId().toString();
-  //cspell:disable-next-line
+  const validMockSchoolId = new Types.ObjectId().toString();  
+  const otherValidMockId = new Types.ObjectId().toString();
   const invalidMockId = "63c5dcac78b868f80035asdf";
   const newBaseResource = {
     school_id: validMockSchoolId,
@@ -21,7 +20,7 @@ describe("Resource => BaseResource", () => {
     name: "",
   };
   const newBaseResourceNotValidDataTypes = {
-    school_id: 9769231419,
+    school_id: invalidMockId,
     name: 1234567890,
   };
   const newBaseResourceWrongLengthValues = {
@@ -95,11 +94,11 @@ describe("Resource => BaseResource", () => {
     describe("baseResource::post::08 - Passing a baseResource correctly to create", () => {
       it("should create a baseResource", async () => {
         // // mock services
-        // const findPopulateExistingOtherResourceByIdService = mockService(
+        // const duplicateOtherBaseResource = mockService(
         //     otherBaseResourcePayload,
         //     "findPopulateResourceById"
         //   );
-        //   const insertBaseResourceService = mockService(
+        //   const insertBaseResource = mockService(
         //     baseResourcePayload,
         //     "insertResource"
         //   );
@@ -116,10 +115,10 @@ describe("Resource => BaseResource", () => {
              }
             );          
           expect(statusCode).toBe(200);
-        //   expect(findPopulateExistingOtherResourceByIdService).toHaveBeenCalled();
-        //   expect(findPopulateExistingOtherResourceByIdService).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");
-        //   expect(insertBaseResourceService).toHaveBeenCalled();          
-        //   expect(insertBaseResourceService).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");          
+        //   expect(duplicateOtherBaseResource).toHaveBeenCalled();
+        //   expect(duplicateOtherBaseResource).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");
+        //   expect(insertBaseResource).toHaveBeenCalled();          
+        //   expect(insertBaseResource).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");          
       });
     });
   });
@@ -129,8 +128,8 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get::01 - Passing missing fields", () => {
         it("should return a missing values error", async () => {
         //   // mock services
-        //   const findAllBaseResourcesService = mockService(
-        //     baseResourcesPayload,
+        //   const findBaseResources = mockService(
+        //     baseResourcesNullPayload,
         //     "findFilterAllResources"
         //   );
 
@@ -148,9 +147,9 @@ describe("Resource => BaseResource", () => {
         //     },
         //   ]);
         //   expect(statusCode).toBe(400);
-        //   expect(findAllBaseResourcesService).not.toHaveBeenCalled();
-        //   expect(findAllBaseResourcesService).not.toHaveBeenCalledWith(
-        //       { school_id: validMockSchoolId },
+        //   expect(findBaseResources).not.toHaveBeenCalled();
+        //   expect(findBaseResources).not.toHaveBeenCalledWith(
+        //       { school_id: null },
         //       "-createdAt -updatedAt",
         //       "baseResource"
         //     );
@@ -159,7 +158,7 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get::02 - passing fields with empty values", () => {
         it("should return an empty values error", async () => {
         // // mock services
-        //   const findAllBaseResourcesService = mockService(
+        //   const findBaseResources = mockService(
         //     baseResourcesNullPayload,
         //     "findFilterAllResources"
         //   );
@@ -179,9 +178,9 @@ describe("Resource => BaseResource", () => {
         //     },
         //   ]);
         //   expect(statusCode).toBe(400);
-        //   expect(findAllBaseResourcesService).not.toHaveBeenCalled();
-        //   expect(findAllBaseResourcesService).not.toHaveBeenCalledWith(
-        //       { school_id: validMockSchoolId },
+        //   expect(findBaseResources).not.toHaveBeenCalled();
+        //   expect(findBaseResources).not.toHaveBeenCalledWith(
+        //       { school_id: "" },
         //       "-createdAt -updatedAt",
         //       "baseResource"
         //     );
@@ -190,8 +189,8 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get::03 - passing invalid ids", () => {
         it("should return an invalid id error", async () => {
         //   // mock services
-        //   const findAllBaseResourcesService = mockService(
-        //     baseResourcesPayload,
+        //   const findBaseResources = mockService(
+        //     baseResourcesNullPayload,
         //     "findFilterAllResources"
         //   );
 
@@ -210,9 +209,9 @@ describe("Resource => BaseResource", () => {
         //     },
         //   ]);
         //   expect(statusCode).toBe(400);
-        //   expect(findAllBaseResourcesService).not.toHaveBeenCalled();
-        //   expect(findAllBaseResourcesService).not.toHaveBeenCalledWith(
-        //       { school_id: validMockSchoolId },
+        //   expect(findBaseResources).not.toHaveBeenCalled();
+        //   expect(findBaseResources).not.toHaveBeenCalledWith(
+        //       { school_id: invalidMockId },
         //       "-createdAt -updatedAt",
         //       "baseResource"
         //     );
@@ -221,7 +220,7 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get::04 - Requesting all baseResources but not finding any", () => {
         it("should not get any fields", async () => {
         //   // mock services
-        //   const findAllBaseResourcesService = mockService(
+        //   const findBaseResources = mockService(
         //     baseResourcesNullPayload,
         //     "findFilterAllResources"
         //   );
@@ -229,16 +228,16 @@ describe("Resource => BaseResource", () => {
         //   // api call
         //   const { statusCode, body } = await supertest(server)
         //     .get(`${endPointUrl}`)
-        //     .send({ school_id: validMockSchoolId });
+        //     .send({ school_id: otherValidMockId });
 
         //   // assertions
         //   expect(body).toStrictEqual(
         //     { msg: "No baseResources found" }
         //   );
         //   expect(statusCode).toBe(404);
-        //   expect(findAllBaseResourcesService).toHaveBeenCalled();
-        //   expect(findAllBaseResourcesService).toHaveBeenCalledWith(
-        //       { school_id: validMockSchoolId },
+        //   expect(findBaseResources).toHaveBeenCalled();
+        //   expect(findBaseResources).toHaveBeenCalledWith(
+        //       { school_id: otherValidMockId },
         //       "-createdAt -updatedAt",
         //       "baseResource"
         //     );
@@ -247,7 +246,7 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get::05 - Requesting all baseResources correctly", () => {
         it("should get all fields", async () => {
         //   // mock services
-        //   const findAllBaseResourcesService = mockService(
+        //   const findBaseResources = mockService(
         //     baseResourcesPayload,
         //     "findFilterAllResources"
         //   );
@@ -265,8 +264,8 @@ describe("Resource => BaseResource", () => {
             );          
         //   expect(body).toStrictEqual(baseResourcesPayload);
           expect(statusCode).toBe(200);
-        //   expect(findAllBaseResourcesService).toHaveBeenCalled();
-        //   expect(findAllBaseResourcesService).toHaveBeenCalledWith(
+        //   expect(findBaseResources).toHaveBeenCalled();
+        //   expect(findBaseResources).toHaveBeenCalledWith(
         //       { school_id: validMockSchoolId },
         //       "-createdAt -updatedAt",
         //       "baseResource"
@@ -274,13 +273,14 @@ describe("Resource => BaseResource", () => {
         });        
       });
     });
+
     describe("baseResource - GET/:id", () => {
       describe("baseResource::get/:id::01 - Passing missing fields", () => {
         it("should return a missing values error", async () => {
         //   // mock services
-        //   const findBaseResourceByIdService = mockService(
-        //     baseResourcePayload,
-        //     "findFilterResourceByProperty"
+        //   const findBaseResource = mockService(
+        //     baseResourceNullPayload,
+        //     "findResourceByProperty"
         //   );
 
         //   // api call
@@ -299,9 +299,9 @@ describe("Resource => BaseResource", () => {
         //     ]
         //   );
         //   expect(statusCode).toBe(400);
-        //   expect(findBaseResourceByIdService).not.toHaveBeenCalled();
-        //   expect(findBaseResourceByIdService).not.toHaveBeenCalledWith(
-        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //   expect(findBaseResource).not.toHaveBeenCalled();
+        //   expect(findBaseResource).not.toHaveBeenCalledWith(
+        //       { _id: validMockBaseResourceId , school_id: null },
         //       "-createdAt -updatedAt",
         //       "baseResource"
         //     );
@@ -310,9 +310,9 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get/:id::02 - Passing fields with empty values", () => {
         it("should return an empty values error", async () => {
         //   // mock services
-        //   const findBaseResourceByIdService = mockService(
-        //     baseResourcePayload,
-        //     "findFilterResourceByProperty"
+        //   const findBaseResource = mockService(
+        //     baseResourceNullPayload,
+        //     "findResourceByProperty"
         //   );
 
         //   // api call
@@ -332,9 +332,9 @@ describe("Resource => BaseResource", () => {
         //     ]
         //   );
         //   expect(statusCode).toBe(400);
-        //   expect(findBaseResourceByIdService).not.toHaveBeenCalled();
-        //   expect(findBaseResourceByIdService).not.toHaveBeenCalledWith(
-        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //   expect(findBaseResource).not.toHaveBeenCalled();
+        //   expect(findBaseResource).not.toHaveBeenCalledWith(
+        //       { _id: validMockBaseResourceId , school_id: "" },
         //       "-createdAt -updatedAt",
         //       "baseResource"
         //     );
@@ -343,9 +343,9 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get/:id::03 - Passing invalid ids", () => {
         it("should return an invalid id error", async () => {
         //   // mock services
-        //   const findBaseResourceByIdService = mockService(
-        //     baseResourcePayload,
-        //     "findFilterResourceByProperty"
+        //   const findBaseResource = mockService(
+        //     baseResourceNullPayload,
+        //     "findResourceByProperty"
         //   );
 
         //   // api call
@@ -371,9 +371,9 @@ describe("Resource => BaseResource", () => {
         //     ]
         //   );
         //   expect(statusCode).toBe(400);
-        //   expect(findBaseResourceByIdService).not.toHaveBeenCalled();
-        //   expect(findBaseResourceByIdService).not.toHaveBeenCalledWith(
-        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //   expect(findBaseResource).not.toHaveBeenCalled();
+        //   expect(findBaseResource).not.toHaveBeenCalledWith(
+        //       { _id: invalidMockId , school_id: invalidMockId },
         //       "-createdAt -updatedAt",
         //       "baseResource"
         //     );
@@ -382,14 +382,14 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get/:id::04 - Requesting a baseResource but not finding it", () => {
         it("should not get a school", async () => {
         //   // mock services
-        //   const findBaseResourceByIdService = mockService(
+        //   const findBaseResource = mockService(
         //     baseResourcesNullPayload,
-        //     "findFilterResourceByProperty"
+        //     "findResourceByProperty"
         //   );
 
         //   // api call
         //   const { statusCode, body } = await supertest(server)
-        //     .get(`${endPointUrl}${validMockBaseResourceId}`)
+        //     .get(`${endPointUrl}${otherValidMockId}`)
         //     .send({ school_id: validMockSchoolId });
 
         //   // assertions
@@ -399,9 +399,9 @@ describe("Resource => BaseResource", () => {
         //     }
         //   );
         //   expect(statusCode).toBe(404);
-        //   expect(findBaseResourceByIdService).toHaveBeenCalled();
-        //   expect(findBaseResourceByIdService).toHaveBeenCalledWith(
-        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //   expect(findBaseResource).toHaveBeenCalled();
+        //   expect(findBaseResource).toHaveBeenCalledWith(
+        //       { _id: otherValidMockId , school_id: validMockSchoolId },
         //       "-createdAt -updatedAt",
         //       "baseResource"
         //     );
@@ -410,9 +410,9 @@ describe("Resource => BaseResource", () => {
       describe("baseResource::get/:id::05 - Requesting a baseResource correctly", () => {
         it("should get a field", async () => {
         //   // mock services
-        //   const findBaseResourceByIdService = mockService(
+        //   const findBaseResource = mockService(
         //     baseResourcePayload,
-        //     "findFilterResourceByProperty"
+        //     "findResourceByProperty"
         //   );
 
           // api call
@@ -428,9 +428,9 @@ describe("Resource => BaseResource", () => {
             );          
         //   expect(body).toStrictEqual(baseResourcePayload);
           expect(statusCode).toBe(200);
-        //   expect(findBaseResourceByIdService).toHaveBeenCalled();
-        //   expect(findBaseResourceByIdService).toHaveBeenCalledWith(
-        //       [{ _id: validMockBaseResourceId }, { school_id: validMockSchoolId }],
+        //   expect(findBaseResource).toHaveBeenCalled();
+        //   expect(findBaseResource).toHaveBeenCalledWith(
+        //       { _id: validMockBaseResourceId , school_id: validMockSchoolId },
         //       "-createdAt -updatedAt",
         //       "baseResource"
         //     );
@@ -473,11 +473,11 @@ describe("Resource => BaseResource", () => {
     describe("baseResource::put::07 - Passing a baseResource correctly to update", () => {
       it("should update a baseResource", async () => {
         // // mock services
-        // const findPopulateExistingOtherResourceByIdService = mockService(
+        // const duplicateOtherResource = mockService(
         //     otherResourcePayload,
         //     "findPopulateResourceById"
         //   );
-        //   const updateBaseResourceService = mockService(
+        //   const updateBaseResource = mockService(
         //     baseResourcePayload,
         //     "updateFilterResource"
         //   );
@@ -494,10 +494,10 @@ describe("Resource => BaseResource", () => {
              }
             );          
           expect(statusCode).toBe(200);
-        //   expect(findPopulateExistingOtherResourceByIdService).toHaveBeenCalled();
-        //   expect(findPopulateExistingOtherResourceByIdService).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");
-        //   expect(updateBaseResourceService).toHaveBeenCalled();
-        //   expect(updateBaseResourceService).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");
+        //   expect(duplicateOtherResource).toHaveBeenCalled();
+        //   expect(duplicateOtherResource).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");
+        //   expect(updateBaseResource).toHaveBeenCalled();
+        //   expect(updateBaseResource).toHaveBeenCalledWith("parameterOne", "parameterTwo", "parameterThree");
       });
     });
   });
@@ -506,7 +506,7 @@ describe("Resource => BaseResource", () => {
     describe("baseResource::delete::01 - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // // mock services
-        // const deleteBaseResourceService = mockService(
+        // const deleteBaseResource = mockService(
         //     baseResourceNullPayload,
         //     "deleteFilterResource"
         //   );
@@ -525,15 +525,15 @@ describe("Resource => BaseResource", () => {
         //     },
         //   ]);
         //   expect(statusCode).toBe(400);
-        //   expect(deleteBaseResourceService).not.toHaveBeenCalled();
-        //   expect(deleteBaseResourceService).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //   expect(deleteBaseResource).not.toHaveBeenCalled();
+        //   expect(deleteBaseResource).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
         //     "baseResource");
       });
     });
     describe("baseResource::delete::02 - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
         // // mock services
-        // const deleteBaseResourceService = mockService(
+        // const deleteBaseResource = mockService(
         //     baseResourceNullPayload,
         //     "deleteFilterResource"
         //   );
@@ -553,15 +553,15 @@ describe("Resource => BaseResource", () => {
         //     },
         //   ]);
         //   expect(statusCode).toBe(400);
-        //   expect(deleteBaseResourceService).not.toHaveBeenCalled();
-        //   expect(deleteBaseResourceService).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //   expect(deleteBaseResource).not.toHaveBeenCalled();
+        //   expect(deleteBaseResource).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
         //     "baseResource");
       });
     });
     describe("baseResource::delete::03 - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         // // mock services
-        // const deleteBaseResourceService = mockService(
+        // const deleteBaseResource = mockService(
         //     baseResourceNullPayload,
         //     "deleteFilterResource"
         //   );
@@ -587,15 +587,15 @@ describe("Resource => BaseResource", () => {
         //     },
         //   ]);
         //   expect(statusCode).toBe(400);
-        //   expect(deleteBaseResourceService).not.toHaveBeenCalled();
-        //   expect(deleteBaseResourceService).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //   expect(deleteBaseResource).not.toHaveBeenCalled();
+        //   expect(deleteBaseResource).not.toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
         //     "baseResource");
       });
     });
     describe("baseResource::delete::04 - Passing a baseResource id but not deleting it", () => {
       it("should not delete a school", async () => {
         // // mock services
-        // const deleteBaseResourceService = mockService(
+        // const deleteBaseResource = mockService(
         //     baseResourceNullPayload,
         //     "deleteFilterResource"
         //   );
@@ -610,15 +610,15 @@ describe("Resource => BaseResource", () => {
         //     { msg: "BaseResource not deleted" }
         //   );
         //   expect(statusCode).toBe(404);
-        //   expect(deleteBaseResourceService).toHaveBeenCalled();
-        //   expect(deleteBaseResourceService).toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //   expect(deleteBaseResource).toHaveBeenCalled();
+        //   expect(deleteBaseResource).toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
         //     "baseResource");
       });
     });
     describe("baseResource::delete::05 - Passing a baseResource id correctly to delete", () => {
       it("should delete a field", async () => {
         // // mock services
-        // const deleteBaseResourceService = mockService(
+        // const deleteBaseResource = mockService(
         //     baseResourcePayload,
         //     "deleteFilterResource"
         //   );
@@ -638,8 +638,8 @@ describe("Resource => BaseResource", () => {
         // { msg: "BaseResource deleted" }
         //   );
           expect(statusCode).toBe(200);
-        //   expect(deleteBaseResourceService).toHaveBeenCalled();
-        //   expect(deleteBaseResourceService).toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
+        //   expect(deleteBaseResource).toHaveBeenCalled();
+        //   expect(deleteBaseResource).toHaveBeenCalledWith({ _id: validMockBaseResourceId, school_id: validMockSchoolId },
         //     "baseResource");
       });
     });

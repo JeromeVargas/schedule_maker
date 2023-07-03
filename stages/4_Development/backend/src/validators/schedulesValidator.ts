@@ -31,7 +31,9 @@ const validateCreateSchedule = [
     .isString()
     .withMessage("The schedule name is not valid")
     .isLength({ min: 1, max: 100 })
-    .withMessage("The schedule name must not exceed 100 characters"),
+    .withMessage("The schedule name must not exceed 100 characters")
+    .escape()
+    .trim(),
   check("dayStart")
     .exists()
     .withMessage("Please add the school day start time")
@@ -39,18 +41,11 @@ const validateCreateSchedule = [
     .notEmpty()
     .withMessage("The day start field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("day start value is not valid")
     .bail()
-    .custom((value) => {
-      const maxMinutesInDay = 1439;
-      if (value > maxMinutesInDay) {
-        return false;
-      } else if (value <= maxMinutesInDay) {
-        return true;
-      }
-    })
-    .withMessage(`The school start time must must not exceed the 23:59 hours`),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The day start time must not exceed 9 digits"),
   check("shiftNumberMinutes")
     .exists()
     .withMessage("Please add the school shift number of minutes")
@@ -58,21 +53,11 @@ const validateCreateSchedule = [
     .notEmpty()
     .withMessage("The number of minutes field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("number of minutes value is not valid")
     .bail()
-    .custom((value, { req }) => {
-      const maxMinutesInDay = 1439;
-      const remainingMinutesInDay = maxMinutesInDay - req.body.dayStart;
-      if (value > remainingMinutesInDay) {
-        return false;
-      } else if (value <= remainingMinutesInDay) {
-        return true;
-      }
-    })
-    .withMessage(
-      "There is not enough time to allocate the entire shift in a day"
-    ),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The day start time must not exceed 9 digits"),
   check("classUnitMinutes")
     .exists()
     .withMessage("Please add the class unit length")
@@ -80,32 +65,11 @@ const validateCreateSchedule = [
     .notEmpty()
     .withMessage("The class unit length field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("class unit length value is not valid")
     .bail()
-    .custom((value, { req }) => {
-      const maxMinutesInDay = 1439;
-      const remainingMinutesInDay = maxMinutesInDay - req.body.dayStart;
-      if (value > remainingMinutesInDay) {
-        return false;
-      } else if (value <= remainingMinutesInDay) {
-        return true;
-      }
-    })
-    .withMessage(
-      "There is not enough time available to allocate any class in a day"
-    )
-    .bail()
-    .custom((value, { req }) => {
-      if (value > req.body.shiftNumberMinutes) {
-        return false;
-      } else if (value <= req.body.shiftNumberMinutes) {
-        return true;
-      }
-    })
-    .withMessage(
-      "There is not enough time available to allocate any class in the shift"
-    ),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The day start time must not exceed 9 digits"),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")
@@ -268,7 +232,9 @@ const validateUpdateSchedule = [
     .isString()
     .withMessage("The schedule name is not valid")
     .isLength({ min: 1, max: 100 })
-    .withMessage("The schedule name must not exceed 100 characters"),
+    .withMessage("The schedule name must not exceed 100 characters")
+    .escape()
+    .trim(),
   check("dayStart")
     .exists()
     .withMessage("Please add the school day start time")
@@ -276,18 +242,11 @@ const validateUpdateSchedule = [
     .notEmpty()
     .withMessage("The day start field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("day start value is not valid")
     .bail()
-    .custom((value) => {
-      const maxMinutesInDay = 1439;
-      if (value > maxMinutesInDay) {
-        return false;
-      } else if (value <= maxMinutesInDay) {
-        return true;
-      }
-    })
-    .withMessage(`The school start time must must not exceed the 23:59 hours`),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The day start time must not exceed 9 digits"),
   check("shiftNumberMinutes")
     .exists()
     .withMessage("Please add the school shift number of minutes")
@@ -295,21 +254,11 @@ const validateUpdateSchedule = [
     .notEmpty()
     .withMessage("The number of minutes field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("number of minutes value is not valid")
     .bail()
-    .custom((value, { req }) => {
-      const maxMinutesInDay = 1439;
-      const remainingMinutesInDay = maxMinutesInDay - req.body.dayStart;
-      if (value > remainingMinutesInDay) {
-        return false;
-      } else if (value <= remainingMinutesInDay) {
-        return true;
-      }
-    })
-    .withMessage(
-      "There is not enough time to allocate the entire shift in a day"
-    ),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The day start time must not exceed 9 digits"),
   check("classUnitMinutes")
     .exists()
     .withMessage("Please add the class unit length")
@@ -317,33 +266,11 @@ const validateUpdateSchedule = [
     .notEmpty()
     .withMessage("The class unit length field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("class unit length value is not valid")
     .bail()
-    .custom((value, { req }) => {
-      const maxMinutesInDay = 1439;
-      const remainingMinutesInDay = maxMinutesInDay - req.body.dayStart;
-      if (value > remainingMinutesInDay) {
-        return false;
-      } else if (value <= remainingMinutesInDay) {
-        return true;
-      }
-    })
-    .withMessage(
-      "There is not enough time available to allocate any class in a day"
-    )
-    .bail()
-    .custom((value, { req }) => {
-      360;
-      if (value > req.body.shiftNumberMinutes) {
-        return false;
-      } else if (value <= req.body.shiftNumberMinutes) {
-        return true;
-      }
-    })
-    .withMessage(
-      "There is not enough time available to allocate any class in the shift"
-    ),
+    .isLength({ min: 1, max: 9 })
+    .withMessage("The day start time must not exceed 9 digits"),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")

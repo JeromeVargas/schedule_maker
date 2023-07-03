@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Schedule } from "../interfaces/interfaces";
+import { Schedule } from "../typings/types";
 
 const UserSchema = new Schema<Schedule>(
   {

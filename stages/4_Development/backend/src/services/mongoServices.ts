@@ -125,24 +125,6 @@ const findPopulateResourceById = (
   return resourceFound;
 };
 
-// @desc find a resource by id and populate the embedded nested entities
-// @params resourceId, fields to return, fields to populate, fields to return populate, resourceName
-const findPopulateNestedResourceById = (
-  resourceId: string,
-  fieldsToReturn: string,
-  fieldsToNestedPopulate: any[],
-  resourceName: keyof typeof models
-) => {
-  const resourceFound = models[resourceName]
-    // @ts-ignore
-    .findById(resourceId)
-    .select(fieldsToReturn)
-    .populate(fieldsToNestedPopulate)
-    .lean()
-    .exec();
-  return resourceFound;
-};
-
 // @desc find a resource by name or other property
 // @params resourceProperty, fields to return, resource name
 const findResourceByProperty = (
@@ -233,7 +215,7 @@ const deleteResource = (
 // @desc delete a resource by property
 // @params resourceId, filters, resource name
 const deleteFilterResource = (
-  filters: any,
+  filters: { _id: string; school_id: string },
   resourceName: keyof typeof models
 ) => {
   const resourceDeleted = models[resourceName]
@@ -251,7 +233,6 @@ export {
   findPopulateFilterAllResources,
   findResourceById,
   findPopulateResourceById,
-  findPopulateNestedResourceById,
   findResourceByProperty,
   findFilterResourceByProperty,
   updateResource,

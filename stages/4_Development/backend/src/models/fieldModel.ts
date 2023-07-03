@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Field } from "../interfaces/interfaces";
+import { Field } from "../typings/types";
 
 const SchoolSchema = new Schema<Field>(
   {

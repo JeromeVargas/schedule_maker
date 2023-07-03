@@ -1,22 +1,23 @@
 import { Schema, model } from "mongoose";
-import { Class } from "../interfaces/interfaces";
+import { Class } from "../typings/types";
 
 const ClassSchema = new Schema<Class>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
-      ref: "School",
       required: [true, "must provide a school id for the class"],
+    },
+    coordinator_id: {
+      type: Schema.Types.ObjectId,
+      required: [true, "must provide a coordinator id for the class"],
     },
     subject_id: {
       type: Schema.Types.ObjectId,
-      ref: "Subject",
-      required: [true, "must provide a school id for the class"],
+      required: [true, "must provide a subject id for the class"],
     },
     teacherField_id: {
       type: Schema.Types.ObjectId,
-      ref: "TeacherField",
-      required: [true, "must provide a school id for the class"],
+      required: [true, "must provide a teacher_field id for the class"],
     },
     startTime: {
       type: Number,

@@ -9,37 +9,46 @@ import {
   findFilterAllResources,
   findFilterResourceByProperty,
   findPopulateResourceById,
+  findResourceByProperty,
   insertResource,
   updateFilterResource,
 } from "../services/mongoServices";
+import { Subject } from "../typings/types";
 
 /* models */
 const subjectModel = "subject";
 const groupModel = "group";
 const fieldModel = "field";
-const breakModel = "break";
 
 // @desc create a subject
 // @route POST /api/v1/subjects
 // @access Private
-// @fields: body {school_id:[string] , group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields: body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
 const createSubject = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { school_id, group_id, field_id, name } = body;
+  const {
+    school_id,
+    coordinator_id,
+    group_id,
+    field_id,
+    name,
+    classUnits,
+    frequency,
+  } = body;
   /* check if the subject name already exists for this school */
-  const subjectFilters = [{ school_id: school_id }, { name: name }];
-  const subjectFieldsToReturn = "-createdAt -updatedAt";
-  const duplicatedName = await findFilterResourceByProperty(
-    subjectFilters,
-    subjectFieldsToReturn,
+  const searchCriteria = { school_id, name };
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const duplicateName = await findResourceByProperty(
+    searchCriteria,
+    fieldsToReturn,
     subjectModel
   );
-  if (duplicatedName?.length !== 0) {
+  if (duplicateName) {
     throw new ConflictError("This subject name already exists");
   }
   /* find if the group already exists */
   const fieldsToReturnGroup = "-createdAt -updatedAt";
-  const fieldsToPopulateGroup = "school_id";
+  const fieldsToPopulateGroup = "school_id coordinator_id";
   const fieldsToReturnPopulateGroup = "-createdAt -updatedAt";
   const groupFound = await findPopulateResourceById(
     group_id,
@@ -50,6 +59,24 @@ const createSubject = async ({ body }: Request, res: Response) => {
   );
   if (!groupFound) {
     throw new BadRequestError("Please make sure the group exists");
+  }
+  // find if the school exists for the group and matches the school in the body
+  if (groupFound.school_id?._id?.toString() !== school_id) {
+    throw new BadRequestError(
+      "Please make sure the group belongs to the school"
+    );
+  }
+  // find if the coordinator is the same in the body, it is an actual coordinator and the role is active
+  if (groupFound?.coordinator_id?._id?.toString() !== coordinator_id) {
+    throw new BadRequestError(
+      "Please make sure the coordinator belongs to the subject parent group"
+    );
+  }
+  if (groupFound?.coordinator_id?.role !== "coordinator") {
+    throw new BadRequestError("Please pass a user with a coordinator role");
+  }
+  if (groupFound?.coordinator_id?.status !== "active") {
+    throw new BadRequestError("Please pass an active coordinator");
   }
   /* find if the field already exists */
   const fieldsToReturnField = "-createdAt -updatedAt";
@@ -65,15 +92,22 @@ const createSubject = async ({ body }: Request, res: Response) => {
   if (!fieldFound) {
     throw new BadRequestError("Please make sure the field exists");
   }
-  /* find if the school exists and matches the school in the body */
-  if (
-    groupFound.school_id?._id?.toString() !== school_id ||
-    fieldFound.school_id?._id?.toString() !== school_id
-  ) {
-    throw new BadRequestError("The resources do not belong to this school");
+  // find if the school exists for the field and matches the school in the body
+  if (fieldFound.school_id?._id?.toString() !== school_id) {
+    throw new BadRequestError(
+      "Please make sure the field belongs to the school"
+    );
   }
   /* create subject */
-  const newSubject = body;
+  const newSubject = {
+    school_id: school_id,
+    coordinator_id: coordinator_id,
+    group_id: group_id,
+    field_id: field_id,
+    name: name,
+    classUnits: classUnits,
+    frequency: frequency,
+  };
   const subjectCreated = await insertResource(newSubject, subjectModel);
   if (!subjectCreated) {
     throw new BadRequestError("Subject not created!");
@@ -84,7 +118,7 @@ const createSubject = async ({ body }: Request, res: Response) => {
 // @desc get all the Subjects
 // @route GET /api/v1/Subjects
 // @access Private
-// @fields: body {fieldOne:[string]}
+// @fields: body: {school_id:[string]}
 const getSubjects = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -106,20 +140,20 @@ const getSubjects = async ({ body }: Request, res: Response) => {
 // @desc get the Subject by id
 // @route GET /api/v1/Subjects/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {fieldOne:[string]}
+// @fields: params: {id:[string]},  body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
 const getSubject = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
-  const { id: subjectId } = params;
+  const { id: _id } = params;
   const { school_id } = body;
-  /* get the field */
-  const filters = [{ _id: subjectId }, { school_id: school_id }];
+  /* get the subject */
+  const searchCriteria = { _id, school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const subjectFound = await findFilterResourceByProperty(
-    filters,
+  const subjectFound = await findResourceByProperty(
+    searchCriteria,
     fieldsToReturn,
     subjectModel
   );
-  if (subjectFound?.length === 0) {
+  if (!subjectFound) {
     throw new NotFoundError("Subject not found");
   }
   res.status(StatusCodes.OK).json(subjectFound);
@@ -128,28 +162,36 @@ const getSubject = async ({ params, body }: Request, res: Response) => {
 // @desc update a Subject
 // @route PUT /api/v1/Subjects/:id
 // @access Private
-// @fields: params: {id:[string]},  body {fieldOne:[string] , fieldTwo:[string], fieldThree:[string]}
+// @fields: params: {id:[string]},  body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
 const updateSubject = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: subjectId } = params;
-  const { school_id, group_id, field_id, name } = body;
-  /* check if the group name already exists for this school */
-  const groupFilters = [{ school_id: school_id }, { name: name }];
-  const groupFieldsToReturn = "-createdAt -updatedAt";
-  const duplicatedName = await findFilterResourceByProperty(
-    groupFilters,
-    groupFieldsToReturn,
+  const {
+    school_id,
+    coordinator_id,
+    group_id,
+    field_id,
+    name,
+    classUnits,
+    frequency,
+  } = body;
+  /* check if the subject name already exists for this school */
+  const subjectFilters = [{ school_id: school_id }, { name: name }];
+  const subjectFieldsToReturn = "-createdAt -updatedAt";
+  const duplicateName = await findFilterResourceByProperty(
+    subjectFilters,
+    subjectFieldsToReturn,
     subjectModel
   );
-  const duplicatedSubjectName = duplicatedName?.some(
-    (subject: any) => subject._id.toString() !== subjectId
+  const duplicateSubjectName = duplicateName?.some(
+    (subject: Subject) => subject?._id?.toString() !== subjectId
   );
-  if (duplicatedSubjectName) {
+  if (duplicateSubjectName) {
     throw new ConflictError("This subject name already exists");
   }
   /* find group by id, and populate its properties */
   const fieldsToReturnGroup = "-createdAt -updatedAt";
-  const fieldsToPopulateGroup = "school_id";
+  const fieldsToPopulateGroup = "school_id coordinator_id";
   const fieldsToReturnPopulateGroup = "-createdAt -updatedAt";
   const groupFound = await findPopulateResourceById(
     group_id,
@@ -161,7 +203,24 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
   if (!groupFound) {
     throw new NotFoundError("Please make sure the group exists");
   }
-
+  // find if the school exists for the group and matches the school in the body
+  if (groupFound.school_id?._id?.toString() !== school_id) {
+    throw new BadRequestError(
+      "Please make sure the group belongs to the school"
+    );
+  }
+  // find if the coordinator for the group is the same in the body, it is an actual coordinator and the role is active
+  if (groupFound?.coordinator_id?._id?.toString() !== coordinator_id) {
+    throw new BadRequestError(
+      "Please make sure the coordinator belongs to the subject parent group"
+    );
+  }
+  if (groupFound?.coordinator_id?.role !== "coordinator") {
+    throw new BadRequestError("Please pass a user with a coordinator role");
+  }
+  if (groupFound?.coordinator_id?.status !== "active") {
+    throw new BadRequestError("Please pass an active coordinator");
+  }
   /* find field by id, and populate its properties */
   const fieldsToReturnField = "-createdAt -updatedAt";
   const fieldsToPopulateField = "school_id";
@@ -176,15 +235,22 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
   if (!fieldFound) {
     throw new NotFoundError("Please make sure the field exists");
   }
-  /* find if the school exists and matches the school in the body */
-  if (
-    groupFound.school_id?._id?.toString() !== school_id ||
-    fieldFound.school_id?._id?.toString() !== school_id
-  ) {
-    throw new BadRequestError("The resources do not belong to this school");
+  // find if the school exists for the field and matches the school in the body
+  if (fieldFound.school_id?._id?.toString() !== school_id) {
+    throw new BadRequestError(
+      "Please make sure the field belongs to the school"
+    );
   }
   /* update subject */
-  const newSubject = body;
+  const newSubject = {
+    school_id: school_id,
+    coordinator_id: coordinator_id,
+    group_id: group_id,
+    field_id: field_id,
+    name: name,
+    classUnits: classUnits,
+    frequency: frequency,
+  };
   const filtersUpdate = [{ _id: subjectId }, { school_id: school_id }];
   const subjectUpdated = await updateFilterResource(
     filtersUpdate,
@@ -200,7 +266,7 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
 // @desc delete a Subject
 // @route DELETE /api/v1/Subjects/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {fieldOne:[string]}
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteSubject = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: subjectId } = params;

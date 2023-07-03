@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Break } from "../interfaces/interfaces";
+import { Break } from "../typings/types";
 
 const BreakSchema = new Schema<Break>(
   {

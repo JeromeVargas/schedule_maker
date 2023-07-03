@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../lib/helpers/validateHelper";
 import { isValidId } from "../services/mongoServices";
 
-// @fields: body {school_id:[string] , subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
+// @fields: body {school_id:[string], subject_id:[string], coordinator_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 const validateCreateClass = [
   check("school_id")
     .exists()
@@ -21,6 +21,22 @@ const validateCreateClass = [
       }
     })
     .withMessage(`The school id is not valid`),
+  check("coordinator_id")
+    .exists()
+    .withMessage("Please add the coordinator id")
+    .bail()
+    .notEmpty()
+    .withMessage("The coordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The coordinator id is not valid`),
   check("subject_id")
     .exists()
     .withMessage("Please add the subject id")
@@ -60,7 +76,7 @@ const validateCreateClass = [
     .notEmpty()
     .withMessage("The start time field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("start time value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The start time must not exceed 9 digits"),
@@ -71,7 +87,7 @@ const validateCreateClass = [
     .notEmpty()
     .withMessage("The group schedule slot number field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("group schedule slot number value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The group schedule slot number must not exceed 9 digits"),
@@ -82,7 +98,7 @@ const validateCreateClass = [
     .notEmpty()
     .withMessage("The teacher schedule slot number field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("teacher schedule slot number value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The teacher schedule slot number must not exceed 9 digits"),
@@ -147,7 +163,7 @@ const validateGetClass = [
   },
 ];
 
-// @fields: params: {id:[string]},  body {school_id:[string] , subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
+// @fields: params: {id:[string]},  body {school_id:[string], coordinator_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 const validateUpdateClass = [
   check("id")
     .custom((value) => {
@@ -175,6 +191,22 @@ const validateUpdateClass = [
       }
     })
     .withMessage(`The school id is not valid`),
+  check("coordinator_id")
+    .exists()
+    .withMessage("Please add the coordinator id")
+    .bail()
+    .notEmpty()
+    .withMessage("The coordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The coordinator id is not valid`),
   check("subject_id")
     .exists()
     .withMessage("Please add the subject id")
@@ -214,7 +246,7 @@ const validateUpdateClass = [
     .notEmpty()
     .withMessage("The start time field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("start time value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The start time must not exceed 9 digits"),
@@ -225,7 +257,7 @@ const validateUpdateClass = [
     .notEmpty()
     .withMessage("The group schedule slot number field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("group schedule slot number value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The group schedule slot number must not exceed 9 digits"),
@@ -236,7 +268,7 @@ const validateUpdateClass = [
     .notEmpty()
     .withMessage("The teacher schedule slot number field is empty")
     .bail()
-    .isNumeric()
+    .isInt({ min: 0 })
     .withMessage("teacher schedule slot number value is not valid")
     .isLength({ min: 1, max: 9 })
     .withMessage("The teacher schedule slot number must not exceed 9 digits"),

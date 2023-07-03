@@ -58,17 +58,17 @@ const getBaseResources = async ({ body }: Request, res: Response) => {
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
 const getBaseResource = async ({ params, body }: Request, res: Response) => {  
   // /* destructure the fields */
-// const { id: baseResourceId } = params;
+// const { id: _id } = params;
 // const { school_id } = body;
-// /* get the field */
-// const filters = [{ _id: baseResourceId }, { school_id: school_id }];
-// const fieldsToReturn = "-createdAt -updatedAt";
-// const baseResourceFound = await findFilterResourceByProperty(
-//   filters,
-//   fieldsToReturn,
-//   baseResourceModel
-// );
-// if (baseResourceFound?.length === 0) {
+// /* get the baseResource */
+  // const searchCriteria = { _id, school_id };
+  // const fieldsToReturn = "-password -createdAt -updatedAt";
+  // const baseResourceFound = await findResourceByProperty(
+    // searchCriteria,
+    // fieldsToReturn,
+    // baseResourceModel
+  // );
+// if (!baseResourceFound) {
 //   throw new NotFoundError("BaseResource not found");
 // }
 // res.status(StatusCodes.OK).json(baseResourceFound);

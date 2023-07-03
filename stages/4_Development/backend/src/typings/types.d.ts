@@ -9,6 +9,7 @@ export type Role = "headmaster" | "coordinator" | "teacher";
 export type Status = "active" | "inactive" | "suspended";
 
 export type User = {
+  _id?: string;
   school_id: Types.ObjectId;
   firstName: string;
   lastName: string;
@@ -23,8 +24,8 @@ export type ContractType = "full-time" | "part-time" | "substitute";
 
 export type Teacher = {
   school_id: Types.ObjectId;
-  coordinator_id: Types.ObjectId;
   user_id: Types.ObjectId;
+  coordinator_id: Types.ObjectId;
   contractType: ContractType;
   hoursAssignable: number;
   hoursAssigned: number;
@@ -38,6 +39,7 @@ export type Teacher = {
 };
 
 export type Field = {
+  _id?: string;
   school_id: Types.ObjectId;
   name: string;
 };
@@ -49,6 +51,7 @@ export type Teacher_Field = {
 };
 
 export type Schedule = {
+  _id?: string;
   school_id: Types.ObjectId;
   name: string;
   dayStart: number;
@@ -71,22 +74,25 @@ export type Break = {
 };
 
 export type Level = {
+  _id?: string;
   school_id: Types.ObjectId;
   schedule_id: Types.ObjectId;
   name: string;
 };
 
 export type Group = {
+  _id?: string;
   school_id: Types.ObjectId;
   level_id: Types.ObjectId;
-  // continue here --> move the coordinator from the subject to the group entity
-  // coordinator_id: Types.ObjectId;
+  coordinator_id: Types.ObjectId;
   name: string;
   numberStudents: number;
 };
 
 export type Subject = {
+  _id?: string;
   school_id: Types.ObjectId;
+  coordinator_id: Types.ObjectId;
   group_id: Types.ObjectId;
   field_id: Types.ObjectId;
   name: string;
@@ -96,6 +102,7 @@ export type Subject = {
 
 export type Class = {
   school_id: Types.ObjectId;
+  coordinator_id: Types.ObjectId;
   subject_id: Types.ObjectId;
   teacherField_id: Types.ObjectId;
   startTime: number;
