@@ -9,8 +9,8 @@ for later:
 
 Back end:
 
-continue here --> separate tests by entity and send to the corresponding modules folder
 continue here --> separate mongo services and send to the corresponding modules folder, break the abstraction
+continue here --> separate routes, it might be a bit tricky
 continue here --> check the code manually
 continue here --> refactor all the @ts-ignore instances
 continue here --> check sanitation express-validator middleware in routes

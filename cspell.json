@@ -12,6 +12,7 @@
     "Assigne",
     "Calle",
     "completo",
+    "coordin",
     "coordinador",
     "crea",
     "emai",
@@ -38,6 +39,8 @@
     "tuesda",
     "wednesda"
   ],
-  "ignoreWords": ["dcac"],
+  "ignoreWords": [
+    "dcac"
+  ],
   "import": []
 }
