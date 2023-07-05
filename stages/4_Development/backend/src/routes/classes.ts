@@ -5,7 +5,7 @@ import {
   validateGetClass,
   validateDeleteClass,
   validateUpdateClass,
-} from "../modules/class/classesValidator";
+} from "../modules/classes/classesValidator";
 
 import {
   createClass,
@@ -13,7 +13,7 @@ import {
   getClass,
   updateClass,
   deleteClass,
-} from "../modules/class/classesController";
+} from "../modules/classes/classesController";
 
 const router = Router();
 

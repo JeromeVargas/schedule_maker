@@ -5,7 +5,7 @@ import {
   validateGetTeacher,
   validateUpdateTeacher,
   validateDeleteTeacher,
-} from "../modules/teacher/teachersValidator";
+} from "../modules/teachers/teachersValidator";
 
 import {
   createTeacher,
@@ -13,7 +13,7 @@ import {
   getTeacher,
   updateTeacher,
   deleteTeacher,
-} from "../modules/teacher/teachersController";
+} from "../modules/teachers/teachersController";
 
 const router = Router();
 

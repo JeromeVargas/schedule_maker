@@ -5,7 +5,7 @@ import {
   validateGetSchedule,
   validateDeleteSchedule,
   validateUpdateSchedule,
-} from "../modules/schedule/schedulesValidator";
+} from "../modules/schedules/schedulesValidator";
 
 import {
   createSchedule,
@@ -13,7 +13,7 @@ import {
   getSchedule,
   updateSchedule,
   deleteSchedule,
-} from "../modules/schedule/schedulesController";
+} from "../modules/schedules/schedulesController";
 
 const router = Router();
 

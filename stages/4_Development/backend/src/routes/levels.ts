@@ -5,7 +5,7 @@ import {
   validateGetLevel,
   validateDeleteLevel,
   validateUpdateLevel,
-} from "../modules/level/levelsValidator";
+} from "../modules/levels/levelsValidator";
 
 import {
   createLevel,
@@ -13,7 +13,7 @@ import {
   getLevel,
   updateLevel,
   deleteLevel,
-} from "../modules/level/levelsController";
+} from "../modules/levels/levelsController";
 
 const router = Router();
 

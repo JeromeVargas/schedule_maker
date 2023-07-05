@@ -5,7 +5,7 @@ import {
   validateGetGroup,
   validateDeleteGroup,
   validateUpdateGroup,
-} from "../modules/group/groupsValidator";
+} from "../modules/groups/groupsValidator";
 
 import {
   createGroup,
@@ -13,7 +13,7 @@ import {
   getGroup,
   updateGroup,
   deleteGroup,
-} from "../modules/group/groupsController";
+} from "../modules/groups/groupsController";
 
 const router = Router();
 

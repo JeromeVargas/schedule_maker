@@ -1,15 +1,15 @@
 import { isValidObjectId } from "mongoose";
-import SchoolModel from "../modules/school/schoolModel";
-import UserModel from "../modules/school/schoolModel";
-import TeacherModel from "../modules/teacher/teacherModel";
-import FieldModel from "../modules/field/fieldModel";
-import TeacherFieldModel from "../modules/teacherField/teacherFieldModel";
-import ScheduleModel from "../modules/schedule/scheduleModel";
-import BreakModel from "../modules/break/breakModel";
-import LevelModel from "../modules/level/levelModel";
-import GroupModel from "../modules/group/groupModel";
-import SubjectModel from "../modules/subject/subjectModel";
-import ClassModel from "../modules/class/classModel";
+import SchoolModel from "../modules/schools/schoolModel";
+import UserModel from "../modules/users/userModel";
+import TeacherModel from "../modules/teachers/teacherModel";
+import FieldModel from "../modules/fields/fieldModel";
+import TeacherFieldModel from "../modules/teacherFields/teacherFieldModel";
+import ScheduleModel from "../modules/schedules/scheduleModel";
+import BreakModel from "../modules/breaks/breakModel";
+import LevelModel from "../modules/levels/levelModel";
+import GroupModel from "../modules/groups/groupModel";
+import SubjectModel from "../modules/subjects/subjectModel";
+import ClassModel from "../modules/classes/classModel";
 
 const models = {
   school: SchoolModel,
