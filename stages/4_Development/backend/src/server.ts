@@ -9,7 +9,7 @@ import errorHandlerMiddleware from "./middleware/error-handler";
 import notFound404Middleware from "./middleware/not-found";
 
 // routes
-import { router } from "./routes";
+import { router } from "./lib/router";
 
 // server instantiation
 export const server = express();

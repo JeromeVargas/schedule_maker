@@ -5,7 +5,7 @@ import {
   validateGetBreak,
   validateDeleteBreak,
   validateUpdateBreak,
-} from "../modules/breaks/breaksValidator";
+} from "./breaksValidator";
 
 import {
   createBreak,
@@ -13,7 +13,7 @@ import {
   getBreak,
   updateBreak,
   deleteBreak,
-} from "../modules/breaks/breaksController";
+} from "./breaksController";
 
 const router = Router();
 

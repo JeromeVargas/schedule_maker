@@ -14,7 +14,7 @@ const errorHandlerMiddleware = (
     return res.status(err.statusCode).json({ msg: err.message });
   }
   // The error is part of a JSON badly formatted req body
-  // continue here --> check extending classes and work on missing initializer
+  // refactor --> check extending classes and work on missing initializer
   if (err instanceof SyntaxError) {
     const error = { status: undefined, type: undefined, ...err };
     if (

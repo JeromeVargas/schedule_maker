@@ -9,9 +9,8 @@ for later:
 
 Back end:
 
-continue here --> separate mongo services and send to the corresponding modules folder, break the abstraction
-continue here --> separate routes, it might be a bit tricky
 continue here --> check the code manually
+continue here --> separate mongo services and send to the corresponding modules folder, break the abstraction
 continue here --> refactor all the @ts-ignore instances
 continue here --> check sanitation express-validator middleware in routes
 continue here --> try to update packages, specially express validator

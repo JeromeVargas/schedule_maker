@@ -3,7 +3,7 @@ import SchoolModel from "../modules/schools/schoolModel";
 import UserModel from "../modules/users/userModel";
 import TeacherModel from "../modules/teachers/teacherModel";
 import FieldModel from "../modules/fields/fieldModel";
-import TeacherFieldModel from "../modules/teacherFields/teacherFieldModel";
+import TeacherFieldModel from "../modules/teacher_fields/teacherFieldModel";
 import ScheduleModel from "../modules/schedules/scheduleModel";
 import BreakModel from "../modules/breaks/breakModel";
 import LevelModel from "../modules/levels/levelModel";
