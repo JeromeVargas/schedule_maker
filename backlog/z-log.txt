@@ -9,7 +9,6 @@ for later:
 
 Back end:
 
-continue here --> check the code manually and check the potential refactors
 continue here --> check <omit> or <pick> for resources with/without _id
 continue here --> check sanitation express-validator middleware in routes
 continue here --> try to update packages, specially express validator

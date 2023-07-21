@@ -188,7 +188,6 @@ describe("Resource => Class", () => {
   ];
   const classesNullPayload: Class[] = [];
 
-  // continue here --> refactor services
   // test blocks
   describe("POST /class ", () => {
     describe("class::post::01 - Passing missing fields", () => {
