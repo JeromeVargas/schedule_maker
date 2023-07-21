@@ -4,21 +4,18 @@ import BadRequestError from "../../errors/bad-request";
 import ConflictError from "../../errors/conflict";
 import NotFoundError from "../../errors/not-found";
 
-import {
-  deleteFilterResource,
-  findFilterAllResources,
-  findFilterResourceByProperty,
-  findPopulateResourceById,
-  findResourceByProperty,
-  insertResource,
-  updateFilterResource,
-} from "../../services/mongoServices";
 import { Group } from "../../typings/types";
-
-/* models */
-const groupModel = "group";
-const levelModel = "level";
-const userModel = "user";
+import {
+  insertGroup,
+  findFilterAllGroups,
+  findFilterGroupByProperty,
+  findGroupByProperty,
+  modifyFilterGroup,
+  removeFilterGroup,
+  /* Services from other entities */
+  findPopulateLevelById,
+  findPopulateUserById,
+} from "./groupServices";
 
 // @desc create a group
 // @route POST /api/v1/groups
@@ -30,10 +27,9 @@ const createGroup = async ({ body }: Request, res: Response) => {
   /* check if the group name already exists for this school */
   const searchCriteria = { school_id, name };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicateField = await findResourceByProperty(
+  const duplicateField = await findGroupByProperty(
     searchCriteria,
-    fieldsToReturn,
-    groupModel
+    fieldsToReturn
   );
   if (duplicateField) {
     throw new ConflictError("This group name already exists");
@@ -42,12 +38,11 @@ const createGroup = async ({ body }: Request, res: Response) => {
   const fieldsToReturnLevel = "-createdAt -updatedAt";
   const fieldsToPopulateLevel = "school_id";
   const fieldsToReturnPopulateLevel = "-createdAt -updatedAt";
-  const levelFound = await findPopulateResourceById(
+  const levelFound = await findPopulateLevelById(
     level_id,
     fieldsToReturnLevel,
     fieldsToPopulateLevel,
-    fieldsToReturnPopulateLevel,
-    levelModel
+    fieldsToReturnPopulateLevel
   );
   if (!levelFound) {
     throw new NotFoundError("Please make sure the level exists");
@@ -69,12 +64,11 @@ const createGroup = async ({ body }: Request, res: Response) => {
   const fieldsToReturnCoordinator = "-password -createdAt -updatedAt";
   const fieldsToPopulateCoordinator = "school_id";
   const fieldsToReturnPopulateCoordinator = "-createdAt -updatedAt";
-  const coordinatorFound = await findPopulateResourceById(
+  const coordinatorFound = await findPopulateUserById(
     coordinator_id,
     fieldsToReturnCoordinator,
     fieldsToPopulateCoordinator,
-    fieldsToReturnPopulateCoordinator,
-    userModel
+    fieldsToReturnPopulateCoordinator
   );
   if (!coordinatorFound) {
     throw new NotFoundError("Please make sure the coordinator exists");
@@ -99,7 +93,7 @@ const createGroup = async ({ body }: Request, res: Response) => {
     name: name,
     numberStudents: numberStudents,
   };
-  const groupCreated = await insertResource(newGroup, groupModel);
+  const groupCreated = await insertGroup(newGroup);
   if (!groupCreated) {
     throw new BadRequestError("Group not created!");
   }
@@ -116,11 +110,7 @@ const getGroups = async ({ body }: Request, res: Response) => {
   /* filter by school id */
   const filters = { school_id: school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const groupsFound = await findFilterAllResources(
-    filters,
-    fieldsToReturn,
-    groupModel
-  );
+  const groupsFound = await findFilterAllGroups(filters, fieldsToReturn);
   /* get all fields */
   if (groupsFound?.length === 0) {
     throw new NotFoundError("No groups found");
@@ -137,13 +127,9 @@ const getGroup = async ({ params, body }: Request, res: Response) => {
   const { id: _id } = params;
   const { school_id } = body;
   /* get the group */
-  const searchCriteria = { _id, school_id };
+  const searchCriteria = { school_id, _id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const groupFound = await findResourceByProperty(
-    searchCriteria,
-    fieldsToReturn,
-    groupModel
-  );
+  const groupFound = await findGroupByProperty(searchCriteria, fieldsToReturn);
   if (!groupFound) {
     throw new NotFoundError("Group not found");
   }
@@ -159,12 +145,11 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
   const { id: groupId } = params;
   const { school_id, level_id, coordinator_id, name, numberStudents } = body;
   /* check if the group name already exists for this school */
-  const groupFilters = [{ school_id: school_id }, { name: name }];
+  const groupFilters = { school_id: school_id, name: name };
   const groupFieldsToReturn = "-createdAt -updatedAt";
-  const duplicateName = await findFilterResourceByProperty(
+  const duplicateName = await findFilterGroupByProperty(
     groupFilters,
-    groupFieldsToReturn,
-    groupModel
+    groupFieldsToReturn
   );
   const duplicateGroupName = duplicateName?.some(
     (group: Group) => group?._id?.toString() !== groupId
@@ -176,12 +161,11 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
   const fieldsToReturnLevel = "-createdAt -updatedAt";
   const fieldsToPopulateLevel = "school_id";
   const fieldsToReturnPopulateLevel = "-createdAt -updatedAt";
-  const levelFound = await findPopulateResourceById(
+  const levelFound = await findPopulateLevelById(
     level_id,
     fieldsToReturnLevel,
     fieldsToPopulateLevel,
-    fieldsToReturnPopulateLevel,
-    levelModel
+    fieldsToReturnPopulateLevel
   );
   if (!levelFound) {
     throw new NotFoundError("Please make sure the level exists");
@@ -203,12 +187,11 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
   const fieldsToReturnCoordinator = "-password -createdAt -updatedAt";
   const fieldsToPopulateCoordinator = "school_id";
   const fieldsToReturnPopulateCoordinator = "-createdAt -updatedAt";
-  const coordinatorFound = await findPopulateResourceById(
+  const coordinatorFound = await findPopulateUserById(
     coordinator_id,
     fieldsToReturnCoordinator,
     fieldsToPopulateCoordinator,
-    fieldsToReturnPopulateCoordinator,
-    userModel
+    fieldsToReturnPopulateCoordinator
   );
   if (!coordinatorFound) {
     throw new NotFoundError("Please make sure the coordinator exists");
@@ -233,12 +216,8 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
     name: name,
     numberStudents: numberStudents,
   };
-  const filtersUpdate = [{ _id: groupId }, { school_id: school_id }];
-  const groupUpdated = await updateFilterResource(
-    filtersUpdate,
-    newGroup,
-    groupModel
-  );
+  const filtersUpdate = { _id: groupId, school_id: school_id };
+  const groupUpdated = await modifyFilterGroup(filtersUpdate, newGroup);
   if (!groupUpdated) {
     throw new NotFoundError("Group not updated");
   }
@@ -254,8 +233,8 @@ const deleteGroup = async ({ params, body }: Request, res: Response) => {
   const { id: groupId } = params;
   const { school_id } = body;
   /* delete group */
-  const filtersDelete = { _id: groupId, school_id: school_id };
-  const groupDeleted = await deleteFilterResource(filtersDelete, groupModel);
+  const filtersDelete = { school_id: school_id, _id: groupId };
+  const groupDeleted = await removeFilterGroup(filtersDelete);
   if (!groupDeleted) {
     throw new NotFoundError("Group not deleted");
   }

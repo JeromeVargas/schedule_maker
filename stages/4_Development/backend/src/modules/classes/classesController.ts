@@ -4,18 +4,15 @@ import BadRequestError from "../../errors/bad-request";
 import NotFoundError from "../../errors/not-found";
 
 import {
-  deleteFilterResource,
-  findFilterAllResources,
-  findPopulateResourceById,
-  findResourceByProperty,
-  insertResource,
-  updateFilterResource,
-} from "../../services/mongoServices";
-
-/* models */
-const classModel = "class";
-const subjectModel = "subject";
-const teacherFieldModel = "teacherField";
+  insertClass,
+  findClassByProperty,
+  findFilterAllClasses,
+  modifyFilterClass,
+  removeFilterClass,
+  /* Services from other entities */
+  findPopulateSubjectById,
+  findPopulateTeacherFieldById,
+} from "./classServices";
 
 // @desc create a class
 // @route POST /api/v1/classes
@@ -36,13 +33,12 @@ const createClass = async ({ body }: Request, res: Response) => {
   const fieldsToReturnSubject = "-createdAt -updatedAt";
   const fieldsToPopulateSubject = "school_id coordinator_id group_id field_id";
   const fieldsToReturnPopulateSubject =
-    "-createdAt -updatedAt -password -email";
-  const subjectFound = await findPopulateResourceById(
+    "-password -email -createdAt -updatedAt";
+  const subjectFound = await findPopulateSubjectById(
     subject_id,
     fieldsToReturnSubject,
     fieldsToPopulateSubject,
-    fieldsToReturnPopulateSubject,
-    subjectModel
+    fieldsToReturnPopulateSubject
   );
   if (!subjectFound) {
     throw new BadRequestError("Please make sure the subject exists");
@@ -69,12 +65,11 @@ const createClass = async ({ body }: Request, res: Response) => {
   const fieldsToReturnTeacherField = "-createdAt -updatedAt";
   const fieldsToPopulateTeacherField = "school_id teacher_id";
   const fieldsToReturnPopulateTeacherField = "-createdAt -updatedAt";
-  const teacherFieldFound = await findPopulateResourceById(
+  const teacherFieldFound = await findPopulateTeacherFieldById(
     teacherField_id,
     fieldsToReturnTeacherField,
     fieldsToPopulateTeacherField,
-    fieldsToReturnPopulateTeacherField,
-    teacherFieldModel
+    fieldsToReturnPopulateTeacherField
   );
   if (!teacherFieldFound) {
     throw new BadRequestError(
@@ -114,7 +109,7 @@ const createClass = async ({ body }: Request, res: Response) => {
     groupScheduleSlot: groupScheduleSlot,
     teacherScheduleSlot: teacherScheduleSlot,
   };
-  const classCreated = await insertResource(newClass, classModel);
+  const classCreated = await insertClass(newClass);
   if (!classCreated) {
     throw new BadRequestError("Class not created!");
   }
@@ -131,11 +126,7 @@ const getClasses = async ({ body }: Request, res: Response) => {
   /* filter by school id */
   const filters = { school_id: school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const classesFound = await findFilterAllResources(
-    filters,
-    fieldsToReturn,
-    classModel
-  );
+  const classesFound = await findFilterAllClasses(filters, fieldsToReturn);
   /* get all fields */
   if (classesFound?.length === 0) {
     throw new NotFoundError("No classes found");
@@ -152,13 +143,9 @@ const getClass = async ({ params, body }: Request, res: Response) => {
   const { id: _id } = params;
   const { school_id } = body;
   /* get the class */
-  const searchCriteria = { _id, school_id };
+  const searchCriteria = { school_id, _id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const classFound = await findResourceByProperty(
-    searchCriteria,
-    fieldsToReturn,
-    classModel
-  );
+  const classFound = await findClassByProperty(searchCriteria, fieldsToReturn);
   if (!classFound) {
     throw new NotFoundError("Class not found");
   }
@@ -185,13 +172,12 @@ const updateClass = async ({ params, body }: Request, res: Response) => {
   const fieldsToReturnSubject = "-createdAt -updatedAt";
   const fieldsToPopulateSubject = "school_id coordinator_id group_id field_id";
   const fieldsToReturnPopulateSubject =
-    "-createdAt -updatedAt -password -email";
-  const subjectFound = await findPopulateResourceById(
+    "-password -email -createdAt -updatedAt";
+  const subjectFound = await findPopulateSubjectById(
     subject_id,
     fieldsToReturnSubject,
     fieldsToPopulateSubject,
-    fieldsToReturnPopulateSubject,
-    subjectModel
+    fieldsToReturnPopulateSubject
   );
   if (!subjectFound) {
     throw new NotFoundError("Please make sure the subject exists");
@@ -218,12 +204,11 @@ const updateClass = async ({ params, body }: Request, res: Response) => {
   const fieldsToReturnTeacherField = "-createdAt -updatedAt";
   const fieldsToPopulateTeacherField = "school_id teacher_id";
   const fieldsToReturnPopulateTeacherField = "-createdAt -updatedAt";
-  const teacherFieldFound = await findPopulateResourceById(
+  const teacherFieldFound = await findPopulateTeacherFieldById(
     teacherField_id,
     fieldsToReturnTeacherField,
     fieldsToPopulateTeacherField,
-    fieldsToReturnPopulateTeacherField,
-    teacherFieldModel
+    fieldsToReturnPopulateTeacherField
   );
   if (!teacherFieldFound) {
     throw new NotFoundError("Please make sure the teacherField exists");
@@ -261,12 +246,8 @@ const updateClass = async ({ params, body }: Request, res: Response) => {
     groupScheduleSlot: groupScheduleSlot,
     teacherScheduleSlot: teacherScheduleSlot,
   };
-  const filtersUpdate = [{ _id: classId }, { school_id: school_id }];
-  const classUpdated = await updateFilterResource(
-    filtersUpdate,
-    newClass,
-    classModel
-  );
+  const filtersUpdate = { _id: classId, school_id: school_id };
+  const classUpdated = await modifyFilterClass(filtersUpdate, newClass);
   if (!classUpdated) {
     throw new NotFoundError("Class not updated");
   }
@@ -283,7 +264,7 @@ const deleteClass = async ({ params, body }: Request, res: Response) => {
   const { school_id } = body;
   /* delete class */
   const filtersDelete = { _id: classId, school_id: school_id };
-  const classDeleted = await deleteFilterResource(filtersDelete, classModel);
+  const classDeleted = await removeFilterClass(filtersDelete);
   if (!classDeleted) {
     throw new NotFoundError("Class not deleted");
   }

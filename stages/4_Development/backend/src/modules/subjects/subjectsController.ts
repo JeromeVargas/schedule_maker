@@ -4,21 +4,18 @@ import BadRequestError from "../../errors/bad-request";
 import ConflictError from "../../errors/conflict";
 import NotFoundError from "../../errors/not-found";
 
-import {
-  deleteFilterResource,
-  findFilterAllResources,
-  findFilterResourceByProperty,
-  findPopulateResourceById,
-  findResourceByProperty,
-  insertResource,
-  updateFilterResource,
-} from "../../services/mongoServices";
 import { Subject } from "../../typings/types";
-
-/* models */
-const subjectModel = "subject";
-const groupModel = "group";
-const fieldModel = "field";
+import {
+  insertSubject,
+  findFilterAllSubjects,
+  findSubjectByProperty,
+  findFilterSubjectByProperty,
+  modifyFilterSubject,
+  removeFilterSubject,
+  /* Services from other entities */
+  findPopulateGroupById,
+  findPopulateFieldById,
+} from "./subjectServices";
 
 // @desc create a subject
 // @route POST /api/v1/subjects
@@ -38,10 +35,9 @@ const createSubject = async ({ body }: Request, res: Response) => {
   /* check if the subject name already exists for this school */
   const searchCriteria = { school_id, name };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicateName = await findResourceByProperty(
+  const duplicateName = await findSubjectByProperty(
     searchCriteria,
-    fieldsToReturn,
-    subjectModel
+    fieldsToReturn
   );
   if (duplicateName) {
     throw new ConflictError("This subject name already exists");
@@ -49,13 +45,12 @@ const createSubject = async ({ body }: Request, res: Response) => {
   /* find if the group already exists */
   const fieldsToReturnGroup = "-createdAt -updatedAt";
   const fieldsToPopulateGroup = "school_id coordinator_id";
-  const fieldsToReturnPopulateGroup = "-createdAt -updatedAt";
-  const groupFound = await findPopulateResourceById(
+  const fieldsToReturnPopulateGroup = "-password -createdAt -updatedAt";
+  const groupFound = await findPopulateGroupById(
     group_id,
     fieldsToReturnGroup,
     fieldsToPopulateGroup,
-    fieldsToReturnPopulateGroup,
-    groupModel
+    fieldsToReturnPopulateGroup
   );
   if (!groupFound) {
     throw new BadRequestError("Please make sure the group exists");
@@ -82,12 +77,11 @@ const createSubject = async ({ body }: Request, res: Response) => {
   const fieldsToReturnField = "-createdAt -updatedAt";
   const fieldsToPopulateField = "school_id";
   const fieldsToReturnPopulateField = "-createdAt -updatedAt";
-  const fieldFound = await findPopulateResourceById(
+  const fieldFound = await findPopulateFieldById(
     field_id,
     fieldsToReturnField,
     fieldsToPopulateField,
-    fieldsToReturnPopulateField,
-    fieldModel
+    fieldsToReturnPopulateField
   );
   if (!fieldFound) {
     throw new BadRequestError("Please make sure the field exists");
@@ -108,7 +102,7 @@ const createSubject = async ({ body }: Request, res: Response) => {
     classUnits: classUnits,
     frequency: frequency,
   };
-  const subjectCreated = await insertResource(newSubject, subjectModel);
+  const subjectCreated = await insertSubject(newSubject);
   if (!subjectCreated) {
     throw new BadRequestError("Subject not created!");
   }
@@ -125,11 +119,7 @@ const getSubjects = async ({ body }: Request, res: Response) => {
   /* filter by school id */
   const filters = { school_id: school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const subjectsFound = await findFilterAllResources(
-    filters,
-    fieldsToReturn,
-    subjectModel
-  );
+  const subjectsFound = await findFilterAllSubjects(filters, fieldsToReturn);
   /* get all fields */
   if (subjectsFound?.length === 0) {
     throw new NotFoundError("No subjects found");
@@ -140,18 +130,17 @@ const getSubjects = async ({ body }: Request, res: Response) => {
 // @desc get the Subject by id
 // @route GET /api/v1/Subjects/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields: params: {id:[string]},  body: {school_id:[string]}
 const getSubject = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
   /* get the subject */
-  const searchCriteria = { _id, school_id };
+  const searchCriteria = { school_id, _id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const subjectFound = await findResourceByProperty(
+  const subjectFound = await findSubjectByProperty(
     searchCriteria,
-    fieldsToReturn,
-    subjectModel
+    fieldsToReturn
   );
   if (!subjectFound) {
     throw new NotFoundError("Subject not found");
@@ -176,12 +165,11 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
     frequency,
   } = body;
   /* check if the subject name already exists for this school */
-  const subjectFilters = [{ school_id: school_id }, { name: name }];
+  const subjectFilters = { school_id: school_id, name: name };
   const subjectFieldsToReturn = "-createdAt -updatedAt";
-  const duplicateName = await findFilterResourceByProperty(
+  const duplicateName = await findFilterSubjectByProperty(
     subjectFilters,
-    subjectFieldsToReturn,
-    subjectModel
+    subjectFieldsToReturn
   );
   const duplicateSubjectName = duplicateName?.some(
     (subject: Subject) => subject?._id?.toString() !== subjectId
@@ -192,13 +180,12 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
   /* find group by id, and populate its properties */
   const fieldsToReturnGroup = "-createdAt -updatedAt";
   const fieldsToPopulateGroup = "school_id coordinator_id";
-  const fieldsToReturnPopulateGroup = "-createdAt -updatedAt";
-  const groupFound = await findPopulateResourceById(
+  const fieldsToReturnPopulateGroup = "-password -createdAt -updatedAt";
+  const groupFound = await findPopulateGroupById(
     group_id,
     fieldsToReturnGroup,
     fieldsToPopulateGroup,
-    fieldsToReturnPopulateGroup,
-    groupModel
+    fieldsToReturnPopulateGroup
   );
   if (!groupFound) {
     throw new NotFoundError("Please make sure the group exists");
@@ -225,12 +212,11 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
   const fieldsToReturnField = "-createdAt -updatedAt";
   const fieldsToPopulateField = "school_id";
   const fieldsToReturnPopulateField = "-createdAt -updatedAt";
-  const fieldFound = await findPopulateResourceById(
+  const fieldFound = await findPopulateFieldById(
     field_id,
     fieldsToReturnField,
     fieldsToPopulateField,
-    fieldsToReturnPopulateField,
-    fieldModel
+    fieldsToReturnPopulateField
   );
   if (!fieldFound) {
     throw new NotFoundError("Please make sure the field exists");
@@ -251,12 +237,8 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
     classUnits: classUnits,
     frequency: frequency,
   };
-  const filtersUpdate = [{ _id: subjectId }, { school_id: school_id }];
-  const subjectUpdated = await updateFilterResource(
-    filtersUpdate,
-    newSubject,
-    subjectModel
-  );
+  const filtersUpdate = { _id: subjectId, school_id: school_id };
+  const subjectUpdated = await modifyFilterSubject(filtersUpdate, newSubject);
   if (!subjectUpdated) {
     throw new NotFoundError("Subject not updated");
   }
@@ -273,10 +255,7 @@ const deleteSubject = async ({ params, body }: Request, res: Response) => {
   const { school_id } = body;
   /* delete subject */
   const filtersDelete = { _id: subjectId, school_id: school_id };
-  const subjectDeleted = await deleteFilterResource(
-    filtersDelete,
-    subjectModel
-  );
+  const subjectDeleted = await removeFilterSubject(filtersDelete);
   if (!subjectDeleted) {
     throw new NotFoundError("Subject not deleted");
   }

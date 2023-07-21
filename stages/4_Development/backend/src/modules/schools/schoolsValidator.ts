@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
-import { isValidId } from "../../services/mongoServices";
+import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body {name:[string]}
+// @fields: body {name:[string], groupMaxNumStudents: [number]}
 const validateCreateSchool = [
   check("name")
     .exists()
@@ -52,7 +52,7 @@ const validateGetSchool = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {name:[string]}
+// @fields: params: {id:[string]},  body: {name:[string], groupMaxNumStudents: [number]}
 const validateUpdateSchool = [
   check("id")
     .custom((value) => {

@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { Field } from "../../typings/types";
 
-const SchoolSchema = new Schema<Field>(
+const FieldSchema = new Schema<Field>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
@@ -19,6 +19,6 @@ const SchoolSchema = new Schema<Field>(
   }
 );
 
-const SchoolModel = model<Field>("Field", SchoolSchema);
+const FieldModel = model<Field>("Field", FieldSchema);
 
-export default SchoolModel;
+export default FieldModel;

@@ -2,21 +2,24 @@ import supertest from "supertest";
 import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
-import * as MongoServices from "../../../services/mongoServices";
+
+import * as breakServices from "../breakServices";
 
 import { Break } from "../../../typings/types";
+
+type Service =
+  | "insertBreak"
+  | "findFilterAllBreaks"
+  | "findBreakByProperty"
+  | "modifyFilterBreak"
+  | "removeFilterBreak"
+  | "findPopulateScheduleById";
 
 describe("Resource => Break", () => {
   /* mock services */
   // just one return
-  const mockService = (payload: unknown, service: string) => {
-    return (
-      jest
-        // @ts-ignore
-        .spyOn(MongoServices, service)
-        // @ts-ignore
-        .mockReturnValue(payload)
-    );
+  const mockService = (payload: any, service: Service) => {
+    return jest.spyOn(breakServices, service).mockReturnValue(payload);
   };
 
   /* hooks */
@@ -126,9 +129,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakNullPayload, "insertResource");
+        const insertBreak = mockService(breakNullPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -164,14 +167,10 @@ describe("Resource => Break", () => {
           newBreakMissingValues.schedule_i,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertBreak).not.toHaveBeenCalled();
-        expect(insertBreak).not.toHaveBeenCalledWith(
-          newBreakMissingValues,
-          "break"
-        );
+        expect(insertBreak).not.toHaveBeenCalledWith(newBreakMissingValues);
       });
     });
     describe("break::post::02 - Passing fields with empty values", () => {
@@ -179,9 +178,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakNullPayload, "insertResource");
+        const insertBreak = mockService(breakNullPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -221,14 +220,10 @@ describe("Resource => Break", () => {
           newBreakEmptyValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertBreak).not.toHaveBeenCalled();
-        expect(insertBreak).not.toHaveBeenCalledWith(
-          newBreakEmptyValues,
-          "break"
-        );
+        expect(insertBreak).not.toHaveBeenCalledWith(newBreakEmptyValues);
       });
     });
     describe("break::post::03 - Passing an invalid type as a value", () => {
@@ -236,9 +231,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakNullPayload, "insertResource");
+        const insertBreak = mockService(breakNullPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -278,14 +273,10 @@ describe("Resource => Break", () => {
           newBreakNotValidDataTypes.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertBreak).not.toHaveBeenCalled();
-        expect(insertBreak).not.toHaveBeenCalledWith(
-          newBreakNotValidDataTypes,
-          "break"
-        );
+        expect(insertBreak).not.toHaveBeenCalledWith(newBreakNotValidDataTypes);
       });
     });
     describe("break::post::04 - Passing too long or short input values", () => {
@@ -293,9 +284,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakNullPayload, "insertResource");
+        const insertBreak = mockService(breakNullPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -323,14 +314,10 @@ describe("Resource => Break", () => {
           newBreakWrongLengthValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt ull-updatedAt",
-          "schedule"
+          "-createdAt ull-updatedAt"
         );
         expect(insertBreak).not.toHaveBeenCalled();
-        expect(insertBreak).not.toHaveBeenCalledWith(
-          newBreakWrongLengthValues,
-          "break"
-        );
+        expect(insertBreak).not.toHaveBeenCalledWith(newBreakWrongLengthValues);
       });
     });
     describe("break::post::05 - Passing break start after the 23:59 in the body", () => {
@@ -338,9 +325,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           schedulePayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakPayload, "insertResource");
+        const insertBreak = mockService(breakPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -357,11 +344,10 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertBreak).not.toHaveBeenCalled();
-        expect(insertBreak).not.toHaveBeenCalledWith(newBreak, "break");
+        expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
     describe("break::post::06 - Passing an non-existent schedule in the body", () => {
@@ -369,9 +355,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakPayload, "insertResource");
+        const insertBreak = mockService(breakPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -388,11 +374,10 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertBreak).not.toHaveBeenCalled();
-        expect(insertBreak).not.toHaveBeenCalledWith(newBreak, "break");
+        expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
     describe("break::post::07 - Passing non-matching school id value", () => {
@@ -400,9 +385,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           schedulePayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakPayload, "insertResource");
+        const insertBreak = mockService(breakPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -419,11 +404,10 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertBreak).not.toHaveBeenCalled();
-        expect(insertBreak).not.toHaveBeenCalledWith(newBreak, "break");
+        expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
     describe("break::post::08 - Passing a break start time that starts earlier than the school shift day start time", () => {
@@ -431,9 +415,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           schedulePayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakPayload, "insertResource");
+        const insertBreak = mockService(breakPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -450,11 +434,10 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertBreak).not.toHaveBeenCalled();
-        expect(insertBreak).not.toHaveBeenCalledWith(newBreak, "break");
+        expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
     describe("break::post::09 - Passing a break but not being created", () => {
@@ -462,9 +445,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           schedulePayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakNullPayload, "insertResource");
+        const insertBreak = mockService(breakNullPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -481,11 +464,10 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertBreak).toHaveBeenCalled();
-        expect(insertBreak).toHaveBeenCalledWith(newBreak, "break");
+        expect(insertBreak).toHaveBeenCalledWith(newBreak);
       });
     });
     describe("break::post::10 - Passing a break correctly to create", () => {
@@ -493,9 +475,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           schedulePayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const insertBreak = mockService(breakPayload, "insertResource");
+        const insertBreak = mockService(breakPayload, "insertBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -512,11 +494,10 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertBreak).toHaveBeenCalled();
-        expect(insertBreak).toHaveBeenCalledWith(newBreak, "break");
+        expect(insertBreak).toHaveBeenCalledWith(newBreak);
       });
     });
   });
@@ -528,7 +509,7 @@ describe("Resource => Break", () => {
           // mock services
           const findBreaks = mockService(
             breaksNullPayload,
-            "findFilterAllResources"
+            "findFilterAllBreaks"
           );
 
           // api call
@@ -548,8 +529,7 @@ describe("Resource => Break", () => {
           expect(findBreaks).not.toHaveBeenCalled();
           expect(findBreaks).not.toHaveBeenCalledWith(
             { school_id: null },
-            "-createdAt -updatedAt",
-            "break"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -558,7 +538,7 @@ describe("Resource => Break", () => {
           // mock services
           const findBreaks = mockService(
             breaksNullPayload,
-            "findFilterAllResources"
+            "findFilterAllBreaks"
           );
 
           // api call
@@ -579,8 +559,7 @@ describe("Resource => Break", () => {
           expect(findBreaks).not.toHaveBeenCalled();
           expect(findBreaks).not.toHaveBeenCalledWith(
             { school_id: "" },
-            "-createdAt -updatedAt",
-            "break"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -589,7 +568,7 @@ describe("Resource => Break", () => {
           // mock services
           const findBreaks = mockService(
             breaksNullPayload,
-            "findFilterAllResources"
+            "findFilterAllBreaks"
           );
 
           // api call
@@ -610,8 +589,7 @@ describe("Resource => Break", () => {
           expect(findBreaks).not.toHaveBeenCalled();
           expect(findBreaks).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "break"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -620,7 +598,7 @@ describe("Resource => Break", () => {
           // mock services
           const findBreaks = mockService(
             breaksNullPayload,
-            "findFilterAllResources"
+            "findFilterAllBreaks"
           );
 
           // api call
@@ -634,18 +612,14 @@ describe("Resource => Break", () => {
           expect(findBreaks).toHaveBeenCalled();
           expect(findBreaks).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
-            "-createdAt -updatedAt",
-            "break"
+            "-createdAt -updatedAt"
           );
         });
       });
       describe("break::get::05 - Requesting all fields correctly", () => {
         it("should get all fields", async () => {
           // mock services
-          const findBreaks = mockService(
-            breaksPayload,
-            "findFilterAllResources"
-          );
+          const findBreaks = mockService(breaksPayload, "findFilterAllBreaks");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -680,20 +654,18 @@ describe("Resource => Break", () => {
           expect(findBreaks).toHaveBeenCalled();
           expect(findBreaks).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "break"
+            "-createdAt -updatedAt"
           );
         });
       });
     });
-
     describe("break - GET/:id", () => {
       describe("break::get/:id::01 - Passing missing fields", () => {
         it("should return a missing values error", async () => {
           // mock services
           const findBreak = mockService(
             breakNullPayload,
-            "findResourceByProperty"
+            "findBreakByProperty"
           );
 
           // api call
@@ -712,9 +684,8 @@ describe("Resource => Break", () => {
           expect(statusCode).toBe(400);
           expect(findBreak).not.toHaveBeenCalled();
           expect(findBreak).not.toHaveBeenCalledWith(
-            { _id: validMockBreakId, school_id: null },
-            "-createdAt -updatedAt",
-            "break"
+            { school_id: null, _id: validMockBreakId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -723,7 +694,7 @@ describe("Resource => Break", () => {
           // mock services
           const findBreak = mockService(
             breakNullPayload,
-            "findResourceByProperty"
+            "findBreakByProperty"
           );
 
           // api call
@@ -743,9 +714,8 @@ describe("Resource => Break", () => {
           expect(statusCode).toBe(400);
           expect(findBreak).not.toHaveBeenCalled();
           expect(findBreak).not.toHaveBeenCalledWith(
-            { _id: validMockBreakId, school_id: "" },
-            "-createdAt -updatedAt",
-            "break"
+            { school_id: "", _id: validMockBreakId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -754,7 +724,7 @@ describe("Resource => Break", () => {
           // mock services
           const findBreak = mockService(
             breakNullPayload,
-            "findResourceByProperty"
+            "findBreakByProperty"
           );
 
           // api call
@@ -780,9 +750,8 @@ describe("Resource => Break", () => {
           expect(statusCode).toBe(400);
           expect(findBreak).not.toHaveBeenCalled();
           expect(findBreak).not.toHaveBeenCalledWith(
-            { _id: invalidMockId, school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "break"
+            { school_id: invalidMockId, _id: invalidMockId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -791,7 +760,7 @@ describe("Resource => Break", () => {
           // mock services
           const findBreak = mockService(
             breakNullPayload,
-            "findResourceByProperty"
+            "findBreakByProperty"
           );
 
           // api call
@@ -806,16 +775,15 @@ describe("Resource => Break", () => {
           expect(statusCode).toBe(404);
           expect(findBreak).toHaveBeenCalled();
           expect(findBreak).toHaveBeenCalledWith(
-            { _id: otherValidMockId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "break"
+            { school_id: validMockSchoolId, _id: otherValidMockId },
+            "-createdAt -updatedAt"
           );
         });
       });
       describe("break::get/:id::05 - Requesting a field correctly", () => {
         it("should get a field", async () => {
           // mock services
-          const findBreak = mockService(breakPayload, "findResourceByProperty");
+          const findBreak = mockService(breakPayload, "findBreakByProperty");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -833,9 +801,8 @@ describe("Resource => Break", () => {
           expect(statusCode).toBe(200);
           expect(findBreak).toHaveBeenCalled();
           expect(findBreak).toHaveBeenCalledWith(
-            { _id: validMockBreakId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "break"
+            { school_id: validMockSchoolId, _id: validMockBreakId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -848,12 +815,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(
-          breakNullPayload,
-          "updateFilterResource"
-        );
+        const updateBreak = mockService(breakNullPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -889,17 +853,12 @@ describe("Resource => Break", () => {
           newBreakMissingValues.schedule_i,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockBreakId },
-            { school_id: newBreakMissingValues.school_i },
-          ],
-          newBreakMissingValues,
-          "break"
+          { _id: validMockBreakId, school_id: newBreakMissingValues.school_i },
+          newBreakMissingValues
         );
       });
     });
@@ -908,12 +867,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(
-          breakNullPayload,
-          "updateFilterResource"
-        );
+        const updateBreak = mockService(breakNullPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -953,17 +909,12 @@ describe("Resource => Break", () => {
           newBreakEmptyValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockBreakId },
-            { school_id: newBreakEmptyValues.school_id },
-          ],
-          newBreakEmptyValues,
-          "break"
+          { _id: validMockBreakId, school_id: newBreakEmptyValues.school_id },
+          newBreakEmptyValues
         );
       });
     });
@@ -972,12 +923,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(
-          breakNullPayload,
-          "updateFilterResource"
-        );
+        const updateBreak = mockService(breakNullPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1023,17 +971,15 @@ describe("Resource => Break", () => {
           newBreakNotValidDataTypes.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
-          [
-            { _id: invalidMockId },
-            { school_id: newBreakNotValidDataTypes.school_id },
-          ],
-          newBreakNotValidDataTypes,
-          "break"
+          {
+            _id: invalidMockId,
+            school_id: newBreakNotValidDataTypes.school_id,
+          },
+          newBreakNotValidDataTypes
         );
       });
     });
@@ -1042,12 +988,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(
-          breakNullPayload,
-          "updateFilterResource"
-        );
+        const updateBreak = mockService(breakNullPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1075,17 +1018,15 @@ describe("Resource => Break", () => {
           newBreakWrongLengthValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockBreakId },
-            { school_id: newBreakWrongLengthValues.school_id },
-          ],
-          newBreakWrongLengthValues,
-          "break"
+          {
+            _id: validMockBreakId,
+            school_id: newBreakWrongLengthValues.school_id,
+          },
+          newBreakWrongLengthValues
         );
       });
     });
@@ -1094,9 +1035,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(breakPayload, "updateFilterResource");
+        const updateBreak = mockService(breakPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1113,14 +1054,12 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
-          [{ _id: validMockBreakId }, { school_id: newBreak.school_id }],
-          newBreak,
-          "break"
+          { _id: validMockBreakId, school_id: newBreak.school_id },
+          newBreak
         );
       });
     });
@@ -1129,9 +1068,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(breakPayload, "updateFilterResource");
+        const updateBreak = mockService(breakPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1148,14 +1087,12 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
-          [{ _id: validMockBreakId }, { school_id: newBreak.school_id }],
-          newBreak,
-          "break"
+          { _id: validMockBreakId, school_id: newBreak.school_id },
+          newBreak
         );
       });
     });
@@ -1164,9 +1101,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           schedulePayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(breakPayload, "updateFilterResource");
+        const updateBreak = mockService(breakPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1183,14 +1120,12 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
-          [{ _id: validMockBreakId }, { school_id: newBreak.school_id }],
-          newBreak,
-          "break"
+          { _id: validMockBreakId, school_id: newBreak.school_id },
+          newBreak
         );
       });
     });
@@ -1199,9 +1134,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           schedulePayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(breakPayload, "updateFilterResource");
+        const updateBreak = mockService(breakPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1218,14 +1153,12 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
-          [{ _id: validMockBreakId }, { school_id: newBreak.school_id }],
-          newBreak,
-          "break"
+          { _id: validMockBreakId, school_id: newBreak.school_id },
+          newBreak
         );
       });
     });
@@ -1234,12 +1167,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           schedulePayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(
-          breakNullPayload,
-          "updateFilterResource"
-        );
+        const updateBreak = mockService(breakNullPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1256,14 +1186,12 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).toHaveBeenCalled();
         expect(updateBreak).toHaveBeenCalledWith(
-          [{ _id: validMockBreakId }, { school_id: newBreak.school_id }],
-          newBreak,
-          "break"
+          { _id: validMockBreakId, school_id: newBreak.school_id },
+          newBreak
         );
       });
     });
@@ -1272,9 +1200,9 @@ describe("Resource => Break", () => {
         // mock services
         const findSchedule = mockService(
           schedulePayload,
-          "findPopulateResourceById"
+          "findPopulateScheduleById"
         );
-        const updateBreak = mockService(breakPayload, "updateFilterResource");
+        const updateBreak = mockService(breakPayload, "modifyFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1291,14 +1219,12 @@ describe("Resource => Break", () => {
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(updateBreak).toHaveBeenCalled();
         expect(updateBreak).toHaveBeenCalledWith(
-          [{ _id: validMockBreakId }, { school_id: newBreak.school_id }],
-          newBreak,
-          "break"
+          { _id: validMockBreakId, school_id: newBreak.school_id },
+          newBreak
         );
       });
     });
@@ -1308,10 +1234,7 @@ describe("Resource => Break", () => {
     describe("break::delete::01 - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
-        const deleteBreak = mockService(
-          breakNullPayload,
-          "deleteFilterResource"
-        );
+        const deleteBreak = mockService(breakNullPayload, "removeFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1328,19 +1251,16 @@ describe("Resource => Break", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteBreak).not.toHaveBeenCalled();
-        expect(deleteBreak).not.toHaveBeenCalledWith(
-          { _id: validMockBreakId, school_id: null },
-          "break"
-        );
+        expect(deleteBreak).not.toHaveBeenCalledWith({
+          school_id: null,
+          _id: validMockBreakId,
+        });
       });
     });
     describe("break::delete::02 - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
         // mock services
-        const deleteBreak = mockService(
-          breakNullPayload,
-          "deleteFilterResource"
-        );
+        const deleteBreak = mockService(breakNullPayload, "removeFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1358,19 +1278,16 @@ describe("Resource => Break", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteBreak).not.toHaveBeenCalled();
-        expect(deleteBreak).not.toHaveBeenCalledWith(
-          { _id: validMockBreakId, school_id: "" },
-          "break"
-        );
+        expect(deleteBreak).not.toHaveBeenCalledWith({
+          school_id: "",
+          _id: validMockBreakId,
+        });
       });
     });
     describe("break::delete::03 - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
-        const deleteBreak = mockService(
-          breakNullPayload,
-          "deleteFilterResource"
-        );
+        const deleteBreak = mockService(breakNullPayload, "removeFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1394,19 +1311,16 @@ describe("Resource => Break", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteBreak).not.toHaveBeenCalled();
-        expect(deleteBreak).not.toHaveBeenCalledWith(
-          { _id: invalidMockId, school_id: invalidMockId },
-          "break"
-        );
+        expect(deleteBreak).not.toHaveBeenCalledWith({
+          school_id: invalidMockId,
+          _id: invalidMockId,
+        });
       });
     });
     describe("break::delete::04 - Passing a break id but not deleting it", () => {
       it("should not delete a school", async () => {
         // mock services
-        const deleteBreak = mockService(
-          breakNullPayload,
-          "deleteFilterResource"
-        );
+        const deleteBreak = mockService(breakNullPayload, "removeFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1417,16 +1331,16 @@ describe("Resource => Break", () => {
         expect(body).toStrictEqual({ msg: "Break not deleted" });
         expect(statusCode).toBe(404);
         expect(deleteBreak).toHaveBeenCalled();
-        expect(deleteBreak).toHaveBeenCalledWith(
-          { _id: validMockBreakId, school_id: otherValidMockId },
-          "break"
-        );
+        expect(deleteBreak).toHaveBeenCalledWith({
+          school_id: otherValidMockId,
+          _id: validMockBreakId,
+        });
       });
     });
     describe("break::delete::05 - Passing a break id correctly to delete", () => {
       it("should delete a field", async () => {
         // mock services
-        const deleteBreak = mockService(breakPayload, "deleteFilterResource");
+        const deleteBreak = mockService(breakPayload, "removeFilterBreak");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1437,10 +1351,10 @@ describe("Resource => Break", () => {
         expect(body).toStrictEqual({ msg: "Break deleted" });
         expect(statusCode).toBe(200);
         expect(deleteBreak).toHaveBeenCalled();
-        expect(deleteBreak).toHaveBeenCalledWith(
-          { _id: validMockBreakId, school_id: validMockSchoolId },
-          "break"
-        );
+        expect(deleteBreak).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          _id: validMockBreakId,
+        });
       });
     });
   });

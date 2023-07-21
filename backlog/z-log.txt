@@ -9,12 +9,11 @@ for later:
 
 Back end:
 
-continue here --> check the code manually
-continue here --> separate mongo services and send to the corresponding modules folder, break the abstraction
-continue here --> refactor all the @ts-ignore instances
+continue here --> check the code manually and check the potential refactors
+continue here --> check <omit> or <pick> for resources with/without _id
 continue here --> check sanitation express-validator middleware in routes
 continue here --> try to update packages, specially express validator
-continue here --> password hashing
+continue here --> password hashing - post user
 continue here --> remove unnecessary stack error messages if in production
 
 for later:
@@ -22,11 +21,13 @@ for later:
 - if user is a teacher make sure he / she has teaching functions as true
 - if user is updated as inactive or with no teaching functions, delete teacher
 - delete cascade user, delete teacher assignments
-- creating a teacher directly from the user route
+- creating a teacher directly from the user route / try promise all
 
 - add checks for the school, make sure the field actually belongs to the school  - school middleware
 - not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
 - make sure resources belong to the user/coordinator's school - school middleware
+- authentication
+- authorization - role base
 
 Front End
 

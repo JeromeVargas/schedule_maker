@@ -2,21 +2,25 @@ import supertest from "supertest";
 import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
-import * as MongoServices from "../../../services/mongoServices";
+
+import * as scheduleServices from "../scheduleServices";
 
 import { Schedule } from "../../../typings/types";
+
+type Service =
+  | "insertSchedule"
+  | "findScheduleByProperty"
+  | "findFilterAllSchedules"
+  | "findFilterScheduleByProperty"
+  | "modifyFilterSchedule"
+  | "removeFilterSchedule"
+  | "findSchoolById";
 
 describe("Resource => Schedule", () => {
   /* mock services */
   // just one return
-  const mockService = (payload: unknown, service: string) => {
-    return (
-      jest
-        // @ts-ignore
-        .spyOn(MongoServices, service)
-        // @ts-ignore
-        .mockReturnValue(payload)
-    );
+  const mockService = (payload: any, service: Service) => {
+    return jest.spyOn(scheduleServices, service).mockReturnValue(payload);
   };
 
   /* hooks */
@@ -180,14 +184,14 @@ describe("Resource => Schedule", () => {
     describe("schedule::post::01 - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findResourceByProperty"
+          "findScheduleByProperty"
         );
         const insertSchedule = mockService(
           scheduleNullPayload,
-          "insertResource"
+          "insertSchedule"
         );
 
         // api call
@@ -262,8 +266,7 @@ describe("Resource => Schedule", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newScheduleMissingValues.school_i,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -271,27 +274,25 @@ describe("Resource => Schedule", () => {
             school_id: newScheduleMissingValues.school_i,
             name: newScheduleMissingValues.nam,
           },
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(
-          newScheduleMissingValues,
-          "schedule"
+          newScheduleMissingValues
         );
       });
     });
     describe("schedule::post::02 - Passing fields with empty values", () => {
       it("should return an empty fields error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findResourceByProperty"
+          "findScheduleByProperty"
         );
         const insertSchedule = mockService(
           scheduleNullPayload,
-          "insertResource"
+          "insertSchedule"
         );
 
         // api call
@@ -378,8 +379,7 @@ describe("Resource => Schedule", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newScheduleEmptyValues.school_id,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -387,27 +387,23 @@ describe("Resource => Schedule", () => {
             school_id: newScheduleEmptyValues.school_id,
             name: newScheduleEmptyValues.name,
           },
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertSchedule).not.toHaveBeenCalled();
-        expect(insertSchedule).not.toHaveBeenCalledWith(
-          newScheduleEmptyValues,
-          "schedule"
-        );
+        expect(insertSchedule).not.toHaveBeenCalledWith(newScheduleEmptyValues);
       });
     });
     describe("schedule::post::03 - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findResourceByProperty"
+          "findScheduleByProperty"
         );
         const insertSchedule = mockService(
           scheduleNullPayload,
-          "insertResource"
+          "insertSchedule"
         );
 
         // api call
@@ -494,8 +490,7 @@ describe("Resource => Schedule", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newScheduleNotValidDataTypes.school_id,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -503,27 +498,25 @@ describe("Resource => Schedule", () => {
             school_id: newScheduleNotValidDataTypes.school_id,
             name: newScheduleNotValidDataTypes.name,
           },
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(
-          newScheduleNotValidDataTypes,
-          "schedule"
+          newScheduleNotValidDataTypes
         );
       });
     });
     describe("schedule::post::04 - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findResourceByProperty"
+          "findScheduleByProperty"
         );
         const insertSchedule = mockService(
           scheduleNullPayload,
-          "insertResource"
+          "insertSchedule"
         );
 
         // api call
@@ -563,8 +556,7 @@ describe("Resource => Schedule", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newScheduleWrongLengthValues.school_id,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -572,25 +564,23 @@ describe("Resource => Schedule", () => {
             school_id: newScheduleWrongLengthValues.school_id,
             name: newScheduleWrongLengthValues.name,
           },
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(
-          newScheduleWrongLengthValues,
-          "schedule"
+          newScheduleWrongLengthValues
         );
       });
     });
     describe("schedule::post::05 - Passing day start after the 23:59 in the body", () => {
       it("should return a day start after the 23:59 error", async () => {
         // mock services
-        const findSchool = mockService(schoolPayload, "findResourceById");
+        const findSchool = mockService(schoolPayload, "findSchoolById");
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findResourceByProperty"
+          "findScheduleByProperty"
         );
-        const insertSchedule = mockService(schedulePayload, "insertResource");
+        const insertSchedule = mockService(schedulePayload, "insertSchedule");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -605,31 +595,26 @@ describe("Resource => Schedule", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newSchedule.school_id,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertSchedule).not.toHaveBeenCalled();
-        expect(insertSchedule).not.toHaveBeenCalledWith(
-          newSchedule,
-          "schedule"
-        );
+        expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
     describe("schedule::post::06 - Passing an non-existent school in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findResourceByProperty"
+          "findScheduleByProperty"
         );
-        const insertSchedule = mockService(schedulePayload, "insertResource");
+        const insertSchedule = mockService(schedulePayload, "insertSchedule");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -644,33 +629,28 @@ describe("Resource => Schedule", () => {
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           newSchedule.school_id,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertSchedule).not.toHaveBeenCalled();
-        expect(insertSchedule).not.toHaveBeenCalledWith(
-          newSchedule,
-          "schedule"
-        );
+        expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
     describe("schedule::post::07 - Passing an already existing schedule name", () => {
       it("should return an existing schedule name", async () => {
         // mock services
-        const findSchool = mockService(schoolPayload, "findResourceById");
+        const findSchool = mockService(schoolPayload, "findSchoolById");
         const findSchedule = mockService(
           schedulePayload,
-          "findResourceByProperty"
+          "findScheduleByProperty"
         );
         const insertSchedule = mockService(
           scheduleNullPayload,
-          "insertResource"
+          "insertSchedule"
         );
 
         // api call
@@ -686,33 +666,28 @@ describe("Resource => Schedule", () => {
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           newSchedule.school_id,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertSchedule).not.toHaveBeenCalled();
-        expect(insertSchedule).not.toHaveBeenCalledWith(
-          newSchedule,
-          "schedule"
-        );
+        expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
     describe("schedule::post::08 - Passing a schedule but not being created", () => {
       it("should not create a field", async () => {
         // mock services
-        const findSchool = mockService(schoolPayload, "findResourceById");
+        const findSchool = mockService(schoolPayload, "findSchoolById");
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findResourceByProperty"
+          "findScheduleByProperty"
         );
         const insertSchedule = mockService(
           scheduleNullPayload,
-          "insertResource"
+          "insertSchedule"
         );
 
         // api call
@@ -728,28 +703,26 @@ describe("Resource => Schedule", () => {
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           newSchedule.school_id,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertSchedule).toHaveBeenCalled();
-        expect(insertSchedule).toHaveBeenCalledWith(newSchedule, "schedule");
+        expect(insertSchedule).toHaveBeenCalledWith(newSchedule);
       });
     });
     describe("schedule::post::09 - Passing a schedule correctly to create", () => {
       it("should create a field", async () => {
         // mock services
-        const findSchool = mockService(schoolPayload, "findResourceById");
+        const findSchool = mockService(schoolPayload, "findSchoolById");
         const findSchedule = mockService(
           scheduleNullPayload,
-          "findResourceByProperty"
+          "findScheduleByProperty"
         );
-        const insertSchedule = mockService(schedulePayload, "insertResource");
+        const insertSchedule = mockService(schedulePayload, "insertSchedule");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -764,17 +737,15 @@ describe("Resource => Schedule", () => {
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           newSchedule.school_id,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
-          "-createdAt -updatedAt",
-          "schedule"
+          "-createdAt -updatedAt"
         );
         expect(insertSchedule).toHaveBeenCalled();
-        expect(insertSchedule).toHaveBeenCalledWith(newSchedule, "schedule");
+        expect(insertSchedule).toHaveBeenCalledWith(newSchedule);
       });
     });
   });
@@ -786,7 +757,7 @@ describe("Resource => Schedule", () => {
           // mock services
           const findSchedules = mockService(
             schedulesNullPayload,
-            "findFilterAllResources"
+            "findFilterAllSchedules"
           );
 
           // api call
@@ -806,8 +777,7 @@ describe("Resource => Schedule", () => {
           expect(findSchedules).not.toHaveBeenCalled();
           expect(findSchedules).not.toHaveBeenCalledWith(
             { school_id: null },
-            "-createdAt -updatedAt",
-            "schedule"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -816,7 +786,7 @@ describe("Resource => Schedule", () => {
           // mock services
           const findSchedules = mockService(
             schedulesNullPayload,
-            "findFilterAllResources"
+            "findFilterAllSchedules"
           );
 
           // api call
@@ -837,8 +807,7 @@ describe("Resource => Schedule", () => {
           expect(findSchedules).not.toHaveBeenCalled();
           expect(findSchedules).not.toHaveBeenCalledWith(
             { school_id: "" },
-            "-createdAt -updatedAt",
-            "schedule"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -847,7 +816,7 @@ describe("Resource => Schedule", () => {
           // mock services
           const findSchedules = mockService(
             schedulesNullPayload,
-            "findFilterAllResources"
+            "findFilterAllSchedules"
           );
 
           // api call
@@ -868,8 +837,7 @@ describe("Resource => Schedule", () => {
           expect(findSchedules).not.toHaveBeenCalled();
           expect(findSchedules).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "schedule"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -878,7 +846,7 @@ describe("Resource => Schedule", () => {
           // mock services
           const findSchedules = mockService(
             schedulesNullPayload,
-            "findFilterAllResources"
+            "findFilterAllSchedules"
           );
 
           // api call
@@ -894,8 +862,7 @@ describe("Resource => Schedule", () => {
           expect(findSchedules).toHaveBeenCalled();
           expect(findSchedules).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
-            "-createdAt -updatedAt",
-            "schedule"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -904,7 +871,7 @@ describe("Resource => Schedule", () => {
           // mock services
           const findSchedules = mockService(
             schedulesPayload,
-            "findFilterAllResources"
+            "findFilterAllSchedules"
           );
 
           // api call
@@ -964,20 +931,18 @@ describe("Resource => Schedule", () => {
           expect(findSchedules).toHaveBeenCalled();
           expect(findSchedules).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "schedule"
+            "-createdAt -updatedAt"
           );
         });
       });
     });
-
     describe("schedule - GET/:id", () => {
       describe("schedule::get/:id::01 - Passing missing fields", () => {
         it("should return a missing values error", async () => {
           // mock services
           const findSchedule = mockService(
             scheduleNullPayload,
-            "findResourceByProperty"
+            "findScheduleByProperty"
           );
 
           // api call
@@ -996,9 +961,8 @@ describe("Resource => Schedule", () => {
           expect(statusCode).toBe(400);
           expect(findSchedule).not.toHaveBeenCalled();
           expect(findSchedule).not.toHaveBeenCalledWith(
-            { _id: validMockScheduleId, school_id: null },
-            "-createdAt -updatedAt",
-            "schedule"
+            { school_id: null, _id: validMockScheduleId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1007,7 +971,7 @@ describe("Resource => Schedule", () => {
           // mock services
           const findSchedule = mockService(
             scheduleNullPayload,
-            "findResourceByProperty"
+            "findScheduleByProperty"
           );
 
           // api call
@@ -1027,9 +991,8 @@ describe("Resource => Schedule", () => {
           expect(statusCode).toBe(400);
           expect(findSchedule).not.toHaveBeenCalled();
           expect(findSchedule).not.toHaveBeenCalledWith(
-            { _id: validMockScheduleId, school_id: "" },
-            "-createdAt -updatedAt",
-            "schedule"
+            { school_id: "", _id: validMockScheduleId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1038,8 +1001,9 @@ describe("Resource => Schedule", () => {
           // mock services
           const findSchedule = mockService(
             scheduleNullPayload,
-            "findResourceByProperty"
+            "findScheduleByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${invalidMockId}`)
@@ -1063,9 +1027,8 @@ describe("Resource => Schedule", () => {
           expect(statusCode).toBe(400);
           expect(findSchedule).not.toHaveBeenCalled();
           expect(findSchedule).not.toHaveBeenCalledWith(
-            { _id: invalidMockId, school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "schedule"
+            { school_id: invalidMockId, _id: invalidMockId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1074,7 +1037,7 @@ describe("Resource => Schedule", () => {
           // mock services
           const findSchedule = mockService(
             scheduleNullPayload,
-            "findResourceByProperty"
+            "findScheduleByProperty"
           );
 
           // api call
@@ -1089,9 +1052,8 @@ describe("Resource => Schedule", () => {
           expect(statusCode).toBe(404);
           expect(findSchedule).toHaveBeenCalled();
           expect(findSchedule).toHaveBeenCalledWith(
-            { _id: otherValidMockId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "schedule"
+            { school_id: validMockSchoolId, _id: otherValidMockId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1100,7 +1062,7 @@ describe("Resource => Schedule", () => {
           // mock services
           const findSchedule = mockService(
             schedulePayload,
-            "findResourceByProperty"
+            "findScheduleByProperty"
           );
 
           // api call
@@ -1127,9 +1089,8 @@ describe("Resource => Schedule", () => {
           expect(statusCode).toBe(200);
           expect(findSchedule).toHaveBeenCalled();
           expect(findSchedule).toHaveBeenCalledWith(
-            { _id: validMockScheduleId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "schedule"
+            { school_id: validMockSchoolId, _id: validMockScheduleId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1142,11 +1103,11 @@ describe("Resource => Schedule", () => {
         // mock services
         const duplicateScheduleName = mockService(
           schedulesNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterScheduleByProperty"
         );
         const updateSchedule = mockService(
           scheduleNullPayload,
-          "updateFilterResource"
+          "modifyFilterSchedule"
         );
 
         // api call
@@ -1220,21 +1181,19 @@ describe("Resource => Schedule", () => {
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newScheduleMissingValues.school_i },
-            { name: newScheduleMissingValues.nam },
-          ],
-          "-createdAt -updatedAt",
-          "schedule"
+          {
+            school_id: newScheduleMissingValues.school_i,
+            name: newScheduleMissingValues.nam,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockScheduleId },
-            { school_id: newScheduleMissingValues.school_i },
-          ],
-          newScheduleMissingValues,
-          "schedule"
+          {
+            _id: validMockScheduleId,
+            school_id: newScheduleMissingValues.school_i,
+          },
+          newScheduleMissingValues
         );
       });
     });
@@ -1243,11 +1202,11 @@ describe("Resource => Schedule", () => {
         // mock services
         const duplicateScheduleName = mockService(
           schedulesNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterScheduleByProperty"
         );
         const updateSchedule = mockService(
           scheduleNullPayload,
-          "updateFilterResource"
+          "modifyFilterSchedule"
         );
 
         // api call
@@ -1333,21 +1292,19 @@ describe("Resource => Schedule", () => {
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newScheduleEmptyValues.school_id },
-            { name: newScheduleEmptyValues.name },
-          ],
-          "-createdAt -updatedAt",
-          "schedule"
+          {
+            school_id: newScheduleEmptyValues.school_id,
+            name: newScheduleEmptyValues.name,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockScheduleId },
-            { school_id: newScheduleEmptyValues.school_id },
-          ],
-          newScheduleEmptyValues,
-          "schedule"
+          {
+            _id: validMockScheduleId,
+            school_id: newScheduleEmptyValues.school_id,
+          },
+          newScheduleEmptyValues
         );
       });
     });
@@ -1356,11 +1313,11 @@ describe("Resource => Schedule", () => {
         // mock services
         const duplicateScheduleName = mockService(
           schedulesNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterScheduleByProperty"
         );
         const updateSchedule = mockService(
           scheduleNullPayload,
-          "updateFilterResource"
+          "modifyFilterSchedule"
         );
 
         // api call
@@ -1452,21 +1409,19 @@ describe("Resource => Schedule", () => {
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newScheduleNotValidDataTypes.school_id },
-            { name: newScheduleNotValidDataTypes.name },
-          ],
-          "-createdAt -updatedAt",
-          "schedule"
+          {
+            school_id: newScheduleNotValidDataTypes.school_id,
+            name: newScheduleNotValidDataTypes.name,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockScheduleId },
-            { school_id: newScheduleNotValidDataTypes.school_id },
-          ],
-          newScheduleNotValidDataTypes,
-          "schedule"
+          {
+            _id: validMockScheduleId,
+            school_id: newScheduleNotValidDataTypes.school_id,
+          },
+          newScheduleNotValidDataTypes
         );
       });
     });
@@ -1475,11 +1430,11 @@ describe("Resource => Schedule", () => {
         // mock services
         const duplicateScheduleName = mockService(
           schedulesNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterScheduleByProperty"
         );
         const updateSchedule = mockService(
           scheduleNullPayload,
-          "updateFilterResource"
+          "modifyFilterSchedule"
         );
 
         // api call
@@ -1518,21 +1473,19 @@ describe("Resource => Schedule", () => {
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newScheduleWrongLengthValues.school_id },
-            { name: newScheduleWrongLengthValues.name },
-          ],
-          "-createdAt -updatedAt",
-          "schedule"
+          {
+            school_id: newScheduleWrongLengthValues.school_id,
+            name: newScheduleWrongLengthValues.name,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockScheduleId },
-            { school_id: newScheduleWrongLengthValues.school_id },
-          ],
-          newScheduleWrongLengthValues,
-          "schedule"
+          {
+            _id: validMockScheduleId,
+            school_id: newScheduleWrongLengthValues.school_id,
+          },
+          newScheduleWrongLengthValues
         );
       });
     });
@@ -1541,11 +1494,11 @@ describe("Resource => Schedule", () => {
         // mock services
         const duplicateScheduleName = mockService(
           schedulesPayload,
-          "findFilterResourceByProperty"
+          "findFilterScheduleByProperty"
         );
         const updateSchedule = mockService(
           scheduleNullPayload,
-          "updateFilterResource"
+          "modifyFilterSchedule"
         );
 
         // api call
@@ -1560,15 +1513,13 @@ describe("Resource => Schedule", () => {
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
-          [{ school_id: newSchedule.school_id }, { name: newSchedule.name }],
-          "-createdAt -updatedAt",
-          "schedule"
+          { school_id: newSchedule.school_id, name: newSchedule.name },
+          "-createdAt -updatedAt"
         );
         expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
-          [{ _id: validMockScheduleId }, { school_id: newSchedule.school_id }],
-          newSchedule,
-          "schedule"
+          { _id: validMockScheduleId, school_id: newSchedule.school_id },
+          newSchedule
         );
       });
     });
@@ -1577,11 +1528,11 @@ describe("Resource => Schedule", () => {
         // mock services
         const duplicateScheduleName = mockService(
           schedulesPayload,
-          "findFilterResourceByProperty"
+          "findFilterScheduleByProperty"
         );
         const updateSchedule = mockService(
           scheduleNullPayload,
-          "updateFilterResource"
+          "modifyFilterSchedule"
         );
 
         // api call
@@ -1596,15 +1547,13 @@ describe("Resource => Schedule", () => {
         expect(statusCode).toBe(409);
         expect(duplicateScheduleName).toHaveBeenCalled();
         expect(duplicateScheduleName).toHaveBeenCalledWith(
-          [{ school_id: newSchedule.school_id }, { name: newSchedule.name }],
-          "-createdAt -updatedAt",
-          "schedule"
+          { school_id: newSchedule.school_id, name: newSchedule.name },
+          "-createdAt -updatedAt"
         );
         expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
-          [{ _id: validMockScheduleId }, { school_id: newSchedule.school_id }],
-          newSchedule,
-          "schedule"
+          { _id: validMockScheduleId, school_id: newSchedule.school_id },
+          newSchedule
         );
       });
     });
@@ -1613,11 +1562,11 @@ describe("Resource => Schedule", () => {
         // mock services
         const duplicateScheduleName = mockService(
           schedulesNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterScheduleByProperty"
         );
         const updateSchedule = mockService(
           scheduleNullPayload,
-          "updateFilterResource"
+          "modifyFilterSchedule"
         );
 
         // api call
@@ -1630,15 +1579,13 @@ describe("Resource => Schedule", () => {
         expect(statusCode).toBe(404);
         expect(duplicateScheduleName).toHaveBeenCalled();
         expect(duplicateScheduleName).toHaveBeenCalledWith(
-          [{ school_id: newSchedule.school_id }, { name: newSchedule.name }],
-          "-createdAt -updatedAt",
-          "schedule"
+          { school_id: newSchedule.school_id, name: newSchedule.name },
+          "-createdAt -updatedAt"
         );
         expect(updateSchedule).toHaveBeenCalled();
         expect(updateSchedule).toHaveBeenCalledWith(
-          [{ _id: validMockScheduleId }, { school_id: newSchedule.school_id }],
-          newSchedule,
-          "schedule"
+          { _id: validMockScheduleId, school_id: newSchedule.school_id },
+          newSchedule
         );
       });
     });
@@ -1647,11 +1594,11 @@ describe("Resource => Schedule", () => {
         // mock services
         const duplicateScheduleName = mockService(
           schedulesNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterScheduleByProperty"
         );
         const updateSchedule = mockService(
           schedulePayload,
-          "updateFilterResource"
+          "modifyFilterSchedule"
         );
 
         // api call
@@ -1664,15 +1611,13 @@ describe("Resource => Schedule", () => {
         expect(statusCode).toBe(200);
         expect(duplicateScheduleName).toHaveBeenCalled();
         expect(duplicateScheduleName).toHaveBeenCalledWith(
-          [{ school_id: newSchedule.school_id }, { name: newSchedule.name }],
-          "-createdAt -updatedAt",
-          "schedule"
+          { school_id: newSchedule.school_id, name: newSchedule.name },
+          "-createdAt -updatedAt"
         );
         expect(updateSchedule).toHaveBeenCalled();
         expect(updateSchedule).toHaveBeenCalledWith(
-          [{ _id: validMockScheduleId }, { school_id: newSchedule.school_id }],
-          newSchedule,
-          "schedule"
+          { _id: validMockScheduleId, school_id: newSchedule.school_id },
+          newSchedule
         );
       });
     });
@@ -1684,7 +1629,7 @@ describe("Resource => Schedule", () => {
         // mock services
         const deleteSchedule = mockService(
           scheduleNullPayload,
-          "deleteFilterResource"
+          "removeFilterSchedule"
         );
 
         // api call
@@ -1702,10 +1647,10 @@ describe("Resource => Schedule", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteSchedule).not.toHaveBeenCalled();
-        expect(deleteSchedule).not.toHaveBeenCalledWith(
-          { _id: validMockScheduleId, school_id: null },
-          "schedule"
-        );
+        expect(deleteSchedule).not.toHaveBeenCalledWith({
+          school_id: null,
+          _id: validMockScheduleId,
+        });
       });
     });
     describe("schedule::delete::02 - Passing fields with empty values", () => {
@@ -1713,7 +1658,7 @@ describe("Resource => Schedule", () => {
         // mock services
         const deleteSchedule = mockService(
           scheduleNullPayload,
-          "deleteFilterResource"
+          "removeFilterSchedule"
         );
 
         // api call
@@ -1732,10 +1677,10 @@ describe("Resource => Schedule", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteSchedule).not.toHaveBeenCalled();
-        expect(deleteSchedule).not.toHaveBeenCalledWith(
-          { _id: validMockScheduleId, school_id: "" },
-          "schedule"
-        );
+        expect(deleteSchedule).not.toHaveBeenCalledWith({
+          _id: validMockScheduleId,
+          school_id: "",
+        });
       });
     });
     describe("schedule::delete::03 - Passing invalid ids", () => {
@@ -1743,7 +1688,7 @@ describe("Resource => Schedule", () => {
         // mock services
         const deleteSchedule = mockService(
           scheduleNullPayload,
-          "deleteFilterResource"
+          "removeFilterSchedule"
         );
 
         // api call
@@ -1768,10 +1713,10 @@ describe("Resource => Schedule", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteSchedule).not.toHaveBeenCalled();
-        expect(deleteSchedule).not.toHaveBeenCalledWith(
-          { _id: "", school_id: "" },
-          "schedule"
-        );
+        expect(deleteSchedule).not.toHaveBeenCalledWith({
+          school_id: "",
+          _id: "",
+        });
       });
     });
     describe("schedule::delete::04 - Passing a schedule id but not deleting it", () => {
@@ -1779,7 +1724,7 @@ describe("Resource => Schedule", () => {
         // mock services
         const deleteSchedule = mockService(
           scheduleNullPayload,
-          "deleteFilterResource"
+          "removeFilterSchedule"
         );
 
         // api call
@@ -1791,10 +1736,10 @@ describe("Resource => Schedule", () => {
         expect(body).toStrictEqual({ msg: "Schedule not deleted" });
         expect(statusCode).toBe(404);
         expect(deleteSchedule).toHaveBeenCalled();
-        expect(deleteSchedule).toHaveBeenCalledWith(
-          { _id: otherValidMockId, school_id: validMockSchoolId },
-          "schedule"
-        );
+        expect(deleteSchedule).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          _id: otherValidMockId,
+        });
       });
     });
     describe("schedule::delete::05 - Passing a schedule id correctly to delete", () => {
@@ -1802,7 +1747,7 @@ describe("Resource => Schedule", () => {
         // mock services
         const deleteSchedule = mockService(
           schedulePayload,
-          "deleteFilterResource"
+          "removeFilterSchedule"
         );
 
         // api call
@@ -1814,10 +1759,10 @@ describe("Resource => Schedule", () => {
         expect(body).toStrictEqual({ msg: "Schedule deleted" });
         expect(statusCode).toBe(200);
         expect(deleteSchedule).toHaveBeenCalled();
-        expect(deleteSchedule).toHaveBeenCalledWith(
-          { _id: validMockScheduleId, school_id: validMockSchoolId },
-          "schedule"
-        );
+        expect(deleteSchedule).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          _id: validMockScheduleId,
+        });
       });
     });
   });

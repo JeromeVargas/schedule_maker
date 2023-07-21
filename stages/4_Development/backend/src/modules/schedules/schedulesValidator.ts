@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
-import { isValidId } from "../../services/mongoServices";
+import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const validateCreateSchedule = [

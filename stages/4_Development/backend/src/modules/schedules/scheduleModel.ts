@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { Schedule } from "../../typings/types";
 
-const UserSchema = new Schema<Schedule>(
+const ScheduleSchema = new Schema<Schedule>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
@@ -59,6 +59,6 @@ const UserSchema = new Schema<Schedule>(
   }
 );
 
-const ScheduleModel = model<Schedule>("Schedule", UserSchema);
+const ScheduleModel = model<Schedule>("Schedule", ScheduleSchema);
 
 export default ScheduleModel;

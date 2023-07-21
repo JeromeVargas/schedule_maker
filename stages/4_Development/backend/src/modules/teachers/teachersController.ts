@@ -4,15 +4,17 @@ import BadRequestError from "../../errors/bad-request";
 import ConflictError from "../../errors/conflict";
 import NotFoundError from "../../errors/not-found";
 
-import {
-  insertResource,
-  findResourceByProperty,
-  findFilterAllResources,
-  findPopulateFilterAllResources,
-  updateFilterResource,
-  deleteFilterResource,
-} from "../../services/mongoServices";
 import { User } from "../../typings/types";
+import {
+  insertTeacher,
+  findTeacherByProperty,
+  findFilterAllTeachers,
+  modifyFilterTeacher,
+  removeFilterTeacher,
+  /* Services from other entities */
+  findPopulateFilterAllUsers,
+  findUserByProperty,
+} from "./teacherServices";
 
 /* models */
 const userModel = "user";
@@ -24,7 +26,7 @@ const maxHours = 70; // number of hours in a week
 // @desc create a user
 // @route POST /api/v1/teachers
 // @access Private
-// @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
+// @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: [number];  hoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const createTeacher = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
@@ -55,27 +57,25 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     );
   }
   /* check if the user is already a teacher */
-  const teacherSearchCriteria = { user_id, school_id };
+  const teacherSearchCriteria = { school_id, user_id };
   const teacherFieldsToReturn = "-createdAt -updatedAt";
-  const existingTeacher = await findResourceByProperty(
+  const existingTeacher = await findTeacherByProperty(
     teacherSearchCriteria,
-    teacherFieldsToReturn,
-    teacherModel
+    teacherFieldsToReturn
   );
   if (existingTeacher) {
     throw new ConflictError("User is already a teacher");
   }
   /* check if the user exists, is active and has teaching functions */
-  const userSearchCriteria = [user_id, coordinator_id];
+  const userSearchCriteria = [coordinator_id, user_id];
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
   const userFieldsToReturnPopulate = "-createdAt -updatedAt";
-  const existingUserCoordinator = await findPopulateFilterAllResources(
+  const existingUserCoordinator = await findPopulateFilterAllUsers(
     userSearchCriteria,
     userFieldsToReturn,
     userFieldsToPopulate,
-    userFieldsToReturnPopulate,
-    userModel
+    userFieldsToReturnPopulate
   );
   // if there is not at least one record with an existing user id property, it returns false and triggers an error
   const existingUser = existingUserCoordinator?.find(
@@ -132,7 +132,7 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     saturday: saturday,
     sunday: sunday,
   };
-  const teacherCreated = await insertResource(newTeacher, teacherModel);
+  const teacherCreated = await insertTeacher(newTeacher);
   if (!teacherCreated) {
     throw new BadRequestError("Teacher not created");
   }
@@ -151,11 +151,7 @@ const getTeachers = async ({ body }: Request, res: Response) => {
   /* filter by school id */
   const filters = { school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const teachersFound = await findFilterAllResources(
-    filters,
-    fieldsToReturn,
-    teacherModel
-  );
+  const teachersFound = await findFilterAllTeachers(filters, fieldsToReturn);
   /* get all fields */
   if (teachersFound?.length === 0) {
     throw new NotFoundError("No teachers found");
@@ -172,12 +168,11 @@ const getTeacher = async ({ params, body }: Request, res: Response) => {
   const { id: _id } = params;
   const { school_id } = body;
   /* get the teacher */
-  const searchCriteria = { _id, school_id };
+  const searchCriteria = { school_id, _id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const teacherFound = await findResourceByProperty(
+  const teacherFound = await findTeacherByProperty(
     searchCriteria,
-    fieldsToReturn,
-    teacherModel
+    fieldsToReturn
   );
   if (!teacherFound) {
     throw new NotFoundError("Teacher not found");
@@ -188,7 +183,7 @@ const getTeacher = async ({ params, body }: Request, res: Response) => {
 // @desc update a user
 // @route PUT /api/v1/teachers/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
+// @fields: params: {id:[string]},  body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: [number];  hoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const updateTeacher = async ({ body, params }: Request, res: Response) => {
   /* destructure the fields */
   const { id: teacherId } = params;
@@ -221,14 +216,13 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
   }
   /* check if coordinator exists, has the role and is active  */
   const coordinatorSearchCriteria = {
-    _id: coordinator_id,
     school_id: school_id,
+    _id: coordinator_id,
   };
   const coordinatorFieldsToReturn = "-password -createdAt -updatedAt";
-  const existingCoordinator = await findResourceByProperty(
+  const existingCoordinator = await findUserByProperty(
     coordinatorSearchCriteria,
-    coordinatorFieldsToReturn,
-    userModel
+    coordinatorFieldsToReturn
   );
   if (!existingCoordinator) {
     throw new BadRequestError("Please pass an existent coordinator");
@@ -240,11 +234,11 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
     throw new BadRequestError("Please pass an active coordinator");
   }
   /* update if the teacher, user and school ids are the same one as the one passed and update the field */
-  const filtersUpdate = [
-    { _id: teacherId },
-    { user_id: user_id },
-    { school_id: school_id },
-  ];
+  const filtersUpdate = {
+    _id: teacherId,
+    school_id: school_id,
+    user_id: user_id,
+  };
   const newTeacher = {
     school_id: school_id,
     coordinator_id: coordinator_id,
@@ -260,11 +254,7 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
     saturday: saturday,
     sunday: sunday,
   };
-  const teacherUpdated = await updateFilterResource(
-    filtersUpdate,
-    newTeacher,
-    teacherModel
-  );
+  const teacherUpdated = await modifyFilterTeacher(filtersUpdate, newTeacher);
   if (!teacherUpdated) {
     throw new NotFoundError("Teacher not updated");
   }
@@ -281,7 +271,7 @@ const deleteTeacher = async ({ params, body }: Request, res: Response) => {
   const { school_id } = body;
   /* delete teacher */
   const filtersDelete = { _id: teacherId, school_id: school_id };
-  const fieldDeleted = await deleteFilterResource(filtersDelete, teacherModel);
+  const fieldDeleted = await removeFilterTeacher(filtersDelete);
   if (!fieldDeleted) {
     throw new NotFoundError("Teacher not deleted");
   }

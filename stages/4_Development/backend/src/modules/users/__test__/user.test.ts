@@ -2,21 +2,24 @@ import supertest from "supertest";
 import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
-import * as MongoServices from "../../../services/mongoServices";
+
+import * as userServices from "../userServices";
 
 import { User } from "../../../typings/types";
+
+type Service =
+  | "insertUser"
+  | "findFilterAllUsers"
+  | "findUserByProperty"
+  | "modifyFilterUser"
+  | "removeFilterUser"
+  | "findSchoolById";
 
 describe("RESOURCE => User", () => {
   /* mock services */
   // just one return
-  const mockService = (payload: unknown, service: string) => {
-    return (
-      jest
-        // @ts-ignore
-        .spyOn(MongoServices, service)
-        // @ts-ignore
-        .mockReturnValue(payload)
-    );
+  const mockService = (payload: any, service: Service) => {
+    return jest.spyOn(userServices, service).mockReturnValue(payload);
   };
 
   /* hooks */
@@ -149,12 +152,12 @@ describe("RESOURCE => User", () => {
     describe("user::post::01 - Passing a user with missing fields", () => {
       it("should return a field needed error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userNullPayload, "insertResource");
+        const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -208,8 +211,7 @@ describe("RESOURCE => User", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -217,25 +219,22 @@ describe("RESOURCE => User", () => {
             email: newUserMissingValues.emai,
             school_id: newUserMissingValues.school_i,
           },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(
-          newUserMissingValues,
-          "user"
-        );
+        expect(insertUser).not.toHaveBeenCalledWith(newUserMissingValues);
       });
     });
     describe("user::post::02 - Passing a user with empty fields", () => {
       it("should return an empty field error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userNullPayload, "insertResource");
+        const insertUser = mockService(userNullPayload, "insertUser");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
@@ -296,8 +295,7 @@ describe("RESOURCE => User", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -305,8 +303,7 @@ describe("RESOURCE => User", () => {
             email: newUserEmptyValues.email,
             school_id: newUserEmptyValues.school_id,
           },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserEmptyValues, "user");
@@ -315,12 +312,12 @@ describe("RESOURCE => User", () => {
     describe("user::post::03 - Passing an invalid type as field value", () => {
       it("should return a not valid type error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userNullPayload, "insertResource");
+        const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -382,8 +379,7 @@ describe("RESOURCE => User", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -391,25 +387,21 @@ describe("RESOURCE => User", () => {
             email: newUserNotValidDataTypes.email,
             school_id: newUserNotValidDataTypes.school_id,
           },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(
-          newUserNotValidDataTypes,
-          "user"
-        );
+        expect(insertUser).not.toHaveBeenCalledWith(newUserNotValidDataTypes);
       });
     });
     describe("user::post::04 - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userNullPayload, "insertResource");
+        const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -447,8 +439,7 @@ describe("RESOURCE => User", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -456,25 +447,21 @@ describe("RESOURCE => User", () => {
             email: newUserWrongLengthValues.email,
             school_id: newUserWrongInputValues.school_id,
           },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(
-          newUserWrongLengthValues,
-          "user"
-        );
+        expect(insertUser).not.toHaveBeenCalledWith(newUserWrongLengthValues);
       });
     });
     describe("user::post::05 - Passing a password that is too long", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userNullPayload, "insertResource");
+        const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -499,8 +486,7 @@ describe("RESOURCE => User", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -508,25 +494,21 @@ describe("RESOURCE => User", () => {
             email: newUserWrongLengthValues.email,
             school_id: newUserWrongInputValues.school_id,
           },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(
-          newUserWrongLengthValues,
-          "user"
-        );
+        expect(insertUser).not.toHaveBeenCalledWith(newUserWrongLengthValues);
       });
     });
     describe("user::post::06 - Passing wrong school id, email, role or status", () => {
       it("should return a wrong input value error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userNullPayload, "insertResource");
+        const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -558,8 +540,7 @@ describe("RESOURCE => User", () => {
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -567,25 +548,21 @@ describe("RESOURCE => User", () => {
             email: newUserWrongInputValues.email,
             school_id: newUserWrongLengthValues.school_id,
           },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(
-          newUserWrongInputValues,
-          "user"
-        );
+        expect(insertUser).not.toHaveBeenCalledWith(newUserWrongInputValues);
       });
     });
     describe("user::post::07 - Passing an non-existing school", () => {
       it("should return a duplicate user error", async () => {
         // mock services
-        const findSchool = mockService(schoolNullPayload, "findResourceById");
+        const findSchool = mockService(schoolNullPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userPayload, "insertResource");
+        const insertUser = mockService(userPayload, "insertUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -600,28 +577,26 @@ describe("RESOURCE => User", () => {
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUser, "user");
+        expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
     });
     describe("user::post::08 - Passing an existing user's email", () => {
       it("should return a non-existent school error", async () => {
         // mock services
-        const findSchool = mockService(schoolPayload, "findResourceById");
+        const findSchool = mockService(schoolPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userPayload, "insertResource");
+        const insertUser = mockService(userPayload, "insertUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -636,28 +611,26 @@ describe("RESOURCE => User", () => {
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUser, "user");
+        expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
     });
     describe("user::post::09 - Passing a user but not being created", () => {
       it("should not create a user", async () => {
         // mock services
-        const findSchool = mockService(schoolPayload, "findResourceById");
+        const findSchool = mockService(schoolPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userNullPayload, "insertResource");
+        const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -672,28 +645,26 @@ describe("RESOURCE => User", () => {
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).toHaveBeenCalled();
-        expect(insertUser).toHaveBeenCalledWith(newUser, "user");
+        expect(insertUser).toHaveBeenCalledWith(newUser);
       });
     });
     describe("user::post::10 - Passing a user correctly to create", () => {
       it("should create a user", async () => {
         // mock services
-        const findSchool = mockService(schoolPayload, "findResourceById");
+        const findSchool = mockService(schoolPayload, "findSchoolById");
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const insertUser = mockService(userPayload, "insertResource");
+        const insertUser = mockService(userPayload, "insertUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -706,35 +677,28 @@ describe("RESOURCE => User", () => {
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           validMockSchoolId,
-          "-createdAt -updatedAt",
-          "school"
+          "-createdAt -updatedAt"
         );
         expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(insertUser).toHaveBeenCalled();
-        expect(insertUser).toHaveBeenCalledWith(newUser, "user");
+        expect(insertUser).toHaveBeenCalledWith(newUser);
       });
     });
   });
-
   describe("GET /user ", () => {
     describe("user - GET", () => {
       describe("user::get::01 - passing a school with missing values", () => {
         it("should return a missing values error", async () => {
           // mock services
-          const findUsers = mockService(
-            usersNullPayload,
-            "findFilterAllResources"
-          );
+          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
 
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
-
             .send({ school_i: validMockSchoolId });
 
           // assertions
@@ -749,18 +713,14 @@ describe("RESOURCE => User", () => {
           expect(findUsers).not.toHaveBeenCalled();
           expect(findUsers).not.toHaveBeenCalledWith(
             { school_id: null },
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
       describe("user::get::02 - passing a school with empty values", () => {
         it("should return an invalid id error", async () => {
           // mock services
-          const findUsers = mockService(
-            usersNullPayload,
-            "findFilterAllResources"
-          );
+          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -780,18 +740,14 @@ describe("RESOURCE => User", () => {
           expect(findUsers).not.toHaveBeenCalled();
           expect(findUsers).not.toHaveBeenCalledWith(
             { school_id: "" },
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
       describe("user::get::03 - Passing an invalid school id in the body", () => {
         it("should return an invalid id error", async () => {
           // mock services
-          const findUsers = mockService(
-            usersNullPayload,
-            "findFilterAllResources"
-          );
+          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -804,7 +760,6 @@ describe("RESOURCE => User", () => {
               location: "body",
               msg: "The school id is not valid",
               param: "school_id",
-
               value: invalidMockId,
             },
           ]);
@@ -812,18 +767,14 @@ describe("RESOURCE => User", () => {
           expect(findUsers).not.toHaveBeenCalled();
           expect(findUsers).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
       describe("user::get::04 - Requesting all users but not finding any", () => {
         it("should not get any users", async () => {
           // mock services
-          const findUsers = mockService(
-            usersNullPayload,
-            "findFilterAllResources"
-          );
+          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -838,15 +789,14 @@ describe("RESOURCE => User", () => {
           expect(findUsers).toHaveBeenCalled();
           expect(findUsers).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
       describe("user::get::05 - Requesting all users", () => {
         it("should get all users", async () => {
           // mock services
-          const findUsers = mockService(usersPayload, "findFilterAllResources");
+          const findUsers = mockService(usersPayload, "findFilterAllUsers");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -878,10 +828,8 @@ describe("RESOURCE => User", () => {
             {
               _id: expect.any(String),
               email: "ania@yahoo.com",
-
               firstName: "Ania",
               hasTeachingFunc: true,
-
               lastName: "Kubow",
               role: "teacher",
               school_id: expect.any(String),
@@ -892,26 +840,20 @@ describe("RESOURCE => User", () => {
           expect(findUsers).toHaveBeenCalled();
           expect(findUsers).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
     });
-
     describe("user - GET/:id", () => {
       describe("user::get/:id::01 - passing a school with missing values", () => {
         it("should return a missing values error", async () => {
           // mock services
-          const findUser = mockService(
-            userNullPayload,
-            "findResourceByProperty"
-          );
+          const findUser = mockService(userNullPayload, "findUserByProperty");
 
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockUserId}`)
-
             .send({ school_i: validMockSchoolId });
 
           // assertions
@@ -926,18 +868,14 @@ describe("RESOURCE => User", () => {
           expect(findUser).not.toHaveBeenCalled();
           expect(findUser).not.toHaveBeenCalledWith(
             [{ _id: validMockUserId }, { school_id: null }],
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
       describe("user::get/:id::02 - passing a school with empty values", () => {
         it("should return an empty values error", async () => {
           // mock services
-          const findUser = mockService(
-            userNullPayload,
-            "findResourceByProperty"
-          );
+          const findUser = mockService(userNullPayload, "findUserByProperty");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -957,18 +895,14 @@ describe("RESOURCE => User", () => {
           expect(findUser).not.toHaveBeenCalled();
           expect(findUser).not.toHaveBeenCalledWith(
             [{ _id: validMockUserId }, { school_id: "" }],
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
       describe("user::get/:id::03 - Passing an invalid user and school ids", () => {
         it("should return an invalid id error", async () => {
           // mock services
-          const findUser = mockService(
-            userNullPayload,
-            "findResourceByProperty"
-          );
+          const findUser = mockService(userNullPayload, "findUserByProperty");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -994,18 +928,14 @@ describe("RESOURCE => User", () => {
           expect(findUser).not.toHaveBeenCalled();
           expect(findUser).not.toHaveBeenCalledWith(
             [{ _id: invalidMockId }, { school_id: invalidMockId }],
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
       describe("user::get/:id::04 - Requesting a user but not finding it", () => {
         it("should not get a user", async () => {
           // mock services
-          const findUser = mockService(
-            userNullPayload,
-            "findResourceByProperty"
-          );
+          const findUser = mockService(userNullPayload, "findUserByProperty");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -1020,15 +950,14 @@ describe("RESOURCE => User", () => {
           expect(findUser).toHaveBeenCalled();
           expect(findUser).toHaveBeenCalledWith(
             { _id: otherValidMockId, school_id: validMockSchoolId },
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
       describe("user::get/:id::05 - Requesting a user correctly", () => {
         it("should get a user", async () => {
           // mock services
-          const findUser = mockService(userPayload, "findResourceByProperty");
+          const findUser = mockService(userPayload, "findUserByProperty");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -1050,23 +979,21 @@ describe("RESOURCE => User", () => {
           expect(findUser).toHaveBeenCalled();
           expect(findUser).toHaveBeenCalledWith(
             { _id: validMockUserId, school_id: validMockSchoolId },
-            "-password -createdAt -updatedAt",
-            "user"
+            "-password -createdAt -updatedAt"
           );
         });
       });
     });
   });
-
   describe("PUT /user ", () => {
     describe("user::put::01 - Passing a user with missing fields", () => {
       it("should return a field needed error", async () => {
         // mock services
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const updateUser = mockService(userNullPayload, "updateFilterResource");
+        const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1123,17 +1050,12 @@ describe("RESOURCE => User", () => {
             email: newUserMissingValues.emai,
             school_id: newUserMissingValues.school_i,
           },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockUserId },
-            { school_id: newUserMissingValues.school_i },
-          ],
-          newUserMissingValues,
-          "user"
+          { _id: validMockUserId, school_id: newUserMissingValues.school_i },
+          newUserMissingValues
         );
       });
     });
@@ -1142,9 +1064,9 @@ describe("RESOURCE => User", () => {
         // mock services
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const updateUser = mockService(userNullPayload, "updateFilterResource");
+        const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1209,17 +1131,12 @@ describe("RESOURCE => User", () => {
             email: newUserEmptyValues.email,
             school_id: newUserEmptyValues.school_id,
           },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockUserId },
-            { school_id: newUserEmptyValues.school_id },
-          ],
-          newUserEmptyValues,
-          "user"
+          { _id: validMockUserId, school_id: newUserEmptyValues.school_id },
+          newUserEmptyValues
         );
       });
     });
@@ -1228,9 +1145,9 @@ describe("RESOURCE => User", () => {
         // mock services
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const updateUser = mockService(userNullPayload, "updateFilterResource");
+        const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1301,17 +1218,12 @@ describe("RESOURCE => User", () => {
             email: newUserNotValidDataTypes.email,
             school_id: newUserNotValidDataTypes.school_id,
           },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
-          [
-            { _id: invalidMockId },
-            { school_id: newUserNotValidDataTypes.school_id },
-          ],
-          newUserNotValidDataTypes,
-          "user"
+          { _id: invalidMockId, school_id: newUserNotValidDataTypes.school_id },
+          newUserNotValidDataTypes
         );
       });
     });
@@ -1320,9 +1232,9 @@ describe("RESOURCE => User", () => {
         // mock services
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const updateUser = mockService(userNullPayload, "updateFilterResource");
+        const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1360,17 +1272,15 @@ describe("RESOURCE => User", () => {
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockUserId },
-            { school_id: newUserWrongLengthValues.school_id },
-          ],
-          newUserWrongLengthValues,
-          "user"
+          {
+            school_id: newUserWrongLengthValues.school_id,
+            _id: validMockUserId,
+          },
+          newUserWrongLengthValues
         );
       });
     });
@@ -1379,9 +1289,9 @@ describe("RESOURCE => User", () => {
         // mock services
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const updateUser = mockService(userNullPayload, "updateFilterResource");
+        const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1406,17 +1316,15 @@ describe("RESOURCE => User", () => {
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockUserId },
-            { school_id: newUserWrongLengthValues.school_id },
-          ],
-          newUserWrongLengthValues,
-          "user"
+          {
+            _id: validMockUserId,
+            school_id: newUserWrongLengthValues.school_id,
+          },
+          newUserWrongLengthValues
         );
       });
     });
@@ -1425,9 +1333,9 @@ describe("RESOURCE => User", () => {
         // mock services
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const updateUser = mockService(userNullPayload, "updateFilterResource");
+        const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1446,14 +1354,12 @@ describe("RESOURCE => User", () => {
             location: "body",
             msg: "the role provided is not a valid option",
             param: "role",
-
             value: "coordinador",
           },
           {
             location: "body",
             msg: "the status provided is not a valid option",
             param: "status",
-
             value: "activo",
           },
         ]);
@@ -1461,17 +1367,15 @@ describe("RESOURCE => User", () => {
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockUserId },
-            { school_id: newUserWrongInputValues.school_id },
-          ],
-          newUserWrongInputValues,
-          "user"
+          {
+            _id: validMockUserId,
+            school_id: newUserWrongInputValues.school_id,
+          },
+          newUserWrongInputValues
         );
       });
     });
@@ -1480,9 +1384,9 @@ describe("RESOURCE => User", () => {
         // mock services
         const duplicateUserEmail = mockService(
           userPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const updateUser = mockService(userPayload, "updateFilterResource");
+        const updateUser = mockService(userPayload, "modifyFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1497,14 +1401,12 @@ describe("RESOURCE => User", () => {
         expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
-          [{ _id: validMockUserId }, { school_id: newUser.school_id }],
-          newUser,
-          "user"
+          { school_id: newUser.school_id, _id: validMockUserId },
+          newUser
         );
       });
     });
@@ -1513,9 +1415,9 @@ describe("RESOURCE => User", () => {
         // mock services
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const updateUser = mockService(userNullPayload, "updateFilterResource");
+        const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1530,14 +1432,12 @@ describe("RESOURCE => User", () => {
         expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(updateUser).toHaveBeenCalled();
         expect(updateUser).toHaveBeenCalledWith(
-          [{ _id: validMockUserId }, { school_id: newUser.school_id }],
-          newUser,
-          "user"
+          { school_id: newUser.school_id, _id: validMockUserId },
+          newUser
         );
       });
     });
@@ -1546,9 +1446,9 @@ describe("RESOURCE => User", () => {
         // mock services
         const duplicateUserEmail = mockService(
           userNullPayload,
-          "findResourceByProperty"
+          "findUserByProperty"
         );
-        const updateUser = mockService(userPayload, "updateFilterResource");
+        const updateUser = mockService(userPayload, "modifyFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1561,24 +1461,21 @@ describe("RESOURCE => User", () => {
         expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt",
-          "user"
+          "-password -createdAt -updatedAt"
         );
         expect(updateUser).toHaveBeenCalled();
         expect(updateUser).toHaveBeenCalledWith(
-          [{ _id: validMockUserId }, { school_id: newUser.school_id }],
-          newUser,
-          "user"
+          { school_id: newUser.school_id, _id: validMockUserId },
+          newUser
         );
       });
     });
   });
-
   describe("DELETE /user ", () => {
     describe("user::delete::01 - passing a school with missing values", () => {
       it("should return a missing values error", async () => {
         // mock services
-        const deleteUser = mockService(userNullPayload, "deleteFilterResource");
+        const deleteUser = mockService(userNullPayload, "removeFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1595,16 +1492,16 @@ describe("RESOURCE => User", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteUser).not.toHaveBeenCalled();
-        expect(deleteUser).not.toHaveBeenCalledWith(
-          { _id: validMockUserId, school_id: validMockSchoolId },
-          "user"
-        );
+        expect(deleteUser).not.toHaveBeenCalledWith({
+          _id: validMockUserId,
+          school_id: validMockSchoolId,
+        });
       });
     });
     describe("user::delete::02 - passing a school with empty values", () => {
       it("should return an empty values error", async () => {
         // mock services
-        const deleteUser = mockService(userNullPayload, "deleteFilterResource");
+        const deleteUser = mockService(userNullPayload, "removeFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1622,16 +1519,16 @@ describe("RESOURCE => User", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteUser).not.toHaveBeenCalled();
-        expect(deleteUser).not.toHaveBeenCalledWith(
-          { _id: validMockUserId, school_id: "" },
-          "user"
-        );
+        expect(deleteUser).not.toHaveBeenCalledWith({
+          _id: validMockUserId,
+          school_id: "",
+        });
       });
     });
     describe("user::delete::03 - Passing an invalid user and school ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
-        const deleteUser = mockService(userNullPayload, "deleteFilterResource");
+        const deleteUser = mockService(userNullPayload, "removeFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1644,32 +1541,27 @@ describe("RESOURCE => User", () => {
             location: "params",
             msg: "The user id is not valid",
             param: "id",
-
             value: invalidMockId,
           },
           {
             location: "body",
             msg: "The school id is not valid",
             param: "school_id",
-
             value: invalidMockId,
           },
         ]);
         expect(statusCode).toBe(400);
         expect(deleteUser).not.toHaveBeenCalled();
-        expect(deleteUser).not.toHaveBeenCalledWith(
-          {
-            _id: invalidMockId,
-            school_id: invalidMockId,
-          },
-          "user"
-        );
+        expect(deleteUser).not.toHaveBeenCalledWith({
+          _id: invalidMockId,
+          school_id: invalidMockId,
+        });
       });
     });
     describe("user::delete::04 - Passing a user id but not deleting it", () => {
       it("should not delete a user", async () => {
         // mock services
-        const deleteUser = mockService(userNullPayload, "deleteFilterResource");
+        const deleteUser = mockService(userNullPayload, "removeFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1682,16 +1574,16 @@ describe("RESOURCE => User", () => {
         });
         expect(statusCode).toBe(404);
         expect(deleteUser).toHaveBeenCalled();
-        expect(deleteUser).toHaveBeenCalledWith(
-          { _id: otherValidMockId, school_id: validMockSchoolId },
-          "user"
-        );
+        expect(deleteUser).toHaveBeenCalledWith({
+          _id: otherValidMockId,
+          school_id: validMockSchoolId,
+        });
       });
     });
     describe("user::delete::05 - Passing a user id correctly to delete", () => {
       it("should delete a user", async () => {
         // mock services
-        const deleteUser = mockService(userPayload, "deleteFilterResource");
+        const deleteUser = mockService(userPayload, "removeFilterUser");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1702,10 +1594,10 @@ describe("RESOURCE => User", () => {
         expect(body).toStrictEqual({ msg: "User deleted" });
         expect(statusCode).toBe(200);
         expect(deleteUser).toHaveBeenCalled();
-        expect(deleteUser).toHaveBeenCalledWith(
-          { _id: validMockUserId, school_id: validMockSchoolId },
-          "user"
-        );
+        expect(deleteUser).toHaveBeenCalledWith({
+          _id: validMockUserId,
+          school_id: validMockSchoolId,
+        });
       });
     });
   });

@@ -5,31 +5,27 @@ import ConflictError from "../../errors/conflict";
 import NotFoundError from "../../errors/not-found";
 
 import {
-  insertResource,
-  findAllResources,
-  findResourceById,
-  findResourceByProperty,
-  updateResource,
-  deleteResource,
-} from "../../services/mongoServices";
-
-/* models */
-const schoolModel = "school";
+  findAllSchools,
+  findSchoolById,
+  findSchoolByProperty,
+  insertSchool,
+  modifySchool,
+  removeSchool,
+} from "./schoolServices";
 
 // @desc create a school
 // @route POST /api/v1/schools
 // @access Private
-// @fields: body {name:[string]}
+// @fields: body {name:[string], groupMaxNumStudents: [number]}
 const createSchool = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { name, groupMaxNumStudents } = body;
   /* find if the school name already exists */
   const searchCriteria = { name };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicateSchool = await findResourceByProperty(
+  const duplicateSchool = await findSchoolByProperty(
     searchCriteria,
-    fieldsToReturn,
-    schoolModel
+    fieldsToReturn
   );
   if (duplicateSchool) {
     throw new ConflictError("This school name already exists");
@@ -39,7 +35,7 @@ const createSchool = async ({ body }: Request, res: Response) => {
     name: name,
     groupMaxNumStudents: groupMaxNumStudents,
   };
-  const schoolCreated = await insertResource(newSchool, schoolModel);
+  const schoolCreated = await insertSchool(newSchool);
   if (!schoolCreated) {
     throw new BadRequestError("School not created");
   }
@@ -53,7 +49,7 @@ const createSchool = async ({ body }: Request, res: Response) => {
 const getSchools = async (req: Request, res: Response) => {
   /* get all schools */
   const fieldsToReturn = "-createdAt -updatedAt";
-  const schoolsFound = await findAllResources(fieldsToReturn, schoolModel);
+  const schoolsFound = await findAllSchools(fieldsToReturn);
   if (schoolsFound?.length === 0) {
     throw new NotFoundError("No schools found");
   }
@@ -69,11 +65,7 @@ const getSchool = async ({ params }: Request, res: Response) => {
   const { id: schoolId } = params;
   /* get the school */
   const fieldsToReturn = "-createdAt -updatedAt";
-  const schoolFound = await findResourceById(
-    schoolId,
-    fieldsToReturn,
-    schoolModel
-  );
+  const schoolFound = await findSchoolById(schoolId, fieldsToReturn);
   if (!schoolFound) {
     throw new NotFoundError("School not found");
   }
@@ -83,7 +75,7 @@ const getSchool = async ({ params }: Request, res: Response) => {
 // @desc update a school
 // @route PUT /api/v1/schools/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {name:[string]}
+// @fields: params: {id:[string]},  body: {name:[string], groupMaxNumStudents: [number]}
 const updateSchool = async ({ body, params }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: schoolId } = params;
@@ -91,11 +83,7 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
   /* check if there is a duplicate that belongs to someone else */
   const searchCriteria = { name: name };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicate = await findResourceByProperty(
-    searchCriteria,
-    fieldsToReturn,
-    schoolModel
-  );
+  const duplicate = await findSchoolByProperty(searchCriteria, fieldsToReturn);
   if (duplicate && duplicate?._id.toString() !== schoolId) {
     throw new ConflictError("This school name already exists");
   }
@@ -104,7 +92,7 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
     name: name,
     groupMaxNumStudents: groupMaxNumStudents,
   };
-  const schoolUpdated = await updateResource(schoolId, newSchool, schoolModel);
+  const schoolUpdated = await modifySchool(schoolId, newSchool);
   if (!schoolUpdated) {
     throw new NotFoundError("School not updated");
   }
@@ -119,7 +107,7 @@ const deleteSchool = async ({ params }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: schoolId } = params;
   /* delete school */
-  const schoolDeleted = await deleteResource(schoolId, schoolModel);
+  const schoolDeleted = await removeSchool(schoolId);
   if (!schoolDeleted) {
     throw new NotFoundError("School not deleted");
   }

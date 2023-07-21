@@ -2,36 +2,26 @@ import supertest from "supertest";
 import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
-import * as MongoServices from "../../../services/mongoServices";
+
+import * as subjectServices from "../subjectServices";
 
 import { Subject } from "../../../typings/types";
+
+type Service =
+  | "insertSubject"
+  | "findFilterAllSubjects"
+  | "findSubjectByProperty"
+  | "findFilterSubjectByProperty"
+  | "modifyFilterSubject"
+  | "removeFilterSubject"
+  | "findPopulateGroupById"
+  | "findPopulateFieldById";
 
 describe("Resource => subject", () => {
   /* mock services */
   // just one return
-  const mockService = (payload: unknown, service: string) => {
-    return (
-      jest
-        // @ts-ignore
-        .spyOn(MongoServices, service)
-        // @ts-ignore
-        .mockReturnValue(payload)
-    );
-  };
-  // multiple returns
-  const mockServiceMultipleReturns = (
-    firstPayload: unknown,
-    secondPayload: unknown,
-    service: string
-  ) => {
-    return (
-      jest
-        // @ts-ignore
-        .spyOn(MongoServices, service)
-        // @ts-ignore
-        .mockReturnValueOnce(firstPayload)
-        .mockReturnValueOnce(secondPayload)
-    );
+  const mockService = (payload: any, service: Service) => {
+    return jest.spyOn(subjectServices, service).mockReturnValue(payload);
   };
 
   /* hooks */
@@ -178,14 +168,17 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
-          fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
-        const insertSubject = mockService(subjectNullPayload, "insertResource");
+        const findField = mockService(
+          fieldNullPayload,
+          "findPopulateFieldById"
+        );
+        const insertSubject = mockService(subjectNullPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -237,31 +230,24 @@ describe("Resource => subject", () => {
             school_id: newSubjectMissingValues.school_i,
             name: newSubjectMissingValues.nam,
           },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubjectMissingValues.group_i,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubjectMissingValues.field_i,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(
-          newSubjectMissingValues,
-          "subject"
-        );
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubjectMissingValues);
       });
     });
     describe("subject::post::02 - Passing fields with empty values", () => {
@@ -269,14 +255,17 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
-          fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
-        const insertSubject = mockService(subjectNullPayload, "insertResource");
+        const findField = mockService(
+          fieldNullPayload,
+          "findPopulateFieldById"
+        );
+        const insertSubject = mockService(subjectNullPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -335,31 +324,24 @@ describe("Resource => subject", () => {
             school_id: newSubjectEmptyValues.school_id,
             name: newSubjectEmptyValues.name,
           },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubjectEmptyValues.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubjectEmptyValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(
-          newSubjectEmptyValues,
-          "subject"
-        );
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubjectEmptyValues);
       });
     });
     describe("subject::post::03 - Passing an invalid type as a value", () => {
@@ -367,14 +349,17 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
-          fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
-        const insertSubject = mockService(subjectNullPayload, "insertResource");
+        const findField = mockService(
+          fieldNullPayload,
+          "findPopulateFieldById"
+        );
+        const insertSubject = mockService(subjectNullPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -433,30 +418,25 @@ describe("Resource => subject", () => {
             school_id: newSubjectNotValidDataTypes.school_id,
             name: newSubjectNotValidDataTypes.name,
           },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubjectNotValidDataTypes.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubjectNotValidDataTypes.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(
-          newSubjectNotValidDataTypes,
-          "subject"
+          newSubjectNotValidDataTypes
         );
       });
     });
@@ -465,14 +445,17 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
-          fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
-        const insertSubject = mockService(subjectNullPayload, "insertResource");
+        const findField = mockService(
+          fieldNullPayload,
+          "findPopulateFieldById"
+        );
+        const insertSubject = mockService(subjectNullPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -508,30 +491,25 @@ describe("Resource => subject", () => {
             school_id: invalidMockId,
             name: newSubjectWrongLengthValues.name,
           },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubjectWrongLengthValues.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubjectWrongLengthValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(
-          newSubjectWrongLengthValues,
-          "subject"
+          newSubjectWrongLengthValues
         );
       });
     });
@@ -540,14 +518,11 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
-          fieldPayload,
-          "findPopulateResourceById"
-        );
-        const insertSubject = mockService(subjectPayload, "insertResource");
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
+        const insertSubject = mockService(subjectPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -562,28 +537,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: newSubject.school_id, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
     describe("subject::post::06 - Passing an non-existent group in the body", () => {
@@ -591,14 +562,14 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
-          fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
-        const insertSubject = mockService(subjectPayload, "insertResource");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
+        const insertSubject = mockService(subjectPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -613,28 +584,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: newSubject.school_id, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(1);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
     describe("subject::post::07 - Passing an non-matching school id for the group in the body", () => {
@@ -642,14 +609,14 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           { ...groupPayload, school_id: otherValidMockId },
-          fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
-        const insertSubject = mockService(subjectPayload, "insertResource");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
+        const insertSubject = mockService(subjectPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -664,28 +631,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(1);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
     describe("subject::post::08 - Passing an non-matching coordinator id for the subject parent group in the body", () => {
@@ -693,9 +656,9 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           {
             ...groupPayload,
             coordinator_id: {
@@ -710,10 +673,10 @@ describe("Resource => subject", () => {
               hasTeachingFunc: false,
             },
           },
-          fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
-        const insertSubject = mockService(subjectPayload, "insertResource");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
+        const insertSubject = mockService(subjectPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -728,28 +691,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(1);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
     describe("subject::post::09 - Passing coordinator with a different role in the body", () => {
@@ -757,9 +716,9 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           {
             ...groupPayload,
             coordinator_id: {
@@ -774,10 +733,10 @@ describe("Resource => subject", () => {
               hasTeachingFunc: false,
             },
           },
-          fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
-        const insertSubject = mockService(subjectPayload, "insertResource");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
+        const insertSubject = mockService(subjectPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -792,28 +751,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(1);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
     describe("subject::post::10 - Passing coordinator with status different from active in the body", () => {
@@ -821,9 +776,9 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           {
             ...groupPayload,
             coordinator_id: {
@@ -838,10 +793,10 @@ describe("Resource => subject", () => {
               hasTeachingFunc: false,
             },
           },
-          fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
-        const insertSubject = mockService(subjectPayload, "insertResource");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
+        const insertSubject = mockService(subjectPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -856,28 +811,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(1);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
     describe("subject::post::11 - Passing an non-existent field in the body", () => {
@@ -885,14 +836,14 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
-        const insertSubject = mockService(subjectPayload, "insertResource");
+        const insertSubject = mockService(subjectPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -907,28 +858,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: newSubject.school_id, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(2);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          2,
+        expect(findField).toHaveBeenCalled();
+        expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
     describe("subject::post::12 - Passing an non-matching school for the field in the body", () => {
@@ -936,14 +883,14 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(
           { ...fieldPayload, school_id: otherValidMockId },
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
-        const insertSubject = mockService(subjectPayload, "insertResource");
+        const insertSubject = mockService(subjectPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -958,28 +905,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(2);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          2,
+        expect(findField).toHaveBeenCalled();
+        expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).not.toHaveBeenCalled();
-        expect(insertSubject).not.toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
     describe("subject::post::13 - Passing a subject but not being created", () => {
@@ -987,14 +930,11 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
-          fieldPayload,
-          "findPopulateResourceById"
-        );
-        const insertSubject = mockService(subjectNullPayload, "insertResource");
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
+        const insertSubject = mockService(subjectNullPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1009,28 +949,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: newSubject.school_id, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(2);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          2,
+        expect(findField).toHaveBeenCalled();
+        expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).toHaveBeenCalled();
-        expect(insertSubject).toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).toHaveBeenCalledWith(newSubject);
       });
     });
     describe("subject::post::14 - Passing a subject correctly to create", () => {
@@ -1038,14 +974,11 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectNullPayload,
-          "findResourceByProperty"
+          "findSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
-          fieldPayload,
-          "findPopulateResourceById"
-        );
-        const insertSubject = mockService(subjectPayload, "insertResource");
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
+        const insertSubject = mockService(subjectPayload, "insertSubject");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1060,28 +993,24 @@ describe("Resource => subject", () => {
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { school_id: newSubject.school_id, name: newSubject.name },
-          "-createdAt -updatedAt",
-          "subject"
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(2);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          2,
+        expect(findField).toHaveBeenCalled();
+        expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertSubject).toHaveBeenCalled();
-        expect(insertSubject).toHaveBeenCalledWith(newSubject, "subject");
+        expect(insertSubject).toHaveBeenCalledWith(newSubject);
       });
     });
   });
@@ -1093,7 +1022,7 @@ describe("Resource => subject", () => {
           // mock services
           const findSubjects = mockService(
             subjectsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllSubjects"
           );
 
           // api call
@@ -1113,8 +1042,7 @@ describe("Resource => subject", () => {
           expect(findSubjects).not.toHaveBeenCalled();
           expect(findSubjects).not.toHaveBeenCalledWith(
             { school_id: null },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1123,7 +1051,7 @@ describe("Resource => subject", () => {
           // mock services
           const findSubjects = mockService(
             subjectsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllSubjects"
           );
 
           // api call
@@ -1144,8 +1072,7 @@ describe("Resource => subject", () => {
           expect(findSubjects).not.toHaveBeenCalled();
           expect(findSubjects).not.toHaveBeenCalledWith(
             { school_id: "" },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1154,7 +1081,7 @@ describe("Resource => subject", () => {
           // mock services
           const findSubjects = mockService(
             subjectsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllSubjects"
           );
 
           // api call
@@ -1175,8 +1102,7 @@ describe("Resource => subject", () => {
           expect(findSubjects).not.toHaveBeenCalled();
           expect(findSubjects).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1185,7 +1111,7 @@ describe("Resource => subject", () => {
           // mock services
           const findSubjects = mockService(
             subjectsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllSubjects"
           );
 
           // api call
@@ -1199,8 +1125,7 @@ describe("Resource => subject", () => {
           expect(findSubjects).toHaveBeenCalled();
           expect(findSubjects).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1209,7 +1134,7 @@ describe("Resource => subject", () => {
           // mock services
           const findSubjects = mockService(
             subjectsPayload,
-            "findFilterAllResources"
+            "findFilterAllSubjects"
           );
 
           // api call
@@ -1223,25 +1148,25 @@ describe("Resource => subject", () => {
           expect(findSubjects).toHaveBeenCalled();
           expect(findSubjects).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
     });
-
     describe("subject - GET/:id", () => {
       describe("subject::get/:id::01 - Passing missing fields", () => {
         it("should return a missing values error", async () => {
           // mock services
           const findSubject = mockService(
             subjectNullPayload,
-            "findResourceByProperty"
+            "findSubjectByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockSubjectId}`)
             .send({ school_i: validMockSchoolId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1254,8 +1179,7 @@ describe("Resource => subject", () => {
           expect(findSubject).not.toHaveBeenCalled();
           expect(findSubject).not.toHaveBeenCalledWith(
             { _id: validMockSubjectId, school_id: null },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1264,12 +1188,14 @@ describe("Resource => subject", () => {
           // mock services
           const findSubject = mockService(
             subjectNullPayload,
-            "findResourceByProperty"
+            "findSubjectByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockSubjectId}`)
             .send({ school_id: "" });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1283,8 +1209,7 @@ describe("Resource => subject", () => {
           expect(findSubject).not.toHaveBeenCalled();
           expect(findSubject).not.toHaveBeenCalledWith(
             { _id: validMockSubjectId, school_id: "" },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1293,12 +1218,14 @@ describe("Resource => subject", () => {
           // mock services
           const findSubject = mockService(
             subjectNullPayload,
-            "findResourceByProperty"
+            "findSubjectByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${invalidMockId}`)
             .send({ school_id: invalidMockId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1318,8 +1245,7 @@ describe("Resource => subject", () => {
           expect(findSubject).not.toHaveBeenCalled();
           expect(findSubject).not.toHaveBeenCalledWith(
             { _id: invalidMockId, school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1328,12 +1254,14 @@ describe("Resource => subject", () => {
           // mock services
           const findSubject = mockService(
             subjectNullPayload,
-            "findResourceByProperty"
+            "findSubjectByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockSubjectId}`)
             .send({ school_id: otherValidMockId });
+
           // assertions
           expect(body).toStrictEqual({
             msg: "Subject not found",
@@ -1342,8 +1270,7 @@ describe("Resource => subject", () => {
           expect(findSubject).toHaveBeenCalled();
           expect(findSubject).toHaveBeenCalledWith(
             { _id: validMockSubjectId, school_id: otherValidMockId },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1352,20 +1279,21 @@ describe("Resource => subject", () => {
           // mock services
           const findSubject = mockService(
             subjectPayload,
-            "findResourceByProperty"
+            "findSubjectByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockSubjectId}`)
             .send({ school_id: validMockSchoolId });
+
           // assertions
           expect(body).toStrictEqual(subjectPayload);
           expect(statusCode).toBe(200);
           expect(findSubject).toHaveBeenCalled();
           expect(findSubject).toHaveBeenCalledWith(
             { _id: validMockSubjectId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "subject"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1378,16 +1306,19 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
-          fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
+        );
+        const findField = mockService(
+          groupNullPayload,
+          "findPopulateFieldById"
         );
         const updateSubject = mockService(
           subjectNullPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -1436,38 +1367,33 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newSubjectMissingValues.school_i },
-            { name: newSubjectMissingValues.nam },
-          ],
-          "-createdAt -updatedAt",
-          "subject"
+          {
+            school_id: newSubjectMissingValues.school_i,
+            name: newSubjectMissingValues.nam,
+          },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubjectMissingValues.group_i,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubjectMissingValues.field_i,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockSubjectId },
-            { school_id: newSubjectMissingValues.school_i },
-          ],
-          newSubject,
-          "subject"
+          {
+            _id: validMockSubjectId,
+            school_id: newSubjectMissingValues.school_i,
+          },
+          newSubject
         );
       });
     });
@@ -1476,16 +1402,19 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
+          "findPopulateGroupById"
+        );
+        const findField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const updateSubject = mockService(
           subjectNullPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -1541,38 +1470,33 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newSubjectEmptyValues.school_id },
-            { name: newSubjectEmptyValues.name },
-          ],
-          "-createdAt -updatedAt",
-          "subject"
+          {
+            school_id: newSubjectEmptyValues.school_id,
+            name: newSubjectEmptyValues.name,
+          },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubjectEmptyValues.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubjectEmptyValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockSubjectId },
-            { school_id: newSubjectEmptyValues.school_id },
-          ],
-          newSubjectEmptyValues,
-          "subject"
+          {
+            _id: validMockSubjectId,
+            school_id: newSubjectEmptyValues.school_id,
+          },
+          newSubjectEmptyValues
         );
       });
     });
@@ -1581,16 +1505,19 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
+          "findPopulateGroupById"
+        );
+        const findField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const updateSubject = mockService(
           subjectNullPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -1652,38 +1579,33 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newSubjectNotValidDataTypes.school_id },
-            { name: newSubjectNotValidDataTypes.name },
-          ],
-          "-createdAt -updatedAt",
-          "subject"
+          {
+            school_id: newSubjectNotValidDataTypes.school_id,
+            name: newSubjectNotValidDataTypes.name,
+          },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubjectNotValidDataTypes.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubjectNotValidDataTypes.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [
-            { _id: invalidMockId },
-            { school_id: newSubjectNotValidDataTypes.school_id },
-          ],
-          newSubjectNotValidDataTypes,
-          "subject"
+          {
+            _id: invalidMockId,
+            school_id: newSubjectNotValidDataTypes.school_id,
+          },
+          newSubjectNotValidDataTypes
         );
       });
     });
@@ -1692,16 +1614,19 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
+          "findPopulateGroupById"
+        );
+        const findField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const updateSubject = mockService(
           subjectNullPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -1734,38 +1659,33 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newSubjectWrongLengthValues.school_id },
-            { name: newSubjectWrongLengthValues.name },
-          ],
-          "-createdAt -updatedAt",
-          "subject"
+          {
+            school_id: newSubjectWrongLengthValues.school_id,
+            name: newSubjectWrongLengthValues.name,
+          },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubjectWrongLengthValues.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubjectWrongLengthValues.group_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockSubjectId },
-            { school_id: newSubjectWrongLengthValues.group_id },
-          ],
-          newSubjectWrongLengthValues,
-          "subject"
+          {
+            _id: validMockSubjectId,
+            school_id: newSubjectWrongLengthValues.group_id,
+          },
+          newSubjectWrongLengthValues
         );
       });
     });
@@ -1774,16 +1694,13 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
-          fieldPayload,
-          "findPopulateResourceById"
-        );
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const updateSubject = mockService(
           subjectPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -1798,32 +1715,27 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(409);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: newSubject.school_id }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: newSubject.school_id, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(0);
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: newSubject.school_id }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId, school_id: newSubject.school_id },
+          newSubject
         );
       });
     });
@@ -1832,16 +1744,16 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           groupNullPayload,
-          fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const updateSubject = mockService(
           subjectPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -1856,32 +1768,27 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(404);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: newSubject.school_id }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: newSubject.school_id, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(1);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: newSubject.school_id }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId, school_id: newSubject.school_id },
+          newSubject
         );
       });
     });
@@ -1890,16 +1797,16 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
-          { ...fieldPayload, school_id: otherValidMockId },
-          "findPopulateResourceById"
+        const findGroup = mockService(
+          { ...groupPayload, school_id: otherValidMockId },
+          "findPopulateGroupById"
         );
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const updateSubject = mockService(
           subjectPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -1909,37 +1816,32 @@ describe("Resource => subject", () => {
 
         // assertions;
         expect(body).toStrictEqual({
-          msg: "Please make sure the field belongs to the school",
+          msg: "Please make sure the group belongs to the school",
         });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: validMockSchoolId }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: validMockSchoolId, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(2);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: otherValidMockId }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId, school_id: otherValidMockId },
+          newSubject
         );
       });
     });
@@ -1948,9 +1850,9 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           {
             ...groupPayload,
             coordinator_id: {
@@ -1965,12 +1867,12 @@ describe("Resource => subject", () => {
               hasTeachingFunc: false,
             },
           },
-          fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const updateSubject = mockService(
           subjectPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -1985,32 +1887,27 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: validMockSchoolId }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: validMockSchoolId, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(1);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: otherValidMockId }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId, school_id: otherValidMockId },
+          newSubject
         );
       });
     });
@@ -2019,9 +1916,9 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           {
             ...groupPayload,
             coordinator_id: {
@@ -2036,12 +1933,12 @@ describe("Resource => subject", () => {
               hasTeachingFunc: false,
             },
           },
-          fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const updateSubject = mockService(
           subjectPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -2056,32 +1953,27 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: validMockSchoolId }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: validMockSchoolId, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(1);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: otherValidMockId }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId, school_id: otherValidMockId },
+          newSubject
         );
       });
     });
@@ -2090,9 +1982,9 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
+        const findGroup = mockService(
           {
             ...groupPayload,
             coordinator_id: {
@@ -2107,12 +1999,12 @@ describe("Resource => subject", () => {
               hasTeachingFunc: false,
             },
           },
-          fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateGroupById"
         );
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const updateSubject = mockService(
           subjectPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -2127,32 +2019,28 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: validMockSchoolId }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: validMockSchoolId, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(1);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findField).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: otherValidMockId }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId },
+          { school_id: otherValidMockId },
+          newSubject
         );
       });
     });
@@ -2161,16 +2049,16 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const updateSubject = mockService(
           subjectPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -2185,32 +2073,27 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(404);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: newSubject.school_id }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: newSubject.school_id, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(2);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          2,
+        expect(findField).toHaveBeenCalled();
+        expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: newSubject.school_id }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId, school_id: newSubject.school_id },
+          newSubject
         );
       });
     });
@@ -2219,16 +2102,16 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(
           { ...fieldPayload, school_id: otherValidMockId },
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const updateSubject = mockService(
           subjectPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -2243,32 +2126,27 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: validMockSchoolId }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: validMockSchoolId, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(2);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          2,
+        expect(findField).toHaveBeenCalled();
+        expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: otherValidMockId }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId, school_id: otherValidMockId },
+          newSubject
         );
       });
     });
@@ -2277,16 +2155,13 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
-          fieldPayload,
-          "findPopulateResourceById"
-        );
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const updateSubject = mockService(
           subjectNullPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -2301,32 +2176,27 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(404);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: newSubject.school_id }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: newSubject.school_id, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(2);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          2,
+        expect(findField).toHaveBeenCalled();
+        expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).toHaveBeenCalled();
         expect(updateSubject).toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: newSubject.school_id }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId, school_id: newSubject.school_id },
+          newSubject
         );
       });
     });
@@ -2335,16 +2205,13 @@ describe("Resource => subject", () => {
         // mock services
         const duplicateSubjectName = mockService(
           subjectsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterSubjectByProperty"
         );
-        const findGroupField = mockServiceMultipleReturns(
-          groupPayload,
-          fieldPayload,
-          "findPopulateResourceById"
-        );
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const updateSubject = mockService(
           subjectPayload,
-          "updateFilterResource"
+          "modifyFilterSubject"
         );
 
         // api call
@@ -2359,32 +2226,27 @@ describe("Resource => subject", () => {
         expect(statusCode).toBe(200);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
-          [{ school_id: newSubject.school_id }, { name: newSubject.name }],
-          "-createdAt -updatedAt",
-          "subject"
+          { school_id: newSubject.school_id, name: newSubject.name },
+          "-createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenCalledTimes(2);
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          1,
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
           newSubject.group_id,
           "-createdAt -updatedAt",
           "school_id coordinator_id",
-          "-createdAt -updatedAt",
-          "group"
+          "-password -createdAt -updatedAt"
         );
-        expect(findGroupField).toHaveBeenNthCalledWith(
-          2,
+        expect(findField).toHaveBeenCalled();
+        expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(updateSubject).toHaveBeenCalled();
         expect(updateSubject).toHaveBeenCalledWith(
-          [{ _id: validMockSubjectId }, { school_id: newSubject.school_id }],
-          newSubject,
-          "subject"
+          { _id: validMockSubjectId, school_id: newSubject.school_id },
+          newSubject
         );
       });
     });
@@ -2396,12 +2258,14 @@ describe("Resource => subject", () => {
         // mock services
         const deleteSubject = mockService(
           subjectNullPayload,
-          "deleteFilterResource"
+          "removeFilterSubject"
         );
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockSubjectId}`)
           .send({ school_i: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual([
           {
@@ -2412,10 +2276,10 @@ describe("Resource => subject", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteSubject).not.toHaveBeenCalled();
-        expect(deleteSubject).not.toHaveBeenCalledWith(
-          { _id: validMockSubjectId, school_id: null },
-          "subject"
-        );
+        expect(deleteSubject).not.toHaveBeenCalledWith({
+          _id: validMockSubjectId,
+          school_id: null,
+        });
       });
     });
     describe("subject::delete::02 - Passing fields with empty values", () => {
@@ -2423,12 +2287,14 @@ describe("Resource => subject", () => {
         // mock services
         const deleteSubject = mockService(
           subjectNullPayload,
-          "deleteFilterResource"
+          "removeFilterSubject"
         );
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockSubjectId}`)
           .send({ school_id: "" });
+
         // assertions
         expect(body).toStrictEqual([
           {
@@ -2440,10 +2306,10 @@ describe("Resource => subject", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteSubject).not.toHaveBeenCalled();
-        expect(deleteSubject).not.toHaveBeenCalledWith(
-          { _id: validMockSubjectId, school_id: "" },
-          "subject"
-        );
+        expect(deleteSubject).not.toHaveBeenCalledWith({
+          _id: validMockSubjectId,
+          school_id: "",
+        });
       });
     });
     describe("subject::delete::03 - Passing invalid ids", () => {
@@ -2451,12 +2317,14 @@ describe("Resource => subject", () => {
         // mock services
         const deleteSubject = mockService(
           subjectNullPayload,
-          "deleteFilterResource"
+          "removeFilterSubject"
         );
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${invalidMockId}`)
           .send({ school_id: invalidMockId });
+
         // assertions
         expect(body).toStrictEqual([
           {
@@ -2474,10 +2342,10 @@ describe("Resource => subject", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteSubject).not.toHaveBeenCalled();
-        expect(deleteSubject).not.toHaveBeenCalledWith(
-          { _id: invalidMockId, school_id: invalidMockId },
-          "subject"
-        );
+        expect(deleteSubject).not.toHaveBeenCalledWith({
+          _id: invalidMockId,
+          school_id: invalidMockId,
+        });
       });
     });
     describe("subject::delete::04 - Passing a subject id but not deleting it", () => {
@@ -2485,20 +2353,22 @@ describe("Resource => subject", () => {
         // mock services
         const deleteSubject = mockService(
           subjectNullPayload,
-          "deleteFilterResource"
+          "removeFilterSubject"
         );
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockSubjectId}`)
           .send({ school_id: otherValidMockId });
+
         // assertions
         expect(body).toStrictEqual({ msg: "Subject not deleted" });
         expect(statusCode).toBe(404);
         expect(deleteSubject).toHaveBeenCalled();
-        expect(deleteSubject).toHaveBeenCalledWith(
-          { _id: validMockSubjectId, school_id: otherValidMockId },
-          "subject"
-        );
+        expect(deleteSubject).toHaveBeenCalledWith({
+          _id: validMockSubjectId,
+          school_id: otherValidMockId,
+        });
       });
     });
     describe("subject::delete::05 - Passing a subject id correctly to delete", () => {
@@ -2506,7 +2376,7 @@ describe("Resource => subject", () => {
         // mock services
         const deleteSubject = mockService(
           subjectPayload,
-          "deleteFilterResource"
+          "removeFilterSubject"
         );
 
         // api call
@@ -2518,10 +2388,10 @@ describe("Resource => subject", () => {
         expect(body).toStrictEqual({ msg: "Subject deleted" });
         expect(statusCode).toBe(200);
         expect(deleteSubject).toHaveBeenCalled();
-        expect(deleteSubject).toHaveBeenCalledWith(
-          { _id: validMockSubjectId, school_id: validMockSchoolId },
-          "subject"
-        );
+        expect(deleteSubject).toHaveBeenCalledWith({
+          _id: validMockSubjectId,
+          school_id: validMockSchoolId,
+        });
       });
     });
   });

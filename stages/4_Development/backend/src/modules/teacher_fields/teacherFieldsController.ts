@@ -5,34 +5,34 @@ import ConflictError from "../../errors/conflict";
 import NotFoundError from "../../errors/not-found";
 
 import {
-  insertResource,
-  findPopulateResourceById,
-  findFilterAllResources,
-  deleteFilterResource,
-  findFilterResourceByProperty,
-  updateFilterResource,
-  findResourceByProperty,
-} from "../../services/mongoServices";
+  insertTeacherField,
+  findFilterAllTeacherFields,
+  findTeacherFieldByProperty,
+  findFilterTeacherFieldByProperty,
+  modifyFilterTeacherField,
+  removeFilterTeacherField,
+  /* Services from other entities */
+  findPopulateTeacherById,
+  findPopulateFieldById,
+} from "./teacherFieldServices";
 
 /* models */
-const teacherModel = "teacher";
 const fieldModel = "field";
 const teacherFieldModel = "teacherField";
 
 // @desc create a teacher_field
 // @route POST /api/v1/teacher_fields
 // @access Private
-// @fields: body {school_id:[string] , teacher_id:[string], field_id:[string]}
+// @fields: body {school_id:[string], teacher_id:[string], field_id:[string]}
 const createTeacherField = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, teacher_id, field_id } = body;
   /* find if the teacher has the field already assigned */
-  const searchCriteria = { teacher_id, field_id, school_id };
+  const searchCriteria = { school_id, teacher_id, field_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const fieldAlreadyAssigned = await findResourceByProperty(
+  const fieldAlreadyAssigned = await findTeacherFieldByProperty(
     searchCriteria,
-    fieldsToReturn,
-    teacherFieldModel
+    fieldsToReturn
   );
   if (fieldAlreadyAssigned) {
     throw new ConflictError(
@@ -43,12 +43,11 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
   const fieldsToReturnTeacher = "-createdAt -updatedAt";
   const fieldsToPopulateTeacher = "school_id";
   const fieldsToReturnPopulateTeacher = "-createdAt -updatedAt";
-  const teacherFound = await findPopulateResourceById(
+  const teacherFound = await findPopulateTeacherById(
     teacher_id,
     fieldsToReturnTeacher,
     fieldsToPopulateTeacher,
-    fieldsToReturnPopulateTeacher,
-    teacherModel
+    fieldsToReturnPopulateTeacher
   );
 
   if (!teacherFound) {
@@ -63,12 +62,11 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
   const fieldsToReturnField = "-createdAt -updatedAt";
   const fieldsToPopulateField = "school_id";
   const fieldsToReturnPopulateField = "-createdAt -updatedAt";
-  const fieldFound = await findPopulateResourceById(
+  const fieldFound = await findPopulateFieldById(
     field_id,
     fieldsToReturnField,
     fieldsToPopulateField,
-    fieldsToReturnPopulateField,
-    fieldModel
+    fieldsToReturnPopulateField
   );
   if (!fieldFound) {
     throw new NotFoundError("Please make sure the field exists");
@@ -84,10 +82,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     teacher_id: teacher_id,
     field_id: field_id,
   };
-  const teacherFieldCreated = await insertResource(
-    newTeacherField,
-    teacherFieldModel
-  );
+  const teacherFieldCreated = await insertTeacherField(newTeacherField);
   if (!teacherFieldCreated) {
     throw new BadRequestError(
       "The teacher has been successfully assigned the field"
@@ -108,10 +103,9 @@ const getTeacherFields = async ({ body }: Request, res: Response) => {
   /* filter by school id */
   const filters = { school_id: school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const teacherFieldsFound = await findFilterAllResources(
+  const teacherFieldsFound = await findFilterAllTeacherFields(
     filters,
-    fieldsToReturn,
-    teacherFieldModel
+    fieldsToReturn
   );
   /* get all fields */
   if (teacherFieldsFound?.length === 0) {
@@ -129,12 +123,11 @@ const getTeacherField = async ({ params, body }: Request, res: Response) => {
   const { id: _id } = params;
   const { school_id } = body;
   /* get the teacher_field */
-  const searchCriteria = { _id, school_id };
+  const searchCriteria = { school_id, _id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const teacherFieldFound = await findResourceByProperty(
+  const teacherFieldFound = await findTeacherFieldByProperty(
     searchCriteria,
-    fieldsToReturn,
-    teacherFieldModel
+    fieldsToReturn
   );
   if (!teacherFieldFound) {
     throw new NotFoundError("Teacher_Field not found");
@@ -154,12 +147,11 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   const fieldsToReturnField = "-createdAt -updatedAt";
   const fieldsToPopulateField = "school_id";
   const fieldsToReturnPopulateField = "-createdAt -updatedAt";
-  const fieldFound = await findPopulateResourceById(
+  const fieldFound = await findPopulateFieldById(
     field_id,
     fieldsToReturnField,
     fieldsToPopulateField,
-    fieldsToReturnPopulateField,
-    fieldModel
+    fieldsToReturnPopulateField
   );
   if (!fieldFound) {
     throw new NotFoundError("Please make sure the field exists");
@@ -169,38 +161,35 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
       "Please make sure the field belongs to the school"
     );
   }
+  // refactor here --> try changing the service with findTeacherFieldByProperty
   /* check if the field has already been assigned to a teacher for the school */
-  const filters = [
-    { school_id: school_id },
-    { teacher_id: teacher_id },
-    { field_id: field_id },
-  ];
+  const filters = {
+    school_id: school_id,
+    teacher_id: teacher_id,
+    field_id: field_id,
+  };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const fieldAlreadyAssignedToTeacherFound = await findFilterResourceByProperty(
-    filters,
-    fieldsToReturn,
-    teacherFieldModel
-  );
+  const fieldAlreadyAssignedToTeacherFound =
+    await findFilterTeacherFieldByProperty(filters, fieldsToReturn);
   if (fieldAlreadyAssignedToTeacherFound?.length !== 0) {
     throw new ConflictError(
       "This field has already been assigned to the teacher!"
     );
   }
   /* update if the teacher and school ids are the same one as the one passed and update the field */
-  const filtersUpdate = [
-    { _id: teacherFieldId },
-    { teacher_id: teacher_id },
-    { school_id: school_id },
-  ];
+  const filtersUpdate = {
+    _id: teacherFieldId,
+    school_id: school_id,
+    teacher_id: teacher_id,
+  };
   const newTeacherField = {
     school_id: school_id,
     teacher_id: teacher_id,
     field_id: field_id,
   };
-  const fieldUpdated = await updateFilterResource(
+  const fieldUpdated = await modifyFilterTeacherField(
     filtersUpdate,
-    newTeacherField,
-    teacherFieldModel
+    newTeacherField
   );
   if (!fieldUpdated) {
     throw new NotFoundError(
@@ -221,11 +210,8 @@ const deleteTeacherField = async ({ params, body }: Request, res: Response) => {
   const { id: teacherFieldId } = params;
   const { school_id } = body;
   /* delete field */
-  const teacherFiltersDelete = { _id: teacherFieldId, school_id: school_id };
-  const fieldDeleted = await deleteFilterResource(
-    teacherFiltersDelete,
-    teacherFieldModel
-  );
+  const teacherFiltersDelete = { school_id: school_id, _id: teacherFieldId };
+  const fieldDeleted = await removeFilterTeacherField(teacherFiltersDelete);
   if (!fieldDeleted) {
     throw new NotFoundError("Teacher_Field not deleted");
   }

@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
-import { isValidId } from "../../services/mongoServices";
+import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
+// @fields: body: {school_id:[string], firstName:[string], lastName:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const validateCreateUser = [
   check("school_id")
     .exists()
@@ -175,7 +175,7 @@ const validateGetUser = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
+// @fields: params: {id:[string]},  body: {school_id:[string], firstName:[string], lastName:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
 const validateUpdateUser = [
   check("id")
     .custom((value) => {

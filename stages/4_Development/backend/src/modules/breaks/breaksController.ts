@@ -4,17 +4,14 @@ import BadRequestError from "../../errors/bad-request";
 import NotFoundError from "../../errors/not-found";
 
 import {
-  insertResource,
-  findPopulateResourceById,
-  findFilterAllResources,
-  deleteFilterResource,
-  updateFilterResource,
-  findResourceByProperty,
-} from "../../services/mongoServices";
-
-/* models */
-const breakModel = "break";
-const scheduleModel = "schedule";
+  insertBreak,
+  findBreakByProperty,
+  findFilterAllBreaks,
+  modifyFilterBreak,
+  removeFilterBreak,
+  /* Services from other entities */
+  findPopulateScheduleById,
+} from "./breakServices";
 
 /* global reference */
 const maxMinutesInDay = 1439;
@@ -34,12 +31,11 @@ const createBreak = async ({ body }: Request, res: Response) => {
   const fieldsToReturnSchedule = "-createdAt -updatedAt";
   const fieldsToPopulateSchedule = "school_id";
   const fieldsToReturnPopulateSchedule = "-createdAt -updatedAt";
-  const scheduleFound = await findPopulateResourceById(
+  const scheduleFound = await findPopulateScheduleById(
     schedule_id,
     fieldsToReturnSchedule,
     fieldsToPopulateSchedule,
-    fieldsToReturnPopulateSchedule,
-    scheduleModel
+    fieldsToReturnPopulateSchedule
   );
   if (!scheduleFound) {
     throw new NotFoundError("Please make sure the schedule exists");
@@ -63,7 +59,7 @@ const createBreak = async ({ body }: Request, res: Response) => {
     breakStart: breakStart,
     numberMinutes: numberMinutes,
   };
-  const breakCreated = await insertResource(newBreak, breakModel);
+  const breakCreated = await insertBreak(newBreak);
   if (!breakCreated) {
     throw new BadRequestError("Break not created!");
   }
@@ -80,11 +76,7 @@ const getBreaks = async ({ body }: Request, res: Response) => {
   /* filter by school id */
   const filters = { school_id: school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const breaksFound = await findFilterAllResources(
-    filters,
-    fieldsToReturn,
-    breakModel
-  );
+  const breaksFound = await findFilterAllBreaks(filters, fieldsToReturn);
   /* get all fields */
   if (breaksFound?.length === 0) {
     throw new NotFoundError("No breaks found");
@@ -101,13 +93,9 @@ const getBreak = async ({ params, body }: Request, res: Response) => {
   const { id: _id } = params;
   const { school_id } = body;
   /* get the break */
-  const searchCriteria = { _id, school_id };
+  const searchCriteria = { school_id, _id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const breakFound = await findResourceByProperty(
-    searchCriteria,
-    fieldsToReturn,
-    breakModel
-  );
+  const breakFound = await findBreakByProperty(searchCriteria, fieldsToReturn);
   if (!breakFound) {
     throw new NotFoundError("Break not found");
   }
@@ -130,12 +118,11 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
   const fieldsToReturnSchedule = "-createdAt -updatedAt";
   const fieldsToPopulateSchedule = "school_id";
   const fieldsToReturnPopulateSchedule = "-createdAt -updatedAt";
-  const scheduleFound = await findPopulateResourceById(
+  const scheduleFound = await findPopulateScheduleById(
     schedule_id,
     fieldsToReturnSchedule,
     fieldsToPopulateSchedule,
-    fieldsToReturnPopulateSchedule,
-    scheduleModel
+    fieldsToReturnPopulateSchedule
   );
   if (!scheduleFound) {
     throw new NotFoundError("Please make sure the schedule exists");
@@ -153,18 +140,14 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
     );
   }
   /* update break */
-  const filtersUpdate = [{ _id: breakId }, { school_id: school_id }];
+  const filtersUpdate = { _id: breakId, school_id: school_id };
   const newBreak = {
     school_id: school_id,
     schedule_id: schedule_id,
     breakStart: breakStart,
     numberMinutes: numberMinutes,
   };
-  const breakUpdated = await updateFilterResource(
-    filtersUpdate,
-    newBreak,
-    breakModel
-  );
+  const breakUpdated = await modifyFilterBreak(filtersUpdate, newBreak);
   if (!breakUpdated) {
     throw new NotFoundError("Break not updated");
   }
@@ -180,8 +163,8 @@ const deleteBreak = async ({ params, body }: Request, res: Response) => {
   const { id: breakId } = params;
   const { school_id } = body;
   /* delete break */
-  const filtersDelete = { _id: breakId, school_id: school_id };
-  const breakDeleted = await deleteFilterResource(filtersDelete, breakModel);
+  const filtersDelete = { school_id: school_id, _id: breakId };
+  const breakDeleted = await removeFilterBreak(filtersDelete);
   if (!breakDeleted) {
     throw new NotFoundError("Break not deleted");
   }

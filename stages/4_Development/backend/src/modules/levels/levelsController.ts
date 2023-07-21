@@ -4,16 +4,18 @@ import BadRequestError from "../../errors/bad-request";
 import ConflictError from "../../errors/conflict";
 import NotFoundError from "../../errors/not-found";
 
-import {
-  insertResource,
-  findFilterAllResources,
-  deleteFilterResource,
-  findFilterResourceByProperty,
-  updateFilterResource,
-  findPopulateResourceById,
-  findResourceByProperty,
-} from "../../services/mongoServices";
 import { Level } from "../../typings/types";
+import {
+  insertLevel,
+  findFilterAllLevels,
+  findLevelByProperty,
+  findFilterLevelByProperty,
+  findPopulateLevelById,
+  /* Services from other entities */
+  findPopulateScheduleById,
+  modifyFilterLevel,
+  removeFilterLevel,
+} from "./levelServices";
 
 /* models */
 const levelModel = "level";
@@ -29,10 +31,9 @@ const createLevel = async ({ body }: Request, res: Response) => {
   /* check if the level name already exists for this school */
   const searchCriteria = { school_id, name };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicateField = await findResourceByProperty(
+  const duplicateField = await findLevelByProperty(
     searchCriteria,
-    fieldsToReturn,
-    levelModel
+    fieldsToReturn
   );
   if (duplicateField) {
     throw new ConflictError("This level name already exists");
@@ -41,12 +42,11 @@ const createLevel = async ({ body }: Request, res: Response) => {
   const fieldsToReturnSchedule = "-createdAt -updatedAt";
   const fieldsToPopulateSchedule = "school_id";
   const fieldsToReturnPopulateSchedule = "-createdAt -updatedAt";
-  const scheduleFound = await findPopulateResourceById(
+  const scheduleFound = await findPopulateScheduleById(
     schedule_id,
     fieldsToReturnSchedule,
     fieldsToPopulateSchedule,
-    fieldsToReturnPopulateSchedule,
-    scheduleModel
+    fieldsToReturnPopulateSchedule
   );
   if (!scheduleFound) {
     throw new NotFoundError("Please make sure the schedule exists");
@@ -63,7 +63,7 @@ const createLevel = async ({ body }: Request, res: Response) => {
     schedule_id: schedule_id,
     name: name,
   };
-  const levelCreated = await insertResource(newLevel, levelModel);
+  const levelCreated = await insertLevel(newLevel);
   if (!levelCreated) {
     throw new BadRequestError("Level not created!");
   }
@@ -80,11 +80,7 @@ const getLevels = async ({ body }: Request, res: Response) => {
   /* filter by school id */
   const filters = { school_id: school_id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const levelsFound = await findFilterAllResources(
-    filters,
-    fieldsToReturn,
-    levelModel
-  );
+  const levelsFound = await findFilterAllLevels(filters, fieldsToReturn);
   /* get all fields */
   if (levelsFound?.length === 0) {
     throw new NotFoundError("No levels found");
@@ -101,13 +97,9 @@ const getLevel = async ({ params, body }: Request, res: Response) => {
   const { id: _id } = params;
   const { school_id } = body;
   /* get the level */
-  const searchCriteria = { _id, school_id };
+  const searchCriteria = { school_id, _id };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const levelFound = await findResourceByProperty(
-    searchCriteria,
-    fieldsToReturn,
-    levelModel
-  );
+  const levelFound = await findLevelByProperty(searchCriteria, fieldsToReturn);
   if (!levelFound) {
     throw new NotFoundError("Level not found");
   }
@@ -123,12 +115,11 @@ const updateLevel = async ({ params, body }: Request, res: Response) => {
   const { id: levelId } = params;
   const { school_id, schedule_id, name } = body;
   /* check if the level name already exist for the school */
-  const filters = [{ school_id: school_id }, { name: name }];
+  const filters = { school_id: school_id, name: name };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicateLevelNameFound = await findFilterResourceByProperty(
+  const duplicateLevelNameFound = await findFilterLevelByProperty(
     filters,
-    fieldsToReturn,
-    levelModel
+    fieldsToReturn
   );
   // if there is at least one record with that name and a different level id, it returns true and triggers an error
   const duplicateLevelName = duplicateLevelNameFound?.some(
@@ -137,17 +128,15 @@ const updateLevel = async ({ params, body }: Request, res: Response) => {
   if (duplicateLevelName) {
     throw new ConflictError("This level name already exists!");
   }
-
   /* find schedule by id, and populate its properties */
   const fieldsToReturnSchedule = "-createdAt -updatedAt";
   const fieldsToPopulateSchedule = "school_id";
   const fieldsToReturnPopulateSchedule = "-createdAt -updatedAt";
-  const scheduleFound = await findPopulateResourceById(
+  const scheduleFound = await findPopulateScheduleById(
     schedule_id,
     fieldsToReturnSchedule,
     fieldsToPopulateSchedule,
-    fieldsToReturnPopulateSchedule,
-    scheduleModel
+    fieldsToReturnPopulateSchedule
   );
   if (!scheduleFound) {
     throw new NotFoundError("Please make sure the schedule exists");
@@ -164,12 +153,8 @@ const updateLevel = async ({ params, body }: Request, res: Response) => {
     schedule_id: schedule_id,
     name: name,
   };
-  const filtersUpdate = [{ _id: levelId }, { school_id: school_id }];
-  const levelUpdated = await updateFilterResource(
-    filtersUpdate,
-    newLevel,
-    levelModel
-  );
+  const filtersUpdate = { _id: levelId, school_id: school_id };
+  const levelUpdated = await modifyFilterLevel(filtersUpdate, newLevel);
   if (!levelUpdated) {
     throw new NotFoundError("Level not updated");
   }
@@ -185,8 +170,8 @@ const deleteLevel = async ({ params, body }: Request, res: Response) => {
   const { id: levelId } = params;
   const { school_id } = body;
   /* delete level */
-  const filtersDelete = { _id: levelId, school_id: school_id };
-  const levelDeleted = await deleteFilterResource(filtersDelete, levelModel);
+  const filtersDelete = { school_id: school_id, _id: levelId };
+  const levelDeleted = await removeFilterLevel(filtersDelete);
   if (!levelDeleted) {
     throw new NotFoundError("Level not deleted");
   }

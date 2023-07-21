@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
-import { isValidId } from "../../services/mongoServices";
+import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string] , teacher_id:[string], field_id:[string]}
 const validateCreateTeacherField = [

@@ -2,37 +2,26 @@ import supertest from "supertest";
 import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
-import * as MongoServices from "../../../services/mongoServices";
+
+import * as groupServices from "../groupServices";
 
 import { Group } from "../../../typings/types";
+
+type Service =
+  | "insertGroup"
+  | "findFilterAllGroups"
+  | "findFilterGroupByProperty"
+  | "findGroupByProperty"
+  | "modifyFilterGroup"
+  | "removeFilterGroup"
+  | "findPopulateLevelById"
+  | "findPopulateUserById";
 
 describe("Resource => Group", () => {
   /* mock services */
   // just one return
-  const mockService = (payload: unknown, service: string) => {
-    return (
-      jest
-        // @ts-ignore
-        .spyOn(MongoServices, service)
-        // @ts-ignore
-        .mockReturnValue(payload)
-    );
-  };
-
-  // multiple returns
-  const mockServiceMultipleReturns = (
-    firstPayload: unknown,
-    secondPayload: unknown,
-    service: string
-  ) => {
-    return (
-      jest
-        // @ts-ignore
-        .spyOn(MongoServices, service)
-        // @ts-ignore
-        .mockReturnValueOnce(firstPayload)
-        .mockReturnValueOnce(secondPayload)
-    );
+  const mockService = (payload: any, service: Service) => {
+    return jest.spyOn(groupServices, service).mockReturnValue(payload);
   };
 
   /* hooks */
@@ -145,14 +134,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
-          coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateLevelById"
         );
-        const insertGroup = mockService(groupNullPayload, "insertResource");
+        const findCoordinator = mockService(
+          coordinatorNullPayload,
+          "findPopulateUserById"
+        );
+        const insertGroup = mockService(groupNullPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -194,31 +186,24 @@ describe("Resource => Group", () => {
             school_id: newGroupMissingValues.school_i,
             name: newGroupMissingValues.nam,
           },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           newGroupMissingValues.level_i,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupMissingValues.coordinator_i,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(
-          newGroupMissingValues,
-          "group"
-        );
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroupMissingValues);
       });
     });
     describe("group::post::02 - Passing fields with empty values", () => {
@@ -226,14 +211,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
-          coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateLevelById"
         );
-        const insertGroup = mockService(groupNullPayload, "insertResource");
+        const findCoordinator = mockService(
+          coordinatorNullPayload,
+          "findPopulateUserById"
+        );
+        const insertGroup = mockService(groupNullPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -280,31 +268,24 @@ describe("Resource => Group", () => {
             school_id: newGroupEmptyValues.school_id,
             name: newGroupEmptyValues.name,
           },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           newGroupEmptyValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupEmptyValues.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(
-          newGroupEmptyValues,
-          "group"
-        );
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroupEmptyValues);
       });
     });
     describe("group::post::03 - Passing an invalid type as a value", () => {
@@ -312,14 +293,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
-          coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateLevelById"
         );
-        const insertGroup = mockService(groupNullPayload, "insertResource");
+        const findCoordinator = mockService(
+          coordinatorNullPayload,
+          "findPopulateLevelById"
+        );
+        const insertGroup = mockService(groupNullPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -363,31 +347,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
           { school_id: invalidMockId, name: newGroupNotValidDataTypes.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           invalidMockId,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           invalidMockId,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(
-          newGroupNotValidDataTypes,
-          "group"
-        );
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroupNotValidDataTypes);
       });
     });
     describe("group::post::04 - Passing too long or short input values", () => {
@@ -395,14 +372,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
-          coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateLevelById"
         );
-        const insertGroup = mockService(groupNullPayload, "insertResource");
+        const findCoordinator = mockService(
+          coordinatorNullPayload,
+          "findPopulateUserById"
+        );
+        const insertGroup = mockService(groupNullPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -432,31 +412,24 @@ describe("Resource => Group", () => {
             school_id: newGroupWrongLengthValues.school_id,
             name: newGroupWrongLengthValues.name,
           },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           newGroupWrongLengthValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupWrongLengthValues.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(
-          newGroupWrongLengthValues,
-          "group"
-        );
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroupWrongLengthValues);
       });
     });
     describe("group::post::05 - Passing a duplicate group name", () => {
@@ -464,14 +437,14 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const insertGroup = mockService(groupPayload, "insertResource");
+        const insertGroup = mockService(groupPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -486,28 +459,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
     describe("group::post::06 - Passing a non-existent level", () => {
@@ -515,14 +484,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
-          coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateLevelById"
         );
-        const insertGroup = mockService(groupPayload, "insertResource");
+        const findCoordinator = mockService(
+          coordinatorPayload,
+          "findPopulateUserById"
+        );
+        const insertGroup = mockService(groupPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -537,28 +509,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(1);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
     describe("group::post::07 - Passing a non matching school id for the level", () => {
@@ -566,9 +534,9 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           {
             ...levelPayload,
             school_id: {
@@ -577,10 +545,13 @@ describe("Resource => Group", () => {
               groupMaxNumStudents: 40,
             },
           },
-          coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateLevelById"
         );
-        const insertGroup = mockService(groupPayload, "insertResource");
+        const findCoordinator = mockService(
+          coordinatorPayload,
+          "findPopulateUserById"
+        );
+        const insertGroup = mockService(groupPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -595,28 +566,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(1);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
     describe("group::post::08 - Passing a number of students larger than the max allowed number of students", () => {
@@ -624,14 +591,14 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const insertGroup = mockService(groupPayload, "insertResource");
+        const insertGroup = mockService(groupPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -646,28 +613,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(1);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
     describe("group::post::09 - Passing a non-existent coordinator", () => {
@@ -675,14 +638,14 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const insertGroup = mockService(groupPayload, "insertResource");
+        const insertGroup = mockService(groupPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -697,28 +660,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
     describe("group::post::10 - Passing a non matching school id for the coordinator", () => {
@@ -726,10 +685,10 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           {
             ...coordinatorPayload,
             school_id: {
@@ -738,9 +697,9 @@ describe("Resource => Group", () => {
               groupMaxNumStudents: 40,
             },
           },
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const insertGroup = mockService(groupPayload, "insertResource");
+        const insertGroup = mockService(groupPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -755,28 +714,23 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
     describe("group::post::11 - Passing a user with no coordinator role as coordinator", () => {
@@ -784,17 +738,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           {
             ...coordinatorPayload,
             role: "teacher",
           },
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const insertGroup = mockService(groupPayload, "insertResource");
+        const insertGroup = mockService(groupPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -809,28 +763,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
     describe("group::post::12 - Passing a coordinator with a non-active status", () => {
@@ -838,17 +788,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           {
             ...coordinatorPayload,
             status: "inactive",
           },
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const insertGroup = mockService(groupPayload, "insertResource");
+        const insertGroup = mockService(groupPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -863,28 +813,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).not.toHaveBeenCalled();
-        expect(insertGroup).not.toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
     describe("group::post::13 - Passing a group but not being created", () => {
@@ -892,14 +838,14 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const insertGroup = mockService(groupNullPayload, "insertResource");
+        const insertGroup = mockService(groupNullPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -912,28 +858,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).toHaveBeenCalled();
-        expect(insertGroup).toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).toHaveBeenCalledWith(newGroup);
       });
     });
     describe("group::post::14 - Passing a group correctly to create", () => {
@@ -941,14 +883,14 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupNullPayload,
-          "findResourceByProperty"
+          "findGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const insertGroup = mockService(groupPayload, "insertResource");
+        const insertGroup = mockService(groupPayload, "insertGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -961,28 +903,24 @@ describe("Resource => Group", () => {
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
-          "-createdAt -updatedAt",
-          "group"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(insertGroup).toHaveBeenCalled();
-        expect(insertGroup).toHaveBeenCalledWith(newGroup, "group");
+        expect(insertGroup).toHaveBeenCalledWith(newGroup);
       });
     });
   });
@@ -994,12 +932,14 @@ describe("Resource => Group", () => {
           // mock services
           const findGroups = mockService(
             groupsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllGroups"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
             .send({ school_i: validMockSchoolId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1012,8 +952,7 @@ describe("Resource => Group", () => {
           expect(findGroups).not.toHaveBeenCalled();
           expect(findGroups).not.toHaveBeenCalledWith(
             { school_id: null },
-            "-createdAt -updatedAt",
-            "group"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1022,12 +961,14 @@ describe("Resource => Group", () => {
           // mock services
           const findGroups = mockService(
             groupsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllGroups"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
             .send({ school_id: "" });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1041,8 +982,7 @@ describe("Resource => Group", () => {
           expect(findGroups).not.toHaveBeenCalled();
           expect(findGroups).not.toHaveBeenCalledWith(
             { school_id: "" },
-            "-createdAt -updatedAt",
-            "group"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1051,12 +991,14 @@ describe("Resource => Group", () => {
           // mock services
           const findGroups = mockService(
             groupsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllGroups"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
             .send({ school_id: invalidMockId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1070,8 +1012,7 @@ describe("Resource => Group", () => {
           expect(findGroups).not.toHaveBeenCalled();
           expect(findGroups).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "group"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1080,30 +1021,28 @@ describe("Resource => Group", () => {
           // mock services
           const findGroups = mockService(
             groupsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllGroups"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
             .send({ school_id: otherValidMockId });
+
           // assertions
           expect(body).toStrictEqual({ msg: "No groups found" });
           expect(statusCode).toBe(404);
           expect(findGroups).toHaveBeenCalled();
           expect(findGroups).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
-            "-createdAt -updatedAt",
-            "group"
+            "-createdAt -updatedAt"
           );
         });
       });
       describe("group::get::05 - Requesting all groups correctly", () => {
         it("should get all fields", async () => {
           // mock services
-          const findGroups = mockService(
-            groupsPayload,
-            "findFilterAllResources"
-          );
+          const findGroups = mockService(groupsPayload, "findFilterAllGroups");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -1116,25 +1055,25 @@ describe("Resource => Group", () => {
           expect(findGroups).toHaveBeenCalled();
           expect(findGroups).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "group"
+            "-createdAt -updatedAt"
           );
         });
       });
     });
-
     describe("group - GET/:id", () => {
       describe("group::get/:id::01 - Passing missing fields", () => {
         it("should return a missing values error", async () => {
           // mock services
           const findGroup = mockService(
             groupNullPayload,
-            "findResourceByProperty"
+            "findGroupByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockGroupId}`)
             .send({ school_i: validMockSchoolId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1146,9 +1085,8 @@ describe("Resource => Group", () => {
           expect(statusCode).toBe(400);
           expect(findGroup).not.toHaveBeenCalled();
           expect(findGroup).not.toHaveBeenCalledWith(
-            { _id: validMockGroupId, school_id: null },
-            "-createdAt -updatedAt",
-            "group"
+            { school_id: null, _id: validMockGroupId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1157,12 +1095,14 @@ describe("Resource => Group", () => {
           // mock services
           const findGroup = mockService(
             groupNullPayload,
-            "findResourceByProperty"
+            "findGroupByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockGroupId}`)
             .send({ school_id: "" });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1175,9 +1115,8 @@ describe("Resource => Group", () => {
           expect(statusCode).toBe(400);
           expect(findGroup).not.toHaveBeenCalled();
           expect(findGroup).not.toHaveBeenCalledWith(
-            { _id: validMockGroupId, school_id: "" },
-            "-createdAt -updatedAt",
-            "group"
+            { school_id: "", _id: validMockGroupId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1186,12 +1125,14 @@ describe("Resource => Group", () => {
           // mock services
           const findGroup = mockService(
             groupNullPayload,
-            "findResourceByProperty"
+            "findGroupByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${invalidMockId}`)
             .send({ school_id: invalidMockId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1210,9 +1151,8 @@ describe("Resource => Group", () => {
           expect(statusCode).toBe(400);
           expect(findGroup).not.toHaveBeenCalled();
           expect(findGroup).not.toHaveBeenCalledWith(
-            { _id: invalidMockId, school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "group"
+            { school_id: invalidMockId, _id: invalidMockId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1221,12 +1161,14 @@ describe("Resource => Group", () => {
           // mock services
           const findGroup = mockService(
             groupNullPayload,
-            "findResourceByProperty"
+            "findGroupByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${otherValidMockId}`)
             .send({ school_id: validMockSchoolId });
+
           // assertions
           expect(body).toStrictEqual({
             msg: "Group not found",
@@ -1234,16 +1176,15 @@ describe("Resource => Group", () => {
           expect(statusCode).toBe(404);
           expect(findGroup).toHaveBeenCalled();
           expect(findGroup).toHaveBeenCalledWith(
-            { _id: otherValidMockId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "group"
+            { school_id: validMockSchoolId, _id: otherValidMockId },
+            "-createdAt -updatedAt"
           );
         });
       });
       describe("group::get/:id::05 - Requesting a group correctly", () => {
         it("should get a field", async () => {
           // mock services
-          const findGroup = mockService(groupPayload, "findResourceByProperty");
+          const findGroup = mockService(groupPayload, "findGroupByProperty");
 
           // api call
           const { statusCode, body } = await supertest(server)
@@ -1255,9 +1196,8 @@ describe("Resource => Group", () => {
           expect(statusCode).toBe(200);
           expect(findGroup).toHaveBeenCalled();
           expect(findGroup).toHaveBeenCalledWith(
-            { _id: validMockGroupId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "group"
+            { school_id: validMockSchoolId, _id: validMockGroupId },
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1270,17 +1210,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
+          "findPopulateLevelById"
+        );
+        const findCoordinator = mockService(
           coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1318,38 +1258,29 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(400);
         expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newGroupMissingValues.school_i },
-            { name: newGroupMissingValues.nam },
-          ],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: newGroupMissingValues.school_i },
+          { name: newGroupMissingValues.nam },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           newGroupMissingValues.level_i,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupMissingValues.coordinator_i,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockGroupId },
-            { school_id: newGroupMissingValues.school_i },
-          ],
-          newGroupMissingValues,
-          "group"
+          { _id: validMockGroupId },
+          { school_id: newGroupMissingValues.school_i },
+          newGroupMissingValues
         );
       });
     });
@@ -1358,17 +1289,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
+          "findPopulateLevelById"
+        );
+        const findCoordinator = mockService(
           coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1411,38 +1342,29 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(400);
         expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newGroupEmptyValues.school_id },
-            { name: newGroupEmptyValues.name },
-          ],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: newGroupEmptyValues.school_id },
+          { name: newGroupEmptyValues.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           newGroupEmptyValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupEmptyValues.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockGroupId },
-            { school_id: newGroupEmptyValues.school_id },
-          ],
-          newGroupEmptyValues,
-          "group"
+          { _id: validMockGroupId },
+          { school_id: newGroupEmptyValues.school_id },
+          newGroupEmptyValues
         );
       });
     });
@@ -1451,17 +1373,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
+          "findPopulateLevelById"
+        );
+        const findCoordinator = mockService(
           coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1510,35 +1432,28 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(400);
         expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
-          [
-            { school_id: invalidMockId },
-            { name: newGroupNotValidDataTypes.name },
-          ],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: invalidMockId },
+          { name: newGroupNotValidDataTypes.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           invalidMockId,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           invalidMockId,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [{ _id: invalidMockId }, { school_id: invalidMockId }],
-          newGroupNotValidDataTypes,
-          "group"
+          { _id: invalidMockId, school_id: invalidMockId },
+          newGroupNotValidDataTypes
         );
       });
     });
@@ -1547,17 +1462,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
+          "findPopulateLevelById"
+        );
+        const findCoordinator = mockService(
           coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1583,57 +1498,45 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(400);
         expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
-          [
-            { school_id: newGroupWrongLengthValues.school_id },
-            { name: newGroupWrongLengthValues.name },
-          ],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: newGroupWrongLengthValues.school_id },
+          { name: newGroupWrongLengthValues.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           newGroupWrongLengthValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupWrongLengthValues.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockGroupId },
-            { school_id: newGroupWrongLengthValues.school_id },
-          ],
-          newGroupWrongLengthValues,
-          "group"
+          { _id: validMockGroupId },
+          { school_id: newGroupWrongLengthValues.school_id },
+          newGroupWrongLengthValues
         );
       });
     });
-    describe("group::put::05 - Passing a duplicate group name values", () => {
+    describe("group::put::05 - Passing a duplicate group name value", () => {
       it("should return a duplicate group name error", async () => {
         // mock services
         const duplicateGroupName = mockService(
           [groupPayload],
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1647,32 +1550,27 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(409);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: newGroup.school_id }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: newGroup.school_id, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(0);
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).not.toHaveBeenCalled();
+        expect(findLevel).not.toHaveBeenCalledWith(
           newGroup.school_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
@@ -1681,17 +1579,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           levelNullPayload,
+          "findPopulateLevelById"
+        );
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1705,32 +1603,27 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(404);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: newGroup.school_id }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: newGroup.school_id, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(1);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
@@ -1739,9 +1632,9 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(
           {
             ...levelPayload,
             school_id: {
@@ -1750,13 +1643,13 @@ describe("Resource => Group", () => {
               groupMaxNumStudents: 40,
             },
           },
+          "findPopulateLevelById"
+        );
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1770,32 +1663,27 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(400);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: validMockSchoolId }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: validMockSchoolId, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(1);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
@@ -1804,17 +1692,14 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1828,51 +1713,43 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(400);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: newGroup.school_id }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: newGroup.school_id, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(1);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).not.toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).not.toHaveBeenCalled();
+        expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
     describe("group::put::09 - Passing a non-existent coordinator", () => {
-      it("should return a non-existent level error", async () => {
+      it("should return a non-existent coordinator error", async () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorNullPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1886,32 +1763,27 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(404);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: newGroup.school_id }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: newGroup.school_id, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
@@ -1920,10 +1792,10 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           {
             ...coordinatorPayload,
             school_id: {
@@ -1932,12 +1804,9 @@ describe("Resource => Group", () => {
               groupMaxNumStudents: 40,
             },
           },
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1951,32 +1820,27 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(400);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: validMockSchoolId }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: validMockSchoolId, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
@@ -1985,20 +1849,14 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           levelPayload,
-          {
-            ...coordinatorPayload,
-            role: "teacher",
-          },
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -2012,32 +1870,27 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(400);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: validMockSchoolId }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: validMockSchoolId, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
@@ -2046,20 +1899,17 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           {
             ...coordinatorPayload,
             status: "inactive",
           },
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -2073,32 +1923,27 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(400);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: validMockSchoolId }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: validMockSchoolId, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
@@ -2107,17 +1952,14 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(
-          groupNullPayload,
-          "updateFilterResource"
-        );
+        const updateGroup = mockService(groupNullPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -2130,32 +1972,27 @@ describe("Resource => Group", () => {
         });
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: newGroup.school_id }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: newGroup.school_id, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).toHaveBeenCalled();
         expect(updateGroup).toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
@@ -2164,14 +2001,14 @@ describe("Resource => Group", () => {
         // mock services
         const duplicateGroupName = mockService(
           groupsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterGroupByProperty"
         );
-        const findLevelCoordinator = mockServiceMultipleReturns(
-          levelPayload,
+        const findLevel = mockService(levelPayload, "findPopulateLevelById");
+        const findCoordinator = mockService(
           coordinatorPayload,
-          "findPopulateResourceById"
+          "findPopulateUserById"
         );
-        const updateGroup = mockService(groupPayload, "updateFilterResource");
+        const updateGroup = mockService(groupPayload, "modifyFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -2185,32 +2022,27 @@ describe("Resource => Group", () => {
         expect(statusCode).toBe(200);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
-          [{ school_id: newGroup.school_id }, { name: newGroup.name }],
-          "-createdAt -updatedAt",
-          "group"
+          { school_id: newGroup.school_id, name: newGroup.name },
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenCalledTimes(2);
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          1,
+        expect(findLevel).toHaveBeenCalled();
+        expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "level"
+          "-createdAt -updatedAt"
         );
-        expect(findLevelCoordinator).toHaveBeenNthCalledWith(
-          2,
+        expect(findCoordinator).toHaveBeenCalled();
+        expect(findCoordinator).toHaveBeenCalledWith(
           newGroup.coordinator_id,
           "-password -createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "user"
+          "-createdAt -updatedAt"
         );
         expect(updateGroup).toHaveBeenCalled();
         expect(updateGroup).toHaveBeenCalledWith(
-          [{ _id: validMockGroupId }, { school_id: newGroup.school_id }],
-          newGroup,
-          "group"
+          { _id: validMockGroupId, school_id: newGroup.school_id },
+          newGroup
         );
       });
     });
@@ -2220,14 +2052,13 @@ describe("Resource => Group", () => {
     describe("group::delete::01 - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
-        const deleteGroup = mockService(
-          groupNullPayload,
-          "deleteFilterResource"
-        );
+        const deleteGroup = mockService(groupNullPayload, "removeFilterGroup");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockGroupId}`)
           .send({ school_i: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual([
           {
@@ -2238,23 +2069,22 @@ describe("Resource => Group", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteGroup).not.toHaveBeenCalled();
-        expect(deleteGroup).not.toHaveBeenCalledWith(
-          { _id: validMockGroupId, school_id: null },
-          "group"
-        );
+        expect(deleteGroup).not.toHaveBeenCalledWith({
+          school_id: null,
+          _id: validMockGroupId,
+        });
       });
     });
     describe("group::delete::02 - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
         // mock services
-        const deleteGroup = mockService(
-          groupNullPayload,
-          "deleteFilterResource"
-        );
+        const deleteGroup = mockService(groupNullPayload, "removeFilterGroup");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockGroupId}`)
           .send({ school_id: "" });
+
         // assertions
         expect(body).toStrictEqual([
           {
@@ -2266,23 +2096,22 @@ describe("Resource => Group", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteGroup).not.toHaveBeenCalled();
-        expect(deleteGroup).not.toHaveBeenCalledWith(
-          { _id: validMockGroupId, school_id: "" },
-          "group"
-        );
+        expect(deleteGroup).not.toHaveBeenCalledWith({
+          school_id: "",
+          _id: validMockGroupId,
+        });
       });
     });
     describe("group::delete::03 - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
-        const deleteGroup = mockService(
-          groupNullPayload,
-          "deleteFilterResource"
-        );
+        const deleteGroup = mockService(groupNullPayload, "removeFilterGroup");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${invalidMockId}`)
           .send({ school_id: invalidMockId });
+
         // assertions
         expect(body).toStrictEqual([
           {
@@ -2300,37 +2129,36 @@ describe("Resource => Group", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteGroup).not.toHaveBeenCalled();
-        expect(deleteGroup).not.toHaveBeenCalledWith(
-          { _id: invalidMockId, school_id: invalidMockId },
-          "group"
-        );
+        expect(deleteGroup).not.toHaveBeenCalledWith({
+          school_id: invalidMockId,
+          _id: invalidMockId,
+        });
       });
     });
     describe("group::delete::04 - Passing a group id but not deleting it", () => {
       it("should not delete a school", async () => {
         // mock services
-        const deleteGroup = mockService(
-          groupNullPayload,
-          "deleteFilterResource"
-        );
+        const deleteGroup = mockService(groupNullPayload, "removeFilterGroup");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${otherValidMockId}`)
           .send({ school_id: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({ msg: "Group not deleted" });
         expect(statusCode).toBe(404);
         expect(deleteGroup).toHaveBeenCalled();
-        expect(deleteGroup).toHaveBeenCalledWith(
-          { _id: otherValidMockId, school_id: validMockSchoolId },
-          "group"
-        );
+        expect(deleteGroup).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          _id: otherValidMockId,
+        });
       });
     });
     describe("group::delete::05 - Passing a group id correctly to delete", () => {
       it("should delete a field", async () => {
         // mock services
-        const deleteGroup = mockService(groupPayload, "deleteFilterResource");
+        const deleteGroup = mockService(groupPayload, "removeFilterGroup");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -2341,10 +2169,10 @@ describe("Resource => Group", () => {
         expect(body).toStrictEqual({ msg: "Group deleted" });
         expect(statusCode).toBe(200);
         expect(deleteGroup).toHaveBeenCalled();
-        expect(deleteGroup).toHaveBeenCalledWith(
-          { _id: validMockGroupId, school_id: validMockSchoolId },
-          "group"
-        );
+        expect(deleteGroup).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          _id: validMockGroupId,
+        });
       });
     });
   });

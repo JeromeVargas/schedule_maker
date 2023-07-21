@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 
 export type School = {
+  _id?: string;
   name: string;
   groupMaxNumStudents: number;
 };
@@ -46,7 +47,7 @@ export type Field = {
 
 export type Teacher_Field = {
   school_id: Types.ObjectId;
-  teacher_id: Types.ObjectId;
+  teacher_id: Teacher;
   field_id: Types.ObjectId;
 };
 
@@ -75,7 +76,7 @@ export type Break = {
 
 export type Level = {
   _id?: string;
-  school_id: Types.ObjectId;
+  school_id: School;
   schedule_id: Types.ObjectId;
   name: string;
 };
@@ -84,7 +85,7 @@ export type Group = {
   _id?: string;
   school_id: Types.ObjectId;
   level_id: Types.ObjectId;
-  coordinator_id: Types.ObjectId;
+  coordinator_id: User;
   name: string;
   numberStudents: number;
 };
@@ -92,7 +93,7 @@ export type Group = {
 export type Subject = {
   _id?: string;
   school_id: Types.ObjectId;
-  coordinator_id: Types.ObjectId;
+  coordinator_id: User;
   group_id: Types.ObjectId;
   field_id: Types.ObjectId;
   name: string;

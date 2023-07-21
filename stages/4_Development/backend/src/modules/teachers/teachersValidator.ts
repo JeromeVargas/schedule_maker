@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
-import { isValidId } from "../../services/mongoServices";
+import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
+// @fields: body: {school_id: [string], user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: [number];  hoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const validateCreateTeacher = [
   check("school_id")
     .exists()
@@ -216,7 +216,7 @@ const validateGetTeacher = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: number;  hoursAssigned: number}
+// @fields: params: {id:[string]},  body: {school_id: [string], user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: [number];  hoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const validateUpdateTeacher = [
   check("id")
     .custom((value) => {

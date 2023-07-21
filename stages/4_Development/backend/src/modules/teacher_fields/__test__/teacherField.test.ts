@@ -2,36 +2,26 @@ import supertest from "supertest";
 import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
-import * as MongoServices from "../../../services/mongoServices";
+
+import * as teacherFieldServices from "../teacherFieldServices";
 
 import { Teacher_Field } from "../../../typings/types";
+
+type Service =
+  | "insertTeacherField"
+  | "findFilterAllTeacherFields"
+  | "findTeacherFieldByProperty"
+  | "findFilterTeacherFieldByProperty"
+  | "modifyFilterTeacherField"
+  | "removeFilterTeacherField"
+  | "findPopulateTeacherById"
+  | "findPopulateFieldById";
 
 describe("RESOURCE => Teacher_field", () => {
   /* mock services */
   // just one return
-  const mockService = (payload: unknown, service: string) => {
-    return (
-      jest
-        // @ts-ignore
-        .spyOn(MongoServices, service)
-        // @ts-ignore
-        .mockReturnValue(payload)
-    );
-  };
-  // multiple returns
-  const mockServiceMultipleReturns = (
-    firstPayload: unknown,
-    secondPayload: unknown,
-    service: string
-  ) => {
-    return (
-      jest
-        // @ts-ignore
-        .spyOn(MongoServices, service)
-        // @ts-ignore
-        .mockReturnValueOnce(firstPayload)
-        .mockReturnValueOnce(secondPayload)
-    );
+  const mockService = (payload: any, service: Service) => {
+    return jest.spyOn(teacherFieldServices, service).mockReturnValue(payload);
   };
 
   /* hooks */
@@ -137,16 +127,19 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldNullPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           teacherNullPayload,
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldNullPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -176,34 +169,29 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           {
+            school_id: newTeacherFieldMissingValues.school_i,
             teacher_id: newTeacherFieldMissingValues.teacher_i,
             field_id: newTeacherFieldMissingValues.field_i,
-            school_id: newTeacherFieldMissingValues.school_i,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(0);
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).not.toHaveBeenCalled();
+        expect(duplicateTeacher).not.toHaveBeenCalledWith(
           newTeacherFieldMissingValues.teacher_i,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateField).not.toHaveBeenCalled();
+        expect(duplicateField).not.toHaveBeenCalledWith(
           newTeacherFieldMissingValues.field_i,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(
-          newTeacherFieldMissingValues,
-          "teacherField"
+          newTeacherFieldMissingValues
         );
       });
     });
@@ -212,16 +200,19 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldNullPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           teacherNullPayload,
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldNullPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -254,34 +245,29 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           {
+            school_id: newTeacherFieldEmptyValues.school_id,
             teacher_id: newTeacherFieldEmptyValues.teacher_id,
             field_id: newTeacherFieldEmptyValues.field_id,
-            school_id: newTeacherFieldEmptyValues.school_id,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(0);
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).not.toHaveBeenCalled();
+        expect(duplicateTeacher).not.toHaveBeenCalledWith(
           newTeacherFieldEmptyValues.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateField).not.toHaveBeenCalled();
+        expect(duplicateField).not.toHaveBeenCalledWith(
           newTeacherFieldEmptyValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(
-          newTeacherFieldEmptyValues,
-          "teacherField"
+          newTeacherFieldEmptyValues
         );
       });
     });
@@ -290,16 +276,19 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldNullPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           teacherNullPayload,
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldNullPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -332,34 +321,29 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           {
+            school_id: newTeacherFieldNotValidDataTypes.school_id,
             teacher_id: newTeacherFieldNotValidDataTypes.teacher_id,
             field_id: newTeacherFieldNotValidDataTypes.field_id,
-            school_id: newTeacherFieldNotValidDataTypes.school_id,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(0);
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).not.toHaveBeenCalled();
+        expect(duplicateTeacher).not.toHaveBeenCalledWith(
           newTeacherFieldNotValidDataTypes.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateTeacher).not.toHaveBeenCalled();
+        expect(duplicateField).not.toHaveBeenCalledWith(
           newTeacherFieldNotValidDataTypes.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(
-          newTeacherFieldNotValidDataTypes,
-          "teacherField"
+          newTeacherFieldNotValidDataTypes
         );
       });
     });
@@ -368,16 +352,19 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           teacherPayload,
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -393,52 +380,48 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           {
+            school_id: newTeacherField.school_id,
             teacher_id: newTeacherField.teacher_id,
             field_id: newTeacherField.field_id,
-            school_id: newTeacherField.school_id,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(0);
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).not.toHaveBeenCalled();
+        expect(duplicateTeacher).not.toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateField).not.toHaveBeenCalled();
+        expect(duplicateField).not.toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).not.toHaveBeenCalled();
-        expect(insertTeacherField).not.toHaveBeenCalledWith(
-          newTeacherField,
-          "teacherField"
-        );
+        expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
-    describe("teacher_field::post::05 - Passing an non-existent teacher in the body", () => {
+    describe("teacher_field::post::05 - Passing a non-existent teacher in the body", () => {
       it("should return a non-existent teacher error", async () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldNullPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           teacherNullPayload,
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -454,35 +437,28 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           {
+            school_id: newTeacherField.school_id,
             teacher_id: newTeacherField.teacher_id,
             field_id: newTeacherField.field_id,
-            school_id: newTeacherField.school_id,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(1);
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).toHaveBeenCalled();
+        expect(duplicateTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateField).not.toHaveBeenCalled();
+        expect(duplicateField).not.toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).not.toHaveBeenCalled();
-        expect(insertTeacherField).not.toHaveBeenCalledWith(
-          newTeacherField,
-          "teacherField"
-        );
+        expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
     describe("teacher_field::post::06 - Passing a teacher that do not match the school id", () => {
@@ -490,9 +466,9 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldNullPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           {
             ...teacherPayload,
             school_id: {
@@ -501,12 +477,15 @@ describe("RESOURCE => Teacher_field", () => {
               groupMaxNumStudents: 40,
             },
           },
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -522,52 +501,48 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           {
+            school_id: newTeacherField.school_id,
             teacher_id: newTeacherField.teacher_id,
             field_id: newTeacherField.field_id,
-            school_id: newTeacherField.school_id,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(1);
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).toHaveBeenCalled();
+        expect(duplicateTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).not.toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateField).not.toHaveBeenCalled();
+        expect(duplicateField).not.toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).not.toHaveBeenCalled();
-        expect(insertTeacherField).not.toHaveBeenCalledWith(
-          newTeacherField,
-          "teacherField"
-        );
+        expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
-    describe("teacher_field::post::07 - Passing an non-existent field in the body", () => {
+    describe("teacher_field::post::07 - Passing a non-existent field in the body", () => {
       it("should return a non-existent field error", async () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldNullPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           teacherPayload,
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -583,35 +558,28 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           {
+            school_id: newTeacherField.school_id,
             teacher_id: newTeacherField.teacher_id,
             field_id: newTeacherField.field_id,
-            school_id: newTeacherField.school_id,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(2);
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).toHaveBeenCalled();
+        expect(duplicateTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateField).toHaveBeenCalled();
+        expect(duplicateField).toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).not.toHaveBeenCalled();
-        expect(insertTeacherField).not.toHaveBeenCalledWith(
-          newTeacherField,
-          "teacherField"
-        );
+        expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
     describe("teacher_field::post::08 - Passing a field that do not match the school id", () => {
@@ -619,10 +587,13 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldNullPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           teacherPayload,
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           {
             ...fieldPayload,
             school_id: {
@@ -631,11 +602,11 @@ describe("RESOURCE => Teacher_field", () => {
               groupMaxNumStudents: 40,
             },
           },
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -651,35 +622,28 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           {
+            school_id: newTeacherField.school_id,
             teacher_id: newTeacherField.teacher_id,
             field_id: newTeacherField.field_id,
-            school_id: newTeacherField.school_id,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(2);
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).toHaveBeenCalled();
+        expect(duplicateTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateField).toHaveBeenCalled();
+        expect(duplicateField).toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).not.toHaveBeenCalled();
-        expect(insertTeacherField).not.toHaveBeenCalledWith(
-          newTeacherField,
-          "teacherField"
-        );
+        expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
     describe("teacher_field::post::09 - Passing a teacher_field but not being created", () => {
@@ -687,16 +651,19 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldNullPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           teacherPayload,
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldNullPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -712,35 +679,28 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           {
+            school_id: newTeacherField.school_id,
             teacher_id: newTeacherField.teacher_id,
             field_id: newTeacherField.field_id,
-            school_id: newTeacherField.school_id,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(2);
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).toHaveBeenCalled();
+        expect(duplicateTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateField).toHaveBeenCalled();
+        expect(duplicateField).toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).toHaveBeenCalled();
-        expect(insertTeacherField).toHaveBeenCalledWith(
-          newTeacherField,
-          "teacherField"
-        );
+        expect(insertTeacherField).toHaveBeenCalledWith(newTeacherField);
       });
     });
     describe("teacher_field::post::10 - Passing a teacher_field correctly to create", () => {
@@ -748,16 +708,19 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findTeacherField = mockService(
           teacherFieldNullPayload,
-          "findResourceByProperty"
+          "findTeacherFieldByProperty"
         );
-        const duplicateTeacherField = mockServiceMultipleReturns(
+        const duplicateTeacher = mockService(
           teacherPayload,
+          "findPopulateTeacherById"
+        );
+        const duplicateField = mockService(
           fieldPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const insertTeacherField = mockService(
           teacherFieldPayload,
-          "insertResource"
+          "insertTeacherField"
         );
 
         // api call
@@ -773,35 +736,28 @@ describe("RESOURCE => Teacher_field", () => {
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           {
+            school_id: newTeacherField.school_id,
             teacher_id: newTeacherField.teacher_id,
             field_id: newTeacherField.field_id,
-            school_id: newTeacherField.school_id,
           },
-          "-createdAt -updatedAt",
-          "teacherField"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenCalledTimes(2);
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          1,
+        expect(duplicateTeacher).toHaveBeenCalled();
+        expect(duplicateTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "teacher"
+          "-createdAt -updatedAt"
         );
-        expect(duplicateTeacherField).toHaveBeenNthCalledWith(
-          2,
+        expect(duplicateField).toHaveBeenCalled();
+        expect(duplicateField).toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(insertTeacherField).toHaveBeenCalled();
-        expect(insertTeacherField).toHaveBeenCalledWith(
-          newTeacherField,
-          "teacherField"
-        );
+        expect(insertTeacherField).toHaveBeenCalledWith(newTeacherField);
       });
     });
   });
@@ -813,7 +769,7 @@ describe("RESOURCE => Teacher_field", () => {
           // mock services
           const findTeacherFields = mockService(
             teacherFieldsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllTeacherFields"
           );
 
           // api call
@@ -833,8 +789,7 @@ describe("RESOURCE => Teacher_field", () => {
           expect(findTeacherFields).not.toHaveBeenCalled();
           expect(findTeacherFields).not.toHaveBeenCalledWith(
             { school_id: null },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -843,7 +798,7 @@ describe("RESOURCE => Teacher_field", () => {
           // mock services
           const findTeacherFields = mockService(
             teacherFieldsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllTeacherFields"
           );
 
           // api call
@@ -864,8 +819,7 @@ describe("RESOURCE => Teacher_field", () => {
           expect(findTeacherFields).not.toHaveBeenCalled();
           expect(findTeacherFields).not.toHaveBeenCalledWith(
             { school_id: "" },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -874,7 +828,7 @@ describe("RESOURCE => Teacher_field", () => {
           // mock services
           const findTeacherFields = mockService(
             teacherFieldsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllTeacherFields"
           );
 
           // api call
@@ -895,8 +849,7 @@ describe("RESOURCE => Teacher_field", () => {
           expect(findTeacherFields).not.toHaveBeenCalled();
           expect(findTeacherFields).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -905,7 +858,7 @@ describe("RESOURCE => Teacher_field", () => {
           // mock services
           const findTeacherFields = mockService(
             teacherFieldsNullPayload,
-            "findFilterAllResources"
+            "findFilterAllTeacherFields"
           );
 
           // api call
@@ -921,8 +874,7 @@ describe("RESOURCE => Teacher_field", () => {
           expect(findTeacherFields).toHaveBeenCalled();
           expect(findTeacherFields).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -931,7 +883,7 @@ describe("RESOURCE => Teacher_field", () => {
           // mock services
           const findTeacherFields = mockService(
             teacherFieldsPayload,
-            "findFilterAllResources"
+            "findFilterAllTeacherFields"
           );
 
           // api call
@@ -964,20 +916,18 @@ describe("RESOURCE => Teacher_field", () => {
           expect(findTeacherFields).toHaveBeenCalled();
           expect(findTeacherFields).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
     });
-
     describe("teacher_field - GET/:id", () => {
       describe("teacher_field::get/:id::01 - Passing fields with missing values", () => {
         it("should return a missing values error", async () => {
           // mock services
           const findTeacherField = mockService(
             teacherFieldNullPayload,
-            "findResourceByProperty"
+            "findTeacherFieldByProperty"
           );
 
           // api call
@@ -997,8 +947,7 @@ describe("RESOURCE => Teacher_field", () => {
           expect(findTeacherField).not.toHaveBeenCalled();
           expect(findTeacherField).not.toHaveBeenCalledWith(
             { _id: validMockTeacherFieldId, school_id: null },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1007,7 +956,7 @@ describe("RESOURCE => Teacher_field", () => {
           // mock services
           const findTeacherField = mockService(
             teacherFieldNullPayload,
-            "findResourceByProperty"
+            "findTeacherFieldByProperty"
           );
 
           // api call
@@ -1028,8 +977,7 @@ describe("RESOURCE => Teacher_field", () => {
           expect(findTeacherField).not.toHaveBeenCalled();
           expect(findTeacherField).not.toHaveBeenCalledWith(
             { _id: validMockTeacherFieldId, school_id: "" },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1038,7 +986,7 @@ describe("RESOURCE => Teacher_field", () => {
           // mock services
           const findTeacherField = mockService(
             teacherFieldNullPayload,
-            "findResourceByProperty"
+            "findTeacherFieldByProperty"
           );
 
           // api call
@@ -1065,8 +1013,7 @@ describe("RESOURCE => Teacher_field", () => {
           expect(findTeacherField).not.toHaveBeenCalled();
           expect(findTeacherField).not.toHaveBeenCalledWith(
             { _id: invalidMockId, school_id: invalidMockId },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1075,7 +1022,7 @@ describe("RESOURCE => Teacher_field", () => {
           // mock services
           const findTeacherField = mockService(
             teacherFieldNullPayload,
-            "findResourceByProperty"
+            "findTeacherFieldByProperty"
           );
 
           // api call
@@ -1094,8 +1041,7 @@ describe("RESOURCE => Teacher_field", () => {
               _id: otherValidMockId,
               school_id: validMockSchoolId,
             },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1104,7 +1050,7 @@ describe("RESOURCE => Teacher_field", () => {
           // mock services
           const findTeacherField = mockService(
             teacherFieldPayload,
-            "findResourceByProperty"
+            "findTeacherFieldByProperty"
           );
 
           // api call
@@ -1123,8 +1069,7 @@ describe("RESOURCE => Teacher_field", () => {
           expect(findTeacherField).toHaveBeenCalled();
           expect(findTeacherField).toHaveBeenCalledWith(
             { _id: validMockTeacherFieldId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt",
-            "teacherField"
+            "-createdAt -updatedAt"
           );
         });
       });
@@ -1137,15 +1082,15 @@ describe("RESOURCE => Teacher_field", () => {
         /* mock services */
         const findField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const duplicateTeacherField = mockService(
           teacherFieldsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterTeacherFieldByProperty"
         );
         const updateTeacherField = mockService(
           teacherFieldNullPayload,
-          "updateFilterResource"
+          "modifyFilterTeacherField"
         );
 
         // api call
@@ -1177,28 +1122,25 @@ describe("RESOURCE => Teacher_field", () => {
           newTeacherFieldMissingValues.field_i,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { school_id: newTeacherFieldMissingValues.school_i },
-            { teacher_id: newTeacherFieldMissingValues.teacher_i },
-            { field_id: newTeacherFieldMissingValues.field_i },
-          ],
-          "-createdAt -updatedAt",
-          "teacherField"
+          {
+            school_id: newTeacherFieldMissingValues.school_i,
+            teacher_id: newTeacherFieldMissingValues.teacher_i,
+            field_id: newTeacherFieldMissingValues.field_i,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockTeacherFieldId },
-            { teacher_id: newTeacherFieldMissingValues.teacher_i },
-            { school_id: newTeacherFieldMissingValues.school_i },
-          ],
-          newTeacherFieldMissingValues,
-          "teacherField"
+          {
+            _id: validMockTeacherFieldId,
+            teacher_id: newTeacherFieldMissingValues.teacher_i,
+            school_id: newTeacherFieldMissingValues.school_i,
+          },
+          newTeacherFieldMissingValues
         );
       });
     });
@@ -1207,15 +1149,15 @@ describe("RESOURCE => Teacher_field", () => {
         /* mock services */
         const findField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const duplicateTeacherField = mockService(
           teacherFieldsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterTeacherFieldByProperty"
         );
         const updateTeacherField = mockService(
           teacherFieldNullPayload,
-          "updateFilterResource"
+          "modifyFilterTeacherField"
         );
 
         // api call
@@ -1250,28 +1192,25 @@ describe("RESOURCE => Teacher_field", () => {
           newTeacherFieldEmptyValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { school_id: newTeacherFieldEmptyValues.school_id },
-            { teacher_id: newTeacherFieldEmptyValues.teacher_id },
-            { field_id: newTeacherFieldEmptyValues.field_id },
-          ],
-          "-createdAt -updatedAt",
-          "teacherField"
+          {
+            school_id: newTeacherFieldEmptyValues.school_id,
+            teacher_id: newTeacherFieldEmptyValues.teacher_id,
+            field_id: newTeacherFieldEmptyValues.field_id,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockTeacherFieldId },
-            { teacher_id: newTeacherFieldEmptyValues.teacher_id },
-            { school_id: newTeacherFieldEmptyValues.school_id },
-          ],
-          newTeacherFieldEmptyValues,
-          "teacherField"
+          {
+            _id: validMockTeacherFieldId,
+            teacher_id: newTeacherFieldEmptyValues.teacher_id,
+            school_id: newTeacherFieldEmptyValues.school_id,
+          },
+          newTeacherFieldEmptyValues
         );
       });
     });
@@ -1280,15 +1219,15 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const duplicateTeacherField = mockService(
           teacherFieldsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterTeacherFieldByProperty"
         );
         const updateTeacherField = mockService(
           teacherFieldNullPayload,
-          "updateFilterResource"
+          "modifyFilterTeacherField"
         );
 
         // api call
@@ -1329,28 +1268,25 @@ describe("RESOURCE => Teacher_field", () => {
           newTeacherFieldNotValidDataTypes.field_id,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { school_id: newTeacherFieldNotValidDataTypes.school_id },
-            { teacher_id: newTeacherFieldNotValidDataTypes.teacher_id },
-            { field_id: newTeacherFieldNotValidDataTypes.field_id },
-          ],
-          "-createdAt -updatedAt",
-          "teacherField"
+          {
+            school_id: newTeacherFieldNotValidDataTypes.school_id,
+            teacher_id: newTeacherFieldNotValidDataTypes.teacher_id,
+            field_id: newTeacherFieldNotValidDataTypes.field_id,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockTeacherFieldId },
-            { teacher_id: newTeacherFieldNotValidDataTypes.teacher_id },
-            { school_id: newTeacherFieldNotValidDataTypes.school_id },
-          ],
-          newTeacherFieldNotValidDataTypes,
-          "teacherField"
+          {
+            _id: validMockTeacherFieldId,
+            teacher_id: newTeacherFieldNotValidDataTypes.teacher_id,
+            school_id: newTeacherFieldNotValidDataTypes.school_id,
+          },
+          newTeacherFieldNotValidDataTypes
         );
       });
     });
@@ -1359,15 +1295,15 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const findField = mockService(
           fieldNullPayload,
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const duplicateTeacherField = mockService(
           teacherFieldsPayload,
-          "findFilterResourceByProperty"
+          "findFilterTeacherFieldByProperty"
         );
         const updateTeacherField = mockService(
           teacherFieldPayload,
-          "updateFilterResource"
+          "modifyFilterTeacherField"
         );
 
         // api call
@@ -1385,28 +1321,25 @@ describe("RESOURCE => Teacher_field", () => {
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { school_id: newTeacherField.school_id },
-            { teacher_id: newTeacherField.teacher_id },
-            { field_id: newTeacherField.field_id },
-          ],
-          "-createdAt -updatedAt",
-          "teacherField"
+          {
+            school_id: newTeacherField.school_id,
+            teacher_id: newTeacherField.teacher_id,
+            field_id: newTeacherField.field_id,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockTeacherFieldId },
-            { teacher_id: newTeacherField.teacher_id },
-            { school_id: newTeacherField.school_id },
-          ],
-          newTeacherField,
-          "teacherField"
+          {
+            _id: validMockTeacherFieldId,
+            teacher_id: newTeacherField.teacher_id,
+            school_id: newTeacherField.school_id,
+          },
+          newTeacherField
         );
       });
     });
@@ -1422,15 +1355,15 @@ describe("RESOURCE => Teacher_field", () => {
               groupMaxNumStudents: 40,
             },
           },
-          "findPopulateResourceById"
+          "findPopulateFieldById"
         );
         const duplicateTeacherField = mockService(
           teacherFieldsPayload,
-          "findFilterResourceByProperty"
+          "findFilterTeacherFieldByProperty"
         );
         const updateTeacherField = mockService(
           teacherFieldPayload,
-          "updateFilterResource"
+          "modifyFilterTeacherField"
         );
 
         // api call
@@ -1448,42 +1381,39 @@ describe("RESOURCE => Teacher_field", () => {
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { school_id: newTeacherField.school_id },
-            { teacher_id: newTeacherField.teacher_id },
-            { field_id: newTeacherField.field_id },
-          ],
-          "-createdAt -updatedAt",
-          "teacherField"
+          {
+            school_id: newTeacherField.school_id,
+            teacher_id: newTeacherField.teacher_id,
+            field_id: newTeacherField.field_id,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockTeacherFieldId },
-            { teacher_id: newTeacherField.teacher_id },
-            { school_id: newTeacherField.school_id },
-          ],
-          newTeacherField,
-          "teacherField"
+          {
+            _id: validMockTeacherFieldId,
+            teacher_id: newTeacherField.teacher_id,
+            school_id: newTeacherField.school_id,
+          },
+          newTeacherField
         );
       });
     });
     describe("teacher_field::put::06 - Passing a field but not updating it because the field has already been assigned to the teacher", () => {
       it("should not update a teacher_field", async () => {
         // mock services
-        const findField = mockService(fieldPayload, "findPopulateResourceById");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const duplicateTeacherField = mockService(
           teacherFieldsPayload,
-          "findFilterResourceByProperty"
+          "findFilterTeacherFieldByProperty"
         );
         const updateTeacherField = mockService(
           [teacherFieldPayload],
-          "updateFilterResource"
+          "modifyFilterTeacherField"
         );
 
         // api call
@@ -1501,42 +1431,39 @@ describe("RESOURCE => Teacher_field", () => {
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
-          [
-            { school_id: newTeacherField.school_id },
-            { teacher_id: newTeacherField.teacher_id },
-            { field_id: newTeacherField.field_id },
-          ],
-          "-createdAt -updatedAt",
-          "teacherField"
+          {
+            school_id: newTeacherField.school_id,
+            teacher_id: newTeacherField.teacher_id,
+            field_id: newTeacherField.field_id,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
-          [
-            { _id: validMockTeacherFieldId },
-            { teacher_id: newTeacherField.teacher_id },
-            { school_id: newTeacherField.school_id },
-          ],
-          newTeacherField,
-          "teacherField"
+          {
+            _id: validMockTeacherFieldId,
+            teacher_id: newTeacherField.teacher_id,
+            school_id: newTeacherField.school_id,
+          },
+          newTeacherField
         );
       });
     });
     describe("teacher_field::put::07 - Passing a field but not updating it because it does not match one of the filters: _id, school_id or teacher_id", () => {
       it("should not update a teacher_field", async () => {
         // mock services
-        const findField = mockService(fieldPayload, "findPopulateResourceById");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const duplicateTeacherField = mockService(
           teacherFieldsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterTeacherFieldByProperty"
         );
         const updateTeacherField = mockService(
           teacherFieldNullPayload,
-          "updateFilterResource"
+          "modifyFilterTeacherField"
         );
 
         // api call
@@ -1554,47 +1481,46 @@ describe("RESOURCE => Teacher_field", () => {
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
-          [
-            { school_id: newTeacherField.school_id },
-            { teacher_id: newTeacherField.teacher_id },
-            { field_id: newTeacherField.field_id },
-          ],
-          "-createdAt -updatedAt",
-          "teacherField"
+          {
+            school_id: newTeacherField.school_id,
+            teacher_id: newTeacherField.teacher_id,
+            field_id: newTeacherField.field_id,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateTeacherField).toHaveBeenCalled();
         expect(updateTeacherField).toHaveBeenCalledWith(
-          [
-            { _id: validMockTeacherFieldId },
-            { teacher_id: newTeacherField.teacher_id },
-            { school_id: newTeacherField.school_id },
-          ],
-          newTeacherField,
-          "teacherField"
+          {
+            _id: validMockTeacherFieldId,
+            teacher_id: newTeacherField.teacher_id,
+            school_id: newTeacherField.school_id,
+          },
+          newTeacherField
         );
       });
     });
     describe("teacher_field::put::08 - Passing a field correctly to update", () => {
       it("should update a field", async () => {
         // mock services
-        const findField = mockService(fieldPayload, "findPopulateResourceById");
+        const findField = mockService(fieldPayload, "findPopulateFieldById");
         const duplicateTeacherField = mockService(
           teacherFieldsNullPayload,
-          "findFilterResourceByProperty"
+          "findFilterTeacherFieldByProperty"
         );
         const updateTeacherField = mockService(
           teacherFieldPayload,
-          "updateFilterResource"
+          "modifyFilterTeacherField"
         );
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockTeacherFieldId}`)
           .send(newTeacherField);
+
         // assertions
         expect(body).toStrictEqual({
           msg: "The teacher has been successfully assigned the updated field",
@@ -1605,28 +1531,25 @@ describe("RESOURCE => Teacher_field", () => {
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
-          "-createdAt -updatedAt",
-          "field"
+          "-createdAt -updatedAt"
         );
         expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
-          [
-            { school_id: newTeacherField.school_id },
-            { teacher_id: newTeacherField.teacher_id },
-            { field_id: newTeacherField.field_id },
-          ],
-          "-createdAt -updatedAt",
-          "teacherField"
+          {
+            school_id: newTeacherField.school_id,
+            teacher_id: newTeacherField.teacher_id,
+            field_id: newTeacherField.field_id,
+          },
+          "-createdAt -updatedAt"
         );
         expect(updateTeacherField).toHaveBeenCalled();
         expect(updateTeacherField).toHaveBeenCalledWith(
-          [
-            { _id: validMockTeacherFieldId },
-            { teacher_id: newTeacherField.teacher_id },
-            { school_id: newTeacherField.school_id },
-          ],
-          newTeacherField,
-          "teacherField"
+          {
+            _id: validMockTeacherFieldId,
+            teacher_id: newTeacherField.teacher_id,
+            school_id: newTeacherField.school_id,
+          },
+          newTeacherField
         );
       });
     });
@@ -1638,7 +1561,7 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const deleteTeacher = mockService(
           teacherFieldNullPayload,
-          "deleteFilterResource"
+          "removeFilterTeacherField"
         );
 
         // api call
@@ -1656,10 +1579,10 @@ describe("RESOURCE => Teacher_field", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteTeacher).not.toHaveBeenCalled();
-        expect(deleteTeacher).not.toHaveBeenCalledWith(
-          { _id: validMockTeacherFieldId, school_id: null },
-          "teacherField"
-        );
+        expect(deleteTeacher).not.toHaveBeenCalledWith({
+          _id: validMockTeacherFieldId,
+          school_id: null,
+        });
       });
     });
     describe("teacher_field::delete::02 - Passing fields with empty fields", () => {
@@ -1667,7 +1590,7 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const deleteTeacher = mockService(
           teacherFieldNullPayload,
-          "deleteFilterResource"
+          "removeFilterTeacherField"
         );
 
         // api call
@@ -1686,10 +1609,10 @@ describe("RESOURCE => Teacher_field", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteTeacher).not.toHaveBeenCalled();
-        expect(deleteTeacher).not.toHaveBeenCalledWith(
-          { _id: validMockTeacherFieldId, school_id: "" },
-          "teacherField"
-        );
+        expect(deleteTeacher).not.toHaveBeenCalledWith({
+          _id: validMockTeacherFieldId,
+          school_id: "",
+        });
       });
     });
     describe("teacher_field::delete::03 - Passing an invalid teacher_field and school ids", () => {
@@ -1697,7 +1620,7 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const deleteTeacher = mockService(
           teacherFieldNullPayload,
-          "deleteFilterResource"
+          "removeFilterTeacherField"
         );
 
         // api call
@@ -1722,10 +1645,10 @@ describe("RESOURCE => Teacher_field", () => {
         ]);
         expect(statusCode).toBe(400);
         expect(deleteTeacher).not.toHaveBeenCalled();
-        expect(deleteTeacher).not.toHaveBeenCalledWith(
-          { _id: invalidMockId, school_id: invalidMockId },
-          "teacherField"
-        );
+        expect(deleteTeacher).not.toHaveBeenCalledWith({
+          _id: invalidMockId,
+          school_id: invalidMockId,
+        });
       });
     });
     describe("teacher_field::delete::04 - Passing a teacher_field id but not deleting it", () => {
@@ -1733,7 +1656,7 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const deleteTeacher = mockService(
           teacherFieldNullPayload,
-          "deleteFilterResource"
+          "removeFilterTeacherField"
         );
 
         // api call
@@ -1745,10 +1668,10 @@ describe("RESOURCE => Teacher_field", () => {
         expect(body).toStrictEqual({ msg: "Teacher_Field not deleted" });
         expect(statusCode).toBe(404);
         expect(deleteTeacher).toHaveBeenCalled();
-        expect(deleteTeacher).toHaveBeenCalledWith(
-          { _id: otherValidMockId, school_id: validMockSchoolId },
-          "teacherField"
-        );
+        expect(deleteTeacher).toHaveBeenCalledWith({
+          _id: otherValidMockId,
+          school_id: validMockSchoolId,
+        });
       });
     });
     describe("teacher_field::delete::05 - Passing a teacher_field id correctly to delete", () => {
@@ -1756,7 +1679,7 @@ describe("RESOURCE => Teacher_field", () => {
         // mock services
         const deleteTeacher = mockService(
           teacherFieldPayload,
-          "deleteFilterResource"
+          "removeFilterTeacherField"
         );
 
         // api call
@@ -1768,10 +1691,10 @@ describe("RESOURCE => Teacher_field", () => {
         expect(body).toStrictEqual({ msg: "Teacher_Field deleted" });
         expect(statusCode).toBe(200);
         expect(deleteTeacher).toHaveBeenCalled();
-        expect(deleteTeacher).toHaveBeenCalledWith(
-          { _id: validMockTeacherFieldId, school_id: validMockSchoolId },
-          "teacherField"
-        );
+        expect(deleteTeacher).toHaveBeenCalledWith({
+          _id: validMockTeacherFieldId,
+          school_id: validMockSchoolId,
+        });
       });
     });
   });
