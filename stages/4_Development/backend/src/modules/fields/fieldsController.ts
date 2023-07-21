@@ -102,7 +102,6 @@ const updateField = async ({ params, body }: Request, res: Response) => {
     filters,
     fieldsToReturn
   );
-  // refactor here --> try changing the service with findFilterFieldByProperty
   // if there is at least one record with that name and a different field id, it returns true and triggers an error
   const duplicateFieldName = duplicateFieldNameFound?.some(
     (field: Field) => field?._id?.toString() !== fieldId

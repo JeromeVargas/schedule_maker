@@ -161,7 +161,6 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
       "Please make sure the field belongs to the school"
     );
   }
-  // refactor here --> try changing the service with findTeacherFieldByProperty
   /* check if the field has already been assigned to a teacher for the school */
   const filters = {
     school_id: school_id,
