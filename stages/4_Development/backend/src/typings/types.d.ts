@@ -1,16 +1,20 @@
 import { Types } from "mongoose";
 
+// school
 export type School = {
-  _id?: string;
+  _id: Types.ObjectId;
   name: string;
   groupMaxNumStudents: number;
 };
 
+export type NewSchool = Omit<School, "_id">;
+
+// User
 export type Role = "headmaster" | "coordinator" | "teacher";
 export type Status = "active" | "inactive" | "suspended";
 
 export type User = {
-  _id?: string;
+  _id: Types.ObjectId;
   school_id: Types.ObjectId;
   firstName: string;
   lastName: string;
@@ -21,9 +25,13 @@ export type User = {
   hasTeachingFunc: boolean;
 };
 
+export type NewUser = Omit<User, "_id">;
+
+// teacher
 export type ContractType = "full-time" | "part-time" | "substitute";
 
 export type Teacher = {
+  _id: Types.ObjectId;
   school_id: Types.ObjectId;
   user_id: Types.ObjectId;
   coordinator_id: Types.ObjectId;
@@ -39,20 +47,30 @@ export type Teacher = {
   sunday: boolean;
 };
 
+export type NewTeacher = Omit<Teacher, "_id">;
+
+// field
 export type Field = {
-  _id?: string;
+  _id: Types.ObjectId;
   school_id: Types.ObjectId;
   name: string;
 };
 
+export type NewField = Omit<Field, "_id">;
+
+// teacher_field
 export type Teacher_Field = {
+  _id: Types.ObjectId;
   school_id: Types.ObjectId;
   teacher_id: Teacher;
   field_id: Types.ObjectId;
 };
 
+export type NewTeacher_Field = Omit<Teacher_Field, "_id">;
+
+// schedule
 export type Schedule = {
-  _id?: string;
+  _id: Types.ObjectId;
   school_id: Types.ObjectId;
   name: string;
   dayStart: number;
@@ -67,22 +85,32 @@ export type Schedule = {
   sunday: boolean;
 };
 
+export type NewSchedule = Omit<Schedule, "_id">;
+
+// break
 export type Break = {
+  _id: Types.ObjectId;
   school_id: Types.ObjectId;
   schedule_id: Types.ObjectId;
   breakStart: number;
   numberMinutes: number;
 };
 
+export type NewBreak = Omit<Break, "_id">;
+
+// level
 export type Level = {
-  _id?: string;
+  _id: Types.ObjectId;
   school_id: School;
   schedule_id: Types.ObjectId;
   name: string;
 };
 
+export type NewLevel = Omit<Level, "_id">;
+
+// group
 export type Group = {
-  _id?: string;
+  _id: Types.ObjectId;
   school_id: Types.ObjectId;
   level_id: Types.ObjectId;
   coordinator_id: User;
@@ -90,8 +118,11 @@ export type Group = {
   numberStudents: number;
 };
 
+export type NewGroup = Omit<Group, "_id">;
+
+// subject
 export type Subject = {
-  _id?: string;
+  _id: Types.ObjectId;
   school_id: Types.ObjectId;
   coordinator_id: User;
   group_id: Types.ObjectId;
@@ -101,7 +132,11 @@ export type Subject = {
   frequency: number;
 };
 
+export type NewSubject = Omit<Subject, "_id">;
+
+// class
 export type Class = {
+  _id: Types.ObjectId;
   school_id: Types.ObjectId;
   coordinator_id: Types.ObjectId;
   subject_id: Types.ObjectId;
@@ -110,3 +145,5 @@ export type Class = {
   groupScheduleSlot: number;
   teacherScheduleSlot: number;
 };
+
+export type NewClass = Omit<Class, "_id">;

@@ -1,11 +1,11 @@
-import { Break } from "../../typings/types";
 import ScheduleModel from "../schedules/scheduleModel";
 import BreakModel from "./breakModel";
+import { NewBreak } from "../../typings/types";
 
 // CRUD services
 // @desc insert a break in database
 // @params break
-const insertBreak = (scheduleBreak: Break) => {
+const insertBreak = (scheduleBreak: NewBreak) => {
   const breakInsert = BreakModel.create(scheduleBreak);
   return breakInsert;
 };
@@ -41,7 +41,7 @@ const findBreakByProperty = (
 // @params filters, break
 const modifyFilterBreak = (
   filters: { _id: string; school_id: string },
-  scheduleBreak: Break
+  scheduleBreak: NewBreak
 ) => {
   const breakUpdated = BreakModel.findOneAndUpdate(filters, scheduleBreak, {
     new: true,

@@ -1,12 +1,12 @@
 import SubjectModel from "./subjectModel";
 import GroupModel from "../groups/groupModel";
 import FieldModel from "../fields/fieldModel";
-import { Subject } from "../../typings/types";
+import { NewSubject } from "../../typings/types";
 
 // CRUD services
 // @desc insert a subject in the database
 // @params subject
-const insertSubject = (subject: Subject) => {
+const insertSubject = (subject: NewSubject) => {
   const subjectInsert = SubjectModel.create(subject);
   return subjectInsert;
 };
@@ -58,7 +58,7 @@ const findFilterSubjectByProperty = (
 // @params resourceId, resource
 const modifyFilterSubject = (
   filters: { _id: string; school_id: string },
-  resource: Subject
+  resource: NewSubject
 ) => {
   const resourceUpdated = SubjectModel.findOneAndUpdate(filters, resource, {
     new: true,

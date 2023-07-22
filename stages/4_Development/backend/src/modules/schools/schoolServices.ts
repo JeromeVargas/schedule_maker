@@ -1,10 +1,10 @@
-import { School } from "../../typings/types";
+import { NewSchool } from "../../typings/types";
 import SchoolModel from "./schoolModel";
 
 // CRUD services
 // @desc insert a school in database
 // @params school
-const insertSchool = (school: School) => {
+const insertSchool = (school: NewSchool) => {
   const schoolInserted = SchoolModel.create(school);
   return schoolInserted;
 };
@@ -42,7 +42,7 @@ const findSchoolByProperty = (
 
 // @desc update a school by id
 // @params schoolId, school
-const modifySchool = (schoolId: string, school: School) => {
+const modifySchool = (schoolId: string, school: NewSchool) => {
   const schoolUpdated = SchoolModel.findByIdAndUpdate(schoolId, school, {
     new: true,
     runValidators: true,

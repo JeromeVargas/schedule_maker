@@ -1,11 +1,11 @@
-import { Schedule } from "../../typings/types";
 import SchoolModel from "../schools/schoolModel";
 import ScheduleModel from "./scheduleModel";
+import { NewSchedule } from "../../typings/types";
 
 // CRUD services
 // @desc insert a schedule in database
 // @params schedule
-const insertSchedule = (schedule: Schedule) => {
+const insertSchedule = (schedule: NewSchedule) => {
   const scheduleInsert = ScheduleModel.create(schedule);
   return scheduleInsert;
 };
@@ -57,7 +57,7 @@ const findFilterScheduleByProperty = (
 // @params filter, schedule
 const modifyFilterSchedule = (
   filters: { _id: string; school_id: string },
-  schedule: Schedule
+  schedule: NewSchedule
 ) => {
   const scheduleUpdated = ScheduleModel.findOneAndUpdate(filters, schedule, {
     new: true,

@@ -2,12 +2,12 @@ import SubjectModel from "../subjects/subjectModel";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
 import ClassModel from "./classModel";
 
-import { Class } from "../../typings/types";
+import { NewClass } from "../../typings/types";
 
 // CRUD services
 // @desc insert a class in database
 // @params class
-const insertClass = (classSession: Class) => {
+const insertClass = (classSession: NewClass) => {
   const classInsert = ClassModel.create(classSession);
   return classInsert;
 };
@@ -43,7 +43,7 @@ const findClassByProperty = (
 // @params classId, class
 const modifyFilterClass = (
   filters: { _id: string; school_id: string },
-  classSession: Class
+  classSession: NewClass
 ) => {
   const classUpdated = ClassModel.findOneAndUpdate(filters, classSession, {
     new: true,

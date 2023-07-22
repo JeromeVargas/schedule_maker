@@ -1,11 +1,11 @@
 import LevelModel from "./levelModel";
 import ScheduleModel from "../schedules/scheduleModel";
-import { Level } from "../../typings/types";
+import { NewLevel } from "../../typings/types";
 
 // CRUD services
 // @desc insert a level in database
 // @params level
-const insertLevel = (level: Level) => {
+const insertLevel = (level: NewLevel) => {
   const levelInsert = LevelModel.create(level);
   return levelInsert;
 };
@@ -73,7 +73,7 @@ const findFilterLevelByProperty = (
 // @params levelId, level
 const modifyFilterLevel = (
   filters: { _id: string; school_id: string },
-  level: Level
+  level: NewLevel
 ) => {
   const levelUpdated = LevelModel.findOneAndUpdate(filters, level, {
     new: true,

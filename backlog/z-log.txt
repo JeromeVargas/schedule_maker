@@ -9,11 +9,10 @@ for later:
 
 Back end:
 
-continue here --> check <omit> or <pick> for resources with/without _id
 continue here --> check sanitation express-validator middleware in routes
 continue here --> try to update packages, specially express validator
 continue here --> password hashing - post user
-continue here --> remove unnecessary stack error messages if in production
+continue here --> remove unnecessary stack error messages if in production, work on the error handler middleware.
 
 for later:
 

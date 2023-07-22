@@ -1,11 +1,11 @@
-import { Teacher } from "../../typings/types";
+import { NewTeacher } from "../../typings/types";
 import UserModel from "../users/userModel";
 import TeacherModel from "./teacherModel";
 
 // CRUD services
 // @desc insert a teacher in database
 // @params teacher
-const insertTeacher = (teacher: Teacher) => {
+const insertTeacher = (teacher: NewTeacher) => {
   const teacherInserted = TeacherModel.create(teacher);
   return teacherInserted;
 };
@@ -43,7 +43,7 @@ const findTeacherByProperty = (
 // @params filters, teacher
 const modifyFilterTeacher = (
   filters: { _id: string; school_id: string; user_id: string },
-  teacher: Teacher
+  teacher: NewTeacher
 ) => {
   const teacherUpdated = TeacherModel.findOneAndUpdate(filters, teacher, {
     new: true,

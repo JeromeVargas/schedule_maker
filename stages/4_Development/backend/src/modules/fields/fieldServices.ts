@@ -1,11 +1,11 @@
-import { Field } from "../../typings/types";
+import { NewField } from "../../typings/types";
 import SchoolModel from "../schools/schoolModel";
 import FieldModel from "./fieldModel";
 
 // CRUD services
 // @desc insert a field in database
 // @params Field
-const insertField = (field: Field) => {
+const insertField = (field: NewField) => {
   const fieldInserted = FieldModel.create(field);
   return fieldInserted;
 };
@@ -57,7 +57,7 @@ const findFilterFieldByProperty = (
 // @params resourceId, Field
 const modifyFilterField = (
   filters: { school_id: string; _id: string },
-  field: Field
+  field: NewField
 ) => {
   const teacherUpdated = FieldModel.findOneAndUpdate(filters, field, {
     new: true,

@@ -1,11 +1,11 @@
-import { User } from "../../typings/types";
+import { NewUser } from "../../typings/types";
 import SchoolModel from "../schools/schoolModel";
 import UserModel from "./userModel";
 
 // CRUD services
 // @desc insert a user in the database
 // @params user
-const insertUser = (user: User) => {
+const insertUser = (user: NewUser) => {
   const userInserted = UserModel.create(user);
   return userInserted;
 };
@@ -46,7 +46,7 @@ const modifyFilterUser = (
     school_id: string;
     _id: string;
   },
-  user: User
+  user: NewUser
 ) => {
   const userUpdated = UserModel.findOneAndUpdate(filters, user, {
     new: true,

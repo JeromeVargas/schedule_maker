@@ -2,12 +2,12 @@ import LevelModel from "../levels/levelModel";
 import GroupModel from "./groupModel";
 import UserModel from "../users/userModel";
 
-import { Group } from "../../typings/types";
+import { NewGroup } from "../../typings/types";
 
 // CRUD services
 // @desc insert a group in database
 // @params group
-const insertGroup = (group: Group) => {
+const insertGroup = (group: NewGroup) => {
   const groupInsert = GroupModel.create(group);
   return groupInsert;
 };
@@ -59,7 +59,7 @@ const findFilterGroupByProperty = (
 // @params groupId, group
 const modifyFilterGroup = (
   filters: { _id: string; school_id: string },
-  group: Group
+  group: NewGroup
 ) => {
   const groupUpdated = GroupModel.findOneAndUpdate(filters, group, {
     new: true,

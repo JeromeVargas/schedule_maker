@@ -1,12 +1,12 @@
 import TeacherFieldModel from "./teacherFieldModel";
 import TeacherModel from "../teachers/teacherModel";
 import FieldModel from "../fields/fieldModel";
-import { Teacher_Field } from "../../typings/types";
+import { NewTeacher_Field } from "../../typings/types";
 
 // CRUD services
 // @desc insert a teacher_field in database
 // @params teacherField
-const insertTeacherField = (teacherField: Teacher_Field) => {
+const insertTeacherField = (teacherField: NewTeacher_Field) => {
   const resourceInserted = TeacherFieldModel.create(teacherField);
   return resourceInserted;
 };
@@ -58,7 +58,7 @@ const findFilterTeacherFieldByProperty = (
 // @params filters, teacherField
 const modifyFilterTeacherField = (
   filters: { _id: string; school_id: string; teacher_id: string },
-  teacherField: Teacher_Field
+  teacherField: NewTeacher_Field
 ) => {
   const resourceUpdated = TeacherFieldModel.findOneAndUpdate(
     filters,
