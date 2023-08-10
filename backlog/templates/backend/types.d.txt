@@ -1,0 +1,8 @@
+// template
+export type Template = {
+  _id: Types.ObjectId;
+  school_id: Types.ObjectId;
+  name: string;
+};
+
+export type NewTemplate = Omit<Template, "_id">;

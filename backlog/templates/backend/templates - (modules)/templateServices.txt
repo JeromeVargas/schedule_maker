@@ -1,0 +1,97 @@
+import TemplateModel from "../templates/templateModel";
+import SchoolModel from "../schools/schoolModel";
+
+import { NewTemplate } from "../../typings/types";
+
+// CRUD services
+// @desc insert a template in database
+// @params template
+const insertTemplate = (template: NewTemplate) => {
+  const templateInsert = TemplateModel.create(template);
+  return templateInsert;
+};
+
+// @desc find all template by school id
+// @params filters, fields to return
+const findFilterAllTemplates = (
+  filters: { school_id: string },
+  fieldsToReturn: string
+) => {
+  const resourceFound = TemplateModel.find(filters)
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
+  return resourceFound;
+};
+
+// @desc find a template by school id and name or school_id and template id
+// @params filters, fields to return
+const findTemplateByProperty = (
+  filters:
+    | { school_id: string; name: string }
+    | { school_id: string; _id: string },
+  fieldsToReturn: string
+) => {
+  const templateFound = TemplateModel.findOne(filters)
+    .collation({ locale: "en", strength: 2 })
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
+  return templateFound;
+};
+
+// @desc find a template and filter by school id and name
+// @params filters, fields to return
+const findFilterTemplateByProperty = (
+  filters: { school_id: string; name: string },
+  fieldsToReturn: string
+) => {
+  const templatesFound = TemplateModel.find(filters)
+    .collation({ locale: "en", strength: 2 })
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
+  return templatesFound;
+};
+
+// @desc update a template by template id and school id
+// @params filter, template
+const modifyFilterTemplate = (
+  filters: { _id: string; school_id: string },
+  template: NewTemplate
+) => {
+  const templateUpdated = TemplateModel.findOneAndUpdate(filters, template, {
+    new: true,
+    runValidators: true,
+  });
+  return templateUpdated;
+};
+
+// @desc delete a template by school id and template id
+// @params filters
+const removeFilterTemplate = (filters: { school_id: string; _id: string }) => {
+  const resourceDeleted = TemplateModel.findOneAndDelete(filters).lean().exec();
+  return resourceDeleted;
+};
+
+/* Services from other entities */
+// @desc find a school by id
+// @params schoolId, fieldsToReturn
+const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
+  const schoolFound = SchoolModel.findById(schoolId)
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
+  return schoolFound;
+};
+
+export {
+  insertTemplate,
+  findTemplateByProperty,
+  findFilterAllTemplates,
+  findFilterTemplateByProperty,
+  modifyFilterTemplate,
+  removeFilterTemplate,
+  /* Services from school entities */
+  findSchoolById,
+};

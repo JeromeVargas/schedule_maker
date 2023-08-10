@@ -12,10 +12,23 @@
     "saturda",
     "thursda",
     "tuesda",
-    "wednesda"
+    "wednesda",
+    "Asign",
+    "Assignabl",
+    "Assigne",
+    "tiempo",
+    "completo",
+    "Mtuts",
+    "emai",
+    "passwor",
+    "statu",
+    "coordinator",
+    "activo",
+    "Ania",
+    "Kubow",
+    "coordinador",
+    "supertest"
   ],
-  "ignoreWords": [
-    "dcac"
-  ],
+  "ignoreWords": ["dcac"],
   "import": []
 }

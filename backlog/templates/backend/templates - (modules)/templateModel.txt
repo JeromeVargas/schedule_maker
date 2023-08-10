@@ -1,0 +1,24 @@
+import { Schema, model } from "mongoose";
+import { Template } from "../../typings/types";
+
+const TemplateSchema = new Schema<Template>(
+  {
+    school_id: {
+      type: Schema.Types.ObjectId,
+      ref: "School",
+      required: [true, "Please provide a school id"],
+    },
+    name: {
+      type: String,
+      required: [true, "Please provide a school name"],
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
+
+const TemplateModel = model<Template>("Template", TemplateSchema);
+
+export default TemplateModel;

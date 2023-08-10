@@ -1,18 +1,46 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
-import validateResult from "../lib/helpers/validateHelper";
-import { isValidId } from "../services/mongoServices";
+import validateResult from "../../lib/helpers/validateHelper";
+import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body: {fieldOne:[string], fieldTwo:[string], fieldThree:[string], fieldFour:[string], fieldFive:[string], fieldSix:[string], fieldSeven:[string], fieldEight:[boolean]}
-const validateCreateBaseResource = [
-  // code
+// @fields: body {school_id:[string], name:[string]}
+const validateCreateTemplate = [
+  check("school_id")
+    .exists()
+    .withMessage("Please add the school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
+  check("name")
+    .exists()
+    .withMessage("Please add a template name")
+    .bail()
+    .notEmpty()
+    .withMessage("The template name field is empty")
+    .bail()
+    .isString()
+    .withMessage("The template name is not valid")
+    .isLength({ min: 1, max: 100 })
+    .withMessage("The template name must not exceed 100 characters")
+    .escape()
+    .trim(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-// @fields: body: {school_id:[string]}
-const validateGetBaseResources = [
+// @fields: body {school_id:[string]}
+const validateGetTemplates = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -34,8 +62,8 @@ const validateGetBaseResources = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetBaseResource = [
+// @fields: params: {id:[string]}, body: {school_id:[string]}
+const validateGetTemplate = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -45,7 +73,7 @@ const validateGetBaseResource = [
         return true;
       }
     })
-    .withMessage(`The baseResource id is not valid`),
+    .withMessage(`The template id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -67,8 +95,8 @@ const validateGetBaseResource = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {fieldOne:[string], fieldTwo:[string], fieldThree:[string], fieldFour:[string], fieldFive:[string], fieldSix:[string], fieldSeven:[string], fieldEight:[boolean]}
-const validateUpdateBaseResource = [
+// @fields: params: {id:[string]},  body {school_id:[string], name:[string]}
+const validateUpdateTemplate = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -78,15 +106,43 @@ const validateUpdateBaseResource = [
         return true;
       }
     })
-    .withMessage(`The baseResource id is not valid`),
-  // code
+    .withMessage(`The template id is not valid`),
+  check("school_id")
+    .exists()
+    .withMessage("Please add the school id")
+    .bail()
+    .notEmpty()
+    .withMessage("The school field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The school id is not valid`),
+  check("name")
+    .exists()
+    .withMessage("Please add a template name")
+    .bail()
+    .notEmpty()
+    .withMessage("The template name field is empty")
+    .bail()
+    .isString()
+    .withMessage("The template name is not valid")
+    .isLength({ min: 1, max: 100 })
+    .withMessage("The template name must not exceed 100 characters")
+    .escape()
+    .trim(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteBaseResource = [
+// @fields: params: {id:[string]}, body: {school_id:[string]}
+const validateDeleteTemplate = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -96,7 +152,7 @@ const validateDeleteBaseResource = [
         return true;
       }
     })
-    .withMessage(`The baseResource id is not valid`),
+    .withMessage(`The template id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -119,9 +175,9 @@ const validateDeleteBaseResource = [
 ];
 
 export {
-  validateCreateBaseResource,
-  validateGetBaseResources,
-  validateGetBaseResource,
-  validateUpdateBaseResource,
-  validateDeleteBaseResource,
+  validateCreateTemplate,
+  validateGetTemplates,
+  validateGetTemplate,
+  validateUpdateTemplate,
+  validateDeleteTemplate,
 };

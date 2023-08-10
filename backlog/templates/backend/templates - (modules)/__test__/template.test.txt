@@ -1,0 +1,679 @@
+import supertest from "supertest";
+import { Types } from "mongoose";
+
+import { server, connection } from "../../../server";
+
+import * as templateServices from "../templateServices";
+
+import { Template } from "../../../typings/types";
+
+type Service =
+  | "insertTemplate"
+  | "findTemplateByProperty"
+  | "findFilterAllTemplates"
+  | "findFilterTemplateByProperty"
+  | "modifyFilterTemplate"
+  | "removeFilterTemplate"
+  | "findSchoolById";
+
+describe("Resource => Template", () => {
+  /* mock services */
+  // just one return
+  const mockService = (payload: any, service: Service) => {
+    return jest.spyOn(templateServices, service).mockReturnValue(payload);
+  };
+
+  /* hooks */
+  afterAll(() => {
+    connection.close();
+  });
+
+  /* end point url */
+  const endPointUrl = "/api/v1/templates/";
+
+  /* inputs */
+  const validMockTemplateId = new Types.ObjectId().toString();
+  const validMockSchoolId = new Types.ObjectId().toString();
+  const otherValidMockId = new Types.ObjectId().toString();
+  const invalidMockId = "63c5dcac78b868f80035asdf";
+  const newTemplate = {
+    school_id: validMockSchoolId,
+    name: "Template 001",
+  };
+  const newTemplateMissingValues = {
+    school_i: validMockSchoolId,
+    nam: "Template 001",
+  };
+  const newTemplateEmptyValues = {
+    school_id: "",
+    name: "",
+  };
+  const newTemplateNotValidDataTypes = {
+    school_id: invalidMockId,
+    name: 432,
+  };
+  const newTemplateWrongLengthValues = {
+    school_id: validMockSchoolId,
+    name: "fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkjsdfi07879sdf0fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkj879sdf01",
+  };
+
+  /* payloads */
+  const schoolPayload = {
+    _id: validMockSchoolId,
+    name: "School 001",
+  };
+  const schoolNullPayload = null;
+  const templatePayload = {
+    _id: validMockTemplateId,
+    school_id: validMockSchoolId,
+    name: "Template 001",
+  };
+  const templateNullPayload = null;
+  const templatesPayload = [
+    {
+      _id: validMockTemplateId,
+      school_id: new Types.ObjectId().toString(),
+      name: "Template 001",
+    },
+    {
+      _id: new Types.ObjectId().toString(),
+      school_id: new Types.ObjectId().toString(),
+      name: "Template 002",
+    },
+    {
+      _id: new Types.ObjectId().toString(),
+      school_id: new Types.ObjectId().toString(),
+      name: "Template 003",
+    },
+  ];
+  const templatesNullPayload: Template[] = [];
+
+  // test blocks
+  describe("POST /template ", () => {
+    describe("template::post::01 - Passing missing fields", () => {
+      it("should return a missing fields error", async () => {
+        // code
+      });
+    });
+    describe("template::post::02 - Passing fields with empty values", () => {
+      it("should return an empty fields error", async () => {
+        // code
+      });
+    });
+    describe("template::post::03 - Passing an invalid type as a value", () => {
+      it("should return a not valid value error", async () => {
+        // code
+      });
+    });
+    describe("template::post::04 - Passing too long or short input values", () => {
+      it("should return an invalid length input value error", async () => {
+        // code
+      });
+    });
+    describe("template::post::05 - Passing an non-existent school in the body", () => {
+      it("should return a non-existent school error", async () => {
+        // code
+      });
+    });
+    describe("template::post::06 - Passing an already existing template name", () => {
+      it("should return an existing template name", async () => {
+        // code
+      });
+    });
+    describe("template::post::07 - Passing a template but not being created", () => {
+      it("should not create a field", async () => {
+        // code
+      });
+    });
+    describe("template::post::08 - Passing a template correctly to create", () => {
+      it("should create a template", async () => {
+        // mock services
+        const findSchool = mockService(schoolPayload, "findSchoolById");
+        const findTemplate = mockService(
+          templateNullPayload,
+          "findTemplateByProperty"
+        );
+        const insertTemplate = mockService(templatePayload, "insertTemplate");
+
+        //api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newTemplate);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Template created successfully!",
+        });
+        expect(statusCode).toBe(201);
+        expect(findSchool).toHaveBeenCalled();
+        expect(findSchool).toHaveBeenCalledWith(
+          newTemplate.school_id,
+          "-createdAt -updatedAt"
+        );
+        expect(findTemplate).toHaveBeenCalled();
+        expect(findTemplate).toHaveBeenCalledWith(
+          { school_id: newTemplate.school_id, name: newTemplate.name },
+          "-createdAt -updatedAt"
+        );
+        expect(insertTemplate).toHaveBeenCalled();
+        expect(insertTemplate).toHaveBeenCalledWith(newTemplate);
+      });
+    });
+  });
+
+  describe("GET /template ", () => {
+    describe("template - GET", () => {
+      describe("template::get::01 - Passing missing fields", () => {
+        it("should return a missing values error", async () => {
+          // mock services
+          const findTemplates = mockService(
+            templatesNullPayload,
+            "findFilterAllTemplates"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}`)
+            .send({ school_i: validMockSchoolId });
+
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findTemplates).not.toHaveBeenCalled();
+          expect(findTemplates).not.toHaveBeenCalledWith(
+            { school_id: null },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+      describe("template::get::02 - passing fields with empty values", () => {
+        it("should return an empty values error", async () => {
+          // mock services
+          const findTemplates = mockService(
+            templatesNullPayload,
+            "findFilterAllTemplates"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}`)
+            .send({ school_id: "" });
+
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findTemplates).not.toHaveBeenCalled();
+          expect(findTemplates).not.toHaveBeenCalledWith(
+            { school_id: "" },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+      describe("template::get::03 - passing invalid ids", () => {
+        it("should return an invalid id error", async () => {
+          // mock services
+          const findTemplates = mockService(
+            templatesNullPayload,
+            "findFilterAllTemplates"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}`)
+            .send({ school_id: invalidMockId });
+
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findTemplates).not.toHaveBeenCalled();
+          expect(findTemplates).not.toHaveBeenCalledWith(
+            { school_id: invalidMockId },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+      describe("template::get::04 - Requesting all fields but not finding any", () => {
+        it("should not get any fields", async () => {
+          // mock services
+          const findTemplates = mockService(
+            templatesNullPayload,
+            "findFilterAllTemplates"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}`)
+            .send({ school_id: otherValidMockId });
+
+          // assertions
+          expect(body).toStrictEqual({
+            msg: "No templates found",
+          });
+          expect(statusCode).toBe(404);
+          expect(findTemplates).toHaveBeenCalled();
+          expect(findTemplates).toHaveBeenCalledWith(
+            { school_id: otherValidMockId },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+      describe("template::get::05 - Requesting all fields correctly", () => {
+        it("should get all fields", async () => {
+          // mock services
+          const findTemplates = mockService(
+            templatesPayload,
+            "findFilterAllTemplates"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}`)
+            .send({ school_id: validMockSchoolId });
+
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              _id: expect.any(String),
+              school_id: expect.any(String),
+              name: "Template 001",
+            },
+            {
+              _id: expect.any(String),
+              school_id: expect.any(String),
+              name: "Template 002",
+            },
+            {
+              _id: expect.any(String),
+              school_id: expect.any(String),
+              name: "Template 003",
+            },
+          ]);
+          expect(statusCode).toBe(200);
+          expect(findTemplates).toHaveBeenCalled();
+          expect(findTemplates).toHaveBeenCalledWith(
+            { school_id: validMockSchoolId },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+    });
+    describe("template - GET/:id", () => {
+      describe("template::get/:id::01 - Passing missing fields", () => {
+        it("should return a missing values error", async () => {
+          // mock services
+          const findTemplate = mockService(
+            templateNullPayload,
+            "findTemplateByProperty"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}${validMockTemplateId}`)
+            .send({ school_i: validMockSchoolId });
+
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findTemplate).not.toHaveBeenCalled();
+          expect(findTemplate).not.toHaveBeenCalledWith(
+            { school_id: null, _id: validMockTemplateId },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+      describe("template::get/:id::02 - Passing fields with empty values", () => {
+        it("should return an empty values error", async () => {
+          // mock services
+          const findTemplate = mockService(
+            templateNullPayload,
+            "findTemplateByProperty"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}${validMockTemplateId}`)
+            .send({ school_id: "" });
+
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findTemplate).not.toHaveBeenCalled();
+          expect(findTemplate).not.toHaveBeenCalledWith(
+            { school_id: "", _id: validMockTemplateId },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+      describe("template::get/:id::03 - Passing invalid ids", () => {
+        it("should return an invalid id error", async () => {
+          // mock services
+          const findTemplate = mockService(
+            templateNullPayload,
+            "findTemplateByProperty"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}${invalidMockId}`)
+            .send({ school_id: invalidMockId });
+
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "params",
+              msg: "The template id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(findTemplate).not.toHaveBeenCalled();
+          expect(findTemplate).not.toHaveBeenCalledWith(
+            { school_id: invalidMockId, _id: invalidMockId },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+      describe("template::get/:id::04 - Requesting a field but not finding it", () => {
+        it("should not get a school", async () => {
+          // mock services
+          const findTemplate = mockService(
+            templateNullPayload,
+            "findTemplateByProperty"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}${otherValidMockId}`)
+            .send({ school_id: validMockSchoolId });
+
+          // assertions
+          expect(body).toStrictEqual({
+            msg: "Template not found",
+          });
+          expect(statusCode).toBe(404);
+          expect(findTemplate).toHaveBeenCalled();
+          expect(findTemplate).toHaveBeenCalledWith(
+            { school_id: validMockSchoolId, _id: otherValidMockId },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+      describe("template::get/:id::05 - Requesting a field correctly", () => {
+        it("should get a field", async () => {
+          // mock services
+          const findTemplate = mockService(
+            templatePayload,
+            "findTemplateByProperty"
+          );
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}${validMockTemplateId}`)
+            .send({ school_id: validMockSchoolId });
+
+          // assertions
+          expect(body).toStrictEqual({
+            _id: validMockTemplateId,
+            school_id: validMockSchoolId,
+            name: "Template 001",
+          });
+          expect(statusCode).toBe(200);
+          expect(findTemplate).toHaveBeenCalled();
+          expect(findTemplate).toHaveBeenCalledWith(
+            { school_id: validMockSchoolId, _id: validMockTemplateId },
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+    });
+  });
+
+  describe("PUT /template ", () => {
+    describe("template::put::01 - Passing missing fields", () => {
+      it("should return a missing fields error", async () => {
+        // code
+      });
+    });
+    describe("template::put::02 - Passing fields with empty values", () => {
+      it("should return an empty field error", async () => {
+        // code
+      });
+    });
+    describe("template::put::03 - Passing an invalid type as field value", () => {
+      it("should return a not valid value error", async () => {
+        // code
+      });
+    });
+    describe("template::put::04 - Passing too long or short input values", () => {
+      it("should return an invalid length input value error", async () => {
+        // code
+      });
+    });
+    describe("template::put::05 - Passing an already existing template name", () => {
+      it("should not update a template", async () => {
+        // code
+      });
+    });
+    describe("template::put::06 - Passing a template but not updating it because it does not match the filters", () => {
+      it("should not update a template", async () => {
+        // code
+      });
+    });
+    describe("template::put::07 - Passing a template correctly to update", () => {
+      it("should update a template", async () => {
+        // mock services
+        const duplicateTemplateName = mockService(
+          templateNullPayload,
+          "findTemplateByProperty"
+        );
+        const updateTemplate = mockService(
+          templatePayload,
+          "modifyFilterTemplate"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockTemplateId}`)
+          .send(newTemplate);
+
+        // assertions
+        expect(body).toStrictEqual({ msg: "Template updated" });
+        expect(statusCode).toBe(200);
+        expect(duplicateTemplateName).toHaveBeenCalled();
+        expect(duplicateTemplateName).toHaveBeenCalledWith(
+          { school_id: newTemplate.school_id, name: newTemplate.name },
+          "-createdAt -updatedAt"
+        );
+        expect(updateTemplate).toHaveBeenCalled();
+        expect(updateTemplate).toHaveBeenCalledWith(
+          { _id: validMockTemplateId, school_id: newTemplate.school_id },
+          newTemplate
+        );
+      });
+    });
+  });
+
+  describe("DELETE /template ", () => {
+    describe("template::delete::01 - Passing missing fields", () => {
+      it("should return a missing fields error", async () => {
+        // mock services
+        const deleteTemplate = mockService(
+          templateNullPayload,
+          "removeFilterTemplate"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .delete(`${endPointUrl}${validMockTemplateId}`)
+          .send({ school_i: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual([
+          {
+            location: "body",
+            msg: "Please add a school id",
+            param: "school_id",
+          },
+        ]);
+        expect(statusCode).toBe(400);
+        expect(deleteTemplate).not.toHaveBeenCalled();
+        expect(deleteTemplate).not.toHaveBeenCalledWith({
+          school_id: null,
+          _id: validMockTemplateId,
+        });
+      });
+    });
+    describe("template::delete::02 - Passing fields with empty values", () => {
+      it("should return a empty fields error", async () => {
+        // mock services
+        const deleteTemplate = mockService(
+          templateNullPayload,
+          "removeFilterTemplate"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .delete(`${endPointUrl}${validMockTemplateId}`)
+          .send({ school_id: "" });
+
+        // assertions
+        expect(body).toStrictEqual([
+          {
+            location: "body",
+            msg: "The school id field is empty",
+            param: "school_id",
+            value: "",
+          },
+        ]);
+        expect(statusCode).toBe(400);
+        expect(deleteTemplate).not.toHaveBeenCalled();
+        expect(deleteTemplate).not.toHaveBeenCalledWith({
+          _id: validMockTemplateId,
+          school_id: "",
+        });
+      });
+    });
+    describe("template::delete::03 - Passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const deleteTemplate = mockService(
+          templateNullPayload,
+          "removeFilterTemplate"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .delete(`${endPointUrl}${invalidMockId}`)
+          .send({ school_id: invalidMockId });
+
+        // assertions
+        expect(body).toStrictEqual([
+          {
+            location: "params",
+            msg: "The template id is not valid",
+            param: "id",
+            value: invalidMockId,
+          },
+          {
+            location: "body",
+            msg: "The school id is not valid",
+            param: "school_id",
+            value: invalidMockId,
+          },
+        ]);
+        expect(statusCode).toBe(400);
+        expect(deleteTemplate).not.toHaveBeenCalled();
+        expect(deleteTemplate).not.toHaveBeenCalledWith({
+          school_id: "",
+          _id: "",
+        });
+      });
+    });
+    describe("template::delete::04 - Passing a template id but not deleting it", () => {
+      it("should not delete a school", async () => {
+        // mock services
+        const deleteTemplate = mockService(
+          templateNullPayload,
+          "removeFilterTemplate"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .delete(`${endPointUrl}${validMockSchoolId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({ msg: "Template not deleted" });
+        expect(statusCode).toBe(404);
+        expect(deleteTemplate).toHaveBeenCalled();
+        expect(deleteTemplate).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          _id: validMockSchoolId,
+        });
+      });
+    });
+    describe("template::delete::05 - Passing a template id correctly to delete", () => {
+      it("should delete a field", async () => {
+        // mock services
+        const deleteTemplate = mockService(
+          templatePayload,
+          "removeFilterTemplate"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .delete(`${endPointUrl}${validMockTemplateId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({ msg: "Template deleted" });
+        expect(statusCode).toBe(200);
+        expect(deleteTemplate).toHaveBeenCalled();
+        expect(deleteTemplate).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          _id: validMockTemplateId,
+        });
+      });
+    });
+  });
+});
