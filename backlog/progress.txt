@@ -60,6 +60,7 @@
                 - base model ✅
                 - asynchronous error wrapper ✅
                 - validation - express validator ✅
+                - graceful shutdown ✅
 
             - end points ⌛⏳⌛
 

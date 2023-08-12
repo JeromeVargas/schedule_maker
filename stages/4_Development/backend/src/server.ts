@@ -16,6 +16,7 @@ export const server = express();
 
 // db connection function import
 import connectDB from "./config/connect";
+import mongoose from "mongoose";
 
 // third-party middleware instantiation
 server.use(cors());
@@ -48,3 +49,28 @@ const createConnection = () => {
 
 //server instantiation
 export const connection = createConnection();
+
+// graceful shutdown
+const signals = ["SIGINT", "SIGTERM", "SIGHUP"] as const;
+
+const gracefulShutdown = async ({
+  signal,
+  connection,
+}: {
+  signal: (typeof signals)[number];
+  connection: ReturnType<typeof createConnection>;
+}) => {
+  console.log(`Got signal ${signal}. Good bye`);
+  connection.close();
+  await mongoose.connection.close();
+  process.exit(0);
+};
+
+for (let i = 0; i < signals.length; i++) {
+  process.on(signals[i], () =>
+    gracefulShutdown({
+      signal: signals[i],
+      connection,
+    })
+  );
+}
