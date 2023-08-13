@@ -32,6 +32,7 @@ const validateCreateUser = [
     .withMessage("The first name is not valid")
     .isLength({ min: 1, max: 50 })
     .withMessage("The first name must not exceed 50 characters")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("lastName")
@@ -45,6 +46,7 @@ const validateCreateUser = [
     .withMessage("The last name is not valid")
     .isLength({ min: 1, max: 50 })
     .withMessage("The last name must not exceed 50 characters")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("email")
@@ -61,6 +63,7 @@ const validateCreateUser = [
     .withMessage("please add a correct email address")
     .isLength({ min: 1, max: 50 })
     .withMessage("The email must not exceed 50 characters")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("password")
@@ -89,6 +92,7 @@ const validateCreateUser = [
     .bail()
     .isIn(["headmaster", "coordinator", "teacher"])
     .withMessage("the role provided is not a valid option")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("status")
@@ -103,6 +107,7 @@ const validateCreateUser = [
     .bail()
     .isIn(["active", "inactive", "suspended"])
     .withMessage("the status provided is not a valid option")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("hasTeachingFunc")
@@ -214,6 +219,7 @@ const validateUpdateUser = [
     .withMessage("The first name is not valid")
     .isLength({ min: 1, max: 50 })
     .withMessage("The first name must not exceed 50 characters")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("lastName")
@@ -227,6 +233,7 @@ const validateUpdateUser = [
     .withMessage("The last name is not valid")
     .isLength({ min: 1, max: 50 })
     .withMessage("The last name must not exceed 50 characters")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("email")
@@ -243,6 +250,7 @@ const validateUpdateUser = [
     .withMessage("please add a correct email address")
     .isLength({ min: 1, max: 50 })
     .withMessage("The email must not exceed 50 characters")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("password")
@@ -271,6 +279,7 @@ const validateUpdateUser = [
     .bail()
     .isIn(["headmaster", "coordinator", "teacher"])
     .withMessage("the role provided is not a valid option")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("status")
@@ -285,6 +294,7 @@ const validateUpdateUser = [
     .bail()
     .isIn(["active", "inactive", "suspended"])
     .withMessage("the status provided is not a valid option")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("hasTeachingFunc")

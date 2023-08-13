@@ -64,6 +64,7 @@ const validateCreateGroup = [
     .withMessage("The group name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The group name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   check("numberStudents")
@@ -209,6 +210,7 @@ const validateUpdateGroup = [
     .withMessage("The group name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The group name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   check("numberStudents")

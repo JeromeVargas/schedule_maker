@@ -32,6 +32,7 @@ const validateCreateSchedule = [
     .withMessage("The schedule name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The schedule name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   check("dayStart")
@@ -233,6 +234,7 @@ const validateUpdateSchedule = [
     .withMessage("The schedule name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The schedule name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   check("dayStart")

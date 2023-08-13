@@ -44,7 +44,6 @@ const validateCreateTeacher = [
     .notEmpty()
     .withMessage("The coordinator's id field is empty")
     .bail()
-    .isString()
     .custom((value) => {
       const validId = isValidId(value);
       if (validId === false) {
@@ -66,6 +65,7 @@ const validateCreateTeacher = [
     .bail()
     .isIn(["full-time", "part-time", "substitute"])
     .withMessage("the contract type provided is not a valid option")
+    .blacklist("%,$")
     .escape()
     .trim(),
   check("hoursAssignable")
@@ -251,7 +251,6 @@ const validateUpdateTeacher = [
     .notEmpty()
     .withMessage("The teacher`s user id field is empty")
     .bail()
-    .isString()
     .custom((value) => {
       const validId = isValidId(value);
       if (validId === false) {
@@ -268,7 +267,6 @@ const validateUpdateTeacher = [
     .notEmpty()
     .withMessage("The coordinator's id field is empty")
     .bail()
-    .isString()
     .custom((value) => {
       const validId = isValidId(value);
       if (validId === false) {
@@ -290,6 +288,7 @@ const validateUpdateTeacher = [
     .bail()
     .isIn(["full-time", "part-time", "substitute"])
     .withMessage("the contract type provided is not a valid option")
+    .blacklist("%,$")
     .escape()
     .trim(),
   check("hoursAssignable")

@@ -48,6 +48,7 @@ const validateCreateLevel = [
     .withMessage("The level name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The level name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   (req: Request, res: Response, next: NextFunction) => {
@@ -166,6 +167,7 @@ const validateUpdateLevel = [
     .withMessage("The level name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The level name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   (req: Request, res: Response, next: NextFunction) => {

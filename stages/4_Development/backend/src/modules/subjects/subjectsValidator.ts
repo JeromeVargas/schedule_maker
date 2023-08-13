@@ -80,6 +80,7 @@ const validateCreateSubject = [
     .withMessage("The subject name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The subject name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   check("classUnits")
@@ -252,6 +253,7 @@ const validateUpdateSubject = [
     .withMessage("The subject name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The subject name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   check("classUnits")

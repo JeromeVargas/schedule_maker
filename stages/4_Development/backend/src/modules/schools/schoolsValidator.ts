@@ -16,6 +16,7 @@ const validateCreateSchool = [
     .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("groupMaxNumStudents")
@@ -75,6 +76,7 @@ const validateUpdateSchool = [
     .withMessage("The school name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters")
+    .blacklist("%,$")
     .trim()
     .escape(),
   check("groupMaxNumStudents")

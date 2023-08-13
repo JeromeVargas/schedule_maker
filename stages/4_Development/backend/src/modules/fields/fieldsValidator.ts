@@ -32,6 +32,7 @@ const validateCreateField = [
     .withMessage("The field name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The field name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   (req: Request, res: Response, next: NextFunction) => {
@@ -134,6 +135,7 @@ const validateUpdateField = [
     .withMessage("The field name is not valid")
     .isLength({ min: 1, max: 100 })
     .withMessage("The name must not exceed 100 characters")
+    .blacklist("%,$")
     .escape()
     .trim(),
   (req: Request, res: Response, next: NextFunction) => {
