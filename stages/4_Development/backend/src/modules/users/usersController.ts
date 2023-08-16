@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../../errors/bad-request";
 import ConflictError from "../../errors/conflict";
 import NotFoundError from "../../errors/not-found";
+import { hashPwd } from "../../lib/utilities/utils";
 
 import {
   insertUser,
@@ -13,9 +14,6 @@ import {
   /* Services from other entities */
   findSchoolById,
 } from "./userServices";
-
-/* models */
-const userModel = "user";
 
 // @desc create a user
 // @route POST /api/v1/users
@@ -53,13 +51,15 @@ const createUser = async ({ body }: Request, res: Response) => {
   if (duplicateUserEmailFound) {
     throw new ConflictError("Please try a different email address");
   }
+  /* hash password */
+  const hashedPwd = await hashPwd(password);
   /* create the user */
   const newUser = {
     school_id: school_id,
     firstName: firstName,
     lastName: lastName,
     email: email,
-    password: password,
+    password: hashedPwd,
     role: role,
     status: status,
     hasTeachingFunc: hasTeachingFunc,
@@ -134,6 +134,8 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
   if (duplicateEmail && duplicateEmail?._id?.toString() !== userId) {
     throw new ConflictError("Please try a different email address");
   }
+  /* hash password */
+  const hashedPwd = await hashPwd(password);
   /* check if the userId is the same as the one passed and update the user */
   const filtersUpdate = { school_id: school_id, _id: userId };
   const newUser = {
@@ -141,7 +143,7 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
     firstName: firstName,
     lastName: lastName,
     email: email,
-    password: password,
+    password: hashedPwd,
     role: role,
     status: status,
     hasTeachingFunc: hasTeachingFunc,

@@ -8,7 +8,6 @@ for later:
 - 
 
 Back end:
-continue here --> password hashing - post user
 continue here --> remove unnecessary stack error messages if in production, work on the error handler middleware.
 
 for later:
@@ -33,7 +32,7 @@ for later:
 - try to update packages, specially express validator
 - continue checking sanitization and overall security of the apis
 
-
+- add logger
 Front End
 
 continue here -->

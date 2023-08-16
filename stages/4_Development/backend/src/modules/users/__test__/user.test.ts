@@ -4,6 +4,7 @@ import { Types } from "mongoose";
 import { server, connection } from "../../../server";
 
 import * as userServices from "../userServices";
+import * as utils from "../../../lib/utilities/utils";
 
 import { User } from "../../../typings/types";
 
@@ -35,6 +36,10 @@ describe("RESOURCE => User", () => {
   const validMockSchoolId = new Types.ObjectId().toString();
   const otherValidMockId = new Types.ObjectId().toString();
   const invalidMockId = "63c5dcac78b868f80035asdf";
+  const tooLongPassword =
+    "123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341";
+  const hashedPwd =
+    "$2b$10$3R7rTrUF5Dtknal44dnzsuJh.I2UI1S6wW0hwWqbmoDopiGtEa36.";
   const newUser = {
     school_id: validMockSchoolId,
     firstName: "Jerome",
@@ -157,6 +162,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -221,6 +229,8 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(newUserMissingValues.passwor);
         expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserMissingValues);
       });
@@ -233,6 +243,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -305,6 +318,8 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(newUserEmptyValues.password);
         expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserEmptyValues, "user");
       });
@@ -317,6 +332,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -389,6 +407,10 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(
+          newUserNotValidDataTypes.password
+        );
         expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserNotValidDataTypes);
       });
@@ -401,6 +423,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -449,6 +474,10 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(
+          newUserWrongLengthValues.password
+        );
         expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserWrongLengthValues);
       });
@@ -461,6 +490,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -468,8 +500,7 @@ describe("RESOURCE => User", () => {
           .post(`${endPointUrl}`)
           .send({
             ...newUser,
-            password:
-              "123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341",
+            password: tooLongPassword,
           });
 
         //assertions
@@ -478,8 +509,7 @@ describe("RESOURCE => User", () => {
             location: "body",
             msg: "The password must not exceed 128 characters",
             param: "password",
-            value:
-              "123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341",
+            value: tooLongPassword,
           },
         ]);
         expect(statusCode).toBe(400);
@@ -496,8 +526,13 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(tooLongPassword);
         expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUserWrongLengthValues);
+        expect(insertUser).not.toHaveBeenCalledWith({
+          ...newUser,
+          password: tooLongPassword,
+        });
       });
     });
     describe("user::post::06 - Passing wrong school id, email, role or status", () => {
@@ -508,6 +543,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -546,9 +584,13 @@ describe("RESOURCE => User", () => {
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserWrongInputValues.email,
-            school_id: newUserWrongLengthValues.school_id,
+            school_id: newUserWrongInputValues.school_id,
           },
           "-password -createdAt -updatedAt"
+        );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(
+          newUserWrongInputValues.password
         );
         expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserWrongInputValues);
@@ -562,6 +604,9 @@ describe("RESOURCE => User", () => {
           userPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const insertUser = mockService(userPayload, "insertUser");
 
         // api call
@@ -584,6 +629,8 @@ describe("RESOURCE => User", () => {
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(newUser.password);
         expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
@@ -596,6 +643,9 @@ describe("RESOURCE => User", () => {
           userPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const insertUser = mockService(userPayload, "insertUser");
 
         // api call
@@ -618,6 +668,8 @@ describe("RESOURCE => User", () => {
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(newUser.password);
         expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
@@ -630,6 +682,10 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
+
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -652,8 +708,13 @@ describe("RESOURCE => User", () => {
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).toHaveBeenCalled();
+        expect(hashPwd).toHaveBeenCalledWith(newUser.password);
         expect(insertUser).toHaveBeenCalled();
-        expect(insertUser).toHaveBeenCalledWith(newUser);
+        expect(insertUser).toHaveBeenCalledWith({
+          ...newUser,
+          password: hashedPwd,
+        });
       });
     });
     describe("user::post::10 - Passing a user correctly to create", () => {
@@ -664,6 +725,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const insertUser = mockService(userPayload, "insertUser");
 
         // api call
@@ -684,11 +748,17 @@ describe("RESOURCE => User", () => {
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).toHaveBeenCalled();
+        expect(hashPwd).toHaveBeenCalledWith(newUser.password);
         expect(insertUser).toHaveBeenCalled();
-        expect(insertUser).toHaveBeenCalledWith(newUser);
+        expect(insertUser).toHaveBeenCalledWith({
+          ...newUser,
+          password: hashedPwd,
+        });
       });
     });
   });
+
   describe("GET /user ", () => {
     describe("user - GET", () => {
       describe("user::get::01 - passing a school with missing values", () => {
@@ -985,6 +1055,7 @@ describe("RESOURCE => User", () => {
       });
     });
   });
+
   describe("PUT /user ", () => {
     describe("user::put::01 - Passing a user with missing fields", () => {
       it("should return a field needed error", async () => {
@@ -993,6 +1064,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1052,6 +1126,8 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(newUserMissingValues.passwor);
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           { _id: validMockUserId, school_id: newUserMissingValues.school_i },
@@ -1066,6 +1142,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1133,6 +1212,8 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(newUserEmptyValues.password);
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           { _id: validMockUserId, school_id: newUserEmptyValues.school_id },
@@ -1147,6 +1228,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1220,6 +1304,10 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(
+          newUserNotValidDataTypes.password
+        );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           { _id: invalidMockId, school_id: newUserNotValidDataTypes.school_id },
@@ -1234,6 +1322,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1271,8 +1362,15 @@ describe("RESOURCE => User", () => {
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
+          {
+            email: newUserWrongLengthValues.email,
+            school_id: newUserWrongLengthValues.school_id,
+          },
           "-password -createdAt -updatedAt"
+        );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(
+          newUserWrongLengthValues.password
         );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
@@ -1291,6 +1389,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1298,8 +1399,7 @@ describe("RESOURCE => User", () => {
           .put(`${endPointUrl}${validMockUserId}`)
           .send({
             ...newUser,
-            password:
-              "123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341",
+            password: tooLongPassword,
           });
 
         // assertions
@@ -1308,23 +1408,30 @@ describe("RESOURCE => User", () => {
             location: "body",
             msg: "The password must not exceed 128 characters",
             param: "password",
-            value:
-              "123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341",
+            value: tooLongPassword,
           },
         ]);
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
+          {
+            email: newUserWrongLengthValues.email,
+            school_id: newUserWrongLengthValues.school_id,
+          },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(tooLongPassword);
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           {
             _id: validMockUserId,
             school_id: newUserWrongLengthValues.school_id,
           },
-          newUserWrongLengthValues
+          {
+            ...newUser,
+            password: tooLongPassword,
+          }
         );
       });
     });
@@ -1335,6 +1442,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1366,8 +1476,15 @@ describe("RESOURCE => User", () => {
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
+          {
+            email: newUserWrongInputValues.email,
+            school_id: newUserWrongInputValues.school_id,
+          },
           "-password -createdAt -updatedAt"
+        );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(
+          newUserWrongInputValues.password
         );
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
@@ -1386,6 +1503,9 @@ describe("RESOURCE => User", () => {
           userPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const updateUser = mockService(userPayload, "modifyFilterUser");
 
         // api call
@@ -1403,6 +1523,8 @@ describe("RESOURCE => User", () => {
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).not.toHaveBeenCalled();
+        expect(hashPwd).not.toHaveBeenCalledWith(newUser.password);
         expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           { school_id: newUser.school_id, _id: validMockUserId },
@@ -1417,6 +1539,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1434,10 +1559,15 @@ describe("RESOURCE => User", () => {
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).toHaveBeenCalled();
+        expect(hashPwd).toHaveBeenCalledWith(newUser.password);
         expect(updateUser).toHaveBeenCalled();
         expect(updateUser).toHaveBeenCalledWith(
           { school_id: newUser.school_id, _id: validMockUserId },
-          newUser
+          {
+            ...newUser,
+            password: hashedPwd,
+          }
         );
       });
     });
@@ -1448,6 +1578,9 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
+        const hashPwd = jest
+          .spyOn(utils, "hashPwd")
+          .mockResolvedValue(hashedPwd);
         const updateUser = mockService(userPayload, "modifyFilterUser");
 
         // api call
@@ -1463,14 +1596,20 @@ describe("RESOURCE => User", () => {
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
+        expect(hashPwd).toHaveBeenCalled();
+        expect(hashPwd).toHaveBeenCalledWith(newUser.password);
         expect(updateUser).toHaveBeenCalled();
         expect(updateUser).toHaveBeenCalledWith(
           { school_id: newUser.school_id, _id: validMockUserId },
-          newUser
+          {
+            ...newUser,
+            password: hashedPwd,
+          }
         );
       });
     });
   });
+
   describe("DELETE /user ", () => {
     describe("user::delete::01 - passing a school with missing values", () => {
       it("should return a missing values error", async () => {

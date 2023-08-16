@@ -75,6 +75,8 @@
                     - read ✅
                     - update ✅
                     - delete ✅
+                        features
+                            - password hashing ✅✅✅
 
                 - teacher ✅
                     - create ✅
