@@ -8,16 +8,15 @@ for later:
 - 
 
 Back end:
-continue here --> remove unnecessary stack error messages if in production, work on the error handler middleware.
-
-for later:
-
-- re-organize the folder to bring the code up and avoid nesting
-- refactor commits, give them some structure, check these tutorials:
+continue here --> re-organize the folder to bring the code up and avoid nesting
+continue here --> refactor commits, give them some structure, check these tutorials:
     https://youtu.be/HNdQOYM3pqo
     https://youtu.be/OJqUWvmf4gg
     https://youtu.be/Kz2iyskwLRA
     https://youtu.be/lwGcnDgwmFc
+
+
+for later:
 
 - if user is a teacher make sure he / she has teaching functions as true
 - if user is updated as inactive or with no teaching functions, delete teacher

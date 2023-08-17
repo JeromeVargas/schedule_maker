@@ -20,8 +20,8 @@ const errorHandlerMiddleware = (
   if (err instanceof CustomAPIError) {
     return res.status(err.statusCode).json({ msg: err.message });
   }
-  // The error is part express validation error
-  if (err?.errors) {
+  // The error is part express-validator error
+  if (err?.errors && Array.isArray(err.errors)) {
     return res.status(StatusCodes.BAD_REQUEST).json(err?.errors);
   }
   // The error is part of a JSON badly formatted req body
@@ -36,9 +36,10 @@ const errorHandlerMiddleware = (
       .json({ msg: "Please make sure the submission is properly formatted" });
   }
   // Fall out error
-  return res
-    .status(StatusCodes.BAD_REQUEST)
-    .json({ err, msg: "Something unexpected happened, please try again" });
+  return res.status(StatusCodes.CONFLICT).json({
+    msg: "Something unexpected happened, please try again",
+    info: process.env.NODE_ENV === "production" ? "Internal error" : err,
+  });
 };
 
 export default errorHandlerMiddleware;
