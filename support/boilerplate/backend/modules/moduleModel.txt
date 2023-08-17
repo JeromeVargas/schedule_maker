@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import { Template } from "../../typings/types";
+import { Module } from "../../typings/types";
 
-const TemplateSchema = new Schema<Template>(
+const ModuleSchema = new Schema<Module>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
@@ -19,6 +19,6 @@ const TemplateSchema = new Schema<Template>(
   }
 );
 
-const TemplateModel = model<Template>("Template", TemplateSchema);
+const ModuleModel = model<Module>("Module", ModuleSchema);
 
-export default TemplateModel;
+export default ModuleModel;

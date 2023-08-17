@@ -1,0 +1,45 @@
+import { Router } from "express";
+import {
+  validateCreateModule,
+  validateGetModules,
+  validateGetModule,
+  validateUpdateModule,
+  validateDeleteModule,
+} from "./modulesValidator";
+
+import {
+  createModule,
+  getModules,
+  getModule,
+  updateModule,
+  deleteModule,
+} from "./modulesController";
+
+const router = Router();
+
+// @desc    Create a module
+// @route   POST /api/v1/modules
+// @access  Private
+router.post("/", validateCreateModule, createModule);
+
+// @desc    Get modules data
+// @route   GET /api/v1/modules
+// @access  Private
+router.get("/", validateGetModules, getModules);
+
+// @desc    Get a module data
+// @route   GET /api/v1/modules/:id
+// @access  Private
+router.get("/:id", validateGetModule, getModule);
+
+// @desc    Update a module data
+// @route   PUT /api/v1/modules/:id
+// @access  Private
+router.put("/:id", validateUpdateModule, updateModule);
+
+// @desc    Delete a module
+// @route   PUT /api/v1/modules/:id
+// @access  Private
+router.delete("/:id", validateDeleteModule, deleteModule);
+
+export { router };

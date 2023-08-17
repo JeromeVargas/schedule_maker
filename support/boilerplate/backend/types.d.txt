@@ -1,8 +1,8 @@
 // template
-export type Template = {
+export type Module = {
   _id: Types.ObjectId;
   school_id: Types.ObjectId;
   name: string;
 };
 
-export type NewTemplate = Omit<Template, "_id">;
+export type NewModule = Omit<Module, "_id">;

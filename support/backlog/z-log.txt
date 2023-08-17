@@ -8,7 +8,7 @@ for later:
 - 
 
 Back end:
-continue here --> re-organize the folder to bring the code up and avoid nesting
+
 continue here --> refactor commits, give them some structure, check these tutorials:
     https://youtu.be/HNdQOYM3pqo
     https://youtu.be/OJqUWvmf4gg
@@ -32,6 +32,7 @@ for later:
 - continue checking sanitization and overall security of the apis
 
 - add logger
+
 Front End
 
 continue here -->

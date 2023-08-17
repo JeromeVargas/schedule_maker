@@ -1,4 +1,0 @@
-## these are being ignored by the parent gitignore file in this project
-# node_modules
-# .env
-# .vscode

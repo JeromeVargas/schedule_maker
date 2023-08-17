@@ -1,0 +1,157 @@
+import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import BadRequestError from "../../errors/bad-request";
+import ConflictError from "../../errors/conflict";
+import NotFoundError from "../../errors/not-found";
+
+import {
+  insertModule,
+  findModuleByProperty,
+  findFilterAllModules,
+  findFilterModuleByProperty,
+  modifyFilterModule,
+  removeFilterModule,
+  /* Services from other entities */
+  findSchoolById,
+} from "./moduleServices";
+
+// continue here --> test the functionality manually
+
+// @desc create a module
+// @route POST /api/v1/modules
+// @access Private
+// @fields: body {school_id:[string] , name:[string]}
+const createModule = async ({ body }: Request, res: Response) => {
+  /* destructure the fields */
+  const { school_id, name } = body;
+  /* check if the school exists */
+  const schoolSearchCriteria = school_id;
+  const schoolFieldsToReturn = "-createdAt -updatedAt";
+  const existingSchool = await findSchoolById(
+    schoolSearchCriteria,
+    schoolFieldsToReturn
+  );
+  if (!existingSchool) {
+    throw new ConflictError("Please create the school first");
+  }
+  /* check if the module name is already in use */
+  const searchCriteria = { school_id, name };
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const duplicateSchool = await findModuleByProperty(
+    searchCriteria,
+    fieldsToReturn
+  );
+  if (duplicateSchool) {
+    throw new ConflictError("This school name already exists");
+  }
+  /* create the module  */
+  const newModule = {
+    school_id: school_id,
+    name: name,
+  };
+  const moduleCreated = await insertModule(newModule);
+  if (!moduleCreated) {
+    throw new BadRequestError("Module not created");
+  }
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "Module created successfully!" });
+};
+
+// @desc get all the modules
+// @route GET /api/v1/modules
+// @access Private
+// @fields: body {school_id:[string]}
+const getModules = async ({ body }: Request, res: Response) => {
+  /* destructure the fields */
+  const { school_id } = body;
+  /* filter by school id */
+  const filters = { school_id: school_id };
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const modulesFound = await findFilterAllModules(filters, fieldsToReturn);
+  /* get all fields */
+  if (modulesFound?.length === 0) {
+    throw new NotFoundError("No modules found");
+  }
+  res.status(StatusCodes.OK).json(modulesFound);
+};
+
+// @desc get the module by id
+// @route GET /api/v1/modules/:id
+// @access Private
+// @fields: params: {id:[string]},  body: {school_id:[string]}
+const getModule = async ({ params, body }: Request, res: Response) => {
+  /* destructure the fields */
+  const { id: _id } = params;
+  const { school_id } = body;
+  /* get the module */
+  const searchCriteria = { school_id, _id };
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const moduleFound = await findModuleByProperty(
+    searchCriteria,
+    fieldsToReturn
+  );
+  if (!moduleFound) {
+    throw new NotFoundError("Module not found");
+  }
+  res.status(StatusCodes.OK).json(moduleFound);
+};
+
+// @desc update a module
+// @route PUT /api/v1/modules/:id
+// @access Private
+// @fields: params: {id:[string]},  body {school_id:[string] , name:[string]}
+const updateModule = async ({ params, body }: Request, res: Response) => {
+  /* destructure the fields*/
+  const { id: moduleId } = params;
+  const { school_id, name } = body;
+  /* check if the module is already in use by another module */
+  const searchCriteria = { school_id, name };
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const duplicateName = await findModuleByProperty(
+    searchCriteria,
+    fieldsToReturn
+  );
+  if (duplicateName && duplicateName?._id?.toString() !== moduleId) {
+    throw new ConflictError("Please try a different module name");
+  }
+  /* update if the module and school ids are the same one as the one passed and update the field */
+  const filtersUpdate = { _id: moduleId, school_id: school_id };
+  const newModule = {
+    school_id: school_id,
+    name: name,
+  };
+  const moduleUpdated = await modifyFilterModule(
+    filtersUpdate,
+    newModule
+  );
+  if (!moduleUpdated) {
+    throw new NotFoundError("Module not updated");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Module updated" });
+};
+
+// @desc delete a module
+// @route DELETE /api/v1/modules/:id
+// @access Private
+// @fields: params: {id:[string]},  body: {school_id:[string]}
+const deleteModule = async ({ params, body }: Request, res: Response) => {
+  /* destructure the fields from the params and body */
+  const { id: moduleId } = params;
+  const { school_id } = body;
+  /* delete module */
+  const filtersDelete = { school_id: school_id, _id: moduleId };
+  const moduleDeleted = await removeFilterModule(filtersDelete);
+  if (!moduleDeleted) {
+    throw new NotFoundError("Module not deleted");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Module deleted" });
+};
+
+export {
+  createModule,
+  getModules,
+  getModule,
+  updateModule,
+  deleteModule,
+};

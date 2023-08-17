@@ -1,0 +1,97 @@
+import ModuleModel from "../modules/moduleModel";
+import SchoolModel from "../schools/schoolModel";
+
+import { NewModule } from "../../typings/types";
+
+// CRUD services
+// @desc insert a module in database
+// @params module
+const insertModule = (module: NewModule) => {
+  const moduleInsert = ModuleModel.create(module);
+  return moduleInsert;
+};
+
+// @desc find all module by school id
+// @params filters, fields to return
+const findFilterAllModules = (
+  filters: { school_id: string },
+  fieldsToReturn: string
+) => {
+  const resourceFound = ModuleModel.find(filters)
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
+  return resourceFound;
+};
+
+// @desc find a module by school id and name or school_id and module id
+// @params filters, fields to return
+const findModuleByProperty = (
+  filters:
+    | { school_id: string; name: string }
+    | { school_id: string; _id: string },
+  fieldsToReturn: string
+) => {
+  const moduleFound = ModuleModel.findOne(filters)
+    .collation({ locale: "en", strength: 2 })
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
+  return moduleFound;
+};
+
+// @desc find a module and filter by school id and name
+// @params filters, fields to return
+const findFilterModuleByProperty = (
+  filters: { school_id: string; name: string },
+  fieldsToReturn: string
+) => {
+  const modulesFound = ModuleModel.find(filters)
+    .collation({ locale: "en", strength: 2 })
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
+  return modulesFound;
+};
+
+// @desc update a module by module id and school id
+// @params filter, module
+const modifyFilterModule = (
+  filters: { _id: string; school_id: string },
+  module: NewModule
+) => {
+  const moduleUpdated = ModuleModel.findOneAndUpdate(filters, module, {
+    new: true,
+    runValidators: true,
+  });
+  return moduleUpdated;
+};
+
+// @desc delete a module by school id and module id
+// @params filters
+const removeFilterModule = (filters: { school_id: string; _id: string }) => {
+  const resourceDeleted = ModuleModel.findOneAndDelete(filters).lean().exec();
+  return resourceDeleted;
+};
+
+/* Services from other entities */
+// @desc find a school by id
+// @params schoolId, fieldsToReturn
+const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
+  const schoolFound = SchoolModel.findById(schoolId)
+    .select(fieldsToReturn)
+    .lean()
+    .exec();
+  return schoolFound;
+};
+
+export {
+  insertModule,
+  findModuleByProperty,
+  findFilterAllModules,
+  findFilterModuleByProperty,
+  modifyFilterModule,
+  removeFilterModule,
+  /* Services from school entities */
+  findSchoolById,
+};
