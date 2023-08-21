@@ -9,16 +9,11 @@ for later:
 
 Back end:
 
-continue here --> refactor commits, give them some structure, check these tutorials:
-    https://youtu.be/HNdQOYM3pqo
-    https://youtu.be/OJqUWvmf4gg
-    https://youtu.be/Kz2iyskwLRA
-    https://youtu.be/lwGcnDgwmFc
-
+continue here -->
+continue here -->
 
 for later:
 
-- if user is a teacher make sure he / she has teaching functions as true
 - if user is updated as inactive or with no teaching functions, delete teacher
 - delete cascade user, delete teacher assignments
 - creating a teacher directly from the user route / try promise all promise all settled
