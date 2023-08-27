@@ -63,6 +63,7 @@ const gracefulShutdown = async ({
   console.log(`Got signal ${signal}. Good bye`);
   connection.close();
   await mongoose.connection.close();
+  console.log("Database connection closed");
   process.exit(0);
 };
 
