@@ -673,7 +673,7 @@ describe("RESOURCE => Teacher_field", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "The teacher has been successfully assigned the field",
+          msg: "Field has not been assigned the to teacher",
         });
         expect(statusCode).toBe(400);
         expect(findTeacherField).toHaveBeenCalled();
@@ -730,7 +730,7 @@ describe("RESOURCE => Teacher_field", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "The teacher has been successfully assigned the field",
+          msg: "Field has been successfully assigned the to teacher",
         });
         expect(statusCode).toBe(201);
         expect(findTeacherField).toHaveBeenCalled();
@@ -868,7 +868,7 @@ describe("RESOURCE => Teacher_field", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            msg: "No fields assigned to any teachers found",
+            msg: "No fields assigned to any teachers yet",
           });
           expect(statusCode).toBe(404);
           expect(findTeacherFields).toHaveBeenCalled();

@@ -84,13 +84,11 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
   };
   const teacherFieldCreated = await insertTeacherField(newTeacherField);
   if (!teacherFieldCreated) {
-    throw new BadRequestError(
-      "The teacher has been successfully assigned the field"
-    );
+    throw new BadRequestError("Field has not been assigned the to teacher");
   }
   res
     .status(StatusCodes.CREATED)
-    .json({ msg: "The teacher has been successfully assigned the field" });
+    .json({ msg: "Field has been successfully assigned the to teacher" });
 };
 
 // @desc get all the teacher_fields
@@ -109,7 +107,7 @@ const getTeacherFields = async ({ body }: Request, res: Response) => {
   );
   /* get all fields */
   if (teacherFieldsFound?.length === 0) {
-    throw new NotFoundError("No fields assigned to any teachers found");
+    throw new NotFoundError("No fields assigned to any teachers yet");
   }
   res.status(StatusCodes.OK).json(teacherFieldsFound);
 };
