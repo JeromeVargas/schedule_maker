@@ -10,7 +10,6 @@ for later:
 Back end:
 
 continue here --> review functionality, User
-continue here --> check graceful shutdown allowing the connection
 
 for later:
 
