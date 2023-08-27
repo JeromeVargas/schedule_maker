@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.ts",
     "start": "node dist/server.js",
-    "build": "npx tsc --build",
+    "build": "tsc --project tsconfig.build.json",
     "test": "cross-env NODE_ENV=test jest --colors --detectOpenHandles --silent --watchAll"
   },
   "keywords": [],
