@@ -80,7 +80,7 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: schoolId } = params;
   const { name, groupMaxNumStudents } = body;
-  /* check if there is a duplicate that belongs to someone else */
+  /* check if there is a name duplicate that belongs to someone else */
   const searchCriteria = { name: name };
   const fieldsToReturn = "-createdAt -updatedAt";
   const duplicate = await findSchoolByProperty(searchCriteria, fieldsToReturn);

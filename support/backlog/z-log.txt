@@ -9,7 +9,8 @@ for later:
 
 Back end:
 
-continue here --> try to break the functionality
+continue here --> review functionality, User
+continue here --> check graceful shutdown allowing the connection
 
 for later:
 
@@ -22,6 +23,7 @@ for later:
 - not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
 - make sure resources belong to the user/coordinator's school - school middleware
 - authentication
+- simplify the error messages
 - important: try to update packages, specially express validator,
 - continue checking sanitization and overall security of the apis
 
