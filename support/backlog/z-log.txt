@@ -9,8 +9,7 @@ for later:
 
 Back end:
 
-continue here -->
-continue here -->
+continue here --> try to break the functionality
 
 for later:
 
@@ -23,7 +22,7 @@ for later:
 - not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
 - make sure resources belong to the user/coordinator's school - school middleware
 - authentication
-- try to update packages, specially express validator
+- important: try to update packages, specially express validator,
 - continue checking sanitization and overall security of the apis
 
 - add logger
