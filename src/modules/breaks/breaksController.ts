@@ -13,7 +13,7 @@ import {
   findPopulateScheduleById,
 } from "./breakServices";
 
-/* global reference */
+/* global controllers reference */
 const maxMinutesInDay = 1439;
 
 // @desc create a break

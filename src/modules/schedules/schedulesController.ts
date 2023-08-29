@@ -17,7 +17,7 @@ import {
 
 import { Schedule } from "../../typings/types";
 
-/* global reference */
+/* global controller reference */
 const maxMinutesInDay = 1439;
 
 // @desc create a schedule
