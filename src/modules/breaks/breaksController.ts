@@ -109,8 +109,8 @@ const getBreak = async ({ params, body }: Request, res: Response) => {
 const updateBreak = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: breakId } = params;
-  /* check if the shift starts within a day */
   const { school_id, schedule_id, breakStart, numberMinutes } = body;
+  /* check if the shift starts within a day */
   if (breakStart > maxMinutesInDay) {
     throw new BadRequestError("The school shift start must exceed 11:59 p.m.");
   }
