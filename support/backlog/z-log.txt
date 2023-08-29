@@ -9,20 +9,24 @@ for later:
 
 Back end:
 
-continue here --> review functionality, User
+continue here --> if user is updated as inactive or with no teaching functions, delete teacher
+continue here --> delete cascade user, delete teacher assignments - or - try promise all promise all settled
+continue here --> creating a teacher directly from the user route - or - try promise all promise all settled
 
 for later:
 
-- if user is updated as inactive or with no teaching functions, delete teacher
-- delete cascade user, delete teacher assignments
-- creating a teacher directly from the user route / try promise all promise all settled
-
 - authorization - role base
+    https://youtu.be/0NiyW9XINRA?feature=shared
 - add checks for the school, make sure the field actually belongs to the school  - school middleware
 - not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
 - make sure resources belong to the user/coordinator's school - school middleware
 - authentication
-- simplify the error messages
+
+- simplify the error messages, do not send the entire message
+- add success confirmation boolean in the response message
+- add csrf attack protection features:
+    https://www.youtube.com/watch?v=CXSE89JGnek&ab_channel=AntonioSarosi
+    https://www.youtube.com/watch?v=C9dvkIndTLA&t=1s&ab_channel=4tomik
 - important: try to update packages, specially express validator,
 - continue checking sanitization and overall security of the apis
 
