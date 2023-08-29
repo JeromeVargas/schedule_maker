@@ -22,6 +22,10 @@ describe("RESOURCE => User", () => {
   const mockService = (payload: any, service: Service) => {
     return jest.spyOn(userServices, service).mockReturnValue(payload);
   };
+  // password hashing mock
+  const mockHashingService = (hashedPwd: any) => {
+    return jest.spyOn(utils, "hashPwd").mockResolvedValue(hashedPwd);
+  };
 
   /* hooks */
   afterAll(() => {
@@ -162,9 +166,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -243,9 +245,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -332,9 +332,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -423,9 +421,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -490,9 +486,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -543,9 +537,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const insertUser = mockService(userNullPayload, "insertUser");
 
         // api call
@@ -604,9 +596,7 @@ describe("RESOURCE => User", () => {
           userPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const insertUser = mockService(userPayload, "insertUser");
 
         // api call
@@ -643,9 +633,7 @@ describe("RESOURCE => User", () => {
           userPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const insertUser = mockService(userPayload, "insertUser");
 
         // api call
@@ -682,9 +670,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
 
         const insertUser = mockService(userNullPayload, "insertUser");
 
@@ -725,9 +711,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const insertUser = mockService(userPayload, "insertUser");
 
         // api call
@@ -1064,9 +1048,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1142,9 +1124,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1228,9 +1208,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1322,9 +1300,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1389,9 +1365,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1442,9 +1416,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1503,9 +1475,7 @@ describe("RESOURCE => User", () => {
           userPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const updateUser = mockService(userPayload, "modifyFilterUser");
 
         // api call
@@ -1539,9 +1509,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const updateUser = mockService(userNullPayload, "modifyFilterUser");
 
         // api call
@@ -1578,9 +1546,7 @@ describe("RESOURCE => User", () => {
           userNullPayload,
           "findUserByProperty"
         );
-        const hashPwd = jest
-          .spyOn(utils, "hashPwd")
-          .mockResolvedValue(hashedPwd);
+        const hashPwd = mockHashingService(hashedPwd);
         const updateUser = mockService(userPayload, "modifyFilterUser");
 
         // api call
