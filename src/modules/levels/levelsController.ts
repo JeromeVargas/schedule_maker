@@ -10,16 +10,11 @@ import {
   findFilterAllLevels,
   findLevelByProperty,
   findFilterLevelByProperty,
-  findPopulateLevelById,
   /* Services from other entities */
   findPopulateScheduleById,
   modifyFilterLevel,
   removeFilterLevel,
 } from "./levelServices";
-
-/* models */
-const levelModel = "level";
-const scheduleModel = "schedule";
 
 // @desc create a level
 // @route POST /api/v1/levels

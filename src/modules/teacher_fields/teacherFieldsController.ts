@@ -16,10 +16,6 @@ import {
   findPopulateFieldById,
 } from "./teacherFieldServices";
 
-/* models */
-const fieldModel = "field";
-const teacherFieldModel = "teacherField";
-
 // @desc create a teacher_field
 // @route POST /api/v1/teacher_fields
 // @access Private
@@ -159,7 +155,7 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
       "Please make sure the field belongs to the school"
     );
   }
-  /* check if the field has already been assigned to a teacher for the school */
+  /* check if the field has already been assigned to the teacher for the school, so to avoid duplicity when you pass the field again for the same teacher */
   const filters = {
     school_id: school_id,
     teacher_id: teacher_id,

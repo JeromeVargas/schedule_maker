@@ -16,11 +16,7 @@ import {
   findUserByProperty,
 } from "./teacherServices";
 
-/* models */
-const userModel = "user";
-const teacherModel = "teacher";
-
-/* global reference */
+/* global controller reference */
 const maxHours = 70; // number of hours in a week
 
 // @desc create a user
