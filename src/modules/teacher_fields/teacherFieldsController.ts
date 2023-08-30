@@ -35,9 +35,9 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
       "This teacher has already been assigned this field"
     );
   }
-  /* find if the teacher already exists */
+  /* find if the teacher already exists, is active and has teaching functions  */
   const fieldsToReturnTeacher = "-createdAt -updatedAt";
-  const fieldsToPopulateTeacher = "school_id";
+  const fieldsToPopulateTeacher = "school_id user_id";
   const fieldsToReturnPopulateTeacher = "-createdAt -updatedAt";
   const teacherFound = await findPopulateTeacherById(
     teacher_id,
@@ -45,13 +45,20 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
     fieldsToPopulateTeacher,
     fieldsToReturnPopulateTeacher
   );
-
   if (!teacherFound) {
     throw new NotFoundError("Please make sure the teacher exists");
   }
   if (teacherFound.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
       "Please make sure the teacher belongs to the school"
+    );
+  }
+  if (teacherFound.user_id.status !== "active") {
+    throw new BadRequestError(`The teacher is ${teacherFound.user_id.status}`);
+  }
+  if (teacherFound.user_id.hasTeachingFunc !== true) {
+    throw new BadRequestError(
+      "The teacher base user does not have teaching functions assigned"
     );
   }
   /* find if the field already exists */
@@ -153,6 +160,32 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   if (fieldFound.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
       "Please make sure the field belongs to the school"
+    );
+  }
+  /* find if the teacher already exists, is active and has teaching functions  */
+  const fieldsToReturnTeacher = "-createdAt -updatedAt";
+  const fieldsToPopulateTeacher = "school_id user_id";
+  const fieldsToReturnPopulateTeacher = "-createdAt -updatedAt";
+  const teacherFound = await findPopulateTeacherById(
+    teacher_id,
+    fieldsToReturnTeacher,
+    fieldsToPopulateTeacher,
+    fieldsToReturnPopulateTeacher
+  );
+  if (!teacherFound) {
+    throw new NotFoundError("Please make sure the teacher exists");
+  }
+  if (teacherFound.school_id?._id?.toString() !== school_id) {
+    throw new BadRequestError(
+      "Please make sure the teacher belongs to the school"
+    );
+  }
+  if (teacherFound.user_id.status !== "active") {
+    throw new BadRequestError(`The teacher is ${teacherFound.user_id.status}`);
+  }
+  if (teacherFound.user_id.hasTeachingFunc !== true) {
+    throw new BadRequestError(
+      "The teacher base user does not have teaching functions assigned"
     );
   }
   /* check if the field has already been assigned to the teacher for the school, so to avoid duplicity when you pass the field again for the same teacher */
