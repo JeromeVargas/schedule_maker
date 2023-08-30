@@ -15,8 +15,6 @@ import {
   findSchoolById,
 } from "./moduleServices";
 
-// continue here --> test the functionality manually
-
 // @desc create a module
 // @route POST /api/v1/modules
 // @access Private
