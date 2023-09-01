@@ -175,17 +175,7 @@ describe("RESOURCE => Teacher", () => {
     sunday: true,
   };
   const teacherNullPayload = null;
-  const coordinatorPayload = {
-    _id: validMockCoordinatorId,
-    school_id: validMockSchoolId,
-    firstName: "Dave",
-    lastName: "Gray",
-    email: "dave@gmail.com",
-    password: "12341234",
-    role: "coordinator",
-    status: "active",
-    hasTeachingFunc: false,
-  };
+  const userNullPayload = null;
   const coordinatorNullPayload = null;
   const teachersPayload = [
     {
@@ -810,7 +800,7 @@ describe("RESOURCE => Teacher", () => {
           "findTeacherByProperty"
         );
         const findUserCoordinator = mockService(
-          [null, userCoordinatorPayload[1]],
+          [userNullPayload, userCoordinatorPayload[1]],
           "findPopulateFilterAllUsers"
         );
         const insertTeacher = mockService(teacherPayload, "insertTeacher");
@@ -863,7 +853,7 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacher);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "The user is not active" });
+        expect(body).toStrictEqual({ msg: "The user is inactive" });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).toHaveBeenCalled();
         expect(duplicateTeacher).toHaveBeenCalledWith(
@@ -924,7 +914,7 @@ describe("RESOURCE => Teacher", () => {
       });
     });
     describe("teacher::post::12 - The user's school does not match the body school id", () => {
-      it("should return no teaching functions assigned error", async () => {
+      it("should return a non-matching school id error", async () => {
         // mock services
         const duplicateTeacher = mockService(
           teacherNullPayload,
@@ -976,7 +966,7 @@ describe("RESOURCE => Teacher", () => {
           "findTeacherByProperty"
         );
         const findUserCoordinator = mockService(
-          [userCoordinatorPayload[0], null],
+          [userCoordinatorPayload[0], coordinatorNullPayload],
           "findPopulateFilterAllUsers"
         );
         const insertTeacher = mockService(teacherPayload, "insertTeacher");
@@ -1092,7 +1082,7 @@ describe("RESOURCE => Teacher", () => {
       });
     });
     describe("teacher::post::16 - The coordinator's school does not match the body school id", () => {
-      it("should return no teaching functions assigned error", async () => {
+      it("should return a non-matching school id error", async () => {
         // mock services
         const duplicateTeacher = mockService(
           teacherNullPayload,
@@ -1545,9 +1535,9 @@ describe("RESOURCE => Teacher", () => {
     describe("teacher::put::01 - Passing a teacher with missing fields", () => {
       it("should return a field needed error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [userNullPayload, coordinatorNullPayload],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherNullPayload,
@@ -1628,13 +1618,15 @@ describe("RESOURCE => Teacher", () => {
           },
         ]);
         expect(statusCode).toBe(400);
-        expect(findCoordinator).not.toHaveBeenCalled();
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherMissingValues.school_i,
-            _id: newTeacherMissingValues.coordinator_i,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).not.toHaveBeenCalled();
+        expect(findUserCoordinator).not.toHaveBeenCalledWith(
+          [
+            newTeacherMissingValues.coordinator_i,
+            newTeacherMissingValues.user_i,
+          ],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).not.toHaveBeenCalled();
         expect(updateTeacher).not.toHaveBeenCalledWith(
@@ -1650,9 +1642,9 @@ describe("RESOURCE => Teacher", () => {
     describe("teacher::put::02 - Passing a user with empty fields", () => {
       it("should return an empty field error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [userNullPayload, coordinatorNullPayload],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherNullPayload,
@@ -1745,13 +1737,12 @@ describe("RESOURCE => Teacher", () => {
           },
         ]);
         expect(statusCode).toBe(400);
-        expect(findCoordinator).not.toHaveBeenCalled();
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherEmptyValues.school_id,
-            _id: newTeacherEmptyValues.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).not.toHaveBeenCalled();
+        expect(findUserCoordinator).not.toHaveBeenCalledWith(
+          [newTeacherEmptyValues.coordinator_id, newTeacherEmptyValues.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).not.toHaveBeenCalled();
         expect(updateTeacher).not.toHaveBeenCalledWith(
@@ -1767,9 +1758,9 @@ describe("RESOURCE => Teacher", () => {
     describe("teacher::put::03 - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [userNullPayload, coordinatorNullPayload],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherNullPayload,
@@ -1869,13 +1860,15 @@ describe("RESOURCE => Teacher", () => {
           },
         ]);
         expect(statusCode).toBe(400);
-        expect(findCoordinator).not.toHaveBeenCalled();
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherNotValidDataTypes.school_id,
-            _id: newTeacherNotValidDataTypes.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).not.toHaveBeenCalled();
+        expect(findUserCoordinator).not.toHaveBeenCalledWith(
+          [
+            newTeacherNotValidDataTypes.coordinator_id,
+            newTeacherNotValidDataTypes.user_id,
+          ],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).not.toHaveBeenCalled();
         expect(updateTeacher).not.toHaveBeenCalledWith(
@@ -1891,9 +1884,9 @@ describe("RESOURCE => Teacher", () => {
     describe("teacher::put::04 - Passing too long or short input values", () => {
       it("should return invalid length input value error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [userNullPayload, coordinatorNullPayload],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherNullPayload,
@@ -1921,8 +1914,8 @@ describe("RESOURCE => Teacher", () => {
           },
         ]);
         expect(statusCode).toBe(400);
-        expect(findCoordinator).not.toHaveBeenCalled();
-        expect(findCoordinator).not.toHaveBeenCalledWith(
+        expect(findUserCoordinator).not.toHaveBeenCalled();
+        expect(findUserCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherWrongLengthValues.school_id,
             _id: newTeacherWrongLengthValues.coordinator_id,
@@ -1943,9 +1936,9 @@ describe("RESOURCE => Teacher", () => {
     describe("teacher::put::05 - Passing wrong input values, the input values are part of the allowed values", () => {
       it("should return a wrong input value error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [userNullPayload, coordinatorNullPayload],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherNullPayload,
@@ -1967,13 +1960,15 @@ describe("RESOURCE => Teacher", () => {
           },
         ]);
         expect(statusCode).toBe(400);
-        expect(findCoordinator).not.toHaveBeenCalled();
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherWrongInputValues.school_id,
-            _id: newTeacherWrongInputValues.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).not.toHaveBeenCalled();
+        expect(findUserCoordinator).not.toHaveBeenCalledWith(
+          [
+            newTeacherWrongInputValues.coordinator_id,
+            newTeacherWrongInputValues.user_id,
+          ],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).not.toHaveBeenCalled();
         expect(updateTeacher).not.toHaveBeenCalledWith(
@@ -1989,9 +1984,9 @@ describe("RESOURCE => Teacher", () => {
     describe("teacher::put::06 - Passing a number of assignable hours larger than the maximum allowed", () => {
       it("should return a wrong input value error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [userNullPayload, coordinatorNullPayload],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherPayload,
@@ -2008,13 +2003,12 @@ describe("RESOURCE => Teacher", () => {
           msg: "hours assignable must not exceed 70 hours",
         });
         expect(statusCode).toBe(400);
-        expect(findCoordinator).not.toHaveBeenCalled();
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacher.school_id,
-            _id: newTeacher.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).not.toHaveBeenCalled();
+        expect(findUserCoordinator).not.toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).not.toHaveBeenCalled();
         expect(updateTeacher).not.toHaveBeenCalledWith(
@@ -2030,9 +2024,9 @@ describe("RESOURCE => Teacher", () => {
     describe("teacher::put::07 - Passing a number of assigned hours larger than the assignable hours", () => {
       it("should return a wrong input value error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [userNullPayload, coordinatorNullPayload],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherPayload,
@@ -2049,13 +2043,12 @@ describe("RESOURCE => Teacher", () => {
           msg: `hours assigned must not exceed the hours assignable, ${newTeacher.hoursAssignable} hours`,
         });
         expect(statusCode).toBe(400);
-        expect(findCoordinator).not.toHaveBeenCalled();
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacher.school_id,
-            _id: newTeacher.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).not.toHaveBeenCalled();
+        expect(findUserCoordinator).not.toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).not.toHaveBeenCalled();
         expect(updateTeacher).not.toHaveBeenCalledWith(
@@ -2068,12 +2061,190 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::08 - Not finding a coordinator", () => {
+    describe("teacher::put::08 - Not finding a user", () => {
+      it("should return a user not found error", async () => {
+        // mock services
+        const findUserCoordinator = mockService(
+          [userNullPayload, userCoordinatorPayload[1]],
+          "findPopulateFilterAllUsers"
+        );
+        const updateTeacher = mockService(
+          teacherPayload,
+          "modifyFilterTeacher"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockUserId}`)
+          .send(newTeacher);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please create the base user first",
+        });
+        expect(statusCode).toBe(400);
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateTeacher).not.toHaveBeenCalled();
+        expect(updateTeacher).not.toHaveBeenCalledWith(
+          [
+            { _id: validMockTeacherId },
+            { user_id: newTeacher.user_id },
+            { school_id: newTeacher.school_id },
+          ],
+          newTeacher
+        );
+      });
+    });
+    describe("teacher::put::09 - Passing an inactive user", () => {
+      it("should return an inactive user error", async () => {
+        // mock services
+        const findUserCoordinator = mockService(
+          [
+            {
+              ...userCoordinatorPayload[0],
+              status: "inactive",
+            },
+            userCoordinatorPayload[1],
+          ],
+          "findPopulateFilterAllUsers"
+        );
+        const updateTeacher = mockService(
+          teacherPayload,
+          "modifyFilterTeacher"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockUserId}`)
+          .send(newTeacher);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "The user is inactive",
+        });
+        expect(statusCode).toBe(400);
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateTeacher).not.toHaveBeenCalled();
+        expect(updateTeacher).not.toHaveBeenCalledWith(
+          [
+            { _id: validMockTeacherId },
+            { user_id: newTeacher.user_id },
+            { school_id: newTeacher.school_id },
+          ],
+          newTeacher
+        );
+      });
+    });
+    describe("teacher::put::10 - Passing a user with no teaching functions assigned", () => {
+      it("should return no teaching functions assigned error", async () => {
+        // mock services
+        const findUserCoordinator = mockService(
+          [
+            {
+              ...userCoordinatorPayload[0],
+              hasTeachingFunc: false,
+            },
+            userCoordinatorPayload[1],
+          ],
+          "findPopulateFilterAllUsers"
+        );
+        const updateTeacher = mockService(
+          teacherPayload,
+          "modifyFilterTeacher"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockUserId}`)
+          .send(newTeacher);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "The user does not have teaching functions assigned",
+        });
+        expect(statusCode).toBe(400);
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateTeacher).not.toHaveBeenCalled();
+        expect(updateTeacher).not.toHaveBeenCalledWith(
+          [
+            { _id: validMockTeacherId },
+            { user_id: newTeacher.user_id },
+            { school_id: newTeacher.school_id },
+          ],
+          newTeacher
+        );
+      });
+    });
+    describe("teacher::put::11 - The user's school does not match the body school id", () => {
+      it("should return a non-matching school id error", async () => {
+        // mock services
+        const findUserCoordinator = mockService(
+          [
+            {
+              ...userCoordinatorPayload[0],
+              school_id: null,
+            },
+            userCoordinatorPayload[1],
+          ],
+          "findPopulateFilterAllUsers"
+        );
+        const updateTeacher = mockService(
+          teacherPayload,
+          "modifyFilterTeacher"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockUserId}`)
+          .send(newTeacher);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the user's school is correct",
+        });
+        expect(statusCode).toBe(400);
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateTeacher).not.toHaveBeenCalled();
+        expect(updateTeacher).not.toHaveBeenCalledWith(
+          [
+            { _id: validMockTeacherId },
+            { user_id: newTeacher.user_id },
+            { school_id: newTeacher.school_id },
+          ],
+          newTeacher
+        );
+      });
+    });
+    describe("teacher::put::12 - Not finding a coordinator", () => {
       it("should return a non-existent coordinator error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [userCoordinatorPayload[0], coordinatorNullPayload],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherPayload,
@@ -2090,13 +2261,12 @@ describe("RESOURCE => Teacher", () => {
           msg: "Please pass an existent coordinator",
         });
         expect(statusCode).toBe(400);
-        expect(findCoordinator).toHaveBeenCalled();
-        expect(findCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacher.school_id,
-            _id: newTeacher.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).not.toHaveBeenCalled();
         expect(updateTeacher).not.toHaveBeenCalledWith(
@@ -2109,12 +2279,15 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::09 - Passing a non coordinator user as coordinator", () => {
+    describe("teacher::put::13 - Passing a non coordinator user as coordinator", () => {
       it("should return an not-a-coordinator error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          { ...coordinatorPayload, role: "teacher" },
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [
+            userCoordinatorPayload[0],
+            { ...userCoordinatorPayload[1], role: "teacher" },
+          ],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherPayload,
@@ -2131,13 +2304,12 @@ describe("RESOURCE => Teacher", () => {
           msg: "Please pass a user with a coordinator role",
         });
         expect(statusCode).toBe(400);
-        expect(findCoordinator).toHaveBeenCalled();
-        expect(findCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacher.school_id,
-            _id: newTeacher.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).not.toHaveBeenCalled();
         expect(updateTeacher).not.toHaveBeenCalledWith(
@@ -2150,12 +2322,15 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::10 - Passing an inactive coordinator", () => {
+    describe("teacher::put::14 - Passing an inactive coordinator", () => {
       it("should return an inactive coordinator error", async () => {
         // mock services
-        const findCoordinator = mockService(
-          { ...coordinatorPayload, status: "inactive" },
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          [
+            userCoordinatorPayload[0],
+            { ...userCoordinatorPayload[1], status: "inactive" },
+          ],
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherPayload,
@@ -2172,13 +2347,12 @@ describe("RESOURCE => Teacher", () => {
           msg: "Please pass an active coordinator",
         });
         expect(statusCode).toBe(400);
-        expect(findCoordinator).toHaveBeenCalled();
-        expect(findCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacher.school_id,
-            _id: newTeacher.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).not.toHaveBeenCalled();
         expect(updateTeacher).not.toHaveBeenCalledWith(
@@ -2191,12 +2365,55 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::11 - Passing a teacher but not updating it", () => {
+    describe("teacher::put::15 - The coordinator's school does not match the body school id", () => {
+      it("should return a non-matching school id error", async () => {
+        // mock services
+        const findUserCoordinator = mockService(
+          [
+            userCoordinatorPayload[0],
+            { ...userCoordinatorPayload[1], school_id: null },
+          ],
+          "findPopulateFilterAllUsers"
+        );
+        const updateTeacher = mockService(
+          teacherNullPayload,
+          "modifyFilterTeacher"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockTeacherId}`)
+          .send(newTeacher);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the coordinator's school is correct",
+        });
+        expect(statusCode).toBe(400);
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateTeacher).not.toHaveBeenCalled();
+        expect(updateTeacher).not.toHaveBeenCalledWith(
+          {
+            _id: validMockTeacherId,
+            user_id: newTeacher.user_id,
+            school_id: newTeacher.school_id,
+          },
+          newTeacher
+        );
+      });
+    });
+    describe("teacher::put::16 - Passing a teacher but not updating it", () => {
       it("should not update a user", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          userCoordinatorPayload,
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherNullPayload,
@@ -2213,13 +2430,12 @@ describe("RESOURCE => Teacher", () => {
           msg: "Teacher not updated",
         });
         expect(statusCode).toBe(404);
-        expect(findCoordinator).toHaveBeenCalled();
-        expect(findCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacher.school_id,
-            _id: newTeacher.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).toHaveBeenCalled();
         expect(updateTeacher).toHaveBeenCalledWith(
@@ -2232,12 +2448,12 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::12 - Passing a teacher correctly to update", () => {
+    describe("teacher::put::17 - Passing a teacher correctly to update", () => {
       it("should update a user", async () => {
         // mock services
-        const findCoordinator = mockService(
-          coordinatorPayload,
-          "findUserByProperty"
+        const findUserCoordinator = mockService(
+          userCoordinatorPayload,
+          "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
           teacherPayload,
@@ -2252,13 +2468,12 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Teacher updated" });
         expect(statusCode).toBe(200);
-        expect(findCoordinator).toHaveBeenCalled();
-        expect(findCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacher.school_id,
-            _id: newTeacher.coordinator_id,
-          },
-          "-password -createdAt -updatedAt"
+        expect(findUserCoordinator).toHaveBeenCalled();
+        expect(findUserCoordinator).toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
         );
         expect(updateTeacher).toHaveBeenCalled();
         expect(updateTeacher).toHaveBeenCalledWith(
