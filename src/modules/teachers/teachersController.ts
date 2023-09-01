@@ -85,7 +85,7 @@ const createTeacher = async ({ body }: Request, res: Response) => {
   }
   if (existingUser.hasTeachingFunc !== true) {
     throw new BadRequestError(
-      "The user does not have teaching functions assigned"
+      "The user does not have any teaching functions assigned"
     );
   }
   // check if the user school exists/
@@ -233,7 +233,7 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
   }
   if (existingUser.hasTeachingFunc !== true) {
     throw new BadRequestError(
-      "The user does not have teaching functions assigned"
+      "The user does not have any teaching functions assigned"
     );
   }
   // check if the user school exists/

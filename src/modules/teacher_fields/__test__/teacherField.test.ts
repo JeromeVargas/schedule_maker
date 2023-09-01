@@ -643,7 +643,7 @@ describe("RESOURCE => Teacher_field", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "The teacher base user does not have teaching functions assigned",
+          msg: "The teacher base user does not have any teaching functions assigned",
         });
         expect(statusCode).toBe(400);
         expect(findTeacherField).toHaveBeenCalled();
@@ -1844,7 +1844,7 @@ describe("RESOURCE => Teacher_field", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "The teacher base user does not have teaching functions assigned",
+          msg: "The teacher base user does not have any teaching functions assigned",
         });
         expect(statusCode).toBe(400);
         expect(findField).toHaveBeenCalled();

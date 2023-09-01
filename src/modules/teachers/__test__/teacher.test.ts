@@ -894,7 +894,7 @@ describe("RESOURCE => Teacher", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "The user does not have teaching functions assigned",
+          msg: "The user does not have any teaching functions assigned",
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).toHaveBeenCalled();
@@ -2172,7 +2172,7 @@ describe("RESOURCE => Teacher", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "The user does not have teaching functions assigned",
+          msg: "The user does not have any teaching functions assigned",
         });
         expect(statusCode).toBe(400);
         expect(findUserCoordinator).toHaveBeenCalled();
