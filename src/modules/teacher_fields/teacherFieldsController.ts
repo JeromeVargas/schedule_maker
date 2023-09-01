@@ -58,7 +58,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
   }
   if (teacherFound.user_id.hasTeachingFunc !== true) {
     throw new BadRequestError(
-      "The teacher base user does not have teaching functions assigned"
+      "The teacher base user does not have any teaching functions assigned"
     );
   }
   /* find if the field already exists */
@@ -185,7 +185,7 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   }
   if (teacherFound.user_id.hasTeachingFunc !== true) {
     throw new BadRequestError(
-      "The teacher base user does not have teaching functions assigned"
+      "The teacher base user does not have any teaching functions assigned"
     );
   }
   /* check if the field has already been assigned to the teacher for the school, so to avoid duplicity when you pass the field again for the same teacher */
