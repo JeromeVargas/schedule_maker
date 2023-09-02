@@ -23,7 +23,7 @@ import {
 const createTeacherField = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, teacher_id, field_id } = body;
-  /* find if the teacher has the field already assigned */
+  /* find if the teacher has the field already assigned, so to avoid duplicity when you pass the field again for the same teacher */
   const searchCriteria = { school_id, teacher_id, field_id };
   const fieldsToReturn = "-createdAt -updatedAt";
   const fieldAlreadyAssigned = await findTeacherFieldByProperty(
@@ -144,22 +144,16 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id, teacher_id, field_id } = body;
-  /* check if the field already exists */
-  const fieldsToReturnField = "-createdAt -updatedAt";
-  const fieldsToPopulateField = "school_id";
-  const fieldsToReturnPopulateField = "-createdAt -updatedAt";
-  const fieldFound = await findPopulateFieldById(
-    field_id,
-    fieldsToReturnField,
-    fieldsToPopulateField,
-    fieldsToReturnPopulateField
+  /* find if the teacher has the field already assigned, so to avoid duplicity when you pass the field again for the same teacher */
+  const searchCriteria = { school_id, teacher_id, field_id };
+  const fieldsToReturn = "-createdAt -updatedAt";
+  const fieldAlreadyAssigned = await findTeacherFieldByProperty(
+    searchCriteria,
+    fieldsToReturn
   );
-  if (!fieldFound) {
-    throw new NotFoundError("Please make sure the field exists");
-  }
-  if (fieldFound.school_id?._id?.toString() !== school_id) {
-    throw new BadRequestError(
-      "Please make sure the field belongs to the school"
+  if (fieldAlreadyAssigned) {
+    throw new ConflictError(
+      "This teacher has already been assigned this field"
     );
   }
   /* find if the teacher already exists, is active and has teaching functions  */
@@ -188,18 +182,22 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
       "The teacher base user does not have any teaching functions assigned"
     );
   }
-  /* check if the field has already been assigned to the teacher for the school, so to avoid duplicity when you pass the field again for the same teacher */
-  const filters = {
-    school_id: school_id,
-    teacher_id: teacher_id,
-    field_id: field_id,
-  };
-  const fieldsToReturn = "-createdAt -updatedAt";
-  const fieldAlreadyAssignedToTeacherFound =
-    await findFilterTeacherFieldByProperty(filters, fieldsToReturn);
-  if (fieldAlreadyAssignedToTeacherFound?.length !== 0) {
-    throw new ConflictError(
-      "This field has already been assigned to the teacher!"
+  /* check if the field already exists */
+  const fieldsToReturnField = "-createdAt -updatedAt";
+  const fieldsToPopulateField = "school_id";
+  const fieldsToReturnPopulateField = "-createdAt -updatedAt";
+  const fieldFound = await findPopulateFieldById(
+    field_id,
+    fieldsToReturnField,
+    fieldsToPopulateField,
+    fieldsToReturnPopulateField
+  );
+  if (!fieldFound) {
+    throw new NotFoundError("Please make sure the field exists");
+  }
+  if (fieldFound.school_id?._id?.toString() !== school_id) {
+    throw new BadRequestError(
+      "Please make sure the field belongs to the school"
     );
   }
   /* update if the teacher and school ids are the same one as the one passed and update the field */
