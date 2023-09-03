@@ -9,9 +9,11 @@ for later:
 
 Back end:
 
-continue here --> if user is updated as inactive or with no teaching functions, delete teacher
-continue here --> delete cascade user, delete teacher assignments - or - try promise all promise all settled
-continue here --> creating a teacher directly from the user route - or - try promise all promise all settled
+continue here --> if user is deleted, delete teacher or any other related records in other collections
+continue here --> if user is updated as inactive or with no teaching functions, delete teacher and any other related records in other collections
+continue here --> delete cascade user, delete teacher assignments
+continue here --> creating a teacher directly from the user route
+continue here --> teacher not being passed with no teaching functions, try middleware - or - check in the controller
 
 for later:
 
@@ -27,10 +29,11 @@ for later:
 - add csrf attack protection features:
     https://www.youtube.com/watch?v=CXSE89JGnek&ab_channel=AntonioSarosi
     https://www.youtube.com/watch?v=C9dvkIndTLA&t=1s&ab_channel=4tomik
+- add logger
+
 - important: try to update packages, specially express validator,
 - continue checking sanitization and overall security of the apis
 
-- add logger
 
 Front End
 
