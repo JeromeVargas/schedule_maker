@@ -73,6 +73,7 @@ const TeacherSchema = new Schema<Teacher>(
   }
 );
 
+// continue here --> if teacher or field is deleted, delete teacher_field relationships
 const TeacherModel = model<Teacher>("Teacher", TeacherSchema);
 
 export default TeacherModel;

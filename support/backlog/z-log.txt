@@ -7,13 +7,14 @@ for later:
 
 - 
 
+
 Back end:
 
-continue here --> if user is deleted, delete teacher or any other related records in other collections
+continue here --> if teacher or field is deleted, delete teacher_field relationships
 continue here --> if user is updated as inactive or with no teaching functions, delete teacher and any other related records in other collections
 continue here --> delete cascade user, delete teacher assignments
 continue here --> creating a teacher directly from the user route
-continue here --> teacher not being passed with no teaching functions, try middleware - or - check in the controller
+continue here --> create a teacher passing a user with no teaching functions, try middleware - or - check in the controller / the validator
 
 for later:
 
@@ -33,6 +34,8 @@ for later:
 
 - important: try to update packages, specially express validator,
 - continue checking sanitization and overall security of the apis
+
+- take into account to make a student a entity independent from user
 
 
 Front End
