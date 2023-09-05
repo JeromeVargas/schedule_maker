@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { Teacher } from "../../typings/types";
+import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
 
 const TeacherSchema = new Schema<Teacher>(
   {
@@ -73,7 +74,23 @@ const TeacherSchema = new Schema<Teacher>(
   }
 );
 
-// continue here --> if teacher or field is deleted, delete teacher_field relationships
+TeacherSchema.pre(
+  "findOneAndDelete",
+  { document: false, query: true },
+  async function () {
+    // get the teacher
+    const findTeacher: Teacher | null = await this.model
+      // getFilter gets the parameters from the parent call, in this case findOneAndDelete
+      .findOne(this.getFilter(), { _id: 1, school_id: 1 })
+      .lean();
+    // delete the teacher_fields instance/s
+    await TeacherFieldModel.deleteMany({
+      school_id: findTeacher?.school_id,
+      teacher_id: findTeacher?._id,
+    }).exec();
+  }
+);
+
 const TeacherModel = model<Teacher>("Teacher", TeacherSchema);
 
 export default TeacherModel;
