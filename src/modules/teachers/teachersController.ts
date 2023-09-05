@@ -13,7 +13,6 @@ import {
   removeFilterTeacher,
   /* Services from other entities */
   findPopulateFilterAllUsers,
-  findUserByProperty,
 } from "./teacherServices";
 
 /* global controller reference */
