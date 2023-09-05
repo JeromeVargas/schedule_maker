@@ -64,6 +64,7 @@ UserSchema.pre(
       .select("school_id teacher_id")
       .exec();
     // delete the teacher_fields instance/s
+
     await TeacherFieldModel.deleteMany({
       school_id: deleteTeacher?.school_id,
       teacher_id: deleteTeacher?._id,
