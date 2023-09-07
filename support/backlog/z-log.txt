@@ -9,11 +9,12 @@ for later:
 
 Back end:
 
-continue here --> if level is deleted, delete group, subject or class records in their collections
+continue here --> if group is deleted, delete subject or class records in their collections
 continue here --> if user is updated as inactive or with no teaching functions, delete teacher and any other related records in other collections
 continue here --> delete cascade user, delete teacher assignments
 continue here --> creating a teacher directly from the user route
 continue here --> teacher not being passed with no teaching functions, try middleware - or - check in the controller
+continue here --> remove the suspended status option, to leave just the inactive as a form of soft delete
 
 for later:
 
