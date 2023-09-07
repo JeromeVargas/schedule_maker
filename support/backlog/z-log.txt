@@ -9,7 +9,7 @@ for later:
 
 Back end:
 
-continue here --> if group is deleted, delete subject or class records in their collections
+continue here --> if subject is deleted, delete class records in their collections
 continue here --> if user is updated as inactive or with no teaching functions, delete teacher and any other related records in other collections
 continue here --> delete cascade user, delete teacher assignments
 continue here --> creating a teacher directly from the user route
