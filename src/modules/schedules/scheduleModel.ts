@@ -64,11 +64,13 @@ ScheduleSchema.pre(
   "findOneAndDelete",
   { document: false, query: true },
   async function () {
+    /* get the entities ids and references */
     // get the schedule
     const findSchedule: Schedule | null = await this.model
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
+    /* delete entities records in collections */
     // delete the break instance/s
     await BreakModel.deleteMany({
       school_id: findSchedule?.school_id,
