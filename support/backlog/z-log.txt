@@ -9,6 +9,8 @@ for later:
 
 Back end:
 
+continue here --> refactor the entities to make the subjects depend on the level not the group
+continue here --> refactor subject and class models and controllers
 continue here --> test all delete on cascade functionality
 continue here --> if user is updated as inactive or with no teaching functions, delete teacher and any other related records in other collections
 continue here --> delete cascade user, delete teacher assignments
