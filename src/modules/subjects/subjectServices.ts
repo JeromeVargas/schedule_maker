@@ -1,5 +1,5 @@
 import SubjectModel from "./subjectModel";
-import GroupModel from "../groups/groupModel";
+import LevelModel from "../levels/levelModel";
 import FieldModel from "../fields/fieldModel";
 import { NewSubject } from "../../typings/types";
 
@@ -24,11 +24,11 @@ const findFilterAllSubjects = (
   return subjectFound;
 };
 
-// @desc find a subject by school id and name or school id and subject id
+// @desc find a subject by level id and name or school id and subject id
 // @params filters, fields to return
 const findSubjectByProperty = (
   filters:
-    | { school_id: string; name: string }
+    | { level_id: string; name: string }
     | { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
@@ -40,10 +40,10 @@ const findSubjectByProperty = (
   return subjectFound;
 };
 
-// @desc find a subject by school id and name
+// @desc find a subject by level id and name
 // @params filters, fields to return
 const findFilterSubjectByProperty = (
-  filters: { school_id: string; name: string },
+  filters: { level_id: string; name: string },
   fieldsToReturn: string
 ) => {
   const subjectsFound = SubjectModel.find(filters)
@@ -75,20 +75,20 @@ const removeFilterSubject = (filters: { school_id: string; _id: string }) => {
 };
 
 /* Services from other entities */
-// @desc find a group by id and populate the embedded entities
-// @params groupId, fields to return, fields to populate, fields to return populate
-const findPopulateGroupById = (
-  groupId: string,
+// @desc find a level by id and populate the embedded entities
+// @params levelId, fields to return, fields to populate, fields to return populate
+const findPopulateLevelById = (
+  levelId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const groupFound = GroupModel.findById(groupId)
+  const levelFound = LevelModel.findById(levelId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return groupFound;
+  return levelFound;
 };
 
 // @desc find a field by id and populate the embedded entities
@@ -115,6 +115,6 @@ export {
   modifyFilterSubject,
   removeFilterSubject,
   /* Services from other entities */
-  findPopulateGroupById,
+  findPopulateLevelById,
   findPopulateFieldById,
 };

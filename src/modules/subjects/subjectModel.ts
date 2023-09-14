@@ -9,15 +9,10 @@ const SubjectSchema = new Schema<Subject>(
       ref: "School",
       required: [true, "must provide a school id for the subject"],
     },
-    coordinator_id: {
+    level_id: {
       type: Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "must provide a user coordinator id for the subject"],
-    },
-    group_id: {
-      type: Schema.Types.ObjectId,
-      ref: "Group",
-      required: [true, "must provide a group id for the subject"],
+      ref: "Level",
+      required: [true, "must provide a level id for the subject"],
     },
     field_id: {
       type: Schema.Types.ObjectId,

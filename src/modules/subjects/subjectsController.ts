@@ -13,65 +13,45 @@ import {
   modifyFilterSubject,
   removeFilterSubject,
   /* Services from other entities */
-  findPopulateGroupById,
+  findPopulateLevelById,
   findPopulateFieldById,
 } from "./subjectServices";
 
 // @desc create a subject
 // @route POST /api/v1/subjects
 // @access Private
-// @fields: body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields body: {school_id:[string], level_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
 const createSubject = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const {
-    school_id,
-    coordinator_id,
-    group_id,
-    field_id,
-    name,
-    classUnits,
-    frequency,
-  } = body;
-  /* check if the subject name already exists for this school */
-  const searchCriteria = { school_id, name };
+  const { school_id, level_id, field_id, name, classUnits, frequency } = body;
+  /* check if the subject name already exists for this level */
+  const searchCriteria = { level_id, name };
   const fieldsToReturn = "-createdAt -updatedAt";
   const duplicateName = await findSubjectByProperty(
     searchCriteria,
     fieldsToReturn
   );
   if (duplicateName) {
-    throw new ConflictError("This subject name already exists");
+    throw new ConflictError("This subject name already exists for this level");
   }
-  /* find if the group already exists */
-  const fieldsToReturnGroup = "-createdAt -updatedAt";
-  const fieldsToPopulateGroup = "school_id coordinator_id";
-  const fieldsToReturnPopulateGroup = "-password -createdAt -updatedAt";
-  const groupFound = await findPopulateGroupById(
-    group_id,
-    fieldsToReturnGroup,
-    fieldsToPopulateGroup,
-    fieldsToReturnPopulateGroup
+  /* find if the level already exists */
+  const fieldsToReturnLevel = "-createdAt -updatedAt";
+  const fieldsToPopulateLevel = "school_id";
+  const fieldsToReturnPopulateLevel = "-createdAt -updatedAt";
+  const levelFound = await findPopulateLevelById(
+    level_id,
+    fieldsToReturnLevel,
+    fieldsToPopulateLevel,
+    fieldsToReturnPopulateLevel
   );
-  if (!groupFound) {
-    throw new BadRequestError("Please make sure the group exists");
+  if (!levelFound) {
+    throw new BadRequestError("Please make sure the level exists");
   }
-  // find if the school exists for the group and matches the school in the body
-  if (groupFound.school_id?._id?.toString() !== school_id) {
+  // find if the school exists for the level and matches the school in the body
+  if (levelFound.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
-      "Please make sure the group belongs to the school"
+      "Please make sure the level belongs to the school"
     );
-  }
-  // find if the coordinator is the same in the body, it is an actual coordinator and the role is active
-  if (groupFound?.coordinator_id?._id?.toString() !== coordinator_id) {
-    throw new BadRequestError(
-      "Please make sure the coordinator belongs to the subject parent group"
-    );
-  }
-  if (groupFound?.coordinator_id?.role !== "coordinator") {
-    throw new BadRequestError("Please pass a user with a coordinator role");
-  }
-  if (groupFound?.coordinator_id?.status !== "active") {
-    throw new BadRequestError("Please pass an active coordinator");
   }
   /* find if the field already exists */
   const fieldsToReturnField = "-createdAt -updatedAt";
@@ -95,8 +75,7 @@ const createSubject = async ({ body }: Request, res: Response) => {
   /* create subject */
   const newSubject = {
     school_id: school_id,
-    coordinator_id: coordinator_id,
-    group_id: group_id,
+    level_id: level_id,
     field_id: field_id,
     name: name,
     classUnits: classUnits,
@@ -151,21 +130,13 @@ const getSubject = async ({ params, body }: Request, res: Response) => {
 // @desc update a Subject
 // @route PUT /api/v1/Subjects/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
 const updateSubject = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: subjectId } = params;
-  const {
-    school_id,
-    coordinator_id,
-    group_id,
-    field_id,
-    name,
-    classUnits,
-    frequency,
-  } = body;
+  const { school_id, level_id, field_id, name, classUnits, frequency } = body;
   /* check if the subject name already exists for this school */
-  const subjectFilters = { school_id: school_id, name: name };
+  const subjectFilters = { level_id: level_id, name: name };
   const subjectFieldsToReturn = "-createdAt -updatedAt";
   const duplicateName = await findFilterSubjectByProperty(
     subjectFilters,
@@ -175,38 +146,26 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
     (subject: Subject) => subject?._id?.toString() !== subjectId
   );
   if (duplicateSubjectName) {
-    throw new ConflictError("This subject name already exists");
+    throw new ConflictError("This subject name already exists for this level");
   }
-  /* find group by id, and populate its properties */
-  const fieldsToReturnGroup = "-createdAt -updatedAt";
-  const fieldsToPopulateGroup = "school_id coordinator_id";
-  const fieldsToReturnPopulateGroup = "-password -createdAt -updatedAt";
-  const groupFound = await findPopulateGroupById(
-    group_id,
-    fieldsToReturnGroup,
-    fieldsToPopulateGroup,
-    fieldsToReturnPopulateGroup
+  /* find level by id, and populate its properties */
+  const fieldsToReturnLevel = "-createdAt -updatedAt";
+  const fieldsToPopulateLevel = "school_id";
+  const fieldsToReturnPopulateLevel = "-createdAt -updatedAt";
+  const levelFound = await findPopulateLevelById(
+    level_id,
+    fieldsToReturnLevel,
+    fieldsToPopulateLevel,
+    fieldsToReturnPopulateLevel
   );
-  if (!groupFound) {
-    throw new NotFoundError("Please make sure the group exists");
+  if (!levelFound) {
+    throw new NotFoundError("Please make sure the level exists");
   }
-  // find if the school exists for the group and matches the school in the body
-  if (groupFound.school_id?._id?.toString() !== school_id) {
+  // find if the school exists for the level and matches the school in the body
+  if (levelFound.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
-      "Please make sure the group belongs to the school"
+      "Please make sure the level belongs to the school"
     );
-  }
-  // find if the coordinator for the group is the same in the body, it is an actual coordinator and the role is active
-  if (groupFound?.coordinator_id?._id?.toString() !== coordinator_id) {
-    throw new BadRequestError(
-      "Please make sure the coordinator belongs to the subject parent group"
-    );
-  }
-  if (groupFound?.coordinator_id?.role !== "coordinator") {
-    throw new BadRequestError("Please pass a user with a coordinator role");
-  }
-  if (groupFound?.coordinator_id?.status !== "active") {
-    throw new BadRequestError("Please pass an active coordinator");
   }
   /* find field by id, and populate its properties */
   const fieldsToReturnField = "-createdAt -updatedAt";
@@ -230,8 +189,7 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
   /* update subject */
   const newSubject = {
     school_id: school_id,
-    coordinator_id: coordinator_id,
-    group_id: group_id,
+    level_id: level_id,
     field_id: field_id,
     name: name,
     classUnits: classUnits,

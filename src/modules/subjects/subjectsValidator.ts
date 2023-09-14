@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields: body: {school_id:[string], level_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
 const validateCreateSubject = [
   check("school_id")
     .exists()
@@ -21,12 +21,12 @@ const validateCreateSubject = [
       }
     })
     .withMessage(`The school id is not valid`),
-  check("coordinator_id")
+  check("level_id")
     .exists()
-    .withMessage("Please add the coordinator id")
+    .withMessage("Please add the level id")
     .bail()
     .notEmpty()
-    .withMessage("The coordinator id field is empty")
+    .withMessage("The level id field is empty")
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
@@ -36,23 +36,7 @@ const validateCreateSubject = [
         return true;
       }
     })
-    .withMessage(`The coordinator id is not valid`),
-  check("group_id")
-    .exists()
-    .withMessage("Please add the group id")
-    .bail()
-    .notEmpty()
-    .withMessage("The group id field is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false) {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The group id is not valid`),
+    .withMessage(`The level id is not valid`),
   check("field_id")
     .exists()
     .withMessage("Please add the field id")
@@ -166,7 +150,7 @@ const validateGetSubject = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string], coordinator_id:[string], group_id:[string], coordinator_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
 const validateUpdateSubject = [
   check("id")
     .custom((value) => {
@@ -194,12 +178,12 @@ const validateUpdateSubject = [
       }
     })
     .withMessage(`The school id is not valid`),
-  check("coordinator_id")
+  check("level_id")
     .exists()
-    .withMessage("Please add the coordinator id")
+    .withMessage("Please add the level id")
     .bail()
     .notEmpty()
-    .withMessage("The coordinator id field is empty")
+    .withMessage("The level id field is empty")
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
@@ -209,23 +193,7 @@ const validateUpdateSubject = [
         return true;
       }
     })
-    .withMessage(`The coordinator id is not valid`),
-  check("group_id")
-    .exists()
-    .withMessage("Please add the group id")
-    .bail()
-    .notEmpty()
-    .withMessage("The group id field is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false) {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The group id is not valid`),
+    .withMessage(`The level id is not valid`),
   check("field_id")
     .exists()
     .withMessage("Please add the field id")
