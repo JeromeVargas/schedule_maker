@@ -124,8 +124,7 @@ export type NewGroup = Omit<Group, "_id">;
 export type Subject = {
   _id: Types.ObjectId;
   school_id: Types.ObjectId;
-  coordinator_id: User;
-  group_id: Types.ObjectId;
+  level_id: Types.ObjectId;
   field_id: Types.ObjectId;
   name: string;
   classUnits: number;
@@ -138,7 +137,8 @@ export type NewSubject = Omit<Subject, "_id">;
 export type Class = {
   _id: Types.ObjectId;
   school_id: Types.ObjectId;
-  coordinator_id: Types.ObjectId;
+  level_id: Types.ObjectId;
+  group_id: Types.ObjectId;
   subject_id: Types.ObjectId;
   teacherField_id: Types.ObjectId;
   startTime: number;
