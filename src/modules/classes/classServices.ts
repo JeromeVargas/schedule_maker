@@ -1,6 +1,7 @@
+import ClassModel from "./classModel";
+import GroupModel from "../groups/groupModel";
 import SubjectModel from "../subjects/subjectModel";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
-import ClassModel from "./classModel";
 
 import { NewClass } from "../../typings/types";
 
@@ -60,6 +61,22 @@ const removeFilterClass = (filters: { school_id: string; _id: string }) => {
 };
 
 /* Services from other entities */
+// @desc find a group by id and populate the embedded entities
+// @params groupId, fields to return, fields to populate, fields to return populate
+const findPopulateGroupById = (
+  groupId: string,
+  fieldsToReturn: string,
+  fieldsToPopulate: string,
+  fieldsToReturnPopulate: string
+) => {
+  const groupFound = GroupModel.findById(groupId)
+    .select(fieldsToReturn)
+    .populate(fieldsToPopulate, fieldsToReturnPopulate)
+    .lean()
+    .exec();
+  return groupFound;
+};
+
 // @desc find a subject by id and populate the embedded entities
 // @params subjectId, fields to return, fields to populate, fields to return populate
 const findPopulateSubjectById = (
@@ -99,6 +116,7 @@ export {
   modifyFilterClass,
   removeFilterClass,
   /* Services from other entities */
+  findPopulateGroupById,
   findPopulateSubjectById,
   findPopulateTeacherFieldById,
 };

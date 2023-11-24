@@ -9,14 +9,16 @@ for later:
 
 Back end:
 
-continue here --> refactor subject and class models and controllers
 continue here --> refactor the on delete functionality on the models. level, group and subject
 continue here --> test all delete on cascade functionality
-continue here --> if user is updated as inactive or with no teaching functions, delete teacher and any other related records in other collections
-continue here --> delete cascade user, delete teacher assignments
-continue here --> creating a teacher directly from the user route
+continue here --> if user is updated as inactive or with no teaching functions, delete teacher and any other related records in other collections, or maybe soft delete it
+continue here --> delete cascade user, delete teacher assignments, maybe not just leave the class as null
+continue here --> creating a teacher directly from the user route, maybe not
+continue here --> update types with entity type and remove all the Types.ObjectId
 continue here --> teacher not being passed with no teaching functions, try middleware - or - check in the controller
-continue here --> remove the suspended status option, to leave just the inactive as a form of soft delete
+continue here --> remove the suspended status option, to leave just the inactive as a form of soft delete, add on leave instead
+continue here --> add group_coordinator associative table, to decouple the coordinator from the group and to have more than one coordinator for each group
+continue here --> add teacher_coordinator associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
 
 for later:
 
@@ -34,7 +36,6 @@ for later:
     https://www.youtube.com/watch?v=C9dvkIndTLA&t=1s&ab_channel=4tomik
 - add logger
 
-- add group_coordinator associative table, to decouple the coordinator from the group and to have more than one coordinator for each group
 
 - important: try to update packages, specially express validator,
 - continue checking sanitization and overall security of the apis

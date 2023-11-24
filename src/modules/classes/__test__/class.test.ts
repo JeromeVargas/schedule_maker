@@ -14,6 +14,7 @@ type Service =
   | "modifyFilterClass"
   | "removeFilterClass"
   | "findPopulateSubjectById"
+  | "findPopulateGroupById"
   | "findPopulateTeacherFieldById";
 
 describe("Resource => Class", () => {
@@ -34,9 +35,11 @@ describe("Resource => Class", () => {
   /* inputs */
   const validMockClassId = new Types.ObjectId().toString();
   const validMockSchoolId = new Types.ObjectId().toString();
+  const validMockLevelId = new Types.ObjectId().toString();
   const validMockCoordinatorId = new Types.ObjectId().toString();
   const validMockSubjectId = new Types.ObjectId().toString();
   const validMockTeacherFieldId = new Types.ObjectId().toString();
+  const validMockScheduleId = new Types.ObjectId().toString();
   const validMockTeacherId = new Types.ObjectId().toString();
   const validMockUserId = new Types.ObjectId().toString();
   const validMockGroupId = new Types.ObjectId().toString();
@@ -45,7 +48,8 @@ describe("Resource => Class", () => {
   const invalidMockId = "63c5dcac78b868f80035asdf";
   const newClass = {
     school_id: validMockSchoolId,
-    coordinator_id: validMockCoordinatorId,
+    level_id: validMockLevelId,
+    group_id: validMockGroupId,
     subject_id: validMockSubjectId,
     teacherField_id: validMockTeacherFieldId,
     startTime: 420,
@@ -54,7 +58,8 @@ describe("Resource => Class", () => {
   };
   const newClassMissingValues = {
     school_i: validMockSchoolId,
-    coordinator_i: validMockCoordinatorId,
+    level_i: validMockLevelId,
+    group_i: validMockGroupId,
     subject_i: validMockSubjectId,
     teacherField_i: validMockTeacherFieldId,
     startTim: 420,
@@ -63,7 +68,8 @@ describe("Resource => Class", () => {
   };
   const newClassEmptyValues = {
     school_id: "",
-    coordinator_id: "",
+    level_id: "",
+    group_id: "",
     subject_id: "",
     teacherField_id: "",
     startTime: "",
@@ -72,7 +78,8 @@ describe("Resource => Class", () => {
   };
   const newClassNotValidDataTypes = {
     school_id: invalidMockId,
-    coordinator_id: invalidMockId,
+    level_id: invalidMockId,
+    group_id: invalidMockId,
     subject_id: invalidMockId,
     teacherField_id: invalidMockId,
     startTime: "hello",
@@ -81,7 +88,8 @@ describe("Resource => Class", () => {
   };
   const newClassWrongLengthValues = {
     school_id: validMockSchoolId,
-    coordinator_id: validMockCoordinatorId,
+    level_id: validMockLevelId,
+    group_id: validMockGroupId,
     subject_id: validMockSubjectId,
     teacherField_id: validMockTeacherFieldId,
     startTime: 1234567890,
@@ -106,6 +114,12 @@ describe("Resource => Class", () => {
     name: "school 001",
     groupMaxNumStudents: 40,
   };
+  const levelPayload = {
+    _id: validMockLevelId,
+    school_id: validMockSchoolId,
+    schedule_id: validMockScheduleId,
+    name: "Level 101",
+  };
   const coordinatorPayload = {
     _id: validMockCoordinatorId,
     school_id: validMockSchoolId,
@@ -115,6 +129,15 @@ describe("Resource => Class", () => {
     status: "active",
     hasTeachingFunc: true,
   };
+  const groupPayload = {
+    _id: validMockGroupId,
+    school_id: schoolPayload,
+    level_id: levelPayload,
+    coordinator_id: coordinatorPayload,
+    name: "Group 101",
+    numberStudents: 40,
+  };
+  const groupNullPayload = null;
   const fieldPayload = {
     _id: validMockFieldId,
     school_id: validMockSchoolId,
@@ -123,8 +146,7 @@ describe("Resource => Class", () => {
   const subjectPayload = {
     _id: validMockSubjectId,
     school_id: schoolPayload,
-    coordinator_id: coordinatorPayload,
-    group_id: validMockGroupId,
+    level_id: levelPayload,
     field_id: fieldPayload,
     name: "Mathematics 101",
     classUnits: 30,
@@ -151,7 +173,7 @@ describe("Resource => Class", () => {
     _id: validMockTeacherFieldId,
     school_id: schoolPayload,
     teacher_id: teacherPayload,
-    field_id: validMockFieldId,
+    field_id: fieldPayload,
   };
   const teacherFieldNullPayload = null;
   const classesPayload = [
@@ -193,6 +215,7 @@ describe("Resource => Class", () => {
     describe("class::post::01 - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectNullPayload,
           "findPopulateSubjectById"
@@ -202,11 +225,13 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classNullPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClassMissingValues);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual([
           {
             location: "body",
@@ -215,8 +240,13 @@ describe("Resource => Class", () => {
           },
           {
             location: "body",
-            msg: "Please add the coordinator id",
-            param: "coordinator_id",
+            msg: "Please add the level id",
+            param: "level_id",
+          },
+          {
+            location: "body",
+            msg: "Please add the group id",
+            param: "group_id",
           },
           {
             location: "body",
@@ -245,12 +275,19 @@ describe("Resource => Class", () => {
           },
         ]);
         expect(statusCode).toBe(400);
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newClassMissingValues.subject_i,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -266,6 +303,7 @@ describe("Resource => Class", () => {
     describe("class::post::02 - Passing fields with empty values", () => {
       it("should return an empty fields error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectNullPayload,
           "findPopulateSubjectById"
@@ -275,11 +313,13 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classNullPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClassEmptyValues);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual([
           {
             location: "body",
@@ -289,8 +329,14 @@ describe("Resource => Class", () => {
           },
           {
             location: "body",
-            msg: "The coordinator id field is empty",
-            param: "coordinator_id",
+            msg: "The level id field is empty",
+            param: "level_id",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The group id field is empty",
+            param: "group_id",
             value: "",
           },
           {
@@ -325,12 +371,19 @@ describe("Resource => Class", () => {
           },
         ]);
         expect(statusCode).toBe(400);
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClassEmptyValues.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newClassEmptyValues.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -346,6 +399,7 @@ describe("Resource => Class", () => {
     describe("class::post::03 - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectNullPayload,
           "findPopulateSubjectById"
@@ -355,11 +409,13 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classNullPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClassNotValidDataTypes);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual([
           {
             location: "body",
@@ -369,8 +425,14 @@ describe("Resource => Class", () => {
           },
           {
             location: "body",
-            msg: "The coordinator id is not valid",
-            param: "coordinator_id",
+            msg: "The level id is not valid",
+            param: "level_id",
+            value: invalidMockId,
+          },
+          {
+            location: "body",
+            msg: "The group id is not valid",
+            param: "group_id",
             value: invalidMockId,
           },
           {
@@ -405,12 +467,19 @@ describe("Resource => Class", () => {
           },
         ]);
         expect(statusCode).toBe(400);
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClassNotValidDataTypes.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newClassNotValidDataTypes.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -426,6 +495,7 @@ describe("Resource => Class", () => {
     describe("class::post::04 - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           teacherFieldNullPayload,
           "findPopulateSubjectById"
@@ -435,11 +505,13 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classNullPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClassWrongLengthValues);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual([
           {
             location: "body",
@@ -461,12 +533,19 @@ describe("Resource => Class", () => {
           },
         ]);
         expect(statusCode).toBe(400);
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClassWrongLengthValues.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newClassWrongLengthValues.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -479,11 +558,15 @@ describe("Resource => Class", () => {
         expect(insertClass).not.toHaveBeenCalledWith(newClassWrongLengthValues);
       });
     });
-    describe("class::post::05 - Passing an non-existent subject in the body", () => {
-      it("should return a non-existent subject error", async () => {
+    describe("class::post::05 - Passing a start time past the 23:59 hours", () => {
+      it("should return a invalid start time error", async () => {
         // mock services
+        const findGroup = mockService(
+          groupNullPayload,
+          "findPopulateGroupById"
+        );
         const findSubject = mockService(
-          subjectNullPayload,
+          subjectPayload,
           "findPopulateSubjectById"
         );
         const findTeacherField = mockService(
@@ -491,21 +574,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
-          .send(newClass);
-        // assertions;
+          .send({ ...newClass, startTime: 1440 });
+
+        // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the subject exists",
+          msg: "The class start time must not exceed 23:00",
         });
         expect(statusCode).toBe(400);
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -518,9 +610,419 @@ describe("Resource => Class", () => {
         expect(insertClass).not.toHaveBeenCalledWith(newClass);
       });
     });
-    describe("class::post::06 - Passing an non-existent school for the subject in the body", () => {
-      it("should return a non-existent school error", async () => {
+    describe("class::post::06 - Passing a non-existent group in the body", () => {
+      it("should return a non-existent subject error", async () => {
         // mock services
+        const findGroup = mockService(
+          groupNullPayload,
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the group exists",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::post::07 - Passing a non-matching school for the group in the body", () => {
+      it("should return a non-matching school error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            school_id: {
+              _id: otherValidMockId,
+              name: "school 001",
+              groupMaxNumStudents: 40,
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the group belongs to the school",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::post::08 - Passing a non-matching level for the group in the body", () => {
+      it("should return a non-matching level error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            level_id: {
+              _id: otherValidMockId,
+              school_id: validMockSchoolId,
+              schedule_id: validMockScheduleId,
+              name: "Level 101",
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the group belongs to the level",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::post::09 - Passing a non-matching school for the coordinator in the body", () => {
+      it("should return a non-matching school for the coordinator error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            coordinator_id: {
+              _id: validMockCoordinatorId,
+              school_id: otherValidMockId,
+              firstName: "Dave",
+              lastName: "Gray",
+              role: "coordinator",
+              status: "active",
+              hasTeachingFunc: false,
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the coordinator belongs to the school",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::post::10 - Passing a coordinator with a role different from coordinator", () => {
+      it("should return a not valid coordinator role error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            coordinator_id: {
+              _id: validMockCoordinatorId,
+              school_id: validMockSchoolId,
+              firstName: "Dave",
+              lastName: "Gray",
+              role: "teacher",
+              status: "active",
+              hasTeachingFunc: false,
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please pass a user with a coordinator role",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::post::11 - Passing a coordinator with a status different from active", () => {
+      it("should return an invalid status error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            coordinator_id: {
+              _id: validMockCoordinatorId,
+              school_id: validMockSchoolId,
+              firstName: "Dave",
+              lastName: "Gray",
+              role: "coordinator",
+              status: "inactive",
+              hasTeachingFunc: false,
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please pass an active coordinator",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::post::12 - Passing a non-existent subject in the body", () => {
+      it("should return a non-existent subject error", async () => {
+        // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the subject exists",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::post::13 - Passing a non-matching school for the subject in the body", () => {
+      it("should return a non-matching school error", async () => {
+        // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           {
             ...subjectPayload,
@@ -537,21 +1039,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the subject belongs to the school",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -564,20 +1075,18 @@ describe("Resource => Class", () => {
         expect(insertClass).not.toHaveBeenCalledWith(newClass);
       });
     });
-    describe("class::post::07 - Passing an non-existent coordinator for the subject in the body", () => {
-      it("should return a non-existent coordinator error", async () => {
+    describe("class::post::14 - Passing a non-matching level for the subject in the body", () => {
+      it("should return a non-matching level error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           {
             ...subjectPayload,
-            coordinator_id: {
+            level_id: {
               _id: otherValidMockId,
               school_id: validMockSchoolId,
-              firstName: "Dave",
-              lastName: "Gray",
-              role: "coordinator",
-              status: "active",
-              hasTeachingFunc: false,
+              schedule_id: validMockScheduleId,
+              name: "Level 101",
             },
           },
           "findPopulateSubjectById"
@@ -587,21 +1096,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the coordinator belongs to the class parent subject",
+          msg: "Please make sure the subject belongs to the level",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -614,109 +1132,10 @@ describe("Resource => Class", () => {
         expect(insertClass).not.toHaveBeenCalledWith(newClass);
       });
     });
-    describe("class::post::08 - Passing a coordinator with a different role in the body", () => {
-      it("should return a not valid user/coordinator role error", async () => {
-        // mock services
-        const findSubject = mockService(
-          {
-            ...subjectPayload,
-            coordinator_id: {
-              _id: validMockCoordinatorId,
-              school_id: validMockSchoolId,
-              firstName: "Dave",
-              lastName: "Gray",
-              role: "teacher",
-              status: "active",
-              hasTeachingFunc: false,
-            },
-          },
-          "findPopulateSubjectById"
-        );
-        const findTeacherField = mockService(
-          teacherFieldPayload,
-          "findPopulateTeacherFieldById"
-        );
-        const insertClass = mockService(classPayload, "insertClass");
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .post(`${endPointUrl}`)
-          .send(newClass);
-        // assertions;
-        expect(body).toStrictEqual({
-          msg: "Please pass a user with a coordinator role",
-        });
-        expect(statusCode).toBe(400);
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newClass.subject_id,
-          "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
-        );
-        expect(findTeacherField).not.toHaveBeenCalled();
-        expect(findTeacherField).not.toHaveBeenCalledWith(
-          newClass.teacherField_id,
-          "-createdAt -updatedAt",
-          "school_id teacher_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertClass).not.toHaveBeenCalled();
-        expect(insertClass).not.toHaveBeenCalledWith(newClass);
-      });
-    });
-    describe("class::post::09 - Passing a coordinator with a status different from active in the body", () => {
-      it("should return a invalid status error", async () => {
-        // mock services
-        const findSubject = mockService(
-          {
-            ...subjectPayload,
-            coordinator_id: {
-              _id: validMockCoordinatorId,
-              school_id: validMockSchoolId,
-              firstName: "Dave",
-              lastName: "Gray",
-              role: "coordinator",
-              status: "inactive",
-              hasTeachingFunc: false,
-            },
-          },
-          "findPopulateSubjectById"
-        );
-        const findTeacherField = mockService(
-          teacherFieldPayload,
-          "findPopulateTeacherFieldById"
-        );
-        const insertClass = mockService(classPayload, "insertClass");
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .post(`${endPointUrl}`)
-          .send(newClass);
-        // assertions;
-        expect(body).toStrictEqual({
-          msg: "Please pass an active coordinator",
-        });
-        expect(statusCode).toBe(400);
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newClass.subject_id,
-          "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
-        );
-        expect(findTeacherField).not.toHaveBeenCalled();
-        expect(findTeacherField).not.toHaveBeenCalledWith(
-          newClass.teacherField_id,
-          "-createdAt -updatedAt",
-          "school_id teacher_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertClass).not.toHaveBeenCalled();
-        expect(insertClass).not.toHaveBeenCalledWith(newClass);
-      });
-    });
-    describe("class::post::10 - Passing an non-existent teacher_field in the body", () => {
+    describe("class::post::15 - Passing a non-existent teacher_field in the body", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -726,21 +1145,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field_teacher assignment exists",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -753,9 +1181,10 @@ describe("Resource => Class", () => {
         expect(insertClass).not.toHaveBeenCalledWith(newClass);
       });
     });
-    describe("class::post::11 - Passing an non-existent school for the teacher_field in the body", () => {
-      it("should return a non-existent school error", async () => {
+    describe("class::post::16 - Passing a non-matching school for the teacher_field in the body", () => {
+      it("should return a non-matching school error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -772,21 +1201,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field assigned to the teacher belongs to the school",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -799,9 +1237,10 @@ describe("Resource => Class", () => {
         expect(insertClass).not.toHaveBeenCalledWith(newClass);
       });
     });
-    describe("class::post::12 - Passing an teacher not assigned to the coordinator in the body", () => {
+    describe("class::post::17 - Passing a teacher not assigned to the coordinator in the body", () => {
       it("should return a non-assigned teacher to coordinator error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -829,21 +1268,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the teacher has been assigned to the coordinator being passed",
+          msg: "Please make sure the teacher has been assigned to the coordinator being passed in the group",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -856,9 +1304,10 @@ describe("Resource => Class", () => {
         expect(insertClass).not.toHaveBeenCalledWith(newClass);
       });
     });
-    describe("class::post::13 - Passing an non-matching field for the teacher_field and parent subject in the body", () => {
+    describe("class::post::18 - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -871,21 +1320,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field assigned to teacher is the same in the parent subject",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -898,9 +1356,10 @@ describe("Resource => Class", () => {
         expect(insertClass).not.toHaveBeenCalledWith(newClass);
       });
     });
-    describe("class::post::14 - Passing a class but not being created", () => {
+    describe("class::post::19 - Passing a class but not being created", () => {
       it("should not create a class", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
 
@@ -911,21 +1370,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classNullPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Class not created!",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -938,9 +1406,10 @@ describe("Resource => Class", () => {
         expect(insertClass).toHaveBeenCalledWith(newClass);
       });
     });
-    describe("class::post::15 - Passing a class correctly to create", () => {
+    describe("class::post::20 - Passing a class correctly to create", () => {
       it("should create a class", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -950,21 +1419,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const insertClass = mockService(classPayload, "insertClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Class created!",
         });
         expect(statusCode).toBe(201);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -988,10 +1466,12 @@ describe("Resource => Class", () => {
             classesNullPayload,
             "findFilterAllClasses"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
             .send({ school_i: validMockSchoolId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1015,10 +1495,12 @@ describe("Resource => Class", () => {
             classesNullPayload,
             "findFilterAllClasses"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
             .send({ school_id: "" });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1043,10 +1525,12 @@ describe("Resource => Class", () => {
             classesNullPayload,
             "findFilterAllClasses"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
             .send({ school_id: invalidMockId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1071,10 +1555,12 @@ describe("Resource => Class", () => {
             classesNullPayload,
             "findFilterAllClasses"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
             .send({ school_id: otherValidMockId });
+
           // assertions
           expect(body).toStrictEqual({ msg: "No classes found" });
           expect(statusCode).toBe(404);
@@ -1092,10 +1578,12 @@ describe("Resource => Class", () => {
             classesPayload,
             "findFilterAllClasses"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}`)
             .send({ school_id: validMockSchoolId });
+
           // assertions
           expect(body).toStrictEqual(classesPayload);
           expect(statusCode).toBe(200);
@@ -1115,10 +1603,12 @@ describe("Resource => Class", () => {
             classNullPayload,
             "findClassByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockClassId}`)
             .send({ school_i: validMockSchoolId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1142,10 +1632,12 @@ describe("Resource => Class", () => {
             classNullPayload,
             "findClassByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockClassId}`)
             .send({ school_id: "" });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1170,10 +1662,12 @@ describe("Resource => Class", () => {
             classNullPayload,
             "findClassByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${invalidMockId}`)
             .send({ school_id: invalidMockId });
+
           // assertions
           expect(body).toStrictEqual([
             {
@@ -1204,10 +1698,12 @@ describe("Resource => Class", () => {
             classNullPayload,
             "findClassByProperty"
           );
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockClassId}`)
             .send({ school_id: otherValidMockId });
+
           // assertions
           expect(body).toStrictEqual({
             msg: "Class not found",
@@ -1224,10 +1720,12 @@ describe("Resource => Class", () => {
         it("should get a field", async () => {
           // mock services
           const findClass = mockService(classPayload, "findClassByProperty");
+
           // api call
           const { statusCode, body } = await supertest(server)
             .get(`${endPointUrl}${validMockClassId}`)
             .send({ school_id: validMockSchoolId });
+
           // assertions
           expect(body).toStrictEqual(classPayload);
           expect(statusCode).toBe(200);
@@ -1245,6 +1743,10 @@ describe("Resource => Class", () => {
     describe("class::put::01 - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
+        const findGroup = mockService(
+          groupNullPayload,
+          "findPopulateGroupById"
+        );
         const findSubject = mockService(
           subjectNullPayload,
           "findPopulateSubjectById"
@@ -1254,11 +1756,13 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classNullPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClassMissingValues);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual([
           {
             location: "body",
@@ -1267,8 +1771,13 @@ describe("Resource => Class", () => {
           },
           {
             location: "body",
-            msg: "Please add the coordinator id",
-            param: "coordinator_id",
+            msg: "Please add the level id",
+            param: "level_id",
+          },
+          {
+            location: "body",
+            msg: "Please add the group id",
+            param: "group_id",
           },
           {
             location: "body",
@@ -1297,6 +1806,13 @@ describe("Resource => Class", () => {
           },
         ]);
         expect(statusCode).toBe(400);
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClassMissingValues.group_i,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newClassMissingValues.subject_i,
@@ -1321,6 +1837,10 @@ describe("Resource => Class", () => {
     describe("class::put::02 - Passing fields with empty values", () => {
       it("should return an empty field error", async () => {
         // mock services
+        const findGroup = mockService(
+          groupNullPayload,
+          "findPopulateGroupById"
+        );
         const findSubject = mockService(
           subjectNullPayload,
           "findPopulateSubjectById"
@@ -1330,11 +1850,13 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classNullPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClassEmptyValues);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual([
           {
             location: "body",
@@ -1344,8 +1866,14 @@ describe("Resource => Class", () => {
           },
           {
             location: "body",
-            msg: "The coordinator id field is empty",
-            param: "coordinator_id",
+            msg: "The level id field is empty",
+            param: "level_id",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The group id field is empty",
+            param: "group_id",
             value: "",
           },
           {
@@ -1380,6 +1908,13 @@ describe("Resource => Class", () => {
           },
         ]);
         expect(statusCode).toBe(400);
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClassEmptyValues.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newClassEmptyValues.subject_id,
@@ -1404,6 +1939,10 @@ describe("Resource => Class", () => {
     describe("class::put::03 - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
+        const findGroup = mockService(
+          groupNullPayload,
+          "findPopulateGroupById"
+        );
         const findSubject = mockService(
           subjectNullPayload,
           "findPopulateSubjectById"
@@ -1413,11 +1952,13 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classNullPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${invalidMockId}`)
           .send(newClassNotValidDataTypes);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual([
           {
             location: "params",
@@ -1433,8 +1974,14 @@ describe("Resource => Class", () => {
           },
           {
             location: "body",
-            msg: "The coordinator id is not valid",
-            param: "coordinator_id",
+            msg: "The level id is not valid",
+            param: "level_id",
+            value: invalidMockId,
+          },
+          {
+            location: "body",
+            msg: "The group id is not valid",
+            param: "group_id",
             value: invalidMockId,
           },
           {
@@ -1469,6 +2016,13 @@ describe("Resource => Class", () => {
           },
         ]);
         expect(statusCode).toBe(400);
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClassNotValidDataTypes.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newClassNotValidDataTypes.subject_id,
@@ -1496,6 +2050,10 @@ describe("Resource => Class", () => {
     describe("class::put::04 - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
+        const findGroup = mockService(
+          groupNullPayload,
+          "findPopulateGroupById"
+        );
         const findSubject = mockService(
           subjectNullPayload,
           "findPopulateSubjectById"
@@ -1505,11 +2063,13 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classNullPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClassWrongLengthValues);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual([
           {
             location: "body",
@@ -1531,6 +2091,13 @@ describe("Resource => Class", () => {
           },
         ]);
         expect(statusCode).toBe(400);
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClassWrongLengthValues.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newClassWrongLengthValues.subject_id,
@@ -1555,11 +2122,249 @@ describe("Resource => Class", () => {
         );
       });
     });
-    describe("class::put::05 - Passing an non-existent subject in the body", () => {
+    describe("class::post::05 - Passing a start time past the 23:59 hours", () => {
+      it("should return a invalid start time error", async () => {
+        // mock services
+        const findGroup = mockService(
+          groupNullPayload,
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockClassId}`)
+          .send({ ...newClass, startTime: 1440 });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "The class start time must not exceed 23:00",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).not.toHaveBeenCalled();
+        expect(findGroup).not.toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::post::06 - Passing a non-existent group in the body", () => {
       it("should return a non-existent subject error", async () => {
         // mock services
+        const findGroup = mockService(
+          groupNullPayload,
+          "findPopulateGroupById"
+        );
         const findSubject = mockService(
-          subjectNullPayload,
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockClassId}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the group exists",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::put::07 - Passing a non-matching school for the group in the body", () => {
+      it("should return a non-matching school error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            school_id: {
+              _id: otherValidMockId,
+              name: "school 001",
+              groupMaxNumStudents: 40,
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockClassId}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the group belongs to the school",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::put::08 - Passing a non-matching level for the group in the body", () => {
+      it("should return a non-matching level error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            level_id: {
+              _id: otherValidMockId,
+              school_id: validMockSchoolId,
+              schedule_id: validMockScheduleId,
+              name: "Level 101",
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const insertClass = mockService(classPayload, "insertClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockClassId}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the group belongs to the level",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertClass).not.toHaveBeenCalled();
+        expect(insertClass).not.toHaveBeenCalledWith(newClass);
+      });
+    });
+    describe("class::put::09 - Passing a non-matching school for the coordinator in the body", () => {
+      it("should return a non-matching school for the coordinator error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            coordinator_id: {
+              _id: validMockCoordinatorId,
+              school_id: otherValidMockId,
+              firstName: "Dave",
+              lastName: "Gray",
+              role: "coordinator",
+              status: "active",
+              hasTeachingFunc: true,
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
           "findPopulateSubjectById"
         );
         const findTeacherField = mockService(
@@ -1567,21 +2372,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the subject exists",
+          msg: "Please make sure the coordinator belongs to the school",
         });
-        expect(statusCode).toBe(404);
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -1597,9 +2411,194 @@ describe("Resource => Class", () => {
         );
       });
     });
-    describe("class::put::06 - Passing an non-existent school for the subject in the body", () => {
+    describe("class::put::10 - Passing a coordinator with a different role in the body", () => {
+      it("should return a not valid coordinator role error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            coordinator_id: {
+              _id: validMockCoordinatorId,
+              school_id: validMockSchoolId,
+              firstName: "Dave",
+              lastName: "Gray",
+              role: "teacher",
+              status: "active",
+              hasTeachingFunc: true,
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const updateClass = mockService(classPayload, "modifyFilterClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockClassId}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please pass a user with a coordinator role",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateClass).not.toHaveBeenCalled();
+        expect(updateClass).not.toHaveBeenCalledWith(
+          { _id: validMockClassId, school_id: newClass.school_id },
+          newClass
+        );
+      });
+    });
+    describe("class::put::11 - Passing a coordinator with a status different from active in the body", () => {
+      it("should return a invalid status error", async () => {
+        // mock services
+        const findGroup = mockService(
+          {
+            ...groupPayload,
+            coordinator_id: {
+              _id: validMockCoordinatorId,
+              school_id: validMockSchoolId,
+              firstName: "Dave",
+              lastName: "Gray",
+              role: "coordinator",
+              status: "inactive",
+              hasTeachingFunc: true,
+            },
+          },
+          "findPopulateGroupById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const updateClass = mockService(classPayload, "modifyFilterClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockClassId}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please pass an active coordinator",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateClass).not.toHaveBeenCalled();
+        expect(updateClass).not.toHaveBeenCalledWith(
+          { _id: validMockClassId, school_id: newClass.school_id },
+          newClass
+        );
+      });
+    });
+    describe("class::put::12 - Passing a non-existent subject in the body", () => {
+      it("should return a non-existent subject error", async () => {
+        // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const updateClass = mockService(classPayload, "modifyFilterClass");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockClassId}`)
+          .send(newClass);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the subject exists",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newClass.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newClass.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateClass).not.toHaveBeenCalled();
+        expect(updateClass).not.toHaveBeenCalledWith(
+          { _id: validMockClassId, school_id: newClass.school_id },
+          newClass
+        );
+      });
+    });
+    describe("class::put::13 - Passing a non-matching school for the subject in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           {
             ...subjectPayload,
@@ -1616,21 +2615,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the subject belongs to the school",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -1646,20 +2654,18 @@ describe("Resource => Class", () => {
         );
       });
     });
-    describe("class::put::07 - Passing an non-existent coordinator for the subject in the body", () => {
-      it("should return a non-existent coordinator error", async () => {
+    describe("class::put::14 - Passing a non-matching level for the subject in the body", () => {
+      it("should return a non-existent level error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           {
             ...subjectPayload,
-            coordinator_id: {
+            level_id: {
               _id: otherValidMockId,
               school_id: validMockSchoolId,
-              firstName: "Dave",
-              lastName: "Gray",
-              role: "coordinator",
-              status: "active",
-              hasTeachingFunc: true,
+              schedule_id: validMockScheduleId,
+              name: "Level 101",
             },
           },
           "findPopulateSubjectById"
@@ -1669,21 +2675,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the coordinator belongs to the class parent subject",
+          msg: "Please make sure the subject belongs to the level",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
@@ -1699,115 +2714,10 @@ describe("Resource => Class", () => {
         );
       });
     });
-    describe("class::put::08 - Passing a coordinator with a different role in the body", () => {
-      it("should return a not valid user/coordinator role error", async () => {
-        // mock services
-        const findSubject = mockService(
-          {
-            ...subjectPayload,
-            coordinator_id: {
-              _id: validMockCoordinatorId,
-              school_id: validMockSchoolId,
-              firstName: "Dave",
-              lastName: "Gray",
-              role: "teacher",
-              status: "active",
-              hasTeachingFunc: true,
-            },
-          },
-          "findPopulateSubjectById"
-        );
-        const findTeacherField = mockService(
-          teacherFieldPayload,
-          "findPopulateTeacherFieldById"
-        );
-        const updateClass = mockService(classPayload, "modifyFilterClass");
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .put(`${endPointUrl}${validMockClassId}`)
-          .send(newClass);
-        // assertions;
-        expect(body).toStrictEqual({
-          msg: "Please pass a user with a coordinator role",
-        });
-        expect(statusCode).toBe(400);
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newClass.subject_id,
-          "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
-        );
-        expect(findTeacherField).not.toHaveBeenCalled();
-        expect(findTeacherField).not.toHaveBeenCalledWith(
-          newClass.teacherField_id,
-          "-createdAt -updatedAt",
-          "school_id teacher_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateClass).not.toHaveBeenCalled();
-        expect(updateClass).not.toHaveBeenCalledWith(
-          { _id: validMockClassId, school_id: newClass.school_id },
-          newClass
-        );
-      });
-    });
-    describe("class::put::09 - Passing a coordinator with a status different from active in the body", () => {
-      it("should return a invalid status error", async () => {
-        // mock services
-        const findSubject = mockService(
-          {
-            ...subjectPayload,
-            coordinator_id: {
-              _id: validMockCoordinatorId,
-              school_id: validMockSchoolId,
-              firstName: "Dave",
-              lastName: "Gray",
-              role: "coordinator",
-              status: "inactive",
-              hasTeachingFunc: true,
-            },
-          },
-          "findPopulateSubjectById"
-        );
-        const findTeacherField = mockService(
-          teacherFieldPayload,
-          "findPopulateTeacherFieldById"
-        );
-        const updateClass = mockService(classPayload, "modifyFilterClass");
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .put(`${endPointUrl}${validMockClassId}`)
-          .send(newClass);
-        // assertions;
-        expect(body).toStrictEqual({
-          msg: "Please pass an active coordinator",
-        });
-        expect(statusCode).toBe(400);
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newClass.subject_id,
-          "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
-        );
-        expect(findTeacherField).not.toHaveBeenCalled();
-        expect(findTeacherField).not.toHaveBeenCalledWith(
-          newClass.teacherField_id,
-          "-createdAt -updatedAt",
-          "school_id teacher_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateClass).not.toHaveBeenCalled();
-        expect(updateClass).not.toHaveBeenCalledWith(
-          { _id: validMockClassId, school_id: newClass.school_id },
-          newClass
-        );
-      });
-    });
-    describe("class::put::10 - Passing an non-existent teacher_field in the body", () => {
+    describe("class::put::15 - Passing a non-existent teacher_field in the body", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -1817,21 +2727,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the teacherField exists",
+          msg: "Please make sure the field_teacher assignment exists",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -1847,9 +2766,10 @@ describe("Resource => Class", () => {
         );
       });
     });
-    describe("class::put::11 - Passing an non-existent school for the teacher_field in the body", () => {
+    describe("class::put::16 - Passing a non-existent school for the teacher_field in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -1866,21 +2786,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field assigned to the teacher belongs to the school",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -1896,9 +2825,10 @@ describe("Resource => Class", () => {
         );
       });
     });
-    describe("class::put::12 - Passing an teacher not assigned to the coordinator in the body", () => {
-      it("should return a non-assigned teacher to coordinator error", async () => {
+    describe("class::put::17 - Passing a teacher not assigned to the coordinator in the body", () => {
+      it("should return a non-existent school error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -1926,21 +2856,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the teacher has been assigned to the coordinator being passed",
+          msg: "Please make sure the teacher has been assigned to the coordinator being passed in the group",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -1956,9 +2895,10 @@ describe("Resource => Class", () => {
         );
       });
     });
-    describe("class::put::13 - Passing an non-matching field for the teacher_field and parent subject in the body", () => {
+    describe("class::put::18 - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -1971,21 +2911,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field assigned to teacher is the same in the parent subject",
         });
         expect(statusCode).toBe(400);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -2001,9 +2950,10 @@ describe("Resource => Class", () => {
         );
       });
     });
-    describe("class::put::14 - Passing a class but not updating it because it does not match the filters", () => {
+    describe("class::put::19 - Passing a class but not updating it because it does not match the filters", () => {
       it("should not update a class", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -2013,21 +2963,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classNullPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Class not updated",
         });
         expect(statusCode).toBe(404);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -2043,9 +3002,10 @@ describe("Resource => Class", () => {
         );
       });
     });
-    describe("class::put::15 - Passing a class correctly to update", () => {
+    describe("class::put::20 - Passing a class correctly to update", () => {
       it("should update a class", async () => {
         // mock services
+        const findGroup = mockService(groupPayload, "findPopulateGroupById");
         const findSubject = mockService(
           subjectPayload,
           "findPopulateSubjectById"
@@ -2055,21 +3015,30 @@ describe("Resource => Class", () => {
           "findPopulateTeacherFieldById"
         );
         const updateClass = mockService(classPayload, "modifyFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockClassId}`)
           .send(newClass);
-        // assertions;
+
+        // assertions
         expect(body).toStrictEqual({
           msg: "Class updated!",
         });
         expect(statusCode).toBe(200);
+        expect(findGroup).toHaveBeenCalled();
+        expect(findGroup).toHaveBeenCalledWith(
+          newClass.group_id,
+          "-createdAt -updatedAt",
+          "school_id level_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newClass.subject_id,
           "-createdAt -updatedAt",
-          "school_id coordinator_id group_id field_id",
-          "-password -email -createdAt -updatedAt"
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
@@ -2086,15 +3055,18 @@ describe("Resource => Class", () => {
       });
     });
   });
+
   describe("DELETE /class ", () => {
     describe("class::delete::01 - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const deleteClass = mockService(classNullPayload, "removeFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockClassId}`)
           .send({ school_i: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual([
           {
@@ -2115,10 +3087,12 @@ describe("Resource => Class", () => {
       it("should return a empty fields error", async () => {
         // mock services
         const deleteClass = mockService(classNullPayload, "removeFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockClassId}`)
           .send({ school_id: "" });
+
         // assertions
         expect(body).toStrictEqual([
           {
@@ -2140,10 +3114,12 @@ describe("Resource => Class", () => {
       it("should return an invalid id error", async () => {
         // mock services
         const deleteClass = mockService(classNullPayload, "removeFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${invalidMockId}`)
           .send({ school_id: invalidMockId });
+
         // assertions
         expect(body).toStrictEqual([
           {
@@ -2171,10 +3147,12 @@ describe("Resource => Class", () => {
       it("should not delete a class", async () => {
         // mock services
         const deleteClass = mockService(classNullPayload, "removeFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${otherValidMockId}`)
           .send({ school_id: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({ msg: "Class not deleted" });
         expect(statusCode).toBe(404);
@@ -2189,10 +3167,12 @@ describe("Resource => Class", () => {
       it("should delete a class", async () => {
         // mock services
         const deleteClass = mockService(classPayload, "removeFilterClass");
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockClassId}`)
           .send({ school_id: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({ msg: "Class deleted" });
         expect(statusCode).toBe(200);

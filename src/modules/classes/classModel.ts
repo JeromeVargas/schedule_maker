@@ -7,9 +7,9 @@ const ClassSchema = new Schema<Class>(
       type: Schema.Types.ObjectId,
       required: [true, "must provide a school id for the class"],
     },
-    coordinator_id: {
+    group_id: {
       type: Schema.Types.ObjectId,
-      required: [true, "must provide a coordinator id for the class"],
+      required: [true, "must provide a group id for the class"],
     },
     subject_id: {
       type: Schema.Types.ObjectId,
