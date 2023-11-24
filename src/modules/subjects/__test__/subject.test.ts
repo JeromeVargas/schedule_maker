@@ -520,7 +520,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::06 - Passing an non-existent level in the body", () => {
+    describe("subject::post::06 - Passing a non-existent level in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -567,7 +567,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::07 - Passing an non-matching school id for the level in the body", () => {
+    describe("subject::post::07 - Passing a non-matching school id for the level in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -614,7 +614,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::08 - Passing an non-existent field in the body", () => {
+    describe("subject::post::08 - Passing a non-existent field in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -661,7 +661,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::09 - Passing an non-matching school for the field in the body", () => {
+    describe("subject::post::09 - Passing a non-matching school for the field in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1505,7 +1505,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::06 - Passing an non-existent level in the body", () => {
+    describe("subject::put::06 - Passing a non-existent level in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1558,7 +1558,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::07 - Passing an non-matching school for the level in the body", () => {
+    describe("subject::put::07 - Passing a non-matching school for the level in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1611,7 +1611,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::08 - Passing an non-existent field in the body", () => {
+    describe("subject::put::08 - Passing a non-existent field in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1664,7 +1664,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::09 - Passing an non-matching school for the field in the body", () => {
+    describe("subject::put::09 - Passing a non-matching school for the field in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(

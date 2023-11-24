@@ -606,7 +606,7 @@ describe("Resource => Schedule", () => {
         expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
-    describe("schedule::post::06 - Passing an non-existent school in the body", () => {
+    describe("schedule::post::06 - Passing a non-existent school in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");

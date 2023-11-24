@@ -110,7 +110,7 @@ describe("Resource => Module", () => {
         // code
       });
     });
-    describe("module::post::05 - Passing an non-existent school in the body", () => {
+    describe("module::post::05 - Passing a non-existent school in the body", () => {
       it("should return a non-existent school error", async () => {
         // code
       });

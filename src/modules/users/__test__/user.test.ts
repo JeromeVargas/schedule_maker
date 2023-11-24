@@ -588,7 +588,7 @@ describe("RESOURCE => User", () => {
         expect(insertUser).not.toHaveBeenCalledWith(newUserWrongInputValues);
       });
     });
-    describe("user::post::07 - Passing an non-existing school", () => {
+    describe("user::post::07 - Passing a non-existing school", () => {
       it("should return a duplicate user error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");

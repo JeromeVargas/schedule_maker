@@ -350,7 +350,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
-    describe("break::post::06 - Passing an non-existent schedule in the body", () => {
+    describe("break::post::06 - Passing a non-existent schedule in the body", () => {
       it("should return a non-existent schedule error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -1063,7 +1063,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::06 - Passing an non-existent schedule in the body", () => {
+    describe("break::put::06 - Passing a non-existent schedule in the body", () => {
       it("should return a non-existent schedule error", async () => {
         // mock services
         const findSchedule = mockService(

@@ -269,7 +269,7 @@ describe("RESOURCE => Field", () => {
         expect(insertField).not.toHaveBeenCalledWith(newField);
       });
     });
-    describe("field::post::05 - Passing an non-existent school in the body", () => {
+    describe("field::post::05 - Passing a non-existent school in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const findSchool = mockService(fieldNullPayload, "findSchoolById");
