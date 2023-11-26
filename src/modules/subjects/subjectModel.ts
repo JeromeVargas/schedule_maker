@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
-import { Subject } from "../../typings/types";
 import ClassModel from "../classes/classModel";
+import { Subject } from "../../typings/types";
 
 const SubjectSchema = new Schema<Subject>(
   {
@@ -49,17 +49,20 @@ SubjectSchema.pre(
   { document: false, query: true },
   async function () {
     /* get the entities ids and references */
-    // get the subject
+    // get the group
     const findSubject: Subject | null = await this.model
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
     /* delete entities records in collections */
     // delete the class instance/s
-    await ClassModel.deleteMany({
-      school_id: findSubject?.school_id,
-      subject_id: findSubject?._id,
-    }).exec();
+    await ClassModel.updateMany(
+      {
+        school_id: findSubject?.school_id,
+        subject_id: findSubject?._id,
+      },
+      { $set: { subject_id: null } }
+    ).exec();
   }
 );
 

@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
-import { Class, Group, Level, Subject } from "../../typings/types";
 import ClassModel from "../classes/classModel";
 import GroupModel from "../groups/groupModel";
 import SubjectModel from "../subjects/subjectModel";
+import { Group, Level } from "../../typings/types";
 
 const LevelSchema = new Schema<Level>(
   {
@@ -36,24 +36,6 @@ LevelSchema.pre(
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
-    // get the groups
-    const findGroups: Group[] = await GroupModel.find({
-      school_id: findLevel?.school_id,
-      level_id: findLevel?._id,
-    })
-      .select("_id level_id")
-      .lean()
-      .exec();
-    // get the subjects
-    const findSubjects: Subject[] = await SubjectModel.find({
-      school_id: findLevel?.school_id,
-      group_id: {
-        $in: findGroups.map((group) => group._id),
-      },
-    })
-      .select("_id group_id")
-      .lean()
-      .exec();
     /* delete entities records in collections */
     // delete the group instance/s
     await GroupModel.deleteMany({
@@ -62,15 +44,13 @@ LevelSchema.pre(
     }).exec();
     // delete the subject instance/s
     await SubjectModel.deleteMany({
-      group_id: {
-        $in: findGroups.map((group) => group._id),
-      },
+      school_id: findLevel?.school_id,
+      level_id: findLevel?._id,
     });
     // delete the class instance/s
     await ClassModel.deleteMany({
-      subject_id: {
-        $in: findSubjects.map((subject) => subject._id),
-      },
+      school_id: findLevel?.school_id,
+      level_id: findLevel?._id,
     });
   }
 );

@@ -9,8 +9,9 @@ for later:
 
 Back end:
 
-continue here --> refactor the on delete functionality on the models. level, group and subject
-continue here --> test all delete on cascade functionality
+continue here --> test all delete on cascade functionality specially level, group and subject
+continue here --> make the subject model make the subject field in the class null
+continue here --> create a script to populate the database, take the coding adding one as reference
 continue here --> if user is updated as inactive or with no teaching functions, delete teacher and any other related records in other collections, or maybe soft delete it
 continue here --> delete cascade user, delete teacher assignments, maybe not just leave the class as null
 continue here --> creating a teacher directly from the user route, maybe not
