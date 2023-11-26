@@ -7,6 +7,10 @@ const ClassSchema = new Schema<Class>(
       type: Schema.Types.ObjectId,
       required: [true, "must provide a school id for the class"],
     },
+    level_id: {
+      type: Schema.Types.ObjectId,
+      required: [true, "must provide a level id for the class"],
+    },
     group_id: {
       type: Schema.Types.ObjectId,
       required: [true, "must provide a group id for the class"],
