@@ -1,0 +1,198 @@
+{
+  "schools": [
+    {
+      "name": "School 001",
+      "groupMaxNumStudents": 40
+    },
+    {
+      "name": "School 002",
+      "groupMaxNumStudents": 40
+    }
+  ],
+  "users": [
+    {
+      "school_id": null,
+      "firstName": "firstname 001",
+      "lastName": "lastname 001",
+      "email": "user01@yahoo.ca",
+      "password": "12341234",
+      "role": "coordinator",
+      "status": "active",
+      "hasTeachingFunc": true
+    },
+    {
+      "school_id": null,
+      "firstName": "firstname 002",
+      "lastName": "lastname 002",
+      "email": "user02@yahoo.ca",
+      "password": "12341234",
+      "role": "teacher",
+      "status": "active",
+      "hasTeachingFunc": true
+    },
+    {
+      "school_id": null,
+      "firstName": "firstname 003",
+      "lastName": "lastname 003",
+      "email": "user03@yahoo.ca",
+      "password": "12341234",
+      "role": "teacher",
+      "status": "active",
+      "hasTeachingFunc": true
+    }
+  ],
+  "teachers": [
+    {
+      "school_id": null,
+      "user_id": null,
+      "coordinator_id": null,
+      "contractType": "full-time",
+      "hoursAssignable": 70,
+      "hoursAssigned": 70,
+      "monday": true,
+      "tuesday": true,
+      "wednesday": true,
+      "thursday": true,
+      "friday": true,
+      "saturday": false,
+      "sunday": false
+    },
+    {
+      "school_id": null,
+      "user_id": null,
+      "coordinator_id": null,
+      "contractType": "full-time",
+      "hoursAssignable": 70,
+      "hoursAssigned": 70,
+      "monday": true,
+      "tuesday": true,
+      "wednesday": true,
+      "thursday": true,
+      "friday": true,
+      "saturday": false,
+      "sunday": false
+    }
+  ],
+  "fields": [
+    {
+      "school_id": null,
+      "name": "Math"
+    },
+    {
+      "school_id": null,
+      "name": "Science"
+    }
+  ],
+  "schedules": [
+    {
+      "school_id": null,
+      "name": "Schedule 001",
+      "dayStart": 480,
+      "shiftNumberMinutes": 420,
+      "classUnitMinutes": 40,
+      "monday": true,
+      "tuesday": true,
+      "wednesday": true,
+      "thursday": true,
+      "friday": true,
+      "saturday": false,
+      "sunday": false
+    },
+    {
+      "school_id": null,
+      "name": "Schedule 002",
+      "dayStart": 480,
+      "shiftNumberMinutes": 420,
+      "classUnitMinutes": 40,
+      "monday": true,
+      "tuesday": true,
+      "wednesday": true,
+      "thursday": true,
+      "friday": true,
+      "saturday": false,
+      "sunday": false
+    }
+  ],
+  "breaks": [
+    {
+      "school_id": null,
+      "schedule_id": null,
+      "breakStart": 1000,
+      "numberMinutes": 40
+    },
+    {
+      "school_id": null,
+      "schedule_id": null,
+      "breakStart": 1500,
+      "numberMinutes": 40
+    }
+  ],
+  "levels": [
+    {
+      "school_id": null,
+      "schedule_id": null,
+      "name": "Level 101"
+    },
+    {
+      "school_id": null,
+      "schedule_id": null,
+      "name": "Level 201"
+    }
+  ],
+  "groups": [
+    {
+      "school_id": null,
+      "level_id": null,
+      "coordinator_id": null,
+      "name": "Group 101",
+      "numberStudents": 20
+    },
+    {
+      "school_id": null,
+      "level_id": null,
+      "coordinator_id": null,
+      "name": "Group 102",
+      "numberStudents": 20
+    }
+  ],
+  "subjects": [
+    {
+      "school_id": null,
+      "level_id": null,
+      "field_id": null,
+      "name": "Math 101",
+      "classUnits": 1,
+      "frequency": 2
+    },
+    {
+      "school_id": null,
+      "level_id": null,
+      "field_id": null,
+      "name": "Science 101",
+      "classUnits": 1,
+      "frequency": 2
+    }
+  ],
+  "classes": [
+    {
+      "school_id": null,
+      "level_id": null,
+      "group_id": null,
+      "subject_id": null,
+      "teacherField_id": null,
+      "startTime": 1439,
+      "groupScheduleSlot": 8,
+      "teacherScheduleSlot": 9
+    },
+    {
+      "school_id": null,
+      "level_id": null,
+      "group_id": null,
+      "subject_id": null,
+      "teacherField_id": null,
+      "startTime": 1479,
+      "groupScheduleSlot": 9,
+      "teacherScheduleSlot": 10
+    }
+  ]
+}
