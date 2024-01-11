@@ -1,7 +1,8 @@
 import { Schema, model } from "mongoose";
-import { User } from "../../typings/types";
+import { Teacher_Field, User } from "../../typings/types";
 import TeacherModel from "../teachers/teacherModel";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
+import ClassModel from "../classes/classModel";
 
 const UserSchema = new Schema<User>(
   {
@@ -57,6 +58,22 @@ UserSchema.pre(
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
+    // get the teacher
+    const findTeacher = await TeacherModel.findOne({
+      school_id: findUser?.school_id,
+      user_id: findUser?._id,
+    })
+      .select("_id")
+      .lean()
+      .exec();
+    // get the teacher_fields
+    const findTeacherFields: Teacher_Field[] = await TeacherFieldModel.find({
+      school_id: findUser?.school_id,
+      teacher_id: findTeacher?._id,
+    })
+      .select("_id")
+      .lean()
+      .exec();
     /* delete entities records in collections */
     // delete the teacher instance
     const deleteTeacher = await TeacherModel.findOneAndDelete({
@@ -70,6 +87,12 @@ UserSchema.pre(
       school_id: deleteTeacher?.school_id,
       teacher_id: deleteTeacher?._id,
     }).exec();
+    /* update entities records in collections */
+    // update the class instance/s
+    await ClassModel.updateMany(
+      { teacherField_id: { $in: findTeacherFields } },
+      { teacherField_id: null }
+    );
   }
 );
 
