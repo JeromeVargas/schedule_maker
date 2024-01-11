@@ -77,7 +77,6 @@ ScheduleSchema.pre(
       school_id: findSchedule?.school_id,
       schedule_id: findSchedule?._id,
     }).exec();
-    // continue here --> make the deletion of a schedule set the schedule_id as null in the level
     /* update entities records in collections */
     // update the class instance/s
     await LevelModel.updateMany(
