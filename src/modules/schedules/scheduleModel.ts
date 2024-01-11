@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import { Schedule } from "../../typings/types";
 import BreakModel from "../breaks/breakModel";
+import LevelModel from "../levels/levelModel";
 
 const ScheduleSchema = new Schema<Schedule>(
   {
@@ -76,6 +77,16 @@ ScheduleSchema.pre(
       school_id: findSchedule?.school_id,
       schedule_id: findSchedule?._id,
     }).exec();
+    // continue here --> make the deletion of a schedule set the schedule_id as null in the level
+    /* update entities records in collections */
+    // update the class instance/s
+    await LevelModel.updateMany(
+      {
+        school_id: findSchedule?.school_id,
+        schedule_id: findSchedule?._id,
+      },
+      { $set: { schedule_id: null } }
+    ).exec();
   }
 );
 
