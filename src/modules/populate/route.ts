@@ -3,7 +3,6 @@ import populate from "./populate";
 
 const router = Router();
 
-// continue here --> move to a end point
 // @desc    Populate the database in development
 // @route   POST /api/v1/populate
 // @access  Private
