@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
-import { Teacher } from "../../typings/types";
+import { Teacher, Teacher_Field } from "../../typings/types";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
+import ClassModel from "../classes/classModel";
 
 const TeacherSchema = new Schema<Teacher>(
   {
@@ -84,12 +85,26 @@ TeacherSchema.pre(
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
+    // get the teacher_fields
+    const findTeacherFields: Teacher_Field[] = await TeacherFieldModel.find({
+      school_id: findTeacher?.school_id,
+      teacher_id: findTeacher?._id,
+    })
+      .select("_id")
+      .lean()
+      .exec();
     /* delete entities records in collections */
     // delete the teacher_fields instance/s
     await TeacherFieldModel.deleteMany({
       school_id: findTeacher?.school_id,
       teacher_id: findTeacher?._id,
     }).exec();
+    /* update entities records in collections */
+    // update the class instance/s
+    await ClassModel.updateMany(
+      { teacherField_id: { $in: findTeacherFields } },
+      { teacherField_id: null }
+    );
   }
 );
 
