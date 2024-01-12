@@ -3,6 +3,7 @@ import { Teacher_Field, User } from "../../typings/types";
 import TeacherModel from "../teachers/teacherModel";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
 import ClassModel from "../classes/classModel";
+import GroupModel from "../groups/groupModel";
 
 const UserSchema = new Schema<User>(
   {
@@ -88,6 +89,22 @@ UserSchema.pre(
       teacher_id: deleteTeacher?._id,
     }).exec();
     /* update entities records in collections */
+    // update the teacher instance/s
+    await TeacherModel.updateMany(
+      {
+        school_id: findUser?.school_id,
+        coordinator_id: findUser?._id,
+      },
+      { $set: { coordinator_id: null } }
+    ).exec();
+    // update the group instance/s
+    await GroupModel.updateMany(
+      {
+        school_id: findUser?.school_id,
+        coordinator_id: findUser?._id,
+      },
+      { $set: { coordinator_id: null } }
+    ).exec();
     // update the class instance/s
     await ClassModel.updateMany(
       { teacherField_id: { $in: findTeacherFields } },
