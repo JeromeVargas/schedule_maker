@@ -1,6 +1,6 @@
 Administrative:
 
-continue here -->
+continue here --> for new projects setup eslint config for unused variables
 continue here -->
 
 for later:
@@ -9,15 +9,15 @@ for later:
 
 Back end:
 
-continue here --> test all delete on cascade functionality specially level, group and subject
-continue here --> make the subject model make the subject field in the class null
-continue here --> create a script to populate the database, take the coding adding one as reference
-continue here --> if user is updated as inactive or with no teaching functions, delete teacher and any other related records in other collections, or maybe soft delete it
-continue here --> delete cascade user, delete teacher assignments, maybe not just leave the class as null
-continue here --> creating a teacher directly from the user route, maybe not
-continue here --> update types with entity type and remove all the Types.ObjectId
-continue here --> teacher not being passed with no teaching functions, try middleware - or - check in the controller
-continue here --> remove the suspended status option, to leave just the inactive as a form of soft delete, add on leave instead
+// Todo --> test all delete on cascade functionality specially user, teacher and field, think of those instances where the field should be null after a parent entity has been deleted, teacher might be null for in the class entity        
+// Todo --> work on the the opposite of populate, delete all end point
+// Todo --> remove the suspended status option, to leave just the inactive as a form of soft delete, add on leave instead
+// Todo --> if user is UPDATED as inactive or with no teaching functions, delete teacher and any other related records in other collections, or maybe soft delete it
+// Todo --> add unique to the email field in the user
+continue here --> update types with entity type and remove all the Types.ObjectId in the types file
+continue here --> replace class entity name by session, change frequency and classUnits by sessions in the subject and schedule entities
+continue here --> add a active / inactive boolean flag to the school entity, to do a soft delete
+continue here --> creating a teacher directly from the user route, maybe not use promise.all
 continue here --> add group_coordinator associative table, to decouple the coordinator from the group and to have more than one coordinator for each group
 continue here --> add teacher_coordinator associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
 

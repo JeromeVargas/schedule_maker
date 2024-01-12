@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import { Field, Teacher_Field } from "../../typings/types";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
 import ClassModel from "../classes/classModel";
+import SubjectModel from "../subjects/subjectModel";
 
 const FieldSchema = new Schema<Field>(
   {
@@ -46,6 +47,14 @@ FieldSchema.pre(
       field_id: findField?._id,
     }).exec();
     /* update entities records in collections */
+    // update the group instance/s
+    await SubjectModel.updateMany(
+      {
+        school_id: findField?.school_id,
+        field_id: findField?._id,
+      },
+      { $set: { field_id: null } }
+    ).exec();
     // update the class instance/s
     await ClassModel.updateMany(
       { teacherField_id: { $in: findTeacherFields } },
