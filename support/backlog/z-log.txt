@@ -9,11 +9,10 @@ for later:
 
 Back end:
 
-// Todo --> add unique to the email field in the user
 // Todo --> add a active / inactive boolean flag to the school entity, to do a soft delete
 // Todo --> update types with entity type and remove all the Types.ObjectId in the types file
 // Todo --> replace class entity name by session, change frequency and classUnits by sessions in the subject and schedule entities
-// Todo --> creating a teacher directly from the user route, maybe not use promise.all, instead, add adm_hours_assignable and add_hours_assigned to differentiate teachers from administrative, i.e. principal and coordinators
+// Todo --> add admin_hours_assignable and admin_hours_assigned to differentiate teachers from administrative, i.e. principal and coordinators
 // Todo --> add group_coordinator associative table, to decouple the coordinator from the group and to have more than one coordinator for each group
 // Todo --> add teacher_coordinator associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
 
@@ -41,7 +40,7 @@ for later:
 Front End
 
 // Todo --> if user is UPDATED as inactive or with no teaching functions being soft deleted, inform the user that the user functions must be passed onto a new teacher
-// Todo -->
+// Todo --> Crate the user first then create the teacher, do that on a kind of multi-step form, alternatively, you can also use promise.all to do it in one step
 // Todo -->
 
 for later:
