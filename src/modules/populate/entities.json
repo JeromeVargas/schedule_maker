@@ -2,11 +2,13 @@
   "schools": [
     {
       "name": "School 001",
-      "groupMaxNumStudents": 40
+      "groupMaxNumStudents": 40,
+      "status": "active"
     },
     {
       "name": "School 002",
-      "groupMaxNumStudents": 40
+      "groupMaxNumStudents": 40,
+      "status": "active"
     }
   ],
   "users": [
