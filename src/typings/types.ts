@@ -17,7 +17,7 @@ export type UserStatus = "active" | "inactive" | "on_leave";
 
 export type User = {
   _id: Types.ObjectId;
-  school_id: Types.ObjectId;
+  school_id: School;
   firstName: string;
   lastName: string;
   email: string;
@@ -34,9 +34,9 @@ export type ContractType = "full-time" | "part-time" | "substitute";
 
 export type Teacher = {
   _id: Types.ObjectId;
-  school_id: Types.ObjectId;
+  school_id: School;
   user_id: User;
-  coordinator_id: Types.ObjectId;
+  coordinator_id: User;
   contractType: ContractType;
   hoursAssignable: number;
   hoursAssigned: number;
@@ -54,7 +54,7 @@ export type NewTeacher = Omit<Teacher, "_id">;
 // field
 export type Field = {
   _id: Types.ObjectId;
-  school_id: Types.ObjectId;
+  school_id: School;
   name: string;
 };
 
@@ -63,9 +63,9 @@ export type NewField = Omit<Field, "_id">;
 // teacher_field
 export type Teacher_Field = {
   _id: Types.ObjectId;
-  school_id: Types.ObjectId;
+  school_id: School;
   teacher_id: Teacher;
-  field_id: Types.ObjectId;
+  field_id: Field;
 };
 
 export type NewTeacher_Field = Omit<Teacher_Field, "_id">;
@@ -73,7 +73,7 @@ export type NewTeacher_Field = Omit<Teacher_Field, "_id">;
 // schedule
 export type Schedule = {
   _id: Types.ObjectId;
-  school_id: Types.ObjectId;
+  school_id: School;
   name: string;
   dayStart: number;
   shiftNumberMinutes: number;
@@ -92,8 +92,8 @@ export type NewSchedule = Omit<Schedule, "_id">;
 // break
 export type Break = {
   _id: Types.ObjectId;
-  school_id: Types.ObjectId;
-  schedule_id: Types.ObjectId;
+  school_id: School;
+  schedule_id: Schedule;
   breakStart: number;
   numberMinutes: number;
 };
@@ -104,7 +104,7 @@ export type NewBreak = Omit<Break, "_id">;
 export type Level = {
   _id: Types.ObjectId;
   school_id: School;
-  schedule_id: Types.ObjectId;
+  schedule_id: Schedule;
   name: string;
 };
 
@@ -113,8 +113,8 @@ export type NewLevel = Omit<Level, "_id">;
 // group
 export type Group = {
   _id: Types.ObjectId;
-  school_id: Types.ObjectId;
-  level_id: Types.ObjectId;
+  school_id: School;
+  level_id: Level;
   coordinator_id: User;
   name: string;
   numberStudents: number;
@@ -125,9 +125,9 @@ export type NewGroup = Omit<Group, "_id">;
 // subject
 export type Subject = {
   _id: Types.ObjectId;
-  school_id: Types.ObjectId;
-  level_id: Types.ObjectId;
-  field_id: Types.ObjectId;
+  school_id: School;
+  level_id: Level;
+  field_id: Field;
   name: string;
   classUnits: number;
   frequency: number;
@@ -138,11 +138,11 @@ export type NewSubject = Omit<Subject, "_id">;
 // class
 export type Class = {
   _id: Types.ObjectId;
-  school_id: Types.ObjectId;
-  level_id: Types.ObjectId;
-  group_id: Types.ObjectId;
-  subject_id: Types.ObjectId;
-  teacherField_id: Types.ObjectId;
+  school_id: School;
+  level_id: Level;
+  group_id: Group;
+  subject_id: Group;
+  teacherField_id: Teacher_Field;
   startTime: number;
   groupScheduleSlot: number;
   teacherScheduleSlot: number;
