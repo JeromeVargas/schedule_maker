@@ -13,7 +13,7 @@ export type NewSchool = Omit<School, "_id">;
 
 // User
 export type Role = "headmaster" | "coordinator" | "teacher";
-export type Status = "active" | "inactive" | "on_leave";
+export type UserStatus = "active" | "inactive" | "on_leave";
 
 export type User = {
   _id: Types.ObjectId;
@@ -23,7 +23,7 @@ export type User = {
   email: string;
   password: string;
   role: Role;
-  status: Status;
+  status: UserStatus;
   hasTeachingFunc: boolean;
 };
 
