@@ -13,22 +13,9 @@ import ClassModel from "../classes/classModel";
 
 import entities from "./entities.json";
 
-async function populate(index: number) {
+export const populate = async (index: number) => {
   try {
     await connectDB();
-    /* DELETE ALL */
-    // await SchoolModel.deleteMany();
-    // await UserModel.deleteMany();
-    // await TeacherModel.deleteMany();
-    // await FieldModel.deleteMany();
-    // await TeacherFieldModel.deleteMany();
-    // await ScheduleModel.deleteMany();
-    // await BreakModel.deleteMany();
-    // await LevelModel.deleteMany();
-    // await GroupModel.deleteMany();
-    // await SubjectModel.deleteMany();
-    // await ClassModel.deleteMany();
-    // return;
 
     /* CREATE SCHOOL */
     const school = await SchoolModel.create(entities.schools[index]);
@@ -249,7 +236,7 @@ async function populate(index: number) {
     // const classInstance = (await ClassModel.find()).at(0);
 
     // console.log(coordinator);
-    console.log("Success!");
+    console.log("Success populating the database!");
     // stops the execution, 0 = no error
     // process.exit(0);
   } catch (error) {
@@ -257,6 +244,30 @@ async function populate(index: number) {
     // stops the execution, , 1 = error
     process.exit(1);
   }
-}
+};
 
-export default populate;
+export const flush = async () => {
+  try {
+    await connectDB();
+    /* DELETE ALL */
+    await SchoolModel.deleteMany();
+    await UserModel.deleteMany();
+    await TeacherModel.deleteMany();
+    await FieldModel.deleteMany();
+    await TeacherFieldModel.deleteMany();
+    await ScheduleModel.deleteMany();
+    await BreakModel.deleteMany();
+    await LevelModel.deleteMany();
+    await GroupModel.deleteMany();
+    await SubjectModel.deleteMany();
+    await ClassModel.deleteMany();
+
+    console.log("Success flushing the database!");
+    // stops the execution, 0 = no error
+    // process.exit(0);
+  } catch (error) {
+    console.log(error);
+    // stops the execution, , 1 = error
+    process.exit(1);
+  }
+};
