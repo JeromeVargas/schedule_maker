@@ -35,7 +35,7 @@ const UserSchema = new Schema<User>(
     },
     status: {
       type: String,
-      enum: ["active", "inactive", "suspended"],
+      enum: ["active", "inactive", "on_leave"],
       required: [true, "Please provide a status for the user"],
     },
     hasTeachingFunc: {

@@ -9,8 +9,6 @@ for later:
 
 Back end:
 
-// Todo --> remove the suspended status option, to leave just the inactive as a form of soft delete, add on leave instead
-// Todo --> if user is UPDATED as inactive or with no teaching functions, delete teacher and any other related records in other collections, or maybe soft delete it
 // Todo --> add unique to the email field in the user
 // Todo --> add a active / inactive boolean flag to the school entity, to do a soft delete
 // Todo --> update types with entity type and remove all the Types.ObjectId in the types file
@@ -42,6 +40,7 @@ for later:
 
 Front End
 
+// Todo --> if user is UPDATED as inactive or with no teaching functions being soft deleted, inform the user that the user functions must be passed onto a new teacher
 // Todo -->
 // Todo -->
 

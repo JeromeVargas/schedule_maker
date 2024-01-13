@@ -150,7 +150,7 @@ describe("RESOURCE => User", () => {
       lastName: "Kubow",
       email: "ania@yahoo.com",
       role: "teacher",
-      status: "suspended",
+      status: "on_leave",
       hasTeachingFunc: true,
     },
   ];
@@ -887,7 +887,7 @@ describe("RESOURCE => User", () => {
               lastName: "Kubow",
               role: "teacher",
               school_id: expect.any(String),
-              status: "suspended",
+              status: "on_leave",
             },
           ]);
           expect(statusCode).toBe(200);

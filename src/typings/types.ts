@@ -11,7 +11,7 @@ export type NewSchool = Omit<School, "_id">;
 
 // User
 export type Role = "headmaster" | "coordinator" | "teacher";
-export type Status = "active" | "inactive" | "suspended";
+export type Status = "active" | "inactive" | "on_leave";
 
 export type User = {
   _id: Types.ObjectId;
