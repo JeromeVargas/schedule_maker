@@ -264,7 +264,40 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::05 - Passing an existing school name", () => {
+    describe("school::post::05 - Passing an invalid status value", () => {
+      it("should return a duplicate school error", async () => {
+        // mock services
+        const duplicateSchoolName = mockService(
+          schoolNullPayload,
+          "findSchoolByProperty"
+        );
+        const insertSchool = mockService(schoolNullPayload, "insertSchool");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send({ ...newSchool, status: "hello" });
+
+        // assertions
+        expect(body).toStrictEqual([
+          {
+            location: "body",
+            msg: "the status provided is not a valid option",
+            param: "status",
+            value: "hello",
+          },
+        ]);
+        expect(statusCode).toBe(400);
+        expect(duplicateSchoolName).not.toHaveBeenCalled();
+        expect(duplicateSchoolName).not.toHaveBeenCalledWith(
+          { name: newSchool.name },
+          "-createdAt -updatedAt"
+        );
+        expect(insertSchool).not.toHaveBeenCalled();
+        expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
+      });
+    });
+    describe("school::post::06 - Passing an existing school name", () => {
       it("should return a duplicate school error", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -292,7 +325,7 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::06 - Passing a school but not being created", () => {
+    describe("school::post::07 - Passing a school but not being created", () => {
       it("should not create a school", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -320,7 +353,7 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).toHaveBeenCalledWith(newSchool);
       });
     });
-    describe("school::post::07 - Passing a school correctly to create", () => {
+    describe("school::post::08 - Passing a school correctly to create", () => {
       it("should create a school", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -678,7 +711,43 @@ describe("RESOURCE => School", () => {
           );
         });
       });
-      describe("school::put::05 - Passing an existing school name", () => {
+      describe("school::put::05 - Passing an invalid status value", () => {
+        it("should return a duplicate school error", async () => {
+          // mock services
+          const duplicateSchoolName = mockService(
+            schoolNullPayload,
+            "findSchoolByProperty"
+          );
+          const updateSchool = mockService(schoolNullPayload, "modifySchool");
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .put(`${endPointUrl}${validMockSchoolId}`)
+            .send({ ...newSchool, status: "hello" });
+
+          // assertions
+          expect(body).toStrictEqual([
+            {
+              location: "body",
+              msg: "the status provided is not a valid option",
+              param: "status",
+              value: "hello",
+            },
+          ]);
+          expect(statusCode).toBe(400);
+          expect(duplicateSchoolName).not.toHaveBeenCalled();
+          expect(duplicateSchoolName).not.toHaveBeenCalledWith(
+            { name: newSchoolWrongLengthValues.name },
+            "-createdAt -updatedAt"
+          );
+          expect(updateSchool).not.toHaveBeenCalled();
+          expect(updateSchool).not.toHaveBeenCalledWith(
+            validMockSchoolId,
+            newSchoolWrongLengthValues
+          );
+        });
+      });
+      describe("school::put::06 - Passing an existing school name", () => {
         it("should not update a school", async () => {
           // mock services
           const duplicateSchoolName = mockService(
