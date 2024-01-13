@@ -1,10 +1,12 @@
 import { Types } from "mongoose";
 
 // school
+export type SchoolStatus = "active" | "inactive";
 export type School = {
   _id: Types.ObjectId;
   name: string;
   groupMaxNumStudents: number;
+  status: School;
 };
 
 export type NewSchool = Omit<School, "_id">;

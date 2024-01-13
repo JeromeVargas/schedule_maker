@@ -31,6 +31,21 @@ const validateCreateSchool = [
     .bail()
     .isLength({ min: 1, max: 9 })
     .withMessage("The start time must not exceed 9 digits"),
+  check("status")
+    .exists()
+    .withMessage("Please add the school's current status")
+    .bail()
+    .notEmpty()
+    .withMessage("The status field is empty")
+    .bail()
+    .isString()
+    .withMessage("status is not valid")
+    .bail()
+    .isIn(["active", "inactive"])
+    .withMessage("the status provided is not a valid option")
+    .blacklist("%,$")
+    .trim()
+    .escape(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -91,6 +106,21 @@ const validateUpdateSchool = [
     .bail()
     .isLength({ min: 1, max: 9 })
     .withMessage("The start time must not exceed 9 digits"),
+  check("status")
+    .exists()
+    .withMessage("Please add the school's current status")
+    .bail()
+    .notEmpty()
+    .withMessage("The status field is empty")
+    .bail()
+    .isString()
+    .withMessage("status is not valid")
+    .bail()
+    .isIn(["active", "inactive"])
+    .withMessage("the status provided is not a valid option")
+    .blacklist("%,$")
+    .trim()
+    .escape(),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

@@ -19,7 +19,7 @@ import {
 // @fields: body {name:[string], groupMaxNumStudents: [number]}
 const createSchool = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { name, groupMaxNumStudents } = body;
+  const { name, groupMaxNumStudents, status } = body;
   /* find if the school name already exists */
   const searchCriteria = { name };
   const fieldsToReturn = "-createdAt -updatedAt";
@@ -34,6 +34,7 @@ const createSchool = async ({ body }: Request, res: Response) => {
   const newSchool = {
     name: name,
     groupMaxNumStudents: groupMaxNumStudents,
+    status: status,
   };
   const schoolCreated = await insertSchool(newSchool);
   if (!schoolCreated) {
@@ -79,7 +80,7 @@ const getSchool = async ({ params }: Request, res: Response) => {
 const updateSchool = async ({ body, params }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: schoolId } = params;
-  const { name, groupMaxNumStudents } = body;
+  const { name, groupMaxNumStudents, status } = body;
   /* check if there is a name duplicate that belongs to someone else */
   const searchCriteria = { name: name };
   const fieldsToReturn = "-createdAt -updatedAt";
@@ -91,6 +92,7 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
   const newSchool = {
     name: name,
     groupMaxNumStudents: groupMaxNumStudents,
+    status: status,
   };
   const schoolUpdated = await modifySchool(schoolId, newSchool);
   if (!schoolUpdated) {

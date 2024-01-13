@@ -12,6 +12,11 @@ const SchoolSchema = new Schema<School>(
       type: Number,
       required: [true, "must provide a group number of students"],
     },
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      required: [true, "Please provide a status for the school"],
+    },
   },
   {
     timestamps: true,

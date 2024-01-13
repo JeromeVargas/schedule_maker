@@ -36,22 +36,27 @@ describe("RESOURCE => School", () => {
   const newSchool = {
     name: "school 001",
     groupMaxNumStudents: 40,
+    status: "active",
   };
   const newSchoolMissingValues = {
     nam: "school 001",
     groupMaxNumStudent: 40,
+    statu: "active",
   };
   const newSchoolEmptyValues = {
     name: "",
     groupMaxNumStudents: "",
+    status: "",
   };
   const newSchoolNotValidDataTypes = {
     name: 1234567890,
     groupMaxNumStudents: "hello",
+    status: 123456789,
   };
   const newSchoolWrongLengthValues = {
     name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
     groupMaxNumStudents: 1234567890,
+    status: "active",
   };
 
   /* payloads */
@@ -59,6 +64,7 @@ describe("RESOURCE => School", () => {
     _id: validMockSchoolId,
     name: "school 001",
     groupMaxNumStudents: 40,
+    status: "active",
   };
   const schoolNullPayload = null;
   const schoolsPayload = [
@@ -66,16 +72,19 @@ describe("RESOURCE => School", () => {
       _id: new Types.ObjectId().toString(),
       name: "school 001",
       groupMaxNumStudents: 40,
+      status: "active",
     },
     {
       _id: new Types.ObjectId().toString(),
       name: "school 002",
       groupMaxNumStudents: 40,
+      status: "active",
     },
     {
       _id: new Types.ObjectId().toString(),
       name: "school 003",
       groupMaxNumStudents: 40,
+      status: "inactive",
     },
   ];
   const schoolsNullPayload: School[] = [];
@@ -107,6 +116,11 @@ describe("RESOURCE => School", () => {
             location: "body",
             msg: "Please add the group max number of students",
             param: "groupMaxNumStudents",
+          },
+          {
+            location: "body",
+            msg: "Please add the school's current status",
+            param: "status",
           },
         ]);
 
@@ -148,6 +162,12 @@ describe("RESOURCE => School", () => {
             param: "groupMaxNumStudents",
             value: "",
           },
+          {
+            location: "body",
+            msg: "The status field is empty",
+            param: "status",
+            value: "",
+          },
         ]);
         expect(statusCode).toBe(400);
         expect(duplicateSchoolName).not.toHaveBeenCalled();
@@ -186,6 +206,12 @@ describe("RESOURCE => School", () => {
             msg: "group max number of students value is not valid",
             param: "groupMaxNumStudents",
             value: "hello",
+          },
+          {
+            location: "body",
+            msg: "status is not valid",
+            param: "status",
+            value: 123456789,
           },
         ]);
         expect(statusCode).toBe(400);
@@ -245,7 +271,7 @@ describe("RESOURCE => School", () => {
           schoolPayload,
           "findSchoolByProperty"
         );
-        const insertSchool = mockService(schoolPayload, "insertSchool");
+        const insertSchool = mockService(schoolNullPayload, "insertSchool");
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -362,16 +388,19 @@ describe("RESOURCE => School", () => {
               _id: expect.any(String),
               name: "school 001",
               groupMaxNumStudents: 40,
+              status: "active",
             },
             {
               _id: expect.any(String),
               name: "school 002",
               groupMaxNumStudents: 40,
+              status: "active",
             },
             {
               _id: expect.any(String),
               name: "school 003",
               groupMaxNumStudents: 40,
+              status: "inactive",
             },
           ]);
           expect(statusCode).toBe(200);
@@ -445,6 +474,7 @@ describe("RESOURCE => School", () => {
               _id: validMockSchoolId,
               name: "school 001",
               groupMaxNumStudents: 40,
+              status: "active",
             });
             expect(statusCode).toBe(200);
             expect(findSchool).toHaveBeenCalled();
@@ -483,6 +513,11 @@ describe("RESOURCE => School", () => {
               location: "body",
               msg: "Please add the group max number of students",
               param: "groupMaxNumStudents",
+            },
+            {
+              location: "body",
+              msg: "Please add the school's current status",
+              param: "status",
             },
           ]);
           expect(statusCode).toBe(400);
@@ -524,6 +559,12 @@ describe("RESOURCE => School", () => {
               location: "body",
               msg: "The group max number of students field is empty",
               param: "groupMaxNumStudents",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The status field is empty",
+              param: "status",
               value: "",
             },
           ]);
@@ -573,6 +614,12 @@ describe("RESOURCE => School", () => {
               msg: "group max number of students value is not valid",
               param: "groupMaxNumStudents",
               value: "hello",
+            },
+            {
+              location: "body",
+              msg: "status is not valid",
+              param: "status",
+              value: 123456789,
             },
           ]);
           expect(statusCode).toBe(400);
