@@ -249,7 +249,7 @@ describe("RESOURCE => School", () => {
           },
           {
             location: "body",
-            msg: "The start time must not exceed 9 digits",
+            msg: "group max number of students must not exceed 9 digits",
             param: "groupMaxNumStudents",
             value: 1234567890,
           },
@@ -660,7 +660,7 @@ describe("RESOURCE => School", () => {
             },
             {
               location: "body",
-              msg: "The start time must not exceed 9 digits",
+              msg: "group max number of students must not exceed 9 digits",
               param: "groupMaxNumStudents",
               value: 1234567890,
             },

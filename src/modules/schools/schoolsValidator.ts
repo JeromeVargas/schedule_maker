@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body {name:[string], groupMaxNumStudents: [number]}
+// @fields: body {name:[string], groupMaxNumStudents: [number], status: [string]}
 const validateCreateSchool = [
   check("name")
     .exists()
@@ -30,7 +30,7 @@ const validateCreateSchool = [
     .withMessage("group max number of students value is not valid")
     .bail()
     .isLength({ min: 1, max: 9 })
-    .withMessage("The start time must not exceed 9 digits"),
+    .withMessage("group max number of students must not exceed 9 digits"),
   check("status")
     .exists()
     .withMessage("Please add the school's current status")
@@ -68,7 +68,7 @@ const validateGetSchool = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {name:[string], groupMaxNumStudents: [number]}
+// @fields: params: {id:[string]},  body: {name:[string], groupMaxNumStudents: [number], status: [string]}
 const validateUpdateSchool = [
   check("id")
     .custom((value) => {
@@ -105,7 +105,7 @@ const validateUpdateSchool = [
     .withMessage("group max number of students value is not valid")
     .bail()
     .isLength({ min: 1, max: 9 })
-    .withMessage("The start time must not exceed 9 digits"),
+    .withMessage("group max number of students must not exceed 9 digits"),
   check("status")
     .exists()
     .withMessage("Please add the school's current status")
