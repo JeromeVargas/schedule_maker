@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import ClassModel from "../classes/classModel";
+import SessionModel from "../sessions/sessionModel";
 import { Subject } from "../../typings/types";
 
 const SubjectSchema = new Schema<Subject>(
@@ -23,11 +23,11 @@ const SubjectSchema = new Schema<Subject>(
       type: String,
       required: [true, "must provide name for the subject"],
     },
-    classUnits: {
+    sessionUnits: {
       type: Number,
       required: [
         true,
-        "must provide the number of class units for this subject during the week",
+        "must provide the number of session units for this subject during the week",
       ],
     },
     frequency: {
@@ -55,8 +55,8 @@ SubjectSchema.pre(
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
     /* update entities records in collections */
-    // update the class instance/s
-    await ClassModel.updateMany(
+    // update the session instance/s
+    await SessionModel.updateMany(
       {
         school_id: findSubject?.school_id,
         subject_id: findSubject?._id,

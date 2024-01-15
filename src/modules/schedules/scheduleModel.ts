@@ -22,9 +22,9 @@ const ScheduleSchema = new Schema<Schedule>(
       type: Number,
       required: [true, "Please provide the number of hours per day"],
     },
-    classUnitMinutes: {
+    sessionUnitMinutes: {
       type: Number,
-      required: [true, "Please provide the number of minutes per class unit"],
+      required: [true, "Please provide the number of minutes per session unit"],
     },
     monday: {
       type: Boolean,
@@ -78,7 +78,7 @@ ScheduleSchema.pre(
       schedule_id: findSchedule?._id,
     }).exec();
     /* update entities records in collections */
-    // update the class instance/s
+    // update the session instance/s
     await LevelModel.updateMany(
       {
         school_id: findSchedule?.school_id,

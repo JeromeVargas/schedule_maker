@@ -1,63 +1,67 @@
-import ClassModel from "./classModel";
+import SessionModel from "./sessionModel";
 import GroupModel from "../groups/groupModel";
 import SubjectModel from "../subjects/subjectModel";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
 
-import { NewClass } from "../../typings/types";
+import { NewSession } from "../../typings/types";
 
 // CRUD services
-// @desc insert a class in database
-// @params class
-const insertClass = (classSession: NewClass) => {
-  const classInsert = ClassModel.create(classSession);
-  return classInsert;
+// @desc insert a session in database
+// @params session
+const insertSession = (sessionSession: NewSession) => {
+  const sessionInsert = SessionModel.create(sessionSession);
+  return sessionInsert;
 };
 
-// @desc find all classes by school id
+// @desc find all sessions by school id
 // @params filters, fields to return
-const findFilterAllClasses = (
+const findFilterAllSessions = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const classesFound = ClassModel.find(filters)
+  const sessionsFound = SessionModel.find(filters)
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return classesFound;
+  return sessionsFound;
 };
 
-// @desc find a class by school id and class id
-// @params classProperty, fields to return
-const findClassByProperty = (
+// @desc find a session by school id and session id
+// @params sessionProperty, fields to return
+const findSessionByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const classFound = ClassModel.findOne(filters)
+  const sessionFound = SessionModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return classFound;
+  return sessionFound;
 };
 
-// @desc update a class by class id and school id
-// @params classId, class
-const modifyFilterClass = (
+// @desc update a session by session id and school id
+// @params sessionId, session
+const modifyFilterSession = (
   filters: { _id: string; school_id: string },
-  classSession: NewClass
+  sessionSession: NewSession
 ) => {
-  const classUpdated = ClassModel.findOneAndUpdate(filters, classSession, {
-    new: true,
-    runValidators: true,
-  });
-  return classUpdated;
+  const sessionUpdated = SessionModel.findOneAndUpdate(
+    filters,
+    sessionSession,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  return sessionUpdated;
 };
 
-// @desc delete a class by school id and class id
-// @params classId, filters
-const removeFilterClass = (filters: { school_id: string; _id: string }) => {
-  const classDeleted = ClassModel.findOneAndDelete(filters).lean().exec();
-  return classDeleted;
+// @desc delete a session by school id and session id
+// @params sessionId, filters
+const removeFilterSession = (filters: { school_id: string; _id: string }) => {
+  const sessionDeleted = SessionModel.findOneAndDelete(filters).lean().exec();
+  return sessionDeleted;
 };
 
 /* Services from other entities */
@@ -110,11 +114,11 @@ const findPopulateTeacherFieldById = (
 };
 
 export {
-  insertClass,
-  findFilterAllClasses,
-  findClassByProperty,
-  modifyFilterClass,
-  removeFilterClass,
+  insertSession,
+  findFilterAllSessions,
+  findSessionByProperty,
+  modifyFilterSession,
+  removeFilterSession,
   /* Services from other entities */
   findPopulateGroupById,
   findPopulateSubjectById,

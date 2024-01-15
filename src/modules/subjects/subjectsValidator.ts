@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body: {school_id:[string], level_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields: body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
 const validateCreateSubject = [
   check("school_id")
     .exists()
@@ -67,28 +67,28 @@ const validateCreateSubject = [
     .blacklist("%,$")
     .escape()
     .trim(),
-  check("classUnits")
+  check("sessionUnits")
     .exists()
-    .withMessage("Please add the number of class units")
+    .withMessage("Please add the number of session units")
     .bail()
     .notEmpty()
-    .withMessage("The number of class units field is empty")
+    .withMessage("The number of session units field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("number of class units value is not valid")
+    .withMessage("number of session units value is not valid")
     .isLength({ min: 1, max: 9 })
-    .withMessage("The number of class units must not exceed 9 digits"),
+    .withMessage("The number of session units must not exceed 9 digits"),
   check("frequency")
     .exists()
-    .withMessage("Please add the subject class frequency")
+    .withMessage("Please add the subject session frequency")
     .bail()
     .notEmpty()
-    .withMessage("The subject class frequency field is empty")
+    .withMessage("The subject session frequency field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("subject class frequency value is not valid")
+    .withMessage("subject session frequency value is not valid")
     .isLength({ min: 1, max: 9 })
-    .withMessage("The subject class frequency must not exceed 9 digits"),
+    .withMessage("The subject session frequency must not exceed 9 digits"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -150,7 +150,7 @@ const validateGetSubject = [
   },
 ];
 
-// @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
 const validateUpdateSubject = [
   check("id")
     .custom((value) => {
@@ -224,28 +224,28 @@ const validateUpdateSubject = [
     .blacklist("%,$")
     .escape()
     .trim(),
-  check("classUnits")
+  check("sessionUnits")
     .exists()
-    .withMessage("Please add the number of class units")
+    .withMessage("Please add the number of session units")
     .bail()
     .notEmpty()
-    .withMessage("The number of class units field is empty")
+    .withMessage("The number of session units field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("number of class units value is not valid")
+    .withMessage("number of session units value is not valid")
     .isLength({ min: 1, max: 9 })
-    .withMessage("The number of class units must not exceed 9 digits"),
+    .withMessage("The number of session units must not exceed 9 digits"),
   check("frequency")
     .exists()
-    .withMessage("Please add the subject class frequency")
+    .withMessage("Please add the subject session frequency")
     .bail()
     .notEmpty()
-    .withMessage("The subject class frequency field is empty")
+    .withMessage("The subject session frequency field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("subject class frequency value is not valid")
+    .withMessage("subject session frequency value is not valid")
     .isLength({ min: 1, max: 9 })
-    .withMessage("The subject class frequency must not exceed 9 digits"),
+    .withMessage("The subject session frequency must not exceed 9 digits"),
   // code
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);

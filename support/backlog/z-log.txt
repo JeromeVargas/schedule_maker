@@ -9,9 +9,7 @@ for later:
 
 Back end:
 
-// Todo --> replace class entity name by session, 
-// Todo --> change frequency and classUnits by sessions in the subject and schedule entities
-// Todo --> remove hasTeachingFunc from user, the role is the actual flag, update the controllers, validator, model and others accordingly
+// Todo --> remove hasTeachingFunc from user, because the role is the actual flag, update the controllers, validator, model and others accordingly
 // Todo --> add admin_hours_assignable and admin_hours_assigned to differentiate teachers from administrative, i.e. principal and coordinators
 // Todo --> add group_coordinator associative table, to decouple the coordinator from the group and to have more than one coordinator for each group
 // Todo --> add teacher_coordinator associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher

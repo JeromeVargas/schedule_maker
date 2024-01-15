@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import ClassModel from "../classes/classModel";
+import SessionModel from "../sessions/sessionModel";
 import { Group } from "../../typings/types";
 
 const GroupSchema = new Schema<Group>(
@@ -44,8 +44,8 @@ GroupSchema.pre(
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
     /* delete entities records in collections */
-    // delete the class instance/s
-    await ClassModel.deleteMany({
+    // delete the session instance/s
+    await SessionModel.deleteMany({
       school_id: findGroup?.school_id,
       group_id: findGroup?._id,
     }).exec();

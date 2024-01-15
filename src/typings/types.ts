@@ -77,7 +77,7 @@ export type Schedule = {
   name: string;
   dayStart: number;
   shiftNumberMinutes: number;
-  classUnitMinutes: number;
+  sessionUnitMinutes: number;
   monday: boolean;
   tuesday: boolean;
   wednesday: boolean;
@@ -129,14 +129,14 @@ export type Subject = {
   level_id: Level;
   field_id: Field;
   name: string;
-  classUnits: number;
+  sessionUnits: number;
   frequency: number;
 };
 
 export type NewSubject = Omit<Subject, "_id">;
 
-// class
-export type Class = {
+// session
+export type Session = {
   _id: Types.ObjectId;
   school_id: School;
   level_id: Level;
@@ -148,4 +148,4 @@ export type Class = {
   teacherScheduleSlot: number;
 };
 
-export type NewClass = Omit<Class, "_id">;
+export type NewSession = Omit<Session, "_id">;

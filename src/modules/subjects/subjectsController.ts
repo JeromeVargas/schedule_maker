@@ -20,10 +20,10 @@ import {
 // @desc create a subject
 // @route POST /api/v1/subjects
 // @access Private
-// @fields body: {school_id:[string], level_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
 const createSubject = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { school_id, level_id, field_id, name, classUnits, frequency } = body;
+  const { school_id, level_id, field_id, name, sessionUnits, frequency } = body;
   /* check if the subject name already exists for this level */
   const searchCriteria = { level_id, name };
   const fieldsToReturn = "-createdAt -updatedAt";
@@ -78,7 +78,7 @@ const createSubject = async ({ body }: Request, res: Response) => {
     level_id: level_id,
     field_id: field_id,
     name: name,
-    classUnits: classUnits,
+    sessionUnits: sessionUnits,
     frequency: frequency,
   };
   const subjectCreated = await insertSubject(newSubject);
@@ -130,11 +130,11 @@ const getSubject = async ({ params, body }: Request, res: Response) => {
 // @desc update a Subject
 // @route PUT /api/v1/Subjects/:id
 // @access Private
-// @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], classUnits:[number], frequency:[number]}
+// @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
 const updateSubject = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: subjectId } = params;
-  const { school_id, level_id, field_id, name, classUnits, frequency } = body;
+  const { school_id, level_id, field_id, name, sessionUnits, frequency } = body;
   /* check if the subject name already exists for this school */
   const subjectFilters = { level_id: level_id, name: name };
   const subjectFieldsToReturn = "-createdAt -updatedAt";
@@ -192,7 +192,7 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
     level_id: level_id,
     field_id: field_id,
     name: name,
-    classUnits: classUnits,
+    sessionUnits: sessionUnits,
     frequency: frequency,
   };
   const filtersUpdate = { _id: subjectId, school_id: school_id };

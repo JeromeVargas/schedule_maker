@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string], level_id:[string], group_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
-const validateCreateClass = [
+const validateCreateSession = [
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
@@ -87,7 +87,7 @@ const validateCreateClass = [
     .withMessage(`The teacher_field id is not valid`),
   check("startTime")
     .exists()
-    .withMessage("Please add the start time for the class")
+    .withMessage("Please add the start time for the session")
     .bail()
     .notEmpty()
     .withMessage("The start time field is empty")
@@ -98,7 +98,7 @@ const validateCreateClass = [
     .withMessage("The start time must not exceed 9 digits"),
   check("groupScheduleSlot")
     .exists()
-    .withMessage("Please add the group schedule slot number for this class")
+    .withMessage("Please add the group schedule slot number for this session")
     .bail()
     .notEmpty()
     .withMessage("The group schedule slot number field is empty")
@@ -109,7 +109,7 @@ const validateCreateClass = [
     .withMessage("The group schedule slot number must not exceed 9 digits"),
   check("teacherScheduleSlot")
     .exists()
-    .withMessage("Please add the teacher schedule slot number for this class")
+    .withMessage("Please add the teacher schedule slot number for this session")
     .bail()
     .notEmpty()
     .withMessage("The teacher schedule slot number field is empty")
@@ -124,7 +124,7 @@ const validateCreateClass = [
 ];
 
 // @fields: body {school_id:[string]}
-const validateGetClasses = [
+const validateGetSessions = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -147,7 +147,7 @@ const validateGetClasses = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetClass = [
+const validateGetSession = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -157,7 +157,7 @@ const validateGetClass = [
         return true;
       }
     })
-    .withMessage(`The class id is not valid`),
+    .withMessage(`The session id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -180,7 +180,7 @@ const validateGetClass = [
 ];
 
 // @fields: params: {id:[string]},  body {school_id:[string], group_id:[string], subject_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
-const validateUpdateClass = [
+const validateUpdateSession = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -190,7 +190,7 @@ const validateUpdateClass = [
         return true;
       }
     })
-    .withMessage(`The class id is not valid`),
+    .withMessage(`The session id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
@@ -273,7 +273,7 @@ const validateUpdateClass = [
     .withMessage(`The teacher_field id is not valid`),
   check("startTime")
     .exists()
-    .withMessage("Please add the start time for the class")
+    .withMessage("Please add the start time for the session")
     .bail()
     .notEmpty()
     .withMessage("The start time field is empty")
@@ -284,7 +284,7 @@ const validateUpdateClass = [
     .withMessage("The start time must not exceed 9 digits"),
   check("groupScheduleSlot")
     .exists()
-    .withMessage("Please add the group schedule slot number for this class")
+    .withMessage("Please add the group schedule slot number for this session")
     .bail()
     .notEmpty()
     .withMessage("The group schedule slot number field is empty")
@@ -295,7 +295,7 @@ const validateUpdateClass = [
     .withMessage("The group schedule slot number must not exceed 9 digits"),
   check("teacherScheduleSlot")
     .exists()
-    .withMessage("Please add the teacher schedule slot number for this class")
+    .withMessage("Please add the teacher schedule slot number for this session")
     .bail()
     .notEmpty()
     .withMessage("The teacher schedule slot number field is empty")
@@ -310,7 +310,7 @@ const validateUpdateClass = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteClass = [
+const validateDeleteSession = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -320,7 +320,7 @@ const validateDeleteClass = [
         return true;
       }
     })
-    .withMessage(`The class id is not valid`),
+    .withMessage(`The session id is not valid`),
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -343,9 +343,9 @@ const validateDeleteClass = [
 ];
 
 export {
-  validateCreateClass,
-  validateGetClasses,
-  validateGetClass,
-  validateUpdateClass,
-  validateDeleteClass,
+  validateCreateSession,
+  validateGetSessions,
+  validateGetSession,
+  validateUpdateSession,
+  validateDeleteSession,
 };

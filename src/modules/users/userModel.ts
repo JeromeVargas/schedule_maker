@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { Teacher_Field, User } from "../../typings/types";
 import TeacherModel from "../teachers/teacherModel";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
-import ClassModel from "../classes/classModel";
+import SessionModel from "../sessions/sessionModel";
 import GroupModel from "../groups/groupModel";
 
 const UserSchema = new Schema<User>(
@@ -106,8 +106,8 @@ UserSchema.pre(
       },
       { $set: { coordinator_id: null } }
     ).exec();
-    // update the class instance/s
-    await ClassModel.updateMany(
+    // update the session instance/s
+    await SessionModel.updateMany(
       { teacherField_id: { $in: findTeacherFields } },
       { teacherField_id: null }
     );

@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
+// @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const validateCreateSchedule = [
   check("school_id")
     .exists()
@@ -59,15 +59,15 @@ const validateCreateSchedule = [
     .bail()
     .isLength({ min: 1, max: 9 })
     .withMessage("The day start time must not exceed 9 digits"),
-  check("classUnitMinutes")
+  check("sessionUnitMinutes")
     .exists()
-    .withMessage("Please add the class unit length")
+    .withMessage("Please add the session unit length")
     .bail()
     .notEmpty()
-    .withMessage("The class unit length field is empty")
+    .withMessage("The session unit length field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("class unit length value is not valid")
+    .withMessage("session unit length value is not valid")
     .bail()
     .isLength({ min: 1, max: 9 })
     .withMessage("The day start time must not exceed 9 digits"),
@@ -195,7 +195,7 @@ const validateGetSchedule = [
   },
 ];
 
-// @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
+// @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const validateUpdateSchedule = [
   check("id")
     .custom((value) => {
@@ -261,15 +261,15 @@ const validateUpdateSchedule = [
     .bail()
     .isLength({ min: 1, max: 9 })
     .withMessage("The day start time must not exceed 9 digits"),
-  check("classUnitMinutes")
+  check("sessionUnitMinutes")
     .exists()
-    .withMessage("Please add the class unit length")
+    .withMessage("Please add the session unit length")
     .bail()
     .notEmpty()
-    .withMessage("The class unit length field is empty")
+    .withMessage("The session unit length field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("class unit length value is not valid")
+    .withMessage("session unit length value is not valid")
     .bail()
     .isLength({ min: 1, max: 9 })
     .withMessage("The day start time must not exceed 9 digits"),

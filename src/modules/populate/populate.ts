@@ -9,7 +9,7 @@ import BreakModel from "../breaks/breakModel";
 import LevelModel from "../levels/levelModel";
 import SubjectModel from "../subjects/subjectModel";
 import GroupModel from "../groups/groupModel";
-import ClassModel from "../classes/classModel";
+import SessionModel from "../sessions/sessionModel";
 
 import entities from "./entities.json";
 
@@ -204,14 +204,14 @@ export const populate = async (index: number) => {
     /* FIND SUBJECT */
     // const subject = (await SubjectModel.find()).at(0);
 
-    /* CREATE CLASS */
+    /* CREATE SESSION */
     // const level = (await LevelModel.find()).at(0);
     // const group = (await GroupModel.find()).at(0);
     // const subject = (await SubjectModel.find()).at(0);
     // const teacherField = (await TeacherFieldModel.find()).at(0);
-    const newClass1 = level1
+    const newSession1 = level1
       ? {
-          ...entities.classes[0],
+          ...entities.sessions[0],
           school_id: level1?.school_id,
           level_id: level1?._id,
           group_id: group1?._id,
@@ -219,10 +219,10 @@ export const populate = async (index: number) => {
           teacherField_id: teacherField1?._id,
         }
       : null;
-    const classInstance1 = await ClassModel.create(newClass1);
-    const newClass2 = level2
+    const sessionInstance1 = await SessionModel.create(newSession1);
+    const newSession2 = level2
       ? {
-          ...entities.classes[1],
+          ...entities.sessions[1],
           school_id: level2?.school_id,
           level_id: level2?._id,
           group_id: group2?._id,
@@ -230,10 +230,10 @@ export const populate = async (index: number) => {
           teacherField_id: teacherField2?._id,
         }
       : null;
-    const classInstance2 = await ClassModel.create(newClass2);
+    const sessionInstance2 = await SessionModel.create(newSession2);
 
-    /* FIND CLASS */
-    // const classInstance = (await ClassModel.find()).at(0);
+    /* FIND SESSION */
+    // const sessionInstance = (await SessionModel.find()).at(0);
 
     // console.log(coordinator);
     console.log("Success populating the database!");
@@ -260,7 +260,7 @@ export const flush = async () => {
     await LevelModel.deleteMany();
     await GroupModel.deleteMany();
     await SubjectModel.deleteMany();
-    await ClassModel.deleteMany();
+    await SessionModel.deleteMany();
 
     console.log("Success flushing the database!");
     // stops the execution, 0 = no error

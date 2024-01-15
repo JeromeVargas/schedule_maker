@@ -79,7 +79,7 @@ describe("Resource => Break", () => {
     name: "Schedule 001",
     dayStart: 420,
     shiftNumberMinutes: 360,
-    classUnitMinutes: 40,
+    sessionUnitMinutes: 40,
     monday: true,
     tuesday: true,
     wednesday: true,

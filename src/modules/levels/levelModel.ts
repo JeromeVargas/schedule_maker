@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import ClassModel from "../classes/classModel";
+import SessionModel from "../sessions/sessionModel";
 import GroupModel from "../groups/groupModel";
 import SubjectModel from "../subjects/subjectModel";
 import { Group, Level } from "../../typings/types";
@@ -47,8 +47,8 @@ LevelSchema.pre(
       school_id: findLevel?.school_id,
       level_id: findLevel?._id,
     });
-    // delete the class instance/s
-    await ClassModel.deleteMany({
+    // delete the session instance/s
+    await SessionModel.deleteMany({
       school_id: findLevel?.school_id,
       level_id: findLevel?._id,
     });

@@ -41,7 +41,7 @@ describe("Resource => Schedule", () => {
     name: "Schedule 001",
     dayStart: 420,
     shiftNumberMinutes: 360,
-    classUnitMinutes: 40,
+    sessionUnitMinutes: 40,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -55,7 +55,7 @@ describe("Resource => Schedule", () => {
     nam: "Schedule 001",
     day_star: 420,
     shift_number_minute: 360,
-    class_unit_minute: 40,
+    session_unit_minute: 40,
     monda: true,
     tuesda: true,
     wednesda: true,
@@ -69,7 +69,7 @@ describe("Resource => Schedule", () => {
     name: "",
     dayStart: "",
     shiftNumberMinutes: "",
-    classUnitMinutes: "",
+    sessionUnitMinutes: "",
     monday: "",
     tuesday: "",
     wednesday: "",
@@ -83,7 +83,7 @@ describe("Resource => Schedule", () => {
     name: 432,
     dayStart: "hello",
     shiftNumberMinutes: "hello",
-    classUnitMinutes: "hello",
+    sessionUnitMinutes: "hello",
     monday: "hello",
     tuesday: "hello",
     wednesday: "hello",
@@ -97,7 +97,7 @@ describe("Resource => Schedule", () => {
     name: "fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkjsdfi07879sdf0fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkj879sdf01",
     dayStart: 1234567890,
     shiftNumberMinutes: 1234567890,
-    classUnitMinutes: 1234567890,
+    sessionUnitMinutes: 1234567890,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -120,7 +120,7 @@ describe("Resource => Schedule", () => {
     name: "Schedule 001",
     dayStart: 420,
     shiftNumberMinutes: 360,
-    classUnitMinutes: 40,
+    sessionUnitMinutes: 40,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -137,7 +137,7 @@ describe("Resource => Schedule", () => {
       name: "Schedule 001",
       dayStart: 420,
       shiftNumberMinutes: 360,
-      classUnitMinutes: 40,
+      sessionUnitMinutes: 40,
       monday: true,
       tuesday: true,
       wednesday: true,
@@ -152,7 +152,7 @@ describe("Resource => Schedule", () => {
       name: "Schedule 002",
       dayStart: 420,
       shiftNumberMinutes: 360,
-      classUnitMinutes: 40,
+      sessionUnitMinutes: 40,
       monday: true,
       tuesday: true,
       wednesday: true,
@@ -167,7 +167,7 @@ describe("Resource => Schedule", () => {
       name: "Schedule 003",
       dayStart: 420,
       shiftNumberMinutes: 360,
-      classUnitMinutes: 40,
+      sessionUnitMinutes: 40,
       monday: true,
       tuesday: true,
       wednesday: true,
@@ -223,8 +223,8 @@ describe("Resource => Schedule", () => {
           },
           {
             location: "body",
-            msg: "Please add the class unit length",
-            param: "classUnitMinutes",
+            msg: "Please add the session unit length",
+            param: "sessionUnitMinutes",
           },
           {
             location: "body",
@@ -328,8 +328,8 @@ describe("Resource => Schedule", () => {
           },
           {
             location: "body",
-            msg: "The class unit length field is empty",
-            param: "classUnitMinutes",
+            msg: "The session unit length field is empty",
+            param: "sessionUnitMinutes",
             value: "",
           },
           {
@@ -439,8 +439,8 @@ describe("Resource => Schedule", () => {
           },
           {
             location: "body",
-            msg: "class unit length value is not valid",
-            param: "classUnitMinutes",
+            msg: "session unit length value is not valid",
+            param: "sessionUnitMinutes",
             value: "hello",
           },
           {
@@ -548,7 +548,7 @@ describe("Resource => Schedule", () => {
           {
             location: "body",
             msg: "The day start time must not exceed 9 digits",
-            param: "classUnitMinutes",
+            param: "sessionUnitMinutes",
             value: 1234567890,
           },
         ]);
@@ -884,7 +884,7 @@ describe("Resource => Schedule", () => {
             {
               _id: expect.any(String),
               school_id: expect.any(String),
-              classUnitMinutes: 40,
+              sessionUnitMinutes: 40,
               dayStart: 420,
               friday: true,
               monday: true,
@@ -899,7 +899,7 @@ describe("Resource => Schedule", () => {
             {
               _id: expect.any(String),
               school_id: expect.any(String),
-              classUnitMinutes: 40,
+              sessionUnitMinutes: 40,
               dayStart: 420,
               friday: true,
               monday: true,
@@ -914,7 +914,7 @@ describe("Resource => Schedule", () => {
             {
               _id: expect.any(String),
               school_id: expect.any(String),
-              classUnitMinutes: 40,
+              sessionUnitMinutes: 40,
               dayStart: 420,
               friday: true,
               monday: true,
@@ -1074,7 +1074,7 @@ describe("Resource => Schedule", () => {
           expect(body).toStrictEqual({
             _id: validMockScheduleId,
             school_id: validMockSchoolId,
-            classUnitMinutes: 40,
+            sessionUnitMinutes: 40,
             dayStart: 420,
             friday: true,
             monday: true,
@@ -1139,8 +1139,8 @@ describe("Resource => Schedule", () => {
           },
           {
             location: "body",
-            msg: "Please add the class unit length",
-            param: "classUnitMinutes",
+            msg: "Please add the session unit length",
+            param: "sessionUnitMinutes",
           },
           {
             location: "body",
@@ -1242,8 +1242,8 @@ describe("Resource => Schedule", () => {
           },
           {
             location: "body",
-            msg: "The class unit length field is empty",
-            param: "classUnitMinutes",
+            msg: "The session unit length field is empty",
+            param: "sessionUnitMinutes",
             value: "",
           },
           {
@@ -1359,8 +1359,8 @@ describe("Resource => Schedule", () => {
           },
           {
             location: "body",
-            msg: "class unit length value is not valid",
-            param: "classUnitMinutes",
+            msg: "session unit length value is not valid",
+            param: "sessionUnitMinutes",
             value: "hello",
           },
           {
@@ -1466,7 +1466,7 @@ describe("Resource => Schedule", () => {
           {
             location: "body",
             msg: "The day start time must not exceed 9 digits",
-            param: "classUnitMinutes",
+            param: "sessionUnitMinutes",
             value: 1234567890,
           },
         ]);

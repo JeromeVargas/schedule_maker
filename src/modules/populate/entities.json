@@ -91,7 +91,7 @@
       "name": "Schedule 001",
       "dayStart": 480,
       "shiftNumberMinutes": 420,
-      "classUnitMinutes": 40,
+      "sessionUnitMinutes": 40,
       "monday": true,
       "tuesday": true,
       "wednesday": true,
@@ -105,7 +105,7 @@
       "name": "Schedule 002",
       "dayStart": 480,
       "shiftNumberMinutes": 420,
-      "classUnitMinutes": 40,
+      "sessionUnitMinutes": 40,
       "monday": true,
       "tuesday": true,
       "wednesday": true,
@@ -163,7 +163,7 @@
       "level_id": null,
       "field_id": null,
       "name": "Math 101",
-      "classUnits": 1,
+      "sessionUnits": 1,
       "frequency": 2
     },
     {
@@ -171,11 +171,11 @@
       "level_id": null,
       "field_id": null,
       "name": "Science 101",
-      "classUnits": 1,
+      "sessionUnits": 1,
       "frequency": 2
     }
   ],
-  "classes": [
+  "sessions": [
     {
       "school_id": null,
       "level_id": null,

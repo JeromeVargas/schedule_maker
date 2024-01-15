@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { Field, Teacher_Field } from "../../typings/types";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
-import ClassModel from "../classes/classModel";
+import SessionModel from "../sessions/sessionModel";
 import SubjectModel from "../subjects/subjectModel";
 
 const FieldSchema = new Schema<Field>(
@@ -55,8 +55,8 @@ FieldSchema.pre(
       },
       { $set: { field_id: null } }
     ).exec();
-    // update the class instance/s
-    await ClassModel.updateMany(
+    // update the session instance/s
+    await SessionModel.updateMany(
       { teacherField_id: { $in: findTeacherFields } },
       { teacherField_id: null }
     );

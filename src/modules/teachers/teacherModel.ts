@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { Teacher, Teacher_Field } from "../../typings/types";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
-import ClassModel from "../classes/classModel";
+import SessionModel from "../sessions/sessionModel";
 
 const TeacherSchema = new Schema<Teacher>(
   {
@@ -100,8 +100,8 @@ TeacherSchema.pre(
       teacher_id: findTeacher?._id,
     }).exec();
     /* update entities records in collections */
-    // update the class instance/s
-    await ClassModel.updateMany(
+    // update the session instance/s
+    await SessionModel.updateMany(
       { teacherField_id: { $in: findTeacherFields } },
       { teacherField_id: null }
     );

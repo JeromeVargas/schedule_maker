@@ -44,7 +44,7 @@ describe("Resource => subject", () => {
     level_id: validMockLevelId,
     field_id: validMockFieldId,
     name: "Mathematics 101",
-    classUnits: 30,
+    sessionUnits: 30,
     frequency: 2,
   };
   const newSubjectMissingValues = {
@@ -52,7 +52,7 @@ describe("Resource => subject", () => {
     level_i: validMockLevelId,
     field_i: validMockFieldId,
     nam: "Mathematics 101",
-    classUnit: 30,
+    sessionUnit: 30,
     frequenc: 2,
   };
   const newSubjectEmptyValues = {
@@ -60,7 +60,7 @@ describe("Resource => subject", () => {
     level_id: "",
     field_id: "",
     name: "",
-    classUnits: "",
+    sessionUnits: "",
     frequency: "",
   };
   const newSubjectNotValidDataTypes = {
@@ -68,7 +68,7 @@ describe("Resource => subject", () => {
     level_id: invalidMockId,
     field_id: invalidMockId,
     name: 92334428,
-    classUnits: "hello",
+    sessionUnits: "hello",
     frequency: "hello",
   };
   const newSubjectWrongLengthValues = {
@@ -76,7 +76,7 @@ describe("Resource => subject", () => {
     level_id: validMockLevelId,
     field_id: validMockFieldId,
     name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-    classUnits: 1234567890,
+    sessionUnits: 1234567890,
     frequency: 1234567890,
   };
 
@@ -87,7 +87,7 @@ describe("Resource => subject", () => {
     level_id: validMockLevelId,
     field_id: validMockFieldId,
     name: "Mathematics 101",
-    classUnits: 30,
+    sessionUnits: 30,
     frequency: 2,
   };
   const subjectNullPayload = null;
@@ -117,7 +117,7 @@ describe("Resource => subject", () => {
       level_id: new Types.ObjectId().toString(),
       field_id: new Types.ObjectId().toString(),
       name: "Mathematics 101",
-      classUnits: 30,
+      sessionUnits: 30,
       frequency: 2,
     },
     {
@@ -126,7 +126,7 @@ describe("Resource => subject", () => {
       level_id: new Types.ObjectId().toString(),
       field_id: new Types.ObjectId().toString(),
       name: "Language 101",
-      classUnits: 30,
+      sessionUnits: 30,
       frequency: 2,
     },
     {
@@ -135,7 +135,7 @@ describe("Resource => subject", () => {
       level_id: new Types.ObjectId().toString(),
       field_id: new Types.ObjectId().toString(),
       name: "Physics 101",
-      classUnits: 30,
+      sessionUnits: 30,
       frequency: 2,
     },
   ];
@@ -189,12 +189,12 @@ describe("Resource => subject", () => {
           },
           {
             location: "body",
-            msg: "Please add the number of class units",
-            param: "classUnits",
+            msg: "Please add the number of session units",
+            param: "sessionUnits",
           },
           {
             location: "body",
-            msg: "Please add the subject class frequency",
+            msg: "Please add the subject session frequency",
             param: "frequency",
           },
         ]);
@@ -275,13 +275,13 @@ describe("Resource => subject", () => {
           },
           {
             location: "body",
-            msg: "The number of class units field is empty",
-            param: "classUnits",
+            msg: "The number of session units field is empty",
+            param: "sessionUnits",
             value: "",
           },
           {
             location: "body",
-            msg: "The subject class frequency field is empty",
+            msg: "The subject session frequency field is empty",
             param: "frequency",
             value: "",
           },
@@ -363,13 +363,13 @@ describe("Resource => subject", () => {
           },
           {
             location: "body",
-            msg: "number of class units value is not valid",
-            param: "classUnits",
+            msg: "number of session units value is not valid",
+            param: "sessionUnits",
             value: "hello",
           },
           {
             location: "body",
-            msg: "subject class frequency value is not valid",
+            msg: "subject session frequency value is not valid",
             param: "frequency",
             value: "hello",
           },
@@ -436,13 +436,13 @@ describe("Resource => subject", () => {
           },
           {
             location: "body",
-            msg: "The number of class units must not exceed 9 digits",
-            param: "classUnits",
+            msg: "The number of session units must not exceed 9 digits",
+            param: "sessionUnits",
             value: 1234567890,
           },
           {
             location: "body",
-            msg: "The subject class frequency must not exceed 9 digits",
+            msg: "The subject session frequency must not exceed 9 digits",
             param: "frequency",
             value: 1234567890,
           },
@@ -1133,12 +1133,12 @@ describe("Resource => subject", () => {
           },
           {
             location: "body",
-            msg: "Please add the number of class units",
-            param: "classUnits",
+            msg: "Please add the number of session units",
+            param: "sessionUnits",
           },
           {
             location: "body",
-            msg: "Please add the subject class frequency",
+            msg: "Please add the subject session frequency",
             param: "frequency",
           },
         ]);
@@ -1228,13 +1228,13 @@ describe("Resource => subject", () => {
           },
           {
             location: "body",
-            msg: "The number of class units field is empty",
-            param: "classUnits",
+            msg: "The number of session units field is empty",
+            param: "sessionUnits",
             value: "",
           },
           {
             location: "body",
-            msg: "The subject class frequency field is empty",
+            msg: "The subject session frequency field is empty",
             param: "frequency",
             value: "",
           },
@@ -1331,13 +1331,13 @@ describe("Resource => subject", () => {
           },
           {
             location: "body",
-            msg: "number of class units value is not valid",
-            param: "classUnits",
+            msg: "number of session units value is not valid",
+            param: "sessionUnits",
             value: "hello",
           },
           {
             location: "body",
-            msg: "subject class frequency value is not valid",
+            msg: "subject session frequency value is not valid",
             param: "frequency",
             value: "hello",
           },
@@ -1411,13 +1411,13 @@ describe("Resource => subject", () => {
           },
           {
             location: "body",
-            msg: "The number of class units must not exceed 9 digits",
-            param: "classUnits",
+            msg: "The number of session units must not exceed 9 digits",
+            param: "sessionUnits",
             value: 1234567890,
           },
           {
             location: "body",
-            msg: "The subject class frequency must not exceed 9 digits",
+            msg: "The subject session frequency must not exceed 9 digits",
             param: "frequency",
             value: 1234567890,
           },

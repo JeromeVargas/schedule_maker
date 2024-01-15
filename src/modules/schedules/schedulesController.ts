@@ -23,7 +23,7 @@ const maxMinutesInDay = 1439;
 // @desc create a schedule
 // @route POST /api/v1/schedules
 // @access Private
-// @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
+// @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const createSchedule = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
@@ -31,7 +31,7 @@ const createSchedule = async ({ body }: Request, res: Response) => {
     name,
     dayStart,
     shiftNumberMinutes,
-    classUnitMinutes,
+    sessionUnitMinutes,
     monday,
     tuesday,
     wednesday,
@@ -70,7 +70,7 @@ const createSchedule = async ({ body }: Request, res: Response) => {
     name: name,
     dayStart: dayStart,
     shiftNumberMinutes: shiftNumberMinutes,
-    classUnitMinutes: classUnitMinutes,
+    sessionUnitMinutes: sessionUnitMinutes,
     monday: monday,
     tuesday: tuesday,
     wednesday: wednesday,
@@ -130,7 +130,7 @@ const getSchedule = async ({ params, body }: Request, res: Response) => {
 // @desc update a Schedule
 // @route PUT /api/v1/schedules/:id
 // @access Private
-// @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], classUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
+// @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const updateSchedule = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: scheduleId } = params;
@@ -139,7 +139,7 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
     name,
     dayStart,
     shiftNumberMinutes,
-    classUnitMinutes,
+    sessionUnitMinutes,
     monday,
     tuesday,
     wednesday,
@@ -173,7 +173,7 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
     name: name,
     dayStart: dayStart,
     shiftNumberMinutes: shiftNumberMinutes,
-    classUnitMinutes: classUnitMinutes,
+    sessionUnitMinutes: sessionUnitMinutes,
     monday: monday,
     tuesday: tuesday,
     wednesday: wednesday,
