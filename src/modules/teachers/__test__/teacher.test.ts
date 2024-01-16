@@ -142,9 +142,8 @@ describe("RESOURCE => Teacher", () => {
       firstName: "Mtuts",
       lastName: "Tuts",
       email: "mtuts@hello.com",
-      rol: "teacher",
+      role: "teacher",
       status: "active",
-      hasTeachingFunc: true,
     },
     {
       _id: validMockCoordinatorId,
@@ -154,7 +153,6 @@ describe("RESOURCE => Teacher", () => {
       email: "dave@hello.com",
       role: "coordinator",
       status: "active",
-      hasTeachingFunc: false,
     },
   ];
   const userCoordinatorNullPayload: User[] = [];
@@ -871,8 +869,8 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::11 - Passing a user with no teaching functions assigned", () => {
-      it("should return no teaching functions assigned error", async () => {
+    describe("teacher::post::11 - Passing an user with a non teacher functions assignable role such as: teacher, coordinator or headmaster", () => {
+      it("should return an invalid role error", async () => {
         // mock services
         const duplicateTeacher = mockService(
           teacherNullPayload,
@@ -880,7 +878,7 @@ describe("RESOURCE => Teacher", () => {
         );
         const findUserCoordinator = mockService(
           [
-            { ...userCoordinatorPayload[0], hasTeachingFunc: false },
+            { ...userCoordinatorPayload[0], role: "student" },
             userCoordinatorPayload[1],
           ],
           "findPopulateFilterAllUsers"
@@ -894,7 +892,7 @@ describe("RESOURCE => Teacher", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "The user does not have any teaching functions assigned",
+          msg: "Please pass a user with a teacher functions assignable role such as: teacher, coordinator or headmaster",
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).toHaveBeenCalled();
@@ -2147,14 +2145,14 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::10 - Passing a user with no teaching functions assigned", () => {
-      it("should return no teaching functions assigned error", async () => {
+    describe("teacher::put::10 - Passing an user with a non teacher functions assignable role such as: teacher, coordinator or headmaster", () => {
+      it("should return an invalid role error", async () => {
         // mock services
         const findUserCoordinator = mockService(
           [
             {
               ...userCoordinatorPayload[0],
-              hasTeachingFunc: false,
+              role: "student",
             },
             userCoordinatorPayload[1],
           ],
@@ -2172,7 +2170,7 @@ describe("RESOURCE => Teacher", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "The user does not have any teaching functions assigned",
+          msg: "Please pass a user with a teacher functions assignable role such as: teacher, coordinator or headmaster",
         });
         expect(statusCode).toBe(400);
         expect(findUserCoordinator).toHaveBeenCalled();

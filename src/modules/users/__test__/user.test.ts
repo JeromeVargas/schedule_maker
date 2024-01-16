@@ -52,7 +52,6 @@ describe("RESOURCE => User", () => {
     password: "12341234",
     role: "coordinator",
     status: "active",
-    hasTeachingFunc: true,
   };
   const newUserMissingValues = {
     school_i: validMockSchoolId,
@@ -62,7 +61,6 @@ describe("RESOURCE => User", () => {
     passwor: "12341234",
     rol: "coordinator",
     statu: "active",
-    hasTeachingFun: true,
   };
   const newUserEmptyValues = {
     school_id: "",
@@ -72,7 +70,6 @@ describe("RESOURCE => User", () => {
     password: "",
     role: "",
     status: "",
-    hasTeachingFunc: "",
   };
   const newUserNotValidDataTypes = {
     school_id: invalidMockId,
@@ -82,7 +79,6 @@ describe("RESOURCE => User", () => {
     password: 12341234,
     role: 93870134699832,
     status: 43124314,
-    hasTeachingFunc: 987314,
   };
   const newUserWrongLengthValues = {
     school_id: validMockSchoolId,
@@ -92,7 +88,6 @@ describe("RESOURCE => User", () => {
     password: "1234123",
     role: "coordinator",
     status: "active",
-    hasTeachingFunc: true,
   };
   const newUserWrongInputValues = {
     school_id: validMockSchoolId,
@@ -102,7 +97,6 @@ describe("RESOURCE => User", () => {
     password: "12341234",
     role: "coordinador",
     status: "activo",
-    hasTeachingFunc: true,
   };
 
   /* payloads */
@@ -114,7 +108,6 @@ describe("RESOURCE => User", () => {
     email: "jerome@gmail.com",
     role: "coordinator",
     status: "active",
-    hasTeachingFunc: true,
   };
   const userNullPayload = null;
   const schoolPayload = {
@@ -131,7 +124,6 @@ describe("RESOURCE => User", () => {
       email: "jerome@gmail.com",
       role: "headmaster",
       status: "inactive",
-      hasTeachingFunc: true,
     },
     {
       _id: new Types.ObjectId().toString(),
@@ -141,7 +133,6 @@ describe("RESOURCE => User", () => {
       email: "dave@hotmail.com",
       role: "coordinator",
       status: "active",
-      hasTeachingFunc: false,
     },
     {
       _id: new Types.ObjectId().toString(),
@@ -151,7 +142,6 @@ describe("RESOURCE => User", () => {
       email: "ania@yahoo.com",
       role: "teacher",
       status: "on_leave",
-      hasTeachingFunc: true,
     },
   ];
   const usersNullPayload: User[] = [];
@@ -209,11 +199,6 @@ describe("RESOURCE => User", () => {
           {
             msg: "Please add the user's current status",
             param: "status",
-            location: "body",
-          },
-          {
-            msg: "Please add if the user has teaching functions assigned",
-            param: "hasTeachingFunc",
             location: "body",
           },
         ]);
@@ -297,12 +282,6 @@ describe("RESOURCE => User", () => {
             location: "body",
             value: "",
           },
-          {
-            msg: "The hasTeachingFunc field is empty",
-            param: "hasTeachingFunc",
-            location: "body",
-            value: "",
-          },
         ]);
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
@@ -383,12 +362,6 @@ describe("RESOURCE => User", () => {
             msg: "status is not valid",
             param: "status",
             value: 43124314,
-          },
-          {
-            location: "body",
-            msg: "hasTeachingFunc value is not valid",
-            param: "hasTeachingFunc",
-            value: 987314,
           },
         ]);
         expect(statusCode).toBe(400);
@@ -863,7 +836,7 @@ describe("RESOURCE => User", () => {
               _id: expect.any(String),
               email: "jerome@gmail.com",
               firstName: "Jerome",
-              hasTeachingFunc: true,
+
               lastName: "Vargas",
               role: "headmaster",
               school_id: expect.any(String),
@@ -873,7 +846,7 @@ describe("RESOURCE => User", () => {
               _id: expect.any(String),
               email: "dave@hotmail.com",
               firstName: "Dave",
-              hasTeachingFunc: false,
+
               lastName: "Gray",
               role: "coordinator",
               school_id: expect.any(String),
@@ -883,7 +856,7 @@ describe("RESOURCE => User", () => {
               _id: expect.any(String),
               email: "ania@yahoo.com",
               firstName: "Ania",
-              hasTeachingFunc: true,
+
               lastName: "Kubow",
               role: "teacher",
               school_id: expect.any(String),
@@ -1027,7 +1000,6 @@ describe("RESOURCE => User", () => {
             email: "jerome@gmail.com",
             status: "active",
             role: "coordinator",
-            hasTeachingFunc: true,
           });
           expect(statusCode).toBe(200);
           expect(findUser).toHaveBeenCalled();
@@ -1092,11 +1064,6 @@ describe("RESOURCE => User", () => {
             location: "body",
             msg: "Please add the user's current status",
             param: "status",
-          },
-          {
-            location: "body",
-            msg: "Please add if the user has teaching functions assigned",
-            param: "hasTeachingFunc",
           },
         ]);
         expect(statusCode).toBe(400);
@@ -1174,12 +1141,6 @@ describe("RESOURCE => User", () => {
             location: "body",
             msg: "The status field is empty",
             param: "status",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The hasTeachingFunc field is empty",
-            param: "hasTeachingFunc",
             value: "",
           },
         ]);
@@ -1265,12 +1226,6 @@ describe("RESOURCE => User", () => {
             msg: "status is not valid",
             param: "status",
             value: 43124314,
-          },
-          {
-            location: "body",
-            msg: "hasTeachingFunc value is not valid",
-            param: "hasTeachingFunc",
-            value: 987314,
           },
         ]);
         expect(statusCode).toBe(400);

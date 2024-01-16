@@ -75,7 +75,6 @@ describe("RESOURCE => Teacher_field", () => {
     password: "12341234",
     role: "coordinator",
     status: "active",
-    hasTeachingFunc: true,
   };
   const teacherPayload = {
     _id: validMockTeacherId,
@@ -543,7 +542,6 @@ describe("RESOURCE => Teacher_field", () => {
               password: "12341234",
               role: "coordinator",
               status: "inactive",
-              hasTeachingFunc: true,
             },
           },
           "findPopulateTeacherById"
@@ -591,73 +589,7 @@ describe("RESOURCE => Teacher_field", () => {
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
-    describe("teacher_field::post::08 - Passing a teacher with no teaching functions", () => {
-      it("should return a non-existent school error", async () => {
-        // mock services
-        const duplicateTeacherField = mockService(
-          teacherFieldNullPayload,
-          "findTeacherFieldByProperty"
-        );
-        const findTeacher = mockService(
-          {
-            ...teacherPayload,
-            user_id: {
-              school_id: validMockSchoolId,
-              firstName: "Jerome",
-              lastName: "Vargas",
-              email: "jerome@gmail.com",
-              password: "12341234",
-              role: "coordinator",
-              status: "active",
-              hasTeachingFunc: false,
-            },
-          },
-          "findPopulateTeacherById"
-        );
-        const findField = mockService(fieldPayload, "findPopulateFieldById");
-        const insertTeacherField = mockService(
-          teacherFieldPayload,
-          "insertTeacherField"
-        );
-
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .post(`${endPointUrl}`)
-          .send(newTeacherField);
-
-        // assertions
-        expect(body).toStrictEqual({
-          msg: "The teacher base user does not have any teaching functions assigned",
-        });
-        expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
-        expect(duplicateTeacherField).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherField.school_id,
-            teacher_id: newTeacherField.teacher_id,
-            field_id: newTeacherField.field_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalled();
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherField.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id user_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findField).not.toHaveBeenCalled();
-        expect(findField).not.toHaveBeenCalledWith(
-          newTeacherField.field_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertTeacherField).not.toHaveBeenCalled();
-        expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
-      });
-    });
-    describe("teacher_field::post::09 - Passing a non-existent field in the body", () => {
+    describe("teacher_field::post::08 - Passing a non-existent field in the body", () => {
       it("should return a non-existent field error", async () => {
         // mock services
         const duplicateTeacherField = mockService(
@@ -714,7 +646,7 @@ describe("RESOURCE => Teacher_field", () => {
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
-    describe("teacher_field::post::10 - Passing a field that do not match the school id", () => {
+    describe("teacher_field::post::09 - Passing a field that do not match the school id", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateTeacherField = mockService(
@@ -778,7 +710,7 @@ describe("RESOURCE => Teacher_field", () => {
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
-    describe("teacher_field::post::11 - Passing a teacher_field but not being created", () => {
+    describe("teacher_field::post::10 - Passing a teacher_field but not being created", () => {
       it("should not create a teacher_field", async () => {
         // mock services
         const duplicateTeacherField = mockService(
@@ -832,7 +764,7 @@ describe("RESOURCE => Teacher_field", () => {
         expect(insertTeacherField).toHaveBeenCalledWith(newTeacherField);
       });
     });
-    describe("teacher_field::post::12 - Passing a teacher_field correctly to create", () => {
+    describe("teacher_field::post::11 - Passing a teacher_field correctly to create", () => {
       it("should create a teacher_field", async () => {
         // mock services
         const duplicateTeacherField = mockService(
@@ -1657,7 +1589,6 @@ describe("RESOURCE => Teacher_field", () => {
               password: "12341234",
               role: "coordinator",
               status: "inactive",
-              hasTeachingFunc: true,
             },
           },
           "findPopulateTeacherById"
@@ -1712,80 +1643,7 @@ describe("RESOURCE => Teacher_field", () => {
         );
       });
     });
-    describe("teacher_field::put::08 - Passing a teacher with no teaching functions", () => {
-      it("should return a non-existent school error", async () => {
-        // mock services
-        const duplicateTeacherField = mockService(
-          teacherFieldNullPayload,
-          "findTeacherFieldByProperty"
-        );
-        const findTeacher = mockService(
-          {
-            ...teacherPayload,
-            user_id: {
-              school_id: validMockSchoolId,
-              firstName: "Jerome",
-              lastName: "Vargas",
-              email: "jerome@gmail.com",
-              password: "12341234",
-              role: "coordinator",
-              status: "active",
-              hasTeachingFunc: false,
-            },
-          },
-          "findPopulateTeacherById"
-        );
-        const findField = mockService(fieldPayload, "findPopulateFieldById");
-        const updateTeacherField = mockService(
-          teacherFieldPayload,
-          "modifyFilterTeacherField"
-        );
-
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .put(`${endPointUrl}${validMockTeacherFieldId}`)
-          .send(newTeacherField);
-
-        // assertions
-        expect(body).toStrictEqual({
-          msg: "The teacher base user does not have any teaching functions assigned",
-        });
-        expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
-        expect(duplicateTeacherField).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherField.school_id,
-            teacher_id: newTeacherField.teacher_id,
-            field_id: newTeacherField.field_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalled();
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherField.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id user_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findField).not.toHaveBeenCalled();
-        expect(findField).not.toHaveBeenCalledWith(
-          validMockFieldId,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherField).not.toHaveBeenCalled();
-        expect(updateTeacherField).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherFieldId,
-            teacher_id: newTeacherField.teacher_id,
-            school_id: newTeacherField.school_id,
-          },
-          newTeacherField
-        );
-      });
-    });
-    describe("teacher_field::put::09 - Passing a non-existent field ", () => {
+    describe("teacher_field::put::08 - Passing a non-existent field ", () => {
       it("should return a not non-existent field error", async () => {
         // mock services
         const duplicateTeacherField = mockService(
@@ -1849,7 +1707,7 @@ describe("RESOURCE => Teacher_field", () => {
         );
       });
     });
-    describe("teacher_field::put::10 - Passing a not matching school id in the body", () => {
+    describe("teacher_field::put::09 - Passing a not matching school id in the body", () => {
       it("should return a not matching school id error", async () => {
         // mock services
         const duplicateTeacherField = mockService(
@@ -1920,7 +1778,7 @@ describe("RESOURCE => Teacher_field", () => {
         );
       });
     });
-    describe("teacher_field::put::11 - Passing a field but not updating it because it does not match one of the filters: _id, school_id or teacher_id", () => {
+    describe("teacher_field::put::10 - Passing a field but not updating it because it does not match one of the filters: _id, school_id or teacher_id", () => {
       it("should not update a teacher_field", async () => {
         // mock services
         const duplicateTeacherField = mockService(
@@ -1981,7 +1839,7 @@ describe("RESOURCE => Teacher_field", () => {
         );
       });
     });
-    describe("teacher_field::put::12 - Passing a field correctly to update", () => {
+    describe("teacher_field::put::11 - Passing a field correctly to update", () => {
       it("should update a field", async () => {
         // mock services
         const duplicateTeacherField = mockService(

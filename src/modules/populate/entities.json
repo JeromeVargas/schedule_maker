@@ -19,8 +19,7 @@
       "email": "user01@yahoo.ca",
       "password": "12341234",
       "role": "coordinator",
-      "status": "active",
-      "hasTeachingFunc": true
+      "status": "active"
     },
     {
       "school_id": null,
@@ -29,8 +28,7 @@
       "email": "user02@yahoo.ca",
       "password": "12341234",
       "role": "teacher",
-      "status": "active",
-      "hasTeachingFunc": true
+      "status": "active"
     },
     {
       "school_id": null,
@@ -39,8 +37,7 @@
       "email": "user03@yahoo.ca",
       "password": "12341234",
       "role": "teacher",
-      "status": "active",
-      "hasTeachingFunc": true
+      "status": "active"
     }
   ],
   "teachers": [

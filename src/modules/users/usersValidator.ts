@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body: {school_id:[string], firstName:[string], lastName:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
+// @fields: body: {school_id:[string], firstName:[string], lastName:[string], email:[string], password:[string], role:[string], status:[string]}
 const validateCreateUser = [
   check("school_id")
     .exists()
@@ -110,15 +110,6 @@ const validateCreateUser = [
     .blacklist("%,$")
     .trim()
     .escape(),
-  check("hasTeachingFunc")
-    .exists()
-    .withMessage("Please add if the user has teaching functions assigned")
-    .bail()
-    .notEmpty()
-    .withMessage("The hasTeachingFunc field is empty")
-    .bail()
-    .isBoolean()
-    .withMessage("hasTeachingFunc value is not valid"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },
@@ -180,7 +171,7 @@ const validateGetUser = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string], firstName:[string], lastName:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
+// @fields: params: {id:[string]},  body: {school_id:[string], firstName:[string], lastName:[string], email:[string], password:[string], role:[string], status:[string]}
 const validateUpdateUser = [
   check("id")
     .custom((value) => {
@@ -297,15 +288,6 @@ const validateUpdateUser = [
     .blacklist("%,$")
     .trim()
     .escape(),
-  check("hasTeachingFunc")
-    .exists()
-    .withMessage("Please add if the user has teaching functions assigned")
-    .bail()
-    .notEmpty()
-    .withMessage("The hasTeachingFunc field is empty")
-    .bail()
-    .isBoolean()
-    .withMessage("hasTeachingFunc value is not valid"),
   (req: Request, res: Response, next: NextFunction) => {
     validateResult(req, res, next);
   },

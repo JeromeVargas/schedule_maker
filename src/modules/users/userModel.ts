@@ -39,10 +39,6 @@ const UserSchema = new Schema<User>(
       enum: ["active", "inactive", "on_leave"],
       required: [true, "Please provide a status for the user"],
     },
-    hasTeachingFunc: {
-      type: Boolean,
-      required: [true, "Please confirm the user has teaching functions"],
-    },
   },
   {
     timestamps: true,

@@ -8,7 +8,6 @@ import {
   insertTeacherField,
   findFilterAllTeacherFields,
   findTeacherFieldByProperty,
-  findFilterTeacherFieldByProperty,
   modifyFilterTeacherField,
   removeFilterTeacherField,
   /* Services from other entities */
@@ -35,7 +34,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
       "This teacher has already been assigned this field"
     );
   }
-  /* find if the teacher already exists, is active and has teaching functions  */
+  /* find if the teacher already exists and is active  */
   const fieldsToReturnTeacher = "-createdAt -updatedAt";
   const fieldsToPopulateTeacher = "school_id user_id";
   const fieldsToReturnPopulateTeacher = "-createdAt -updatedAt";
@@ -55,11 +54,6 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
   }
   if (teacherFound.user_id.status !== "active") {
     throw new BadRequestError(`The teacher is ${teacherFound.user_id.status}`);
-  }
-  if (teacherFound.user_id.hasTeachingFunc !== true) {
-    throw new BadRequestError(
-      "The teacher base user does not have any teaching functions assigned"
-    );
   }
   /* find if the field already exists */
   const fieldsToReturnField = "-createdAt -updatedAt";
@@ -156,7 +150,7 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
       "This teacher has already been assigned this field"
     );
   }
-  /* find if the teacher already exists, is active and has teaching functions  */
+  /* find if the teacher already exists and is active */
   const fieldsToReturnTeacher = "-createdAt -updatedAt";
   const fieldsToPopulateTeacher = "school_id user_id";
   const fieldsToReturnPopulateTeacher = "-createdAt -updatedAt";
@@ -176,11 +170,6 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
   }
   if (teacherFound.user_id.status !== "active") {
     throw new BadRequestError(`The teacher is ${teacherFound.user_id.status}`);
-  }
-  if (teacherFound.user_id.hasTeachingFunc !== true) {
-    throw new BadRequestError(
-      "The teacher base user does not have any teaching functions assigned"
-    );
   }
   /* check if the field already exists */
   const fieldsToReturnField = "-createdAt -updatedAt";

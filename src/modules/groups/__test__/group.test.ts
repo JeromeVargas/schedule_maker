@@ -105,7 +105,6 @@ describe("Resource => Group", () => {
     email: "jerome@gmail.com",
     role: "coordinator",
     status: "active",
-    hasTeachingFunc: true,
   };
   const coordinatorNullPayload = null;
   const groupsPayload = [

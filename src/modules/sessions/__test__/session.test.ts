@@ -127,7 +127,6 @@ describe("Resource => Session", () => {
     lastName: "Gray",
     role: "coordinator",
     status: "active",
-    hasTeachingFunc: true,
   };
   const groupPayload = {
     _id: validMockGroupId,
@@ -798,7 +797,6 @@ describe("Resource => Session", () => {
               lastName: "Gray",
               role: "coordinator",
               status: "active",
-              hasTeachingFunc: false,
             },
           },
           "findPopulateGroupById"
@@ -861,7 +859,6 @@ describe("Resource => Session", () => {
               lastName: "Gray",
               role: "teacher",
               status: "active",
-              hasTeachingFunc: false,
             },
           },
           "findPopulateGroupById"
@@ -924,7 +921,6 @@ describe("Resource => Session", () => {
               lastName: "Gray",
               role: "coordinator",
               status: "inactive",
-              hasTeachingFunc: false,
             },
           },
           "findPopulateGroupById"
@@ -2383,7 +2379,6 @@ describe("Resource => Session", () => {
               lastName: "Gray",
               role: "coordinator",
               status: "active",
-              hasTeachingFunc: true,
             },
           },
           "findPopulateGroupById"
@@ -2452,7 +2447,6 @@ describe("Resource => Session", () => {
               lastName: "Gray",
               role: "teacher",
               status: "active",
-              hasTeachingFunc: true,
             },
           },
           "findPopulateGroupById"
@@ -2521,7 +2515,6 @@ describe("Resource => Session", () => {
               lastName: "Gray",
               role: "coordinator",
               status: "inactive",
-              hasTeachingFunc: true,
             },
           },
           "findPopulateGroupById"

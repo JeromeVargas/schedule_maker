@@ -24,7 +24,6 @@ export type User = {
   password: string;
   role: Role;
   status: UserStatus;
-  hasTeachingFunc: boolean;
 };
 
 export type NewUser = Omit<User, "_id">;

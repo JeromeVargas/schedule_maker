@@ -18,19 +18,11 @@ import {
 // @desc create a user
 // @route POST /api/v1/users
 // @access Private
-// @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
+// @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string]}
 const createUser = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const {
-    school_id,
-    firstName,
-    lastName,
-    email,
-    password,
-    role,
-    status,
-    hasTeachingFunc,
-  } = body;
+  const { school_id, firstName, lastName, email, password, role, status } =
+    body;
   /* check if the school exists */
   const schoolSearchCriteria = school_id;
   const schoolFieldsToReturn = "-createdAt -updatedAt";
@@ -62,7 +54,6 @@ const createUser = async ({ body }: Request, res: Response) => {
     password: hashedPwd,
     role: role,
     status: status,
-    hasTeachingFunc: hasTeachingFunc,
   };
   const userCreated = await insertUser(newUser);
   if (!userCreated) {
@@ -110,20 +101,12 @@ const getUser = async ({ params, body }: Request, res: Response) => {
 // @desc update a user
 // @route PUT /api/v1/users/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string], hasTeachingFunc:[boolean]}
+// @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string]}
 const updateUser = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: userId } = params;
-  const {
-    school_id,
-    firstName,
-    lastName,
-    email,
-    password,
-    role,
-    status,
-    hasTeachingFunc,
-  } = body;
+  const { school_id, firstName, lastName, email, password, role, status } =
+    body;
   /* check if the user email is already in use by another user */
   const searchCriteria = { school_id, email };
   const fieldsToReturn = "-password -createdAt -updatedAt";
@@ -146,7 +129,6 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
     password: hashedPwd,
     role: role,
     status: status,
-    hasTeachingFunc: hasTeachingFunc,
   };
   const fieldUpdated = await modifyFilterUser(filtersUpdate, newUser);
   if (!fieldUpdated) {
