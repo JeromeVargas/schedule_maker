@@ -8,8 +8,8 @@
         <- Teacher
             - coordinator_id: string : nullable **            
             + contract_type: string
-            + number of hours assignable: integer
-            + number of hours assigned: integer
+            + number of teaching hours assignable: integer
+            + number of teaching hours assigned: integer
             + field: string : nullable ****
         <- Student
             - group

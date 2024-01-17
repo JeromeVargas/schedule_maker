@@ -26,18 +26,18 @@ const TeacherSchema = new Schema<Teacher>(
       enum: ["full-time", "part-time", "substitute"],
       required: [true, "Please provide a contract type"],
     },
-    hoursAssignable: {
+    teachingHoursAssignable: {
       type: Number,
       required: [
         true,
         "Please provide the number of hours assignable to the teacher",
       ],
     },
-    hoursAssigned: {
+    teachingHoursAssigned: {
       type: Number,
       required: [
         true,
-        "Please provide the number of hours assigned to the teacher",
+        "Please provide the number of teaching hours assigned to the teacher",
       ],
     },
     monday: {

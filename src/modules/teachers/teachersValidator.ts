@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body: {school_id: [string], user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: [number];  hoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
+// @fields: body: {school_id: [string], user_id: [string];  coordinator_id: [string];  contractType: [string];  teachingHoursAssignable: [number];  teachingHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const validateCreateTeacher = [
   check("school_id")
     .exists()
@@ -68,30 +68,34 @@ const validateCreateTeacher = [
     .blacklist("%,$")
     .escape()
     .trim(),
-  check("hoursAssignable")
+  check("teachingHoursAssignable")
     .exists()
-    .withMessage("Please add the number of hours assignable to the teacher")
+    .withMessage(
+      "Please add the number of teaching hours assignable to the teacher"
+    )
     .bail()
     .notEmpty()
-    .withMessage("The hours assignable field is empty")
+    .withMessage("The teaching hours assignable field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("hours assignable value is not valid")
+    .withMessage("teaching hours assignable value is not valid")
     .bail()
     .isLength({ min: 1, max: 9 })
-    .withMessage("The start time must not exceed 9 digits"),
-  check("hoursAssigned")
+    .withMessage("teaching hours assignable must not exceed 9 digits"),
+  check("teachingHoursAssigned")
     .exists()
-    .withMessage("Please add the number of hours assigned to the teacher")
+    .withMessage(
+      "Please add the number of teaching hours assigned to the teacher"
+    )
     .bail()
     .notEmpty()
-    .withMessage("The hours assigned field is empty")
+    .withMessage("The teaching hours assigned field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("hours assigned value is not valid")
+    .withMessage("teaching hours assigned value is not valid")
     .bail()
     .isLength({ min: 1, max: 9 })
-    .withMessage("The start time must not exceed 9 digits"),
+    .withMessage("teaching hours assigned must not exceed 9 digits"),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")
@@ -216,7 +220,7 @@ const validateGetTeacher = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id: [string], user_id: [string];  coordinator_id: [string];  contractType: [string];  hoursAssignable: [number];  hoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
+// @fields: params: {id:[string]},  body: {school_id: [string], user_id: [string];  coordinator_id: [string];  contractType: [string];  teachingHoursAssignable: [number];  teachingHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const validateUpdateTeacher = [
   check("id")
     .custom((value) => {
@@ -291,30 +295,34 @@ const validateUpdateTeacher = [
     .blacklist("%,$")
     .escape()
     .trim(),
-  check("hoursAssignable")
+  check("teachingHoursAssignable")
     .exists()
-    .withMessage("Please add the number of hours assignable to the teacher")
+    .withMessage(
+      "Please add the number of teaching hours assignable to the teacher"
+    )
     .bail()
     .notEmpty()
-    .withMessage("The hours assignable field is empty")
+    .withMessage("The teaching hours assignable field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("hours assignable value is not valid")
+    .withMessage("teaching hours assignable value is not valid")
     .bail()
     .isLength({ min: 1, max: 9 })
-    .withMessage("The start time must not exceed 9 digits"),
-  check("hoursAssigned")
+    .withMessage("teaching hours assignable must not exceed 9 digits"),
+  check("teachingHoursAssigned")
     .exists()
-    .withMessage("Please add the number of hours assigned to the teacher")
+    .withMessage(
+      "Please add the number of teaching hours assigned to the teacher"
+    )
     .bail()
     .notEmpty()
-    .withMessage("The hours assigned field is empty")
+    .withMessage("The teaching hours assigned field is empty")
     .bail()
     .isInt({ min: 0 })
-    .withMessage("hours assigned value is not valid")
+    .withMessage("teaching hours assigned value is not valid")
     .bail()
     .isLength({ min: 1, max: 9 })
-    .withMessage("The start time must not exceed 9 digits"),
+    .withMessage("teaching hours assigned must not exceed 9 digits"),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")

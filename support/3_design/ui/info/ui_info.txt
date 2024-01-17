@@ -36,7 +36,7 @@ pages list
 
     - Dashboard             
         - dashboard main area:  percentage of teachers per subject
-                                percentage of teachers and subjects hours assigned            
+                                percentage of teachers and subjects teaching hours assigned            
             - groups home: list of groups, grid
                 - schedule/s list, (groups)
                     - schedule instance

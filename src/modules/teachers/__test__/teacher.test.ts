@@ -43,8 +43,8 @@ describe("RESOURCE => Teacher", () => {
     user_id: validMockUserId,
     coordinator_id: validMockCoordinatorId,
     contractType: "full-time",
-    hoursAssignable: 60,
-    hoursAssigned: 60,
+    teachingHoursAssignable: 60,
+    teachingHoursAssigned: 60,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -73,8 +73,8 @@ describe("RESOURCE => Teacher", () => {
     user_id: "",
     coordinator_id: "",
     contractType: "",
-    hoursAssignable: "",
-    hoursAssigned: "",
+    teachingHoursAssignable: "",
+    teachingHoursAssigned: "",
     monday: "",
     tuesday: "",
     wednesday: "",
@@ -88,8 +88,8 @@ describe("RESOURCE => Teacher", () => {
     user_id: invalidMockId,
     coordinator_id: invalidMockId,
     contractType: true,
-    hoursAssignable: "house",
-    hoursAssigned: "three3",
+    teachingHoursAssignable: "house",
+    teachingHoursAssigned: "three3",
     monday: "hello",
     tuesday: "hello",
     wednesday: "hello",
@@ -103,8 +103,8 @@ describe("RESOURCE => Teacher", () => {
     user_id: validMockUserId,
     coordinator_id: validMockCoordinatorId,
     contractType: "full-time",
-    hoursAssignable: 1234567890,
-    hoursAssigned: 1234567890,
+    teachingHoursAssignable: 1234567890,
+    teachingHoursAssigned: 1234567890,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -118,8 +118,8 @@ describe("RESOURCE => Teacher", () => {
     user_id: validMockUserId,
     coordinator_id: validMockCoordinatorId,
     contractType: "tiempo-completo",
-    hoursAssignable: 60,
-    hoursAssigned: 60,
+    teachingHoursAssignable: 60,
+    teachingHoursAssigned: 60,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -162,8 +162,8 @@ describe("RESOURCE => Teacher", () => {
     user_id: validMockUserId,
     coordinator_id: validMockCoordinatorId,
     contractType: "full-time",
-    hoursAssignable: 60,
-    hoursAssigned: 60,
+    teachingHoursAssignable: 60,
+    teachingHoursAssigned: 60,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -182,8 +182,8 @@ describe("RESOURCE => Teacher", () => {
       user_id: new Types.ObjectId().toString(),
       coordinator_id: new Types.ObjectId().toString(),
       contractType: "full-time",
-      hoursAssignable: 60,
-      hoursAssigned: 60,
+      teachingHoursAssignable: 60,
+      teachingHoursAssigned: 60,
     },
     {
       _id: new Types.ObjectId().toString(),
@@ -191,8 +191,8 @@ describe("RESOURCE => Teacher", () => {
       user_id: new Types.ObjectId().toString(),
       coordinator_id: new Types.ObjectId().toString(),
       contractType: "part-time",
-      hoursAssignable: 40,
-      hoursAssigned: 40,
+      teachingHoursAssignable: 40,
+      teachingHoursAssigned: 40,
     },
     {
       _id: new Types.ObjectId().toString(),
@@ -200,8 +200,8 @@ describe("RESOURCE => Teacher", () => {
       user_id: new Types.ObjectId().toString(),
       coordinator_id: new Types.ObjectId().toString(),
       contractType: "substitute",
-      hoursAssignable: 70,
-      hoursAssigned: 70,
+      teachingHoursAssignable: 70,
+      teachingHoursAssigned: 70,
     },
   ];
   const teachersNullPayload: Teacher[] = [];
@@ -250,13 +250,13 @@ describe("RESOURCE => Teacher", () => {
           },
           {
             location: "body",
-            msg: "Please add the number of hours assignable to the teacher",
-            param: "hoursAssignable",
+            msg: "Please add the number of teaching hours assignable to the teacher",
+            param: "teachingHoursAssignable",
           },
           {
             location: "body",
-            msg: "Please add the number of hours assigned to the teacher",
-            param: "hoursAssigned",
+            msg: "Please add the number of teaching hours assigned to the teacher",
+            param: "teachingHoursAssigned",
           },
           {
             location: "body",
@@ -363,14 +363,14 @@ describe("RESOURCE => Teacher", () => {
           },
           {
             location: "body",
-            msg: "The hours assignable field is empty",
-            param: "hoursAssignable",
+            msg: "The teaching hours assignable field is empty",
+            param: "teachingHoursAssignable",
             value: "",
           },
           {
             location: "body",
-            msg: "The hours assigned field is empty",
-            param: "hoursAssigned",
+            msg: "The teaching hours assigned field is empty",
+            param: "teachingHoursAssigned",
             value: "",
           },
           {
@@ -482,14 +482,14 @@ describe("RESOURCE => Teacher", () => {
           },
           {
             location: "body",
-            msg: "hours assignable value is not valid",
-            param: "hoursAssignable",
+            msg: "teaching hours assignable value is not valid",
+            param: "teachingHoursAssignable",
             value: "house",
           },
           {
             location: "body",
-            msg: "hours assigned value is not valid",
-            param: "hoursAssigned",
+            msg: "teaching hours assigned value is not valid",
+            param: "teachingHoursAssigned",
             value: "three3",
           },
           {
@@ -582,14 +582,14 @@ describe("RESOURCE => Teacher", () => {
         expect(body).toStrictEqual([
           {
             location: "body",
-            msg: "The start time must not exceed 9 digits",
-            param: "hoursAssignable",
+            msg: "teaching hours assignable must not exceed 9 digits",
+            param: "teachingHoursAssignable",
             value: 1234567890,
           },
           {
             location: "body",
-            msg: "The start time must not exceed 9 digits",
-            param: "hoursAssigned",
+            msg: "teaching hours assigned must not exceed 9 digits",
+            param: "teachingHoursAssigned",
             value: 1234567890,
           },
         ]);
@@ -686,11 +686,11 @@ describe("RESOURCE => Teacher", () => {
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
-          .send({ ...newTeacher, hoursAssignable: 71 });
+          .send({ ...newTeacher, teachingHoursAssignable: 71 });
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "hours assignable must not exceed 70 hours",
+          msg: "teaching hours assignable must not exceed 70 hours",
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
@@ -728,11 +728,11 @@ describe("RESOURCE => Teacher", () => {
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
-          .send({ ...newTeacher, hoursAssigned: 70 });
+          .send({ ...newTeacher, teachingHoursAssigned: 70 });
 
         // assertions
         expect(body).toStrictEqual({
-          msg: `hours assigned must not exceed the hours assignable, ${newTeacher.hoursAssignable} hours`,
+          msg: `teaching hours assigned must not exceed the teaching hours assignable, ${newTeacher.teachingHoursAssignable} hours`,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
@@ -1334,8 +1334,8 @@ describe("RESOURCE => Teacher", () => {
               _id: expect.any(String),
               contractType: "full-time",
               coordinator_id: expect.any(String),
-              hoursAssignable: 60,
-              hoursAssigned: 60,
+              teachingHoursAssignable: 60,
+              teachingHoursAssigned: 60,
               school_id: expect.any(String),
               user_id: expect.any(String),
             },
@@ -1343,8 +1343,8 @@ describe("RESOURCE => Teacher", () => {
               _id: expect.any(String),
               contractType: "part-time",
               coordinator_id: expect.any(String),
-              hoursAssignable: 40,
-              hoursAssigned: 40,
+              teachingHoursAssignable: 40,
+              teachingHoursAssigned: 40,
               school_id: expect.any(String),
               user_id: expect.any(String),
             },
@@ -1352,8 +1352,8 @@ describe("RESOURCE => Teacher", () => {
               _id: expect.any(String),
               contractType: "substitute",
               coordinator_id: expect.any(String),
-              hoursAssignable: 70,
-              hoursAssigned: 70,
+              teachingHoursAssignable: 70,
+              teachingHoursAssigned: 70,
               school_id: expect.any(String),
               user_id: expect.any(String),
             },
@@ -1509,8 +1509,8 @@ describe("RESOURCE => Teacher", () => {
             user_id: validMockUserId,
             coordinator_id: validMockCoordinatorId,
             contractType: "full-time",
-            hoursAssignable: 60,
-            hoursAssigned: 60,
+            teachingHoursAssignable: 60,
+            teachingHoursAssigned: 60,
             monday: true,
             tuesday: true,
             wednesday: true,
@@ -1571,13 +1571,13 @@ describe("RESOURCE => Teacher", () => {
           },
           {
             location: "body",
-            msg: "Please add the number of hours assignable to the teacher",
-            param: "hoursAssignable",
+            msg: "Please add the number of teaching hours assignable to the teacher",
+            param: "teachingHoursAssignable",
           },
           {
             location: "body",
-            msg: "Please add the number of hours assigned to the teacher",
-            param: "hoursAssigned",
+            msg: "Please add the number of teaching hours assigned to the teacher",
+            param: "teachingHoursAssigned",
           },
           {
             location: "body",
@@ -1681,14 +1681,14 @@ describe("RESOURCE => Teacher", () => {
           },
           {
             location: "body",
-            msg: "The hours assignable field is empty",
-            param: "hoursAssignable",
+            msg: "The teaching hours assignable field is empty",
+            param: "teachingHoursAssignable",
             value: "",
           },
           {
             location: "body",
-            msg: "The hours assigned field is empty",
-            param: "hoursAssigned",
+            msg: "The teaching hours assigned field is empty",
+            param: "teachingHoursAssigned",
             value: "",
           },
           {
@@ -1804,14 +1804,14 @@ describe("RESOURCE => Teacher", () => {
           },
           {
             location: "body",
-            msg: "hours assignable value is not valid",
-            param: "hoursAssignable",
+            msg: "teaching hours assignable value is not valid",
+            param: "teachingHoursAssignable",
             value: "house",
           },
           {
             location: "body",
-            msg: "hours assigned value is not valid",
-            param: "hoursAssigned",
+            msg: "teaching hours assigned value is not valid",
+            param: "teachingHoursAssigned",
             value: "three3",
           },
           {
@@ -1900,14 +1900,14 @@ describe("RESOURCE => Teacher", () => {
         expect(body).toStrictEqual([
           {
             location: "body",
-            msg: "The start time must not exceed 9 digits",
-            param: "hoursAssignable",
+            msg: "teaching hours assignable must not exceed 9 digits",
+            param: "teachingHoursAssignable",
             value: 1234567890,
           },
           {
             location: "body",
-            msg: "The start time must not exceed 9 digits",
-            param: "hoursAssigned",
+            msg: "teaching hours assigned must not exceed 9 digits",
+            param: "teachingHoursAssigned",
             value: 1234567890,
           },
         ]);
@@ -1994,11 +1994,11 @@ describe("RESOURCE => Teacher", () => {
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockUserId}`)
-          .send({ ...newTeacher, hoursAssignable: 71 });
+          .send({ ...newTeacher, teachingHoursAssignable: 71 });
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "hours assignable must not exceed 70 hours",
+          msg: "teaching hours assignable must not exceed 70 hours",
         });
         expect(statusCode).toBe(400);
         expect(findUserCoordinator).not.toHaveBeenCalled();
@@ -2034,11 +2034,11 @@ describe("RESOURCE => Teacher", () => {
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockUserId}`)
-          .send({ ...newTeacher, hoursAssigned: 70 });
+          .send({ ...newTeacher, teachingHoursAssigned: 70 });
 
         // assertions
         expect(body).toStrictEqual({
-          msg: `hours assigned must not exceed the hours assignable, ${newTeacher.hoursAssignable} hours`,
+          msg: `teaching hours assigned must not exceed the teaching hours assignable, ${newTeacher.teachingHoursAssignable} hours`,
         });
         expect(statusCode).toBe(400);
         expect(findUserCoordinator).not.toHaveBeenCalled();

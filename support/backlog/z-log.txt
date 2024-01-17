@@ -9,7 +9,7 @@ for later:
 
 Back end:
 
-// Todo --> check the teacher_field controller and test to verify the teacher role validity, also other entities that might be affected by the previous commit changes
+// Todo --> check error messages with role functionS assignable text
 // Todo --> add admin_hours_assignable and admin_hours_assigned to differentiate teachers from administrative, i.e. principal and coordinators
 // Todo --> add teacher_coordinator associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
 // Todo --> add group_coordinator associative table, to decouple the coordinator from the group and to have more than one coordinator for each group
