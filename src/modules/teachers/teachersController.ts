@@ -89,7 +89,7 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     (existingUser?.role as String) !== "headmaster"
   ) {
     throw new BadRequestError(
-      "Please pass a user with a teacher functions assignable role such as: teacher, coordinator or headmaster"
+      "Please pass a user with a teacher function assignable role such as: teacher, coordinator or headmaster"
     );
   }
   // check if the user school exists/
@@ -242,7 +242,7 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
     existingUser?.role !== "headmaster"
   ) {
     throw new BadRequestError(
-      "Please pass a user with a teacher functions assignable role such as: teacher, coordinator or headmaster"
+      "Please pass a user with a teacher function assignable role such as: teacher, coordinator or headmaster"
     );
   }
   // check if the user school exists/

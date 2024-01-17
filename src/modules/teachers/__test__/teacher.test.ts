@@ -869,7 +869,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::11 - Passing an user with a non teacher functions assignable role such as: teacher, coordinator or headmaster", () => {
+    describe("teacher::post::11 - Passing an user with a non teacher function assignable role such as: teacher, coordinator or headmaster", () => {
       it("should return an invalid role error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -892,7 +892,7 @@ describe("RESOURCE => Teacher", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please pass a user with a teacher functions assignable role such as: teacher, coordinator or headmaster",
+          msg: "Please pass a user with a teacher function assignable role such as: teacher, coordinator or headmaster",
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).toHaveBeenCalled();
@@ -2145,7 +2145,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::10 - Passing an user with a non teacher functions assignable role such as: teacher, coordinator or headmaster", () => {
+    describe("teacher::put::10 - Passing an user with a non teacher function assignable role such as: teacher, coordinator or headmaster", () => {
       it("should return an invalid role error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2170,7 +2170,7 @@ describe("RESOURCE => Teacher", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please pass a user with a teacher functions assignable role such as: teacher, coordinator or headmaster",
+          msg: "Please pass a user with a teacher function assignable role such as: teacher, coordinator or headmaster",
         });
         expect(statusCode).toBe(400);
         expect(findUserCoordinator).toHaveBeenCalled();
