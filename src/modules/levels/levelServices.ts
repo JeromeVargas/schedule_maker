@@ -6,8 +6,7 @@ import { NewLevel } from "../../typings/types";
 // @desc insert a level in database
 // @params level
 const insertLevel = (level: NewLevel) => {
-  const levelInsert = LevelModel.create(level);
-  return levelInsert;
+  return LevelModel.create(level);
 };
 
 // @desc find all levels by school id
@@ -16,11 +15,7 @@ const findFilterAllLevels = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const levelFound = LevelModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return levelFound;
+  return LevelModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a level by id and populate the embedded entities
@@ -31,12 +26,11 @@ const findPopulateLevelById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const levelFound = LevelModel.findById(levelId)
+  return LevelModel.findById(levelId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return levelFound;
 };
 
 // @desc find a level by school id and name
@@ -47,12 +41,11 @@ const findLevelByProperty = (
     | { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const levelFound = LevelModel.findOne(filters)
+  return LevelModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return levelFound;
 };
 
 // @desc find a level and filter by some school id and name
@@ -61,12 +54,11 @@ const findFilterLevelByProperty = (
   filters: { school_id: string; name: string },
   fieldsToReturn: string
 ) => {
-  const levelsFound = LevelModel.find(filters)
+  return LevelModel.find(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return levelsFound;
 };
 
 // @desc update a level by level id and school id
@@ -75,19 +67,16 @@ const modifyFilterLevel = (
   filters: { _id: string; school_id: string },
   level: NewLevel
 ) => {
-  const levelUpdated = LevelModel.findOneAndUpdate(filters, level, {
+  return LevelModel.findOneAndUpdate(filters, level, {
     new: true,
     runValidators: true,
   });
-
-  return levelUpdated;
 };
 
 // @desc delete a level by property
 // @params filters, filters
 const removeFilterLevel = (filters: { school_id: string; _id: string }) => {
-  const resourceDeleted = LevelModel.findOneAndDelete(filters).lean().exec();
-  return resourceDeleted;
+  return LevelModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
@@ -99,12 +88,11 @@ const findPopulateScheduleById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const scheduleFound = ScheduleModel.findById(scheduleId)
+  return ScheduleModel.findById(scheduleId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return scheduleFound;
 };
 
 export {

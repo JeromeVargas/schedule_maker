@@ -6,8 +6,7 @@ import { NewBreak } from "../../typings/types";
 // @desc insert a break in database
 // @params break
 const insertBreak = (scheduleBreak: NewBreak) => {
-  const breakInsert = BreakModel.create(scheduleBreak);
-  return breakInsert;
+  return BreakModel.create(scheduleBreak);
 };
 
 // @desc find all breaks by school id
@@ -16,11 +15,7 @@ const findFilterAllBreaks = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const breakFound = BreakModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return breakFound;
+  return BreakModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a break by school id and break id
@@ -29,12 +24,11 @@ const findBreakByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const breakFound = BreakModel.findOne(filters)
+  return BreakModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return breakFound;
 };
 
 // @desc update a break by school id and break id
@@ -43,18 +37,16 @@ const modifyFilterBreak = (
   filters: { _id: string; school_id: string },
   scheduleBreak: NewBreak
 ) => {
-  const breakUpdated = BreakModel.findOneAndUpdate(filters, scheduleBreak, {
+  return BreakModel.findOneAndUpdate(filters, scheduleBreak, {
     new: true,
     runValidators: true,
   });
-  return breakUpdated;
 };
 
 // @desc delete a break by school id and break id
 // @params filters
 const removeFilterBreak = (filters: { school_id: string; _id: string }) => {
-  const breakDeleted = BreakModel.findOneAndDelete(filters).lean().exec();
-  return breakDeleted;
+  return BreakModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
@@ -66,12 +58,11 @@ const findPopulateScheduleById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const scheduleFound = ScheduleModel.findById(scheduleId)
+  return ScheduleModel.findById(scheduleId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return scheduleFound;
 };
 
 export {

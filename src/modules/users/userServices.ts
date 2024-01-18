@@ -6,8 +6,7 @@ import UserModel from "./userModel";
 // @desc insert a user in the database
 // @params user
 const insertUser = (user: NewUser) => {
-  const userInserted = UserModel.create(user);
-  return userInserted;
+  return UserModel.create(user);
 };
 
 // @desc find all users by school id
@@ -16,11 +15,7 @@ const findFilterAllUsers = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const userFound = UserModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return userFound;
+  return UserModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a user by school id and email or school id and user id
@@ -31,12 +26,11 @@ const findUserByProperty = (
     | { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const userFound = UserModel.findOne(filters)
+  return UserModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return userFound;
 };
 
 // @desc update a user by school id and other property
@@ -48,29 +42,23 @@ const modifyFilterUser = (
   },
   user: NewUser
 ) => {
-  const userUpdated = UserModel.findOneAndUpdate(filters, user, {
+  return UserModel.findOneAndUpdate(filters, user, {
     new: true,
     runValidators: true,
   });
-  return userUpdated;
 };
 
 // @desc delete a user by school id and other property
 // @params filters
 const removeFilterUser = (filters: { school_id: string; _id: string }) => {
-  const userDeleted = UserModel.findOneAndDelete(filters).lean().exec();
-  return userDeleted;
+  return UserModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
 // @desc find a school by id
 // @params schoolId, fieldsToReturn
 const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
-  const schoolFound = SchoolModel.findById(schoolId)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return schoolFound;
+  return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
 
 export {

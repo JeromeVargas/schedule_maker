@@ -8,8 +8,7 @@ import { NewGroup } from "../../typings/types";
 // @desc insert a group in database
 // @params group
 const insertGroup = (group: NewGroup) => {
-  const groupInsert = GroupModel.create(group);
-  return groupInsert;
+  return GroupModel.create(group);
 };
 
 // @desc find all groups by school id
@@ -18,11 +17,7 @@ const findFilterAllGroups = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const groupFound = GroupModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return groupFound;
+  return GroupModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a group by school id and name
@@ -33,12 +28,11 @@ const findGroupByProperty = (
     | { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const groupFound = GroupModel.findOne(filters)
+  return GroupModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return groupFound;
 };
 
 // @desc find a resource and filter by school id and name
@@ -47,12 +41,11 @@ const findFilterGroupByProperty = (
   filters: { school_id: string; name: string },
   fieldsToReturn: string
 ) => {
-  const resourcesFound = GroupModel.find(filters)
+  return GroupModel.find(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return resourcesFound;
 };
 
 // @desc update a group by group id and school id
@@ -61,18 +54,16 @@ const modifyFilterGroup = (
   filters: { _id: string; school_id: string },
   group: NewGroup
 ) => {
-  const groupUpdated = GroupModel.findOneAndUpdate(filters, group, {
+  return GroupModel.findOneAndUpdate(filters, group, {
     new: true,
     runValidators: true,
   });
-  return groupUpdated;
 };
 
 // @desc delete a group by school id and group id
 // @params groupId, filters
 const removeFilterGroup = (filters: { school_id: string; _id: string }) => {
-  const groupDeleted = GroupModel.findOneAndDelete(filters).lean().exec();
-  return groupDeleted;
+  return GroupModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
@@ -84,12 +75,11 @@ const findPopulateLevelById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const levelFound = LevelModel.findById(levelId)
+  return LevelModel.findById(levelId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return levelFound;
 };
 
 // @desc find a user by id and populate the embedded entities
@@ -100,12 +90,11 @@ const findPopulateUserById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const userFound = UserModel.findById(userId)
+  return UserModel.findById(userId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return userFound;
 };
 
 export {

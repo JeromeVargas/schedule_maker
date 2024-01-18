@@ -6,8 +6,7 @@ import FieldModel from "./fieldModel";
 // @desc insert a field in database
 // @params Field
 const insertField = (field: NewField) => {
-  const fieldInserted = FieldModel.create(field);
-  return fieldInserted;
+  return FieldModel.create(field);
 };
 
 // @desc find all fields by school id
@@ -16,11 +15,7 @@ const findFilterAllFields = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const resourceFound = FieldModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return resourceFound;
+  return FieldModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a field by school id and name or school id and field id
@@ -31,12 +26,11 @@ const findFieldByProperty = (
     | { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const fieldsFound = FieldModel.findOne(filters)
+  return FieldModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return fieldsFound;
 };
 
 // @desc find and filter a field by school id and name
@@ -45,12 +39,11 @@ const findFilterFieldByProperty = (
   filters: { school_id: string; name: string },
   fieldsToReturn: string
 ) => {
-  const resourcesFound = FieldModel.find(filters)
+  return FieldModel.find(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return resourcesFound;
 };
 
 // @desc update a field by school id and field id
@@ -59,29 +52,23 @@ const modifyFilterField = (
   filters: { school_id: string; _id: string },
   field: NewField
 ) => {
-  const teacherUpdated = FieldModel.findOneAndUpdate(filters, field, {
+  return FieldModel.findOneAndUpdate(filters, field, {
     new: true,
     runValidators: true,
   });
-  return teacherUpdated;
 };
 
 // @desc delete a field by school id and field id
 // @params filters
 const removeFilterField = (filters: { school_id: string; _id: string }) => {
-  const resourceDeleted = FieldModel.findOneAndDelete(filters).lean().exec();
-  return resourceDeleted;
+  return FieldModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
 // @desc find a school by id
 // @params schoolId, fields to return
 const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
-  const schoolFound = SchoolModel.findById(schoolId)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return schoolFound;
+  return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
 
 export {

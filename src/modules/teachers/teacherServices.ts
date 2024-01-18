@@ -6,8 +6,7 @@ import TeacherModel from "./teacherModel";
 // @desc insert a teacher in database
 // @params teacher
 const insertTeacher = (teacher: NewTeacher) => {
-  const teacherInserted = TeacherModel.create(teacher);
-  return teacherInserted;
+  return TeacherModel.create(teacher);
 };
 
 // @desc find all teachers by school id
@@ -16,11 +15,7 @@ const findFilterAllTeachers = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const teacherFound = TeacherModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return teacherFound;
+  return TeacherModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a teacher by school id and user id or school id and teacher id
@@ -31,12 +26,11 @@ const findTeacherByProperty = (
     | { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const teacherFound = TeacherModel.findOne(filters)
+  return TeacherModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return teacherFound;
 };
 
 // @desc update a teacher by teacher id, school id and user id
@@ -45,18 +39,16 @@ const modifyFilterTeacher = (
   filters: { _id: string; school_id: string; user_id: string },
   teacher: NewTeacher
 ) => {
-  const teacherUpdated = TeacherModel.findOneAndUpdate(filters, teacher, {
+  return TeacherModel.findOneAndUpdate(filters, teacher, {
     new: true,
     runValidators: true,
   });
-  return teacherUpdated;
 };
 
 // @desc delete a teacher by school id and teacher id
 // @params teacherId, filters
 const removeFilterTeacher = (filters: { school_id: string; _id: string }) => {
-  const teacherDeleted = TeacherModel.findOneAndDelete(filters).lean().exec();
-  return teacherDeleted;
+  return TeacherModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
@@ -68,12 +60,11 @@ const findPopulateFilterAllUsers = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const resourceFound = UserModel.find({ _id: { $in: filters } })
+  return UserModel.find({ _id: { $in: filters } })
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return resourceFound;
 };
 
 // @desc find a user by id and school id properties
@@ -82,12 +73,11 @@ const findUserByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const userFound = UserModel.findOne(filters)
+  return UserModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return userFound;
 };
 
 export {

@@ -7,8 +7,7 @@ import { NewTeacher_Field } from "../../typings/types";
 // @desc insert a teacher_field in database
 // @params teacherField
 const insertTeacherField = (teacherField: NewTeacher_Field) => {
-  const resourceInserted = TeacherFieldModel.create(teacherField);
-  return resourceInserted;
+  return TeacherFieldModel.create(teacherField);
 };
 
 // @desc find all teacher_fields by school id
@@ -17,11 +16,7 @@ const findFilterAllTeacherFields = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const teacherFieldFound = TeacherFieldModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return teacherFieldFound;
+  return TeacherFieldModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a teacher_field by teacher id, field id and school id
@@ -32,12 +27,11 @@ const findTeacherFieldByProperty = (
     | { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const resourceFound = TeacherFieldModel.findOne(filters)
+  return TeacherFieldModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return resourceFound;
 };
 
 // @desc find a teacher_field and filter by school_id, teacher_id and field_id
@@ -46,12 +40,11 @@ const findFilterTeacherFieldByProperty = (
   filters: { school_id: string; teacher_id: string; field_id: string },
   fieldsToReturn: string
 ) => {
-  const resourcesFound = TeacherFieldModel.find(filters)
+  return TeacherFieldModel.find(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return resourcesFound;
 };
 
 // @desc update a teacher_field by some properties _id, school_id and teacher_id
@@ -60,15 +53,10 @@ const modifyFilterTeacherField = (
   filters: { _id: string; school_id: string; teacher_id: string },
   teacherField: NewTeacher_Field
 ) => {
-  const resourceUpdated = TeacherFieldModel.findOneAndUpdate(
-    filters,
-    teacherField,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
-  return resourceUpdated;
+  return TeacherFieldModel.findOneAndUpdate(filters, teacherField, {
+    new: true,
+    runValidators: true,
+  });
 };
 
 // @desc delete a teacher_field by school_id and teacher field id
@@ -77,10 +65,7 @@ const removeFilterTeacherField = (filters: {
   school_id: string;
   _id: string;
 }) => {
-  const resourceDeleted = TeacherFieldModel.findOneAndDelete(filters)
-    .lean()
-    .exec();
-  return resourceDeleted;
+  return TeacherFieldModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
@@ -92,12 +77,11 @@ const findPopulateTeacherById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const teacherFound = TeacherModel.findById(teacherId)
+  return TeacherModel.findById(teacherId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return teacherFound;
 };
 
 // @desc find a field by id and populate the embedded entities
@@ -108,12 +92,11 @@ const findPopulateFieldById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const fieldFound = FieldModel.findById(fieldId)
+  return FieldModel.findById(fieldId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return fieldFound;
 };
 
 export {

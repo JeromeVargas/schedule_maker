@@ -16,11 +16,7 @@ const findFilterAllSchedules = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const resourceFound = ScheduleModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return resourceFound;
+  return ScheduleModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a schedule by school id and name
@@ -31,12 +27,11 @@ const findScheduleByProperty = (
     | { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const scheduleFound = ScheduleModel.findOne(filters)
+  return ScheduleModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return scheduleFound;
 };
 
 // @desc find a schedule and filter by school id and name
@@ -45,12 +40,11 @@ const findFilterScheduleByProperty = (
   filters: { school_id: string; name: string },
   fieldsToReturn: string
 ) => {
-  const schedulesFound = ScheduleModel.find(filters)
+  return ScheduleModel.find(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return schedulesFound;
 };
 
 // @desc update a schedule by schedule id and school id
@@ -59,29 +53,23 @@ const modifyFilterSchedule = (
   filters: { _id: string; school_id: string },
   schedule: NewSchedule
 ) => {
-  const scheduleUpdated = ScheduleModel.findOneAndUpdate(filters, schedule, {
+  return ScheduleModel.findOneAndUpdate(filters, schedule, {
     new: true,
     runValidators: true,
   });
-  return scheduleUpdated;
 };
 
 // @desc delete a schedule
 // @params filters
 const removeFilterSchedule = (filters: { _id: string; school_id: string }) => {
-  const resourceDeleted = ScheduleModel.findOneAndDelete(filters).lean().exec();
-  return resourceDeleted;
+  return ScheduleModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
 // @desc find a school by id
 // @params schoolId, fieldsToReturn
 const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
-  const schoolFound = SchoolModel.findById(schoolId)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return schoolFound;
+  return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
 
 export {

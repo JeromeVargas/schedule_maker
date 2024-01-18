@@ -7,8 +7,7 @@ import { NewSubject } from "../../typings/types";
 // @desc insert a subject in the database
 // @params subject
 const insertSubject = (subject: NewSubject) => {
-  const subjectInsert = SubjectModel.create(subject);
-  return subjectInsert;
+  return SubjectModel.create(subject);
 };
 
 // @desc find all subjects by school id
@@ -17,11 +16,7 @@ const findFilterAllSubjects = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const subjectFound = SubjectModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return subjectFound;
+  return SubjectModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a subject by level id and name or school id and subject id
@@ -32,12 +27,11 @@ const findSubjectByProperty = (
     | { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const subjectFound = SubjectModel.findOne(filters)
+  return SubjectModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return subjectFound;
 };
 
 // @desc find a subject by level id and name
@@ -46,12 +40,11 @@ const findFilterSubjectByProperty = (
   filters: { level_id: string; name: string },
   fieldsToReturn: string
 ) => {
-  const subjectsFound = SubjectModel.find(filters)
+  return SubjectModel.find(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return subjectsFound;
 };
 
 // @desc update a resource by subject id and school name
@@ -60,18 +53,16 @@ const modifyFilterSubject = (
   filters: { _id: string; school_id: string },
   resource: NewSubject
 ) => {
-  const resourceUpdated = SubjectModel.findOneAndUpdate(filters, resource, {
+  return SubjectModel.findOneAndUpdate(filters, resource, {
     new: true,
     runValidators: true,
   });
-  return resourceUpdated;
 };
 
 // @desc delete a resource by school id and subject id
 // @params resourceId, filters
 const removeFilterSubject = (filters: { school_id: string; _id: string }) => {
-  const resourceDeleted = SubjectModel.findOneAndDelete(filters).lean().exec();
-  return resourceDeleted;
+  return SubjectModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
@@ -83,12 +74,11 @@ const findPopulateLevelById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const levelFound = LevelModel.findById(levelId)
+  return LevelModel.findById(levelId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return levelFound;
 };
 
 // @desc find a field by id and populate the embedded entities
@@ -99,12 +89,11 @@ const findPopulateFieldById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const fieldFound = FieldModel.findById(fieldId)
+  return FieldModel.findById(fieldId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return fieldFound;
 };
 
 export {

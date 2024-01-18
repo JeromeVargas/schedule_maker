@@ -19,11 +19,7 @@ const findFilterAllSessions = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
-  const sessionsFound = SessionModel.find(filters)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return sessionsFound;
+  return SessionModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a session by school id and session id
@@ -32,12 +28,11 @@ const findSessionByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
-  const sessionFound = SessionModel.findOne(filters)
+  return SessionModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return sessionFound;
 };
 
 // @desc update a session by session id and school id
@@ -46,22 +41,16 @@ const modifyFilterSession = (
   filters: { _id: string; school_id: string },
   sessionSession: NewSession
 ) => {
-  const sessionUpdated = SessionModel.findOneAndUpdate(
-    filters,
-    sessionSession,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
-  return sessionUpdated;
+  return SessionModel.findOneAndUpdate(filters, sessionSession, {
+    new: true,
+    runValidators: true,
+  });
 };
 
 // @desc delete a session by school id and session id
 // @params sessionId, filters
 const removeFilterSession = (filters: { school_id: string; _id: string }) => {
-  const sessionDeleted = SessionModel.findOneAndDelete(filters).lean().exec();
-  return sessionDeleted;
+  return SessionModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
@@ -73,12 +62,11 @@ const findPopulateGroupById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const groupFound = GroupModel.findById(groupId)
+  return GroupModel.findById(groupId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return groupFound;
 };
 
 // @desc find a subject by id and populate the embedded entities
@@ -89,12 +77,11 @@ const findPopulateSubjectById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const subjectFound = SubjectModel.findById(subjectId)
+  return SubjectModel.findById(subjectId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return subjectFound;
 };
 
 // @desc find a teacher_filed by id and populate the embedded entities
@@ -105,12 +92,11 @@ const findPopulateTeacherFieldById = (
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  const teacherFieldFound = TeacherFieldModel.findById(teacherFieldId)
+  return TeacherFieldModel.findById(teacherFieldId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-  return teacherFieldFound;
 };
 
 export {

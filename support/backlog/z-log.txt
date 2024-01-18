@@ -9,7 +9,6 @@ for later:
 
 Back end:
 
-// Todo --> simplify services
 // Todo --> add teacher_coordinator associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
 // Todo --> add group_coordinator associative table, to decouple the coordinator from the group and to have more than one coordinator for each group
 

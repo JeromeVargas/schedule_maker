@@ -5,25 +5,19 @@ import SchoolModel from "./schoolModel";
 // @desc insert a school in database
 // @params school
 const insertSchool = (school: NewSchool) => {
-  const schoolInserted = SchoolModel.create(school);
-  return schoolInserted;
+  return SchoolModel.create(school);
 };
 
 // @desc find all schools
 // @params fieldsToReturn
 const findAllSchools = (fieldsToReturn: string) => {
-  const schoolFound = SchoolModel.find().select(fieldsToReturn).lean().exec();
-  return schoolFound;
+  return SchoolModel.find().select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a school by id
 // @params schoolId, fieldsToReturn
 const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
-  const schoolFound = SchoolModel.findById(schoolId)
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-  return schoolFound;
+  return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a school by name
@@ -32,32 +26,26 @@ const findSchoolByProperty = (
   filters: { name: string },
   fieldsToReturn: string
 ) => {
-  const schoolFound = SchoolModel.findOne(filters)
+  return SchoolModel.findOne(filters)
     .collation({ locale: "en", strength: 2 })
     .select(fieldsToReturn)
     .lean()
     .exec();
-  return schoolFound;
 };
 
 // @desc update a school by id
 // @params schoolId, school
 const modifySchool = (schoolId: string, school: NewSchool) => {
-  const schoolUpdated = SchoolModel.findByIdAndUpdate(schoolId, school, {
+  return SchoolModel.findByIdAndUpdate(schoolId, school, {
     new: true,
     runValidators: true,
   });
-
-  return schoolUpdated;
 };
 
 // @desc delete a school by id
 // @params schoolId
 const removeSchool = (schoolId: string) => {
-  const schoolDeleted = SchoolModel.findOneAndRemove({ _id: schoolId })
-    .lean()
-    .exec();
-  return schoolDeleted;
+  return SchoolModel.findOneAndRemove({ _id: schoolId }).lean().exec();
 };
 
 export {
