@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body: {school_id: [string], user_id: [string];  coordinator_id: [string];  contractType: [string];  teachingHoursAssignable: [number];  teachingHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
+// @fields: body: {school_id: [string], user_id: [string],  coordinator_id: [string],  contractType: [string],  teachingHoursAssignable: [number];  teachingHoursAssigned: [number], adminHoursAssignable: [number];  adminHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const validateCreateTeacher = [
   check("school_id")
     .exists()
@@ -96,6 +96,32 @@ const validateCreateTeacher = [
     .bail()
     .isLength({ min: 1, max: 9 })
     .withMessage("teaching hours assigned must not exceed 9 digits"),
+  check("adminHoursAssignable")
+    .exists()
+    .withMessage(
+      "Please add the number of admin hours assignable to the teacher"
+    )
+    .bail()
+    .notEmpty()
+    .withMessage("The admin hours assignable field is empty")
+    .bail()
+    .isInt({ min: 0 })
+    .withMessage("admin hours assignable value is not valid")
+    .bail()
+    .isLength({ min: 1, max: 9 })
+    .withMessage("admin hours assignable must not exceed 9 digits"),
+  check("adminHoursAssigned")
+    .exists()
+    .withMessage("Please add the number of admin hours assigned to the teacher")
+    .bail()
+    .notEmpty()
+    .withMessage("The admin hours assigned field is empty")
+    .bail()
+    .isInt({ min: 0 })
+    .withMessage("admin hours assigned value is not valid")
+    .bail()
+    .isLength({ min: 1, max: 9 })
+    .withMessage("admin hours assigned must not exceed 9 digits"),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")
@@ -220,7 +246,7 @@ const validateGetTeacher = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id: [string], user_id: [string];  coordinator_id: [string];  contractType: [string];  teachingHoursAssignable: [number];  teachingHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
+// @fields: params: {id:[string]},  body: {school_id: [string], user_id: [string],  coordinator_id: [string],  contractType: [string],  teachingHoursAssignable: [number],  teachingHoursAssigned: [number], adminHoursAssignable: [number];  adminHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const validateUpdateTeacher = [
   check("id")
     .custom((value) => {
@@ -323,6 +349,32 @@ const validateUpdateTeacher = [
     .bail()
     .isLength({ min: 1, max: 9 })
     .withMessage("teaching hours assigned must not exceed 9 digits"),
+  check("adminHoursAssignable")
+    .exists()
+    .withMessage(
+      "Please add the number of admin hours assignable to the teacher"
+    )
+    .bail()
+    .notEmpty()
+    .withMessage("The admin hours assignable field is empty")
+    .bail()
+    .isInt({ min: 0 })
+    .withMessage("admin hours assignable value is not valid")
+    .bail()
+    .isLength({ min: 1, max: 9 })
+    .withMessage("admin hours assignable must not exceed 9 digits"),
+  check("adminHoursAssigned")
+    .exists()
+    .withMessage("Please add the number of admin hours assigned to the teacher")
+    .bail()
+    .notEmpty()
+    .withMessage("The admin hours assigned field is empty")
+    .bail()
+    .isInt({ min: 0 })
+    .withMessage("admin hours assigned value is not valid")
+    .bail()
+    .isLength({ min: 1, max: 9 })
+    .withMessage("admin hours assigned must not exceed 9 digits"),
   check("monday")
     .exists()
     .withMessage("Please add if the teacher is available to work on Mondays")

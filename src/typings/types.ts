@@ -39,6 +39,8 @@ export type Teacher = {
   contractType: ContractType;
   teachingHoursAssignable: number;
   teachingHoursAssigned: number;
+  adminHoursAssignable: number;
+  adminHoursAssigned: number;
   monday: boolean;
   tuesday: boolean;
   wednesday: boolean;

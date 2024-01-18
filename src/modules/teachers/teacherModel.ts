@@ -30,7 +30,7 @@ const TeacherSchema = new Schema<Teacher>(
       type: Number,
       required: [
         true,
-        "Please provide the number of hours assignable to the teacher",
+        "Please provide the number of teaching hours assignable to the teacher",
       ],
     },
     teachingHoursAssigned: {
@@ -38,6 +38,20 @@ const TeacherSchema = new Schema<Teacher>(
       required: [
         true,
         "Please provide the number of teaching hours assigned to the teacher",
+      ],
+    },
+    adminHoursAssignable: {
+      type: Number,
+      required: [
+        true,
+        "Please provide the number of administrative hours assignable to the teacher",
+      ],
+    },
+    adminHoursAssigned: {
+      type: Number,
+      required: [
+        true,
+        "Please provide the number of administrative hours assigned to the teacher",
       ],
     },
     monday: {

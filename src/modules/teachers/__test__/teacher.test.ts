@@ -43,8 +43,10 @@ describe("RESOURCE => Teacher", () => {
     user_id: validMockUserId,
     coordinator_id: validMockCoordinatorId,
     contractType: "full-time",
-    teachingHoursAssignable: 60,
-    teachingHoursAssigned: 60,
+    teachingHoursAssignable: 35,
+    teachingHoursAssigned: 35,
+    adminHoursAssignable: 35,
+    adminHoursAssigned: 35,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -58,8 +60,10 @@ describe("RESOURCE => Teacher", () => {
     user_i: validMockUserId,
     coordinator_i: validMockCoordinatorId,
     contractTyp: "full-time",
-    hoursAssignabl: 60,
-    hoursAssigne: 60,
+    teachingHoursAssignabl: 35,
+    teachingHoursAssigne: 35,
+    adminHoursAssignabl: 35,
+    adminHoursAssigne: 35,
     monda: true,
     tuesda: true,
     wednesda: true,
@@ -75,6 +79,8 @@ describe("RESOURCE => Teacher", () => {
     contractType: "",
     teachingHoursAssignable: "",
     teachingHoursAssigned: "",
+    adminHoursAssignable: "",
+    adminHoursAssigned: "",
     monday: "",
     tuesday: "",
     wednesday: "",
@@ -90,6 +96,8 @@ describe("RESOURCE => Teacher", () => {
     contractType: true,
     teachingHoursAssignable: "house",
     teachingHoursAssigned: "three3",
+    adminHoursAssignable: "house",
+    adminHoursAssigned: "three3",
     monday: "hello",
     tuesday: "hello",
     wednesday: "hello",
@@ -105,6 +113,8 @@ describe("RESOURCE => Teacher", () => {
     contractType: "full-time",
     teachingHoursAssignable: 1234567890,
     teachingHoursAssigned: 1234567890,
+    adminHoursAssignable: 1234567890,
+    adminHoursAssigned: 1234567890,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -118,8 +128,10 @@ describe("RESOURCE => Teacher", () => {
     user_id: validMockUserId,
     coordinator_id: validMockCoordinatorId,
     contractType: "tiempo-completo",
-    teachingHoursAssignable: 60,
-    teachingHoursAssigned: 60,
+    teachingHoursAssignable: 35,
+    teachingHoursAssigned: 35,
+    adminHoursAssignable: 35,
+    adminHoursAssigned: 35,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -162,8 +174,10 @@ describe("RESOURCE => Teacher", () => {
     user_id: validMockUserId,
     coordinator_id: validMockCoordinatorId,
     contractType: "full-time",
-    teachingHoursAssignable: 60,
-    teachingHoursAssigned: 60,
+    teachingHoursAssignable: 35,
+    teachingHoursAssigned: 35,
+    adminHoursAssignable: 35,
+    adminHoursAssigned: 35,
     monday: true,
     tuesday: true,
     wednesday: true,
@@ -182,8 +196,17 @@ describe("RESOURCE => Teacher", () => {
       user_id: new Types.ObjectId().toString(),
       coordinator_id: new Types.ObjectId().toString(),
       contractType: "full-time",
-      teachingHoursAssignable: 60,
-      teachingHoursAssigned: 60,
+      teachingHoursAssignable: 35,
+      teachingHoursAssigned: 35,
+      adminHoursAssignable: 35,
+      adminHoursAssigned: 35,
+      monday: true,
+      tuesday: true,
+      wednesday: true,
+      thursday: true,
+      friday: true,
+      saturday: true,
+      sunday: true,
     },
     {
       _id: new Types.ObjectId().toString(),
@@ -191,8 +214,17 @@ describe("RESOURCE => Teacher", () => {
       user_id: new Types.ObjectId().toString(),
       coordinator_id: new Types.ObjectId().toString(),
       contractType: "part-time",
-      teachingHoursAssignable: 40,
-      teachingHoursAssigned: 40,
+      teachingHoursAssignable: 35,
+      teachingHoursAssigned: 35,
+      adminHoursAssignable: 35,
+      adminHoursAssigned: 35,
+      monday: true,
+      tuesday: true,
+      wednesday: true,
+      thursday: true,
+      friday: true,
+      saturday: true,
+      sunday: true,
     },
     {
       _id: new Types.ObjectId().toString(),
@@ -200,8 +232,17 @@ describe("RESOURCE => Teacher", () => {
       user_id: new Types.ObjectId().toString(),
       coordinator_id: new Types.ObjectId().toString(),
       contractType: "substitute",
-      teachingHoursAssignable: 70,
-      teachingHoursAssigned: 70,
+      teachingHoursAssignable: 35,
+      teachingHoursAssigned: 35,
+      adminHoursAssignable: 35,
+      adminHoursAssigned: 35,
+      monday: true,
+      tuesday: true,
+      wednesday: true,
+      thursday: true,
+      friday: true,
+      saturday: true,
+      sunday: true,
     },
   ];
   const teachersNullPayload: Teacher[] = [];
@@ -257,6 +298,16 @@ describe("RESOURCE => Teacher", () => {
             location: "body",
             msg: "Please add the number of teaching hours assigned to the teacher",
             param: "teachingHoursAssigned",
+          },
+          {
+            location: "body",
+            msg: "Please add the number of admin hours assignable to the teacher",
+            param: "adminHoursAssignable",
+          },
+          {
+            location: "body",
+            msg: "Please add the number of admin hours assigned to the teacher",
+            param: "adminHoursAssigned",
           },
           {
             location: "body",
@@ -371,6 +422,18 @@ describe("RESOURCE => Teacher", () => {
             location: "body",
             msg: "The teaching hours assigned field is empty",
             param: "teachingHoursAssigned",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The admin hours assignable field is empty",
+            param: "adminHoursAssignable",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The admin hours assigned field is empty",
+            param: "adminHoursAssigned",
             value: "",
           },
           {
@@ -494,6 +557,18 @@ describe("RESOURCE => Teacher", () => {
           },
           {
             location: "body",
+            msg: "admin hours assignable value is not valid",
+            param: "adminHoursAssignable",
+            value: "house",
+          },
+          {
+            location: "body",
+            msg: "admin hours assigned value is not valid",
+            param: "adminHoursAssigned",
+            value: "three3",
+          },
+          {
+            location: "body",
             msg: "monday value is not valid",
             param: "monday",
             value: "hello",
@@ -592,6 +667,18 @@ describe("RESOURCE => Teacher", () => {
             param: "teachingHoursAssigned",
             value: 1234567890,
           },
+          {
+            location: "body",
+            msg: "admin hours assignable must not exceed 9 digits",
+            param: "adminHoursAssignable",
+            value: 1234567890,
+          },
+          {
+            location: "body",
+            msg: "admin hours assigned must not exceed 9 digits",
+            param: "adminHoursAssigned",
+            value: 1234567890,
+          },
         ]);
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
@@ -670,7 +757,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::post::06 - Passing a number of assignable hours larger than the maximum allowed", () => {
+    describe("teacher::post::06 - Passing a number of total assignable hours larger than the maximum allowed", () => {
       it("should return a wrong input value error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -686,11 +773,15 @@ describe("RESOURCE => Teacher", () => {
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
-          .send({ ...newTeacher, teachingHoursAssignable: 71 });
+          .send({
+            ...newTeacher,
+            teachingHoursAssignable: 36,
+            adminHoursAssignable: 36,
+          });
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "teaching hours assignable must not exceed 70 hours",
+          msg: "total hours assignable must not exceed 70 hours",
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
@@ -712,7 +803,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::07 - Passing a number of assigned hours larger than the assignable hours", () => {
+    describe("teacher::post::07 - Passing a number of teaching assigned hours larger than the teaching assignable hours", () => {
       it("should return a wrong input value error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -751,7 +842,46 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::08 - user already a teacher", () => {
+    describe("teacher::post::08 - Passing a number of admin assigned hours larger than the admin assignable hours", () => {
+      it("should return a wrong input value error", async () => {
+        // mock services
+        const duplicateTeacher = mockService(
+          teacherNullPayload,
+          "findTeacherByProperty"
+        );
+        const findUserCoordinator = mockService(
+          userCoordinatorPayload,
+          "findPopulateFilterAllUsers"
+        );
+        const insertTeacher = mockService(teacherPayload, "insertTeacher");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send({ ...newTeacher, adminHoursAssigned: 70 });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: `admin hours assigned must not exceed the admin hours assignable, ${newTeacher.adminHoursAssignable} hours`,
+        });
+        expect(statusCode).toBe(400);
+        expect(duplicateTeacher).not.toHaveBeenCalled();
+        expect(duplicateTeacher).not.toHaveBeenCalledWith(
+          { school_id: newTeacher.school_id, user_id: newTeacher.user_id },
+          "-createdAt -updatedAt"
+        );
+        expect(findUserCoordinator).not.toHaveBeenCalled();
+        expect(findUserCoordinator).not.toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertTeacher).not.toHaveBeenCalled();
+        expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
+      });
+    });
+    describe("teacher::post::09 - user already a teacher", () => {
       it("should return a user already a teacher error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -790,7 +920,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::09 - Not finding a user", () => {
+    describe("teacher::post::10 - Not finding a user", () => {
       it("should return a user not found error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -829,7 +959,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::10 - Passing an inactive user", () => {
+    describe("teacher::post::11 - Passing an inactive user", () => {
       it("should return an inactive user error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -869,7 +999,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::11 - Passing an user with a non teacher function assignable role such as: teacher, coordinator or headmaster", () => {
+    describe("teacher::post::12 - Passing an user with a non teacher function assignable role different from: teacher, coordinator or headmaster", () => {
       it("should return an invalid role error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -911,7 +1041,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::12 - The user's school does not match the body school id", () => {
+    describe("teacher::post::13 - The user's school does not match the body school id", () => {
       it("should return a non-matching school id error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -956,7 +1086,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::13 - Not finding a coordinator", () => {
+    describe("teacher::post::14 - Not finding a coordinator", () => {
       it("should return a non-existent coordinator error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -995,7 +1125,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::14 - Passing a user with a role different from coordinator", () => {
+    describe("teacher::post::15 - Passing a user with a role different from coordinator", () => {
       it("should return an not-a-coordinator error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -1037,7 +1167,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::15 - Passing an inactive coordinator", () => {
+    describe("teacher::post::16 - Passing an inactive coordinator", () => {
       it("should return an inactive coordinator error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -1079,7 +1209,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::16 - The coordinator's school does not match the body school id", () => {
+    describe("teacher::post::17 - The coordinator's school does not match the body school id", () => {
       it("should return a non-matching school id error", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -1121,7 +1251,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).not.toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::17 - Passing a teacher but not being created", () => {
+    describe("teacher::post::18 - Passing a teacher but not being created", () => {
       it("should not create a teacher", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -1160,7 +1290,7 @@ describe("RESOURCE => Teacher", () => {
         expect(insertTeacher).toHaveBeenCalledWith(newTeacher);
       });
     });
-    describe("teacher::post::18 - Passing a teacher correctly to create", () => {
+    describe("teacher::post::19 - Passing a teacher correctly to create", () => {
       it("should create a teacher", async () => {
         // mock services
         const duplicateTeacher = mockService(
@@ -1334,28 +1464,55 @@ describe("RESOURCE => Teacher", () => {
               _id: expect.any(String),
               contractType: "full-time",
               coordinator_id: expect.any(String),
-              teachingHoursAssignable: 60,
-              teachingHoursAssigned: 60,
+              teachingHoursAssignable: 35,
+              teachingHoursAssigned: 35,
+              adminHoursAssignable: 35,
+              adminHoursAssigned: 35,
               school_id: expect.any(String),
               user_id: expect.any(String),
+              monday: true,
+              tuesday: true,
+              wednesday: true,
+              thursday: true,
+              friday: true,
+              saturday: true,
+              sunday: true,
             },
             {
               _id: expect.any(String),
               contractType: "part-time",
               coordinator_id: expect.any(String),
-              teachingHoursAssignable: 40,
-              teachingHoursAssigned: 40,
+              teachingHoursAssignable: 35,
+              teachingHoursAssigned: 35,
+              adminHoursAssignable: 35,
+              adminHoursAssigned: 35,
               school_id: expect.any(String),
               user_id: expect.any(String),
+              monday: true,
+              tuesday: true,
+              wednesday: true,
+              thursday: true,
+              friday: true,
+              saturday: true,
+              sunday: true,
             },
             {
               _id: expect.any(String),
               contractType: "substitute",
               coordinator_id: expect.any(String),
-              teachingHoursAssignable: 70,
-              teachingHoursAssigned: 70,
+              teachingHoursAssignable: 35,
+              teachingHoursAssigned: 35,
+              adminHoursAssignable: 35,
+              adminHoursAssigned: 35,
               school_id: expect.any(String),
               user_id: expect.any(String),
+              monday: true,
+              tuesday: true,
+              wednesday: true,
+              thursday: true,
+              friday: true,
+              saturday: true,
+              sunday: true,
             },
           ]);
           expect(statusCode).toBe(200);
@@ -1509,8 +1666,10 @@ describe("RESOURCE => Teacher", () => {
             user_id: validMockUserId,
             coordinator_id: validMockCoordinatorId,
             contractType: "full-time",
-            teachingHoursAssignable: 60,
-            teachingHoursAssigned: 60,
+            teachingHoursAssignable: 35,
+            teachingHoursAssigned: 35,
+            adminHoursAssignable: 35,
+            adminHoursAssigned: 35,
             monday: true,
             tuesday: true,
             wednesday: true,
@@ -1578,6 +1737,16 @@ describe("RESOURCE => Teacher", () => {
             location: "body",
             msg: "Please add the number of teaching hours assigned to the teacher",
             param: "teachingHoursAssigned",
+          },
+          {
+            location: "body",
+            msg: "Please add the number of admin hours assignable to the teacher",
+            param: "adminHoursAssignable",
+          },
+          {
+            location: "body",
+            msg: "Please add the number of admin hours assigned to the teacher",
+            param: "adminHoursAssigned",
           },
           {
             location: "body",
@@ -1689,6 +1858,18 @@ describe("RESOURCE => Teacher", () => {
             location: "body",
             msg: "The teaching hours assigned field is empty",
             param: "teachingHoursAssigned",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The admin hours assignable field is empty",
+            param: "adminHoursAssignable",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The admin hours assigned field is empty",
+            param: "adminHoursAssigned",
             value: "",
           },
           {
@@ -1816,6 +1997,18 @@ describe("RESOURCE => Teacher", () => {
           },
           {
             location: "body",
+            msg: "admin hours assignable value is not valid",
+            param: "adminHoursAssignable",
+            value: "house",
+          },
+          {
+            location: "body",
+            msg: "admin hours assigned value is not valid",
+            param: "adminHoursAssigned",
+            value: "three3",
+          },
+          {
+            location: "body",
             msg: "monday value is not valid",
             param: "monday",
             value: "hello",
@@ -1910,6 +2103,18 @@ describe("RESOURCE => Teacher", () => {
             param: "teachingHoursAssigned",
             value: 1234567890,
           },
+          {
+            location: "body",
+            msg: "admin hours assignable must not exceed 9 digits",
+            param: "adminHoursAssignable",
+            value: 1234567890,
+          },
+          {
+            location: "body",
+            msg: "admin hours assigned must not exceed 9 digits",
+            param: "adminHoursAssigned",
+            value: 1234567890,
+          },
         ]);
         expect(statusCode).toBe(400);
         expect(findUserCoordinator).not.toHaveBeenCalled();
@@ -1979,7 +2184,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::06 - Passing a number of assignable hours larger than the maximum allowed", () => {
+    describe("teacher::put::06 - Passing a total number of assignable hours larger than the maximum allowed", () => {
       it("should return a wrong input value error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -1987,18 +2192,22 @@ describe("RESOURCE => Teacher", () => {
           "findPopulateFilterAllUsers"
         );
         const updateTeacher = mockService(
-          teacherPayload,
+          teacherNullPayload,
           "modifyFilterTeacher"
         );
 
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockUserId}`)
-          .send({ ...newTeacher, teachingHoursAssignable: 71 });
+          .send({
+            ...newTeacher,
+            teachingHoursAssignable: 36,
+            adminHoursAssignable: 36,
+          });
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "teaching hours assignable must not exceed 70 hours",
+          msg: "total hours assignable must not exceed 70 hours",
         });
         expect(statusCode).toBe(400);
         expect(findUserCoordinator).not.toHaveBeenCalled();
@@ -2019,7 +2228,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::07 - Passing a number of assigned hours larger than the assignable hours", () => {
+    describe("teacher::put::07 - Passing a number of teaching assigned hours larger than the teaching assignable hours", () => {
       it("should return a wrong input value error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2059,7 +2268,47 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::08 - Not finding a user", () => {
+    describe("teacher::put::08 - Passing a number of admin assigned hours larger than the admin assignable hours", () => {
+      it("should return a wrong input value error", async () => {
+        // mock services
+        const findUserCoordinator = mockService(
+          [userNullPayload, coordinatorNullPayload],
+          "findPopulateFilterAllUsers"
+        );
+        const updateTeacher = mockService(
+          teacherPayload,
+          "modifyFilterTeacher"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockUserId}`)
+          .send({ ...newTeacher, adminHoursAssigned: 70 });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: `admin hours assigned must not exceed the admin hours assignable, ${newTeacher.adminHoursAssignable} hours`,
+        });
+        expect(statusCode).toBe(400);
+        expect(findUserCoordinator).not.toHaveBeenCalled();
+        expect(findUserCoordinator).not.toHaveBeenCalledWith(
+          [newTeacher.coordinator_id, newTeacher.user_id],
+          "-password -createdAt -updatedAt",
+          "school_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateTeacher).not.toHaveBeenCalled();
+        expect(updateTeacher).not.toHaveBeenCalledWith(
+          [
+            { _id: validMockTeacherId },
+            { user_id: newTeacher.user_id },
+            { school_id: newTeacher.school_id },
+          ],
+          newTeacher
+        );
+      });
+    });
+    describe("teacher::put::09 - Not finding a user", () => {
       it("should return a user not found error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2099,7 +2348,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::09 - Passing an inactive user", () => {
+    describe("teacher::put::10 - Passing an inactive user", () => {
       it("should return an inactive user error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2145,7 +2394,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::10 - Passing an user with a non teacher function assignable role such as: teacher, coordinator or headmaster", () => {
+    describe("teacher::put::11 - Passing an user with a non teacher function assignable role different from: teacher, coordinator or headmaster", () => {
       it("should return an invalid role error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2191,7 +2440,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::11 - The user's school does not match the body school id", () => {
+    describe("teacher::put::12 - The user's school does not match the body school id", () => {
       it("should return a non-matching school id error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2237,7 +2486,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::12 - Not finding a coordinator", () => {
+    describe("teacher::put::13 - Not finding a coordinator", () => {
       it("should return a non-existent coordinator error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2277,7 +2526,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::13 - Passing a non coordinator user as coordinator", () => {
+    describe("teacher::put::14 - Passing a user with a role different from coordinator", () => {
       it("should return an not-a-coordinator error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2320,7 +2569,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::14 - Passing an inactive coordinator", () => {
+    describe("teacher::put::15 - Passing an inactive coordinator", () => {
       it("should return an inactive coordinator error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2363,7 +2612,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::15 - The coordinator's school does not match the body school id", () => {
+    describe("teacher::put::16 - The coordinator's school does not match the body school id", () => {
       it("should return a non-matching school id error", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2406,7 +2655,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::16 - Passing a teacher but not updating it", () => {
+    describe("teacher::put::17 - Passing a teacher but not updating it", () => {
       it("should not update a user", async () => {
         // mock services
         const findUserCoordinator = mockService(
@@ -2446,7 +2695,7 @@ describe("RESOURCE => Teacher", () => {
         );
       });
     });
-    describe("teacher::put::17 - Passing a teacher correctly to update", () => {
+    describe("teacher::put::18 - Passing a teacher correctly to update", () => {
       it("should update a user", async () => {
         // mock services
         const findUserCoordinator = mockService(

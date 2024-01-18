@@ -9,25 +9,29 @@ for later:
 
 Back end:
 
-// Todo --> add admin_hours_assignable and admin_hours_assigned to differentiate teachers from administrative, i.e. principal and coordinators
+// Todo --> simplify services
 // Todo --> add teacher_coordinator associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
 // Todo --> add group_coordinator associative table, to decouple the coordinator from the group and to have more than one coordinator for each group
 
 for later:
 
-- authorization - role base
-    https://youtu.be/0NiyW9XINRA?feature=shared
-- add checks for the school, make sure the field actually belongs to the school  - school middleware
-- not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
-- make sure resources belong to the user/coordinator's school - school middleware
-- authentication
 
 - simplify the error messages, do not send the entire message
 - add success confirmation boolean in the response message
+- add logger
+
+- authentication JWT
+
+- authorization - role base
+    https://youtu.be/0NiyW9XINRA?feature=shared
+- add checks for the school, make sure the field actually belongs to the school  - school middleware
+- make sure resources belong to the user/coordinator's school - school middleware
+- not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
+
+
 - add csrf attack protection features:
     https://www.youtube.com/watch?v=CXSE89JGnek&ab_channel=AntonioSarosi
     https://www.youtube.com/watch?v=C9dvkIndTLA&t=1s&ab_channel=4tomik
-- add logger
 
 
 - important: try to update packages, specially express validator,

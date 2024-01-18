@@ -21,7 +21,7 @@ const maxHours = 70; // number of hours in a week
 // @desc create a user
 // @route POST /api/v1/teachers
 // @access Private
-// @fields: body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  teachingHoursAssignable: [number];  teachingHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
+// @fields: body: {user_id: [string],  coordinator_id: [string],  contractType: [string], teachingHoursAssignable: [number],  teachingHoursAssigned: [number], adminHoursAssignable: [number], adminHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const createTeacher = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
@@ -31,6 +31,8 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     contractType,
     teachingHoursAssignable,
     teachingHoursAssigned,
+    adminHoursAssignable,
+    adminHoursAssigned,
     monday,
     tuesday,
     wednesday,
@@ -40,9 +42,15 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     sunday,
   } = body;
   /* check if hours assignable do not exceed the max allowed number of hours */
-  if (teachingHoursAssignable > maxHours) {
+  if (adminHoursAssignable + teachingHoursAssignable > maxHours) {
     throw new BadRequestError(
-      `teaching hours assignable must not exceed ${maxHours} hours`
+      `total hours assignable must not exceed ${maxHours} hours`
+    );
+  }
+  /* check if admin hours assigned do not exceed the admin hours assignable */
+  if (adminHoursAssigned > adminHoursAssignable) {
+    throw new BadRequestError(
+      `admin hours assigned must not exceed the admin hours assignable, ${adminHoursAssignable} hours`
     );
   }
   /* check if teaching hours assigned do not exceed the teaching hours assignable */
@@ -124,6 +132,8 @@ const createTeacher = async ({ body }: Request, res: Response) => {
     contractType: contractType,
     teachingHoursAssignable: teachingHoursAssignable,
     teachingHoursAssigned: teachingHoursAssigned,
+    adminHoursAssignable: adminHoursAssignable,
+    adminHoursAssigned: adminHoursAssigned,
     monday: monday,
     tuesday: tuesday,
     wednesday: wednesday,
@@ -183,7 +193,7 @@ const getTeacher = async ({ params, body }: Request, res: Response) => {
 // @desc update a user
 // @route PUT /api/v1/teachers/:id
 // @access Private
-// @fields: params: {id:[string]},  body: {user_id: [string];  coordinator_id: [string];  contractType: [string];  teachingHoursAssignable: [number];  teachingHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
+// @fields: params: {id:[string]}, body: {user_id: [string], coordinator_id: [string], contractType: [string], teachingHoursAssignable: [number],  teachingHoursAssigned: [number], adminHoursAssignable: [number],  adminHoursAssigned: [number],monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 const updateTeacher = async ({ body, params }: Request, res: Response) => {
   /* destructure the fields */
   const { id: teacherId } = params;
@@ -194,6 +204,8 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
     contractType,
     teachingHoursAssignable,
     teachingHoursAssigned,
+    adminHoursAssignable,
+    adminHoursAssigned,
     monday,
     tuesday,
     wednesday,
@@ -203,9 +215,15 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
     sunday,
   } = body;
   /* check if hours assignable do not exceed the max allowed number of hours */
-  if (teachingHoursAssignable > maxHours) {
+  if (adminHoursAssignable + teachingHoursAssignable > maxHours) {
     throw new BadRequestError(
-      `teaching hours assignable must not exceed ${maxHours} hours`
+      `total hours assignable must not exceed ${maxHours} hours`
+    );
+  }
+  /* check if admin hours assigned do not exceed the admin hours assignable */
+  if (adminHoursAssigned > adminHoursAssignable) {
+    throw new BadRequestError(
+      `admin hours assigned must not exceed the admin hours assignable, ${adminHoursAssignable} hours`
     );
   }
   /* check if teaching hours assigned do not exceed the teaching hours assignable */
@@ -281,6 +299,8 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
     contractType: contractType,
     teachingHoursAssignable: teachingHoursAssignable,
     teachingHoursAssigned: teachingHoursAssigned,
+    adminHoursAssignable: adminHoursAssignable,
+    adminHoursAssigned: adminHoursAssigned,
     monday: monday,
     tuesday: tuesday,
     wednesday: wednesday,
