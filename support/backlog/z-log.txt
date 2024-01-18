@@ -15,7 +15,7 @@ Back end:
 for later:
 
 
-- simplify the error messages, do not send the entire message
+- simplify the error messages, do not send the entire message in production
 - add success confirmation boolean in the response message
 - add logger
 
