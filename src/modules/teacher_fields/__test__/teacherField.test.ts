@@ -342,7 +342,7 @@ describe("RESOURCE => Teacher_field", () => {
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
+        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherFieldNotValidDataTypes.field_id,
           "-createdAt -updatedAt",
@@ -463,7 +463,7 @@ describe("RESOURCE => Teacher_field", () => {
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
-    describe("teacher_field::post::06 - Passing a teacher that do not match the school id", () => {
+    describe("teacher_field::post::06 - Passing a teacher that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateTeacherField = mockService(
@@ -646,7 +646,7 @@ describe("RESOURCE => Teacher_field", () => {
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
-    describe("teacher_field::post::09 - Passing a field that do not match the school id", () => {
+    describe("teacher_field::post::09 - Passing a field that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateTeacherField = mockService(
@@ -1503,7 +1503,7 @@ describe("RESOURCE => Teacher_field", () => {
         );
       });
     });
-    describe("teacher_field::put::06 - Passing a teacher that do not match the school id", () => {
+    describe("teacher_field::put::06 - Passing a teacher that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateTeacherField = mockService(

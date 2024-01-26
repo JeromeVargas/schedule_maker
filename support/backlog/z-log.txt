@@ -9,14 +9,12 @@ for later:
 
 Back end:
 
-// Todo --> spelling that do not, instead, that does not
-// check teacher_field test
-// update the git hub repository project issues
-
 // Todo --> add coordinator_teacher associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
     --> update UML diagram
     --> update types
+// Todo --> update @babel/traverse security vulnerability
 // Make all singular, controllers and validators
+
 
 for later:
 
@@ -27,7 +25,6 @@ for later:
 - add logger
 
 - authentication JWT
-
 - authorization - role base
     https://youtu.be/0NiyW9XINRA?feature=shared
 - add checks for the school, make sure the field actually belongs to the school  - school middleware
