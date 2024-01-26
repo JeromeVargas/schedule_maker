@@ -11,9 +11,13 @@ const SessionSchema = new Schema<Session>(
       type: Schema.Types.ObjectId,
       required: [true, "must provide a level id for the session"],
     },
-    group_id: {
+    groupCoordinator_id: {
       type: Schema.Types.ObjectId,
       required: [true, "must provide a group id for the session"],
+    },
+    group_id: {
+      type: Schema.Types.ObjectId,
+      required: [true, "must provide a subject id for the session"],
     },
     subject_id: {
       type: Schema.Types.ObjectId,

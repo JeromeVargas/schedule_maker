@@ -10,7 +10,7 @@ import {
   modifyFilterSession,
   removeFilterSession,
   /* Services from other entities */
-  findPopulateGroupById,
+  findPopulateGroupCoordinatorById,
   findPopulateSubjectById,
   findPopulateTeacherFieldById,
 } from "./sessionServices";
@@ -21,12 +21,13 @@ const maxMinutesInDay = 1439;
 // @desc create a session
 // @route POST /api/v1/sessions
 // @access Private
-// @fields: body {school_id:[string], level_id:[string], group_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
+// @fields: body {school_id:[string], level_id:[string], groupCoordinator_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 const createSession = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
     school_id,
     level_id,
+    groupCoordinator_id,
     group_id,
     subject_id,
     teacherField_id,
@@ -38,42 +39,44 @@ const createSession = async ({ body }: Request, res: Response) => {
   if (startTime > maxMinutesInDay) {
     throw new BadRequestError("The session start time must not exceed 23:00");
   }
-  /* find if the group already exists */
+  /* find if the groupCoordinator already exists */
   const fieldsToReturnGroup = "-createdAt -updatedAt";
-  const fieldsToPopulateGroup = "school_id level_id coordinator_id";
+  const fieldsToPopulateGroup = "school_id group_id coordinator_id";
   const fieldsToReturnPopulateGroup = "-createdAt -updatedAt";
-  const groupFound = await findPopulateGroupById(
-    group_id,
+  const groupCoordinatorFound = await findPopulateGroupCoordinatorById(
+    groupCoordinator_id,
     fieldsToReturnGroup,
     fieldsToPopulateGroup,
     fieldsToReturnPopulateGroup
   );
-  if (!groupFound) {
-    throw new BadRequestError("Please make sure the group exists");
+  if (!groupCoordinatorFound) {
+    throw new NotFoundError(
+      "Please make sure the group_coordinator assignment exists"
+    );
   }
-  // find if the school exists for the group and matches the school in the body
-  if (groupFound?.school_id?._id?.toString() !== school_id) {
+  // find if the school exists for the groupCoordinator and matches the school in the body
+  if (groupCoordinatorFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
-      "Please make sure the group belongs to the school"
+      "Please make sure the group_coordinator belongs to the school"
     );
   }
   // find if the level exists for group and matches the level in the body
-  if (groupFound?.level_id?._id?.toString() !== level_id) {
+  if (groupCoordinatorFound?.group_id?.level_id?._id?.toString() !== level_id) {
     throw new BadRequestError(
       "Please make sure the group belongs to the level"
     );
   }
-  // find if the school exists for the coordinator and matches the school in the body
-  if (groupFound?.coordinator_id?.school_id?.toString() !== school_id) {
+  // find if the group is the same as the one passed in the body
+  if (groupCoordinatorFound?.group_id?._id?.toString() !== group_id) {
     throw new BadRequestError(
-      "Please make sure the coordinator belongs to the school"
+      "Please make sure the group is the same assigned to the coordinator"
     );
   }
-  // the coordinator being an actual coordinator and the role active
-  if (groupFound?.coordinator_id?.role !== "coordinator") {
+  // find if the coordinator is an actual coordinator and the role active
+  if (groupCoordinatorFound?.coordinator_id?.role !== "coordinator") {
     throw new BadRequestError("Please pass a user with a coordinator role");
   }
-  if (groupFound?.coordinator_id?.status !== "active") {
+  if (groupCoordinatorFound?.coordinator_id?.status !== "active") {
     throw new BadRequestError("Please pass an active coordinator");
   }
   /* find if the subject already exists */
@@ -87,7 +90,7 @@ const createSession = async ({ body }: Request, res: Response) => {
     fieldsToReturnPopulateSubject
   );
   if (!subjectFound) {
-    throw new BadRequestError("Please make sure the subject exists");
+    throw new NotFoundError("Please make sure the subject exists");
   }
   // find if the school exists for subject and matches the school in the body
   if (subjectFound?.school_id?._id?.toString() !== school_id) {
@@ -112,7 +115,7 @@ const createSession = async ({ body }: Request, res: Response) => {
     fieldsToReturnPopulateTeacherField
   );
   if (!teacherFieldFound) {
-    throw new BadRequestError(
+    throw new NotFoundError(
       "Please make sure the field_teacher assignment exists"
     );
   }
@@ -125,7 +128,7 @@ const createSession = async ({ body }: Request, res: Response) => {
   /* find if the coordinator for the teacher and group is the same */
   // other checks such as the existence, status and role have already been taken care of by the group checks
   if (
-    groupFound?.coordinator_id?._id?.toString() !==
+    groupCoordinatorFound?.coordinator_id?._id?.toString() !==
     teacherFieldFound?.teacher_id?.coordinator_id?.toString()
   ) {
     throw new BadRequestError(
@@ -145,6 +148,7 @@ const createSession = async ({ body }: Request, res: Response) => {
   const newSession = {
     school_id: school_id,
     level_id: level_id,
+    groupCoordinator_id: groupCoordinator_id,
     group_id: group_id,
     subject_id: subject_id,
     teacherField_id: teacherField_id,
@@ -154,7 +158,7 @@ const createSession = async ({ body }: Request, res: Response) => {
   };
   const sessionCreated = await insertSession(newSession);
   if (!sessionCreated) {
-    throw new BadRequestError("Session not created!");
+    throw new BadRequestError("Session not created");
   }
   res.status(StatusCodes.CREATED).json({ msg: "Session created!" });
 };
@@ -208,6 +212,7 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
   const {
     school_id,
     level_id,
+    groupCoordinator_id,
     group_id,
     subject_id,
     teacherField_id,
@@ -221,40 +226,42 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
   }
   /* find if the group already exists */
   const fieldsToReturnGroup = "-createdAt -updatedAt";
-  const fieldsToPopulateGroup = "school_id level_id coordinator_id";
+  const fieldsToPopulateGroup = "school_id group_id coordinator_id";
   const fieldsToReturnPopulateGroup = "-createdAt -updatedAt";
-  const groupFound = await findPopulateGroupById(
-    group_id,
+  const groupCoordinatorFound = await findPopulateGroupCoordinatorById(
+    groupCoordinator_id,
     fieldsToReturnGroup,
     fieldsToPopulateGroup,
     fieldsToReturnPopulateGroup
   );
-  if (!groupFound) {
-    throw new BadRequestError("Please make sure the group exists");
+  if (!groupCoordinatorFound) {
+    throw new NotFoundError(
+      "Please make sure the group_coordinator assignment exists"
+    );
   }
-  // find if the school exists for group and matches the school in the body
-  if (groupFound?.school_id?._id?.toString() !== school_id) {
+  // find if the school exists for group_coordinator and matches the school in the body
+  if (groupCoordinatorFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
-      "Please make sure the group belongs to the school"
+      "Please make sure the group_coordinator belongs to the school"
     );
   }
   // find if the level exists for group and matches the level in the body
-  if (groupFound?.level_id?._id?.toString() !== level_id) {
+  if (groupCoordinatorFound?.group_id?.level_id?._id?.toString() !== level_id) {
     throw new BadRequestError(
       "Please make sure the group belongs to the level"
     );
   }
-  // find if the school exists for the coordinator and matches the school in the body
-  if (groupFound?.coordinator_id?.school_id?.toString() !== school_id) {
+  // find if the group is the same as the one passed in the body
+  if (groupCoordinatorFound?.group_id?._id?.toString() !== group_id) {
     throw new BadRequestError(
-      "Please make sure the coordinator belongs to the school"
+      "Please make sure the group is the same assigned to the coordinator"
     );
   }
   // the coordinator being an actual coordinator and the role active has already been taken care of by the previous checks for the subject
-  if (groupFound?.coordinator_id?.role !== "coordinator") {
+  if (groupCoordinatorFound?.coordinator_id?.role !== "coordinator") {
     throw new BadRequestError("Please pass a user with a coordinator role");
   }
-  if (groupFound?.coordinator_id?.status !== "active") {
+  if (groupCoordinatorFound?.coordinator_id?.status !== "active") {
     throw new BadRequestError("Please pass an active coordinator");
   }
   /* find if the subject already exists */
@@ -284,7 +291,7 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
   }
   /* find if the teacher_field already exists */
   const fieldsToReturnTeacherField = "-createdAt -updatedAt";
-  const fieldsToPopulateTeacherField = "school_id teacher_id";
+  const fieldsToPopulateTeacherField = "school_id teacher_id field_id";
   const fieldsToReturnPopulateTeacherField = "-createdAt -updatedAt";
   const teacherFieldFound = await findPopulateTeacherFieldById(
     teacherField_id,
@@ -293,7 +300,7 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
     fieldsToReturnPopulateTeacherField
   );
   if (!teacherFieldFound) {
-    throw new BadRequestError(
+    throw new NotFoundError(
       "Please make sure the field_teacher assignment exists"
     );
   }
@@ -306,7 +313,7 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
   /* find if the coordinator for the teacher and group is the same */
   // other checks such as the existence, status and role have already been taken care of by the group checks
   if (
-    groupFound?.coordinator_id?._id?.toString() !==
+    groupCoordinatorFound?.coordinator_id?._id?.toString() !==
     teacherFieldFound?.teacher_id?.coordinator_id?.toString()
   ) {
     throw new BadRequestError(
@@ -327,6 +334,7 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
   const newSession = {
     school_id: school_id,
     level_id: level_id,
+    groupCoordinator_id: groupCoordinator_id,
     group_id: group_id,
     subject_id: subject_id,
     teacherField_id: teacherField_id,

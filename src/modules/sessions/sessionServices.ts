@@ -2,6 +2,7 @@ import SessionModel from "./sessionModel";
 import GroupModel from "../groups/groupModel";
 import SubjectModel from "../subjects/subjectModel";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
+import GroupCoordinatorModel from "../group_coordinators/groupCoordinatorModel";
 
 import { NewSession } from "../../typings/types";
 
@@ -54,15 +55,15 @@ const removeFilterSession = (filters: { school_id: string; _id: string }) => {
 };
 
 /* Services from other entities */
-// @desc find a group by id and populate the embedded entities
+// @desc find a group_coordinator by id and populate the embedded entities
 // @params groupId, fields to return, fields to populate, fields to return populate
-const findPopulateGroupById = (
-  groupId: string,
+const findPopulateGroupCoordinatorById = (
+  groupCoordinatorId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  return GroupModel.findById(groupId)
+  return GroupCoordinatorModel.findById(groupCoordinatorId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
@@ -106,7 +107,7 @@ export {
   modifyFilterSession,
   removeFilterSession,
   /* Services from other entities */
-  findPopulateGroupById,
+  findPopulateGroupCoordinatorById,
   findPopulateSubjectById,
   findPopulateTeacherFieldById,
 };

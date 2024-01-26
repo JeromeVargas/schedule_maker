@@ -7,8 +7,9 @@ import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
 import ScheduleModel from "../schedules/scheduleModel";
 import BreakModel from "../breaks/breakModel";
 import LevelModel from "../levels/levelModel";
-import SubjectModel from "../subjects/subjectModel";
 import GroupModel from "../groups/groupModel";
+import GroupCoordinatorModel from "../group_coordinators/groupCoordinatorModel";
+import SubjectModel from "../subjects/subjectModel";
 import SessionModel from "../sessions/sessionModel";
 
 import entities from "./entities.json";
@@ -179,6 +180,23 @@ export const populate = async (index: number) => {
     /* FIND GROUP */
     // const group = (await GroupModel.find()).at(0);
 
+    /* CREATE GROUP_COORDINATOR */
+    // const group = (await GroupModel.find()).at(0);
+    // const coordinator = (await UserModel.find()).at(0);
+    const groupCoordinator1 = await GroupCoordinatorModel.create({
+      school_id: group1?.school_id,
+      group_id: group1?._id,
+      coordinator_id: coordinator?._id,
+    });
+    const groupCoordinator2 = await GroupCoordinatorModel.create({
+      school_id: group2?.school_id,
+      group_id: group2?._id,
+      coordinator_id: coordinator?._id,
+    });
+
+    /* FIND TEACHER_FIELD */
+    // const teacherField = (await TeacherFieldModel.find()).at(0);
+
     /* CREATE SUBJECT */
     // const level = (await LevelModel.find()).at(0);
     // const field = (await FieldModel.find()).at(0);
@@ -214,6 +232,7 @@ export const populate = async (index: number) => {
           ...entities.sessions[0],
           school_id: level1?.school_id,
           level_id: level1?._id,
+          groupCoordinator_id: groupCoordinator1?._id,
           group_id: group1?._id,
           subject_id: subject1?._id,
           teacherField_id: teacherField1?._id,
@@ -225,6 +244,7 @@ export const populate = async (index: number) => {
           ...entities.sessions[1],
           school_id: level2?.school_id,
           level_id: level2?._id,
+          groupCoordinator_id: groupCoordinator2?._id,
           group_id: group2?._id,
           subject_id: subject2?._id,
           teacherField_id: teacherField2?._id,

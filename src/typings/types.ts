@@ -116,12 +116,21 @@ export type Group = {
   _id: Types.ObjectId;
   school_id: School;
   level_id: Level;
-  coordinator_id: User;
   name: string;
   numberStudents: number;
 };
 
 export type NewGroup = Omit<Group, "_id">;
+
+// group_coordinator
+export type Group_Coordinator = {
+  _id: Types.ObjectId;
+  school_id: School;
+  group_id: Group;
+  coordinator_id: User;
+};
+
+export type NewGroup_Coordinator = Omit<Group_Coordinator, "_id">;
 
 // subject
 export type Subject = {
@@ -141,6 +150,7 @@ export type Session = {
   _id: Types.ObjectId;
   school_id: School;
   level_id: Level;
+  groupCoordinator_id: Group_Coordinator;
   group_id: Group;
   subject_id: Group;
   teacherField_id: Teacher_Field;

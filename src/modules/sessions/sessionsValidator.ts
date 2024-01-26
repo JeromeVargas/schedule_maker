@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body {school_id:[string], level_id:[string], group_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
+// @fields: body {school_id:[string], level_id:[string], groupCoordinator_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 const validateCreateSession = [
   check("school_id")
     .exists()
@@ -37,6 +37,22 @@ const validateCreateSession = [
       }
     })
     .withMessage(`The level id is not valid`),
+  check("groupCoordinator_id")
+    .exists()
+    .withMessage("Please add the groupCoordinator id")
+    .bail()
+    .notEmpty()
+    .withMessage("The groupCoordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The groupCoordinator id is not valid`),
   check("group_id")
     .exists()
     .withMessage("Please add the group id")
@@ -223,6 +239,22 @@ const validateUpdateSession = [
       }
     })
     .withMessage(`The level id is not valid`),
+  check("groupCoordinator_id")
+    .exists()
+    .withMessage("Please add the groupCoordinator id")
+    .bail()
+    .notEmpty()
+    .withMessage("The groupCoordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The groupCoordinator id is not valid`),
   check("group_id")
     .exists()
     .withMessage("Please add the group id")

@@ -146,14 +146,12 @@
     {
       "school_id": null,
       "level_id": null,
-      "coordinator_id": null,
       "name": "Group 101",
       "numberStudents": 20
     },
     {
       "school_id": null,
       "level_id": null,
-      "coordinator_id": null,
       "name": "Group 102",
       "numberStudents": 20
     }
@@ -180,6 +178,7 @@
     {
       "school_id": null,
       "level_id": null,
+      "groupCoordinator_id": null,
       "group_id": null,
       "subject_id": null,
       "teacherField_id": null,
@@ -190,10 +189,11 @@
     {
       "school_id": null,
       "level_id": null,
+      "groupCoordinator_id": null,
       "group_id": null,
       "subject_id": null,
       "teacherField_id": null,
-      "startTime": 1479,
+      "startTime": 1439,
       "groupScheduleSlot": 9,
       "teacherScheduleSlot": 10
     }

@@ -9,13 +9,20 @@ for later:
 
 Back end:
 
-// Todo --> add teacher_coordinator associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
-// Todo --> add group_coordinator associative table, to decouple the coordinator from the group and to have more than one coordinator for each group
+// Todo --> spelling that do not, instead, that does not
+// check teacher_field test
+// update the git hub repository project issues
+
+// Todo --> add coordinator_teacher associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
+    --> update UML diagram
+    --> update types
+// Make all singular, controllers and validators
 
 for later:
 
-
-- simplify the error messages, do not send the entire message in production
+- type the entities params when need it instead of comments with params types
+- check if the empty just toBeCalled are necessary since you already have toBeCalledWith that might replace it
+- simplify the error messages, do not send the entire message in production, make the more user-friendly
 - add success confirmation boolean in the response message
 - add logger
 
@@ -40,8 +47,9 @@ for later:
 Front End
 
 // Todo --> if user is UPDATED as inactive being soft deleted, inform the user that the user functions must be passed onto a new teacher
-// Todo --> Crate the user first then create the teacher, do that on a kind of multi-step form, alternatively, you can also use promise.all to do it in one step
-// Todo -->
+// Todo --> if the level changes in the group, inform the user that the user must change it in the session
+// Todo --> Create the user first then create the teacher, do that on a kind of multi-step form, alternatively, you can also use promise.all to do it in one step
+
 
 for later:
 

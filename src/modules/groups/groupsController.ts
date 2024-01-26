@@ -14,24 +14,23 @@ import {
   removeFilterGroup,
   /* Services from other entities */
   findPopulateLevelById,
-  findPopulateUserById,
 } from "./groupServices";
 
 // @desc create a group
 // @route POST /api/v1/groups
 // @access Private
-// @fields: body {school_id:[string] , schedule_id:[string], name:[string], numberStudents:[number]}
+// @fields: body {school_id:[string], level_id:[string], name:[string], numberStudents:[number]}
 const createGroup = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
-  const { school_id, level_id, coordinator_id, name, numberStudents } = body;
+  const { school_id, level_id, name, numberStudents } = body;
   /* check if the group name already exists for this school */
   const searchCriteria = { school_id, name };
   const fieldsToReturn = "-createdAt -updatedAt";
-  const duplicateField = await findGroupByProperty(
+  const duplicateGroupName = await findGroupByProperty(
     searchCriteria,
     fieldsToReturn
   );
-  if (duplicateField) {
+  if (duplicateGroupName) {
     throw new ConflictError("This group name already exists");
   }
   /* find level by id, and populate its properties */
@@ -60,36 +59,10 @@ const createGroup = async ({ body }: Request, res: Response) => {
       `Please take into account that the number of students for any group cannot exceed ${maxNumberStudentsPerGroup} students`
     );
   }
-  /* find if the coordinator already exists, has a coordinator role and it is active */
-  const fieldsToReturnCoordinator = "-password -createdAt -updatedAt";
-  const fieldsToPopulateCoordinator = "school_id";
-  const fieldsToReturnPopulateCoordinator = "-createdAt -updatedAt";
-  const coordinatorFound = await findPopulateUserById(
-    coordinator_id,
-    fieldsToReturnCoordinator,
-    fieldsToPopulateCoordinator,
-    fieldsToReturnPopulateCoordinator
-  );
-  if (!coordinatorFound) {
-    throw new NotFoundError("Please make sure the coordinator exists");
-  }
-  // find if the school exists for the coordinator and matches the school in the body
-  if (coordinatorFound?.school_id?._id?.toString() !== school_id) {
-    throw new BadRequestError(
-      "Please make sure the coordinator belongs to the school"
-    );
-  }
-  if (coordinatorFound?.role !== "coordinator") {
-    throw new BadRequestError("Please pass a user with a coordinator role");
-  }
-  if (coordinatorFound?.status !== "active") {
-    throw new BadRequestError("Please pass an active coordinator");
-  }
   /* create group */
   const newGroup = {
     school_id: school_id,
     level_id: level_id,
-    coordinator_id: coordinator_id,
     name: name,
     numberStudents: numberStudents,
   };
@@ -143,9 +116,9 @@ const getGroup = async ({ params, body }: Request, res: Response) => {
 const updateGroup = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: groupId } = params;
-  const { school_id, level_id, coordinator_id, name, numberStudents } = body;
+  const { school_id, level_id, name, numberStudents } = body;
   /* check if the group name already exists for this school */
-  const groupFilters = { school_id: school_id, name: name };
+  const groupFilters = { school_id, name };
   const groupFieldsToReturn = "-createdAt -updatedAt";
   const duplicateName = await findFilterGroupByProperty(
     groupFilters,
@@ -182,37 +155,10 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
     throw new BadRequestError(
       `Please take into account that the number of students cannot exceed ${maxNumberStudentsPerGroup} students`
     );
-  }
-  /* find if the coordinator already exists, has a coordinator role and it is active */
-  const fieldsToReturnCoordinator = "-password -createdAt -updatedAt";
-  const fieldsToPopulateCoordinator = "school_id";
-  const fieldsToReturnPopulateCoordinator = "-createdAt -updatedAt";
-  const coordinatorFound = await findPopulateUserById(
-    coordinator_id,
-    fieldsToReturnCoordinator,
-    fieldsToPopulateCoordinator,
-    fieldsToReturnPopulateCoordinator
-  );
-  if (!coordinatorFound) {
-    throw new NotFoundError("Please make sure the coordinator exists");
-  }
-  // find if the school exists for the coordinator and matches the school in the body
-  if (coordinatorFound?.school_id?._id?.toString() !== school_id) {
-    throw new BadRequestError(
-      "Please make sure the coordinator belongs to the school"
-    );
-  }
-  if (coordinatorFound?.role !== "coordinator") {
-    throw new BadRequestError("Please pass a user with a coordinator role");
-  }
-  if (coordinatorFound?.status !== "active") {
-    throw new BadRequestError("Please pass an active coordinator");
-  }
-  /* update group */
+  } /* update group */
   const newGroup = {
     school_id: school_id,
     level_id: level_id,
-    coordinator_id: coordinator_id,
     name: name,
     numberStudents: numberStudents,
   };
