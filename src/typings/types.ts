@@ -145,6 +145,16 @@ export type Subject = {
 
 export type NewSubject = Omit<Subject, "_id">;
 
+// teacher_coordinator
+export type Teacher_Coordinator = {
+  _id: Types.ObjectId;
+  school_id: School;
+  teacher_id: Teacher;
+  coordinator_id: User;
+};
+
+export type NewTeacher_Coordinator = Omit<Teacher_Coordinator, "_id">;
+
 // session
 export type Session = {
   _id: Types.ObjectId;
