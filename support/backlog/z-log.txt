@@ -12,7 +12,6 @@ Back end:
 // Todo --> add coordinator_teacher associative table, to decouple the coordinator from the teacher and to have more than one coordinator for each teacher
     --> update UML diagram
     --> update types
-// Todo --> update @babel/traverse security vulnerability
 // Make all singular, controllers and validators
 
 
