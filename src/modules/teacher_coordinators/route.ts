@@ -17,28 +17,28 @@ import {
 
 const router = Router();
 
-// @desc    Create a teacher_field
-// @route   POST /api/v1/teacher_fields
+// @desc    Create a teacher_coordinator
+// @route   POST /api/v1/teacher_coordinators
 // @access  Private
 router.post("/", validateCreateTeacherCoordinator, createTeacherCoordinator);
 
-// @desc    Get teacher_fields data
-// @route   GET /api/v1/teacher_fields
+// @desc    Get teacher_coordinators data
+// @route   GET /api/v1/teacher_coordinators
 // @access  Private
 router.get("/", validateGetTeacherCoordinators, getTeacherCoordinators);
 
-// @desc    Get a teacher_field data
-// @route   GET /api/v1/teacher_fields/:id
+// @desc    Get a teacher_coordinator data
+// @route   GET /api/v1/teacher_coordinators/:id
 // @access  Private
 router.get("/:id", validateGetTeacherCoordinator, getTeacherCoordinator);
 
-// @desc    Update a teacher_field data
-// @route   PUT /api/v1/teacher_fields/:id
+// @desc    Update a teacher_coordinator data
+// @route   PUT /api/v1/teacher_coordinators/:id
 // @access  Private
 router.put("/:id", validateUpdateTeacherCoordinator, updateTeacherCoordinator);
 
-// @desc    Delete a teacher_field data
-// @route   PUT /api/v1/teacher_fields/:id
+// @desc    Delete a teacher_coordinator data
+// @route   PUT /api/v1/teacher_coordinators/:id
 // @access  Private
 router.delete(
   "/:id",
