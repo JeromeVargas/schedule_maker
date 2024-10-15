@@ -5,6 +5,7 @@ import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
 import GroupCoordinatorModel from "../group_coordinators/groupCoordinatorModel";
 
 import { NewSession } from "../../typings/types";
+import TeacherCoordinatorModel from "../teacher_coordinators/teacherCoordinatorModel";
 
 // CRUD services
 // @desc insert a session in database
@@ -70,15 +71,15 @@ const findPopulateGroupCoordinatorById = (
     .exec();
 };
 
-// @desc find a subject by id and populate the embedded entities
-// @params subjectId, fields to return, fields to populate, fields to return populate
-const findPopulateSubjectById = (
-  subjectId: string,
+// @desc find a teacher_coordinator by id and populate the embedded entities
+// @params groupId, fields to return, fields to populate, fields to return populate
+const findPopulateTeacherCoordinatorById = (
+  teacherCoordinatorId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  return SubjectModel.findById(subjectId)
+  return TeacherCoordinatorModel.findById(teacherCoordinatorId)
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
@@ -100,6 +101,21 @@ const findPopulateTeacherFieldById = (
     .exec();
 };
 
+// @desc find a subject by id and populate the embedded entities
+// @params subjectId, fields to return, fields to populate, fields to return populate
+const findPopulateSubjectById = (
+  subjectId: string,
+  fieldsToReturn: string,
+  fieldsToPopulate: string,
+  fieldsToReturnPopulate: string
+) => {
+  return SubjectModel.findById(subjectId)
+    .select(fieldsToReturn)
+    .populate(fieldsToPopulate, fieldsToReturnPopulate)
+    .lean()
+    .exec();
+};
+
 export {
   insertSession,
   findFilterAllSessions,
@@ -108,6 +124,7 @@ export {
   removeFilterSession,
   /* Services from other entities */
   findPopulateGroupCoordinatorById,
-  findPopulateSubjectById,
+  findPopulateTeacherCoordinatorById,
   findPopulateTeacherFieldById,
+  findPopulateSubjectById,
 };

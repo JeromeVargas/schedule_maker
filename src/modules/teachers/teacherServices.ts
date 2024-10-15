@@ -55,12 +55,12 @@ const removeFilterTeacher = (filters: { school_id: string; _id: string }) => {
 // @desc find a user by coordinator and used id, also populate the school
 // @params filters, fields to return, fields to populate, fields to return populate, resourceName
 const findPopulateFilterAllUsers = (
-  filters: string[],
+  filters: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
   fieldsToReturnPopulate: string
 ) => {
-  return UserModel.find({ _id: { $in: filters } })
+  return UserModel.findOne({ _id: filters })
     .select(fieldsToReturn)
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()

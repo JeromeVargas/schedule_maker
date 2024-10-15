@@ -37,22 +37,6 @@ const validateCreateTeacher = [
       }
     })
     .withMessage(`The teacher's user id is not valid`),
-  check("coordinator_id")
-    .exists()
-    .withMessage("Please add the coordinator's id")
-    .bail()
-    .notEmpty()
-    .withMessage("The coordinator's id field is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false) {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The coordinator's id is not valid`),
   check("contractType")
     .exists()
     .withMessage("Please add the teacher`s contract type")
@@ -290,22 +274,6 @@ const validateUpdateTeacher = [
       }
     })
     .withMessage(`The teacher's user id is not valid`),
-  check("coordinator_id")
-    .exists()
-    .withMessage("Please add the coordinator's user id")
-    .bail()
-    .notEmpty()
-    .withMessage("The coordinator's id field is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false) {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The coordinator's id is not valid`),
   check("contractType")
     .exists()
     .withMessage("Please add the teacher`s contract type")

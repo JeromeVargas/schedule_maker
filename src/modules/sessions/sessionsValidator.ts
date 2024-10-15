@@ -37,22 +37,6 @@ const validateCreateSession = [
       }
     })
     .withMessage(`The level id is not valid`),
-  check("groupCoordinator_id")
-    .exists()
-    .withMessage("Please add the groupCoordinator id")
-    .bail()
-    .notEmpty()
-    .withMessage("The groupCoordinator id field is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false) {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The groupCoordinator id is not valid`),
   check("group_id")
     .exists()
     .withMessage("Please add the group id")
@@ -69,12 +53,12 @@ const validateCreateSession = [
       }
     })
     .withMessage(`The group id is not valid`),
-  check("subject_id")
+  check("groupCoordinator_id")
     .exists()
-    .withMessage("Please add the subject id")
+    .withMessage("Please add the groupCoordinator id")
     .bail()
     .notEmpty()
-    .withMessage("The subject id field is empty")
+    .withMessage("The groupCoordinator id field is empty")
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
@@ -84,7 +68,23 @@ const validateCreateSession = [
         return true;
       }
     })
-    .withMessage(`The subject id is not valid`),
+    .withMessage(`The groupCoordinator id is not valid`),
+  check("teacherCoordinator_id")
+    .exists()
+    .withMessage("Please add the teacherCoordinator id")
+    .bail()
+    .notEmpty()
+    .withMessage("The teacherCoordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The teacherCoordinator id is not valid`),
   check("teacherField_id")
     .exists()
     .withMessage("Please add the teacher_field id")
@@ -101,6 +101,22 @@ const validateCreateSession = [
       }
     })
     .withMessage(`The teacher_field id is not valid`),
+  check("subject_id")
+    .exists()
+    .withMessage("Please add the subject id")
+    .bail()
+    .notEmpty()
+    .withMessage("The subject id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The subject id is not valid`),
   check("startTime")
     .exists()
     .withMessage("Please add the start time for the session")
@@ -239,22 +255,6 @@ const validateUpdateSession = [
       }
     })
     .withMessage(`The level id is not valid`),
-  check("groupCoordinator_id")
-    .exists()
-    .withMessage("Please add the groupCoordinator id")
-    .bail()
-    .notEmpty()
-    .withMessage("The groupCoordinator id field is empty")
-    .bail()
-    .custom((value) => {
-      const validId = isValidId(value);
-      if (validId === false) {
-        return false;
-      } else if (validId === true) {
-        return true;
-      }
-    })
-    .withMessage(`The groupCoordinator id is not valid`),
   check("group_id")
     .exists()
     .withMessage("Please add the group id")
@@ -271,12 +271,12 @@ const validateUpdateSession = [
       }
     })
     .withMessage(`The group id is not valid`),
-  check("subject_id")
+  check("groupCoordinator_id")
     .exists()
-    .withMessage("Please add the subject id")
+    .withMessage("Please add the groupCoordinator id")
     .bail()
     .notEmpty()
-    .withMessage("The subject id field is empty")
+    .withMessage("The groupCoordinator id field is empty")
     .bail()
     .custom((value) => {
       const validId = isValidId(value);
@@ -286,7 +286,23 @@ const validateUpdateSession = [
         return true;
       }
     })
-    .withMessage(`The subject id is not valid`),
+    .withMessage(`The groupCoordinator id is not valid`),
+  check("teacherCoordinator_id")
+    .exists()
+    .withMessage("Please add the teacherCoordinator id")
+    .bail()
+    .notEmpty()
+    .withMessage("The teacherCoordinator id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The teacherCoordinator id is not valid`),
   check("teacherField_id")
     .exists()
     .withMessage("Please add the teacher_field id")
@@ -303,6 +319,22 @@ const validateUpdateSession = [
       }
     })
     .withMessage(`The teacher_field id is not valid`),
+  check("subject_id")
+    .exists()
+    .withMessage("Please add the subject id")
+    .bail()
+    .notEmpty()
+    .withMessage("The subject id field is empty")
+    .bail()
+    .custom((value) => {
+      const validId = isValidId(value);
+      if (validId === false) {
+        return false;
+      } else if (validId === true) {
+        return true;
+      }
+    })
+    .withMessage(`The subject id is not valid`),
   check("startTime")
     .exists()
     .withMessage("Please add the start time for the session")
