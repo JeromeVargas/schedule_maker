@@ -11,21 +11,25 @@ const SessionSchema = new Schema<Session>(
       type: Schema.Types.ObjectId,
       required: [true, "must provide a level id for the session"],
     },
-    groupCoordinator_id: {
+    group_id: {
       type: Schema.Types.ObjectId,
       required: [true, "must provide a group id for the session"],
     },
-    group_id: {
+    groupCoordinator_id: {
       type: Schema.Types.ObjectId,
-      required: [true, "must provide a subject id for the session"],
+      required: [true, "must provide a group_coordinator id for the session"],
     },
-    subject_id: {
+    teacherCoordinator_id: {
       type: Schema.Types.ObjectId,
-      required: [true, "must provide a subject id for the session"],
+      required: [true, "must provide a teacher_coordinator id for the session"],
     },
     teacherField_id: {
       type: Schema.Types.ObjectId,
       required: [true, "must provide a teacher_field id for the session"],
+    },
+    subject_id: {
+      type: Schema.Types.ObjectId,
+      required: [true, "must provide a subject id for the session"],
     },
     startTime: {
       type: Number,

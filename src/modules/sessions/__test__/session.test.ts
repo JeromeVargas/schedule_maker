@@ -13,9 +13,10 @@ type Service =
   | "findFilterAllSessions"
   | "modifyFilterSession"
   | "removeFilterSession"
-  | "findPopulateSubjectById"
   | "findPopulateGroupCoordinatorById"
-  | "findPopulateTeacherFieldById";
+  | "findPopulateTeacherCoordinatorById"
+  | "findPopulateTeacherFieldById"
+  | "findPopulateSubjectById";
 
 describe("Resource => Session", () => {
   /* mock services */
@@ -37,6 +38,7 @@ describe("Resource => Session", () => {
   const validMockSchoolId = new Types.ObjectId().toString();
   const validMockLevelId = new Types.ObjectId().toString();
   const validMockGroupCoordinatorId = new Types.ObjectId().toString();
+  const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
   const validMockCoordinatorId = new Types.ObjectId().toString();
   const validMockSubjectId = new Types.ObjectId().toString();
   const validMockTeacherFieldId = new Types.ObjectId().toString();
@@ -50,10 +52,11 @@ describe("Resource => Session", () => {
   const newSession = {
     school_id: validMockSchoolId,
     level_id: validMockLevelId,
-    groupCoordinator_id: validMockGroupId,
     group_id: validMockGroupId,
-    subject_id: validMockSubjectId,
+    groupCoordinator_id: validMockGroupCoordinatorId,
+    teacherCoordinator_id: validMockTeacherCoordinatorId,
     teacherField_id: validMockTeacherFieldId,
+    subject_id: validMockSubjectId,
     startTime: 420,
     groupScheduleSlot: 2,
     teacherScheduleSlot: 2,
@@ -61,10 +64,11 @@ describe("Resource => Session", () => {
   const newSessionMissingValues = {
     school_i: validMockSchoolId,
     level_i: validMockLevelId,
-    groupCoordinator_i: validMockGroupId,
     group_i: validMockGroupId,
-    subject_i: validMockSubjectId,
+    groupCoordinator_i: validMockGroupId,
+    teacherCoordinator_i: validMockGroupId,
     teacherField_i: validMockTeacherFieldId,
+    subject_i: validMockSubjectId,
     startTim: 420,
     groupScheduleSlo: 2,
     teacherScheduleSlo: 2,
@@ -72,10 +76,11 @@ describe("Resource => Session", () => {
   const newSessionEmptyValues = {
     school_id: "",
     level_id: "",
-    groupCoordinator_id: "",
     group_id: "",
-    subject_id: "",
+    groupCoordinator_id: "",
+    teacherCoordinator_id: "",
     teacherField_id: "",
+    subject_id: "",
     startTime: "",
     groupScheduleSlot: "",
     teacherScheduleSlot: "",
@@ -83,10 +88,11 @@ describe("Resource => Session", () => {
   const newSessionNotValidDataTypes = {
     school_id: invalidMockId,
     level_id: invalidMockId,
-    groupCoordinator_id: invalidMockId,
     group_id: invalidMockId,
-    subject_id: invalidMockId,
+    groupCoordinator_id: invalidMockId,
+    teacherCoordinator_id: invalidMockId,
     teacherField_id: invalidMockId,
+    subject_id: invalidMockId,
     startTime: "hello",
     groupScheduleSlot: "hello",
     teacherScheduleSlot: "hello",
@@ -94,10 +100,11 @@ describe("Resource => Session", () => {
   const newSessionWrongLengthValues = {
     school_id: validMockSchoolId,
     level_id: validMockLevelId,
-    groupCoordinator_id: validMockGroupId,
     group_id: validMockGroupId,
-    subject_id: validMockSubjectId,
+    groupCoordinator_id: validMockGroupCoordinatorId,
+    teacherCoordinator_id: validMockTeacherCoordinatorId,
     teacherField_id: validMockTeacherFieldId,
+    subject_id: validMockSubjectId,
     startTime: 1234567890,
     groupScheduleSlot: 1234567890,
     teacherScheduleSlot: 1234567890,
@@ -150,21 +157,6 @@ describe("Resource => Session", () => {
     coordinator_id: coordinatorPayload,
   };
   const groupCoordinatorNullPayload = null;
-  const fieldPayload = {
-    _id: validMockFieldId,
-    school_id: validMockSchoolId,
-    name: "Mathematics",
-  };
-  const subjectPayload = {
-    _id: validMockSubjectId,
-    school_id: schoolPayload,
-    level_id: levelPayload,
-    field_id: fieldPayload,
-    name: "Mathematics 101",
-    sessionUnits: 30,
-    frequency: 2,
-  };
-  const subjectNullPayload = null;
   const teacherPayload = {
     _id: validMockTeacherId,
     school_id: validMockSchoolId,
@@ -181,6 +173,28 @@ describe("Resource => Session", () => {
     saturday: true,
     sunday: true,
   };
+  const teacherCoordinatorPayload = {
+    _id: validMockTeacherCoordinatorId,
+    school_id: schoolPayload,
+    teacher_id: teacherPayload,
+    coordinator_id: coordinatorPayload,
+  };
+  const teacherCoordinatorNullPayload = null;
+  const fieldPayload = {
+    _id: validMockFieldId,
+    school_id: validMockSchoolId,
+    name: "Mathematics",
+  };
+  const subjectPayload = {
+    _id: validMockSubjectId,
+    school_id: schoolPayload,
+    level_id: levelPayload,
+    field_id: fieldPayload,
+    name: "Mathematics 101",
+    sessionUnits: 30,
+    frequency: 2,
+  };
+  const subjectNullPayload = null;
   const teacherFieldPayload = {
     _id: validMockTeacherFieldId,
     school_id: schoolPayload,
@@ -237,13 +251,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -266,23 +284,28 @@ describe("Resource => Session", () => {
           },
           {
             location: "body",
-            msg: "Please add the groupCoordinator id",
-            param: "groupCoordinator_id",
-          },
-          {
-            location: "body",
             msg: "Please add the group id",
             param: "group_id",
           },
           {
             location: "body",
-            msg: "Please add the subject id",
-            param: "subject_id",
+            msg: "Please add the groupCoordinator id",
+            param: "groupCoordinator_id",
+          },
+          {
+            location: "body",
+            msg: "Please add the teacherCoordinator id",
+            param: "teacherCoordinator_id",
           },
           {
             location: "body",
             msg: "Please add the teacher_field id",
             param: "teacherField_id",
+          },
+          {
+            location: "body",
+            msg: "Please add the subject id",
+            param: "subject_id",
           },
           {
             location: "body",
@@ -308,11 +331,11 @@ describe("Resource => Session", () => {
           "school_id level_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSessionMissingValues.subject_i,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -320,6 +343,13 @@ describe("Resource => Session", () => {
           newSessionMissingValues.teacherField_i,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSessionMissingValues.subject_i,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -333,13 +363,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -364,26 +398,32 @@ describe("Resource => Session", () => {
           },
           {
             location: "body",
-            msg: "The groupCoordinator id field is empty",
-            param: "groupCoordinator_id",
-            value: "",
-          },
-          {
-            location: "body",
             msg: "The group id field is empty",
             param: "group_id",
             value: "",
           },
           {
             location: "body",
-            msg: "The subject id field is empty",
-            param: "subject_id",
+            msg: "The groupCoordinator id field is empty",
+            param: "groupCoordinator_id",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The teacherCoordinator id field is empty",
+            param: "teacherCoordinator_id",
             value: "",
           },
           {
             location: "body",
             msg: "The teacherField id teacher_field is empty",
             param: "teacherField_id",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The subject id field is empty",
+            param: "subject_id",
             value: "",
           },
           {
@@ -413,11 +453,11 @@ describe("Resource => Session", () => {
           "school_id level_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSessionEmptyValues.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -425,6 +465,13 @@ describe("Resource => Session", () => {
           newSessionEmptyValues.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSessionEmptyValues.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -438,13 +485,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -469,26 +520,32 @@ describe("Resource => Session", () => {
           },
           {
             location: "body",
-            msg: "The groupCoordinator id is not valid",
-            param: "groupCoordinator_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
             msg: "The group id is not valid",
             param: "group_id",
             value: invalidMockId,
           },
           {
             location: "body",
-            msg: "The subject id is not valid",
-            param: "subject_id",
+            msg: "The groupCoordinator id is not valid",
+            param: "groupCoordinator_id",
+            value: invalidMockId,
+          },
+          {
+            location: "body",
+            msg: "The teacherCoordinator id is not valid",
+            param: "teacherCoordinator_id",
             value: invalidMockId,
           },
           {
             location: "body",
             msg: "The teacher_field id is not valid",
             param: "teacherField_id",
+            value: invalidMockId,
+          },
+          {
+            location: "body",
+            msg: "The subject id is not valid",
+            param: "subject_id",
             value: invalidMockId,
           },
           {
@@ -518,11 +575,11 @@ describe("Resource => Session", () => {
           "school_id level_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSessionNotValidDataTypes.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -530,6 +587,13 @@ describe("Resource => Session", () => {
           newSessionNotValidDataTypes.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSessionNotValidDataTypes.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -545,13 +609,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -589,11 +657,11 @@ describe("Resource => Session", () => {
           "school_id level_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSessionWrongLengthValues.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -601,6 +669,13 @@ describe("Resource => Session", () => {
           newSessionWrongLengthValues.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSessionWrongLengthValues.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -616,13 +691,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -643,11 +722,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -655,6 +734,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -668,13 +754,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -695,11 +785,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -707,6 +797,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -727,13 +824,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -754,11 +855,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -766,6 +867,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -788,13 +896,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -813,6 +925,13 @@ describe("Resource => Session", () => {
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findSubject).not.toHaveBeenCalled();
@@ -849,13 +968,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -876,11 +999,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -888,6 +1011,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -911,13 +1041,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -938,11 +1072,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -950,6 +1084,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -973,13 +1114,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -1000,11 +1145,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -1014,24 +1159,35 @@ describe("Resource => Session", () => {
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::12 - Passing a non-existent subject in the body", () => {
-      it("should return a non-existent subject error", async () => {
+    describe("session::post::12 - Passing a non-existing teacher_coordinator", () => {
+      it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -1042,7 +1198,7 @@ describe("Resource => Session", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the subject exists",
+          msg: "Please make sure the teacher_coordinator assignment exists",
         });
         expect(statusCode).toBe(404);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1052,11 +1208,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -1066,31 +1222,42 @@ describe("Resource => Session", () => {
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::13 - Passing a non-matching school for the subject in the body", () => {
-      it("should return a non-matching school error", async () => {
+    describe("session::post::13 - Passing a non-matching school for the teacher_coordinator", () => {
+      it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
+        const findTeacherCoordinator = mockService(
           {
-            ...subjectPayload,
+            ...teacherCoordinatorPayload,
             school_id: {
               _id: otherValidMockId,
               name: "school 001",
               groupMaxNumStudents: 40,
             },
           },
-          "findPopulateSubjectById"
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -1101,7 +1268,7 @@ describe("Resource => Session", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the subject belongs to the school",
+          msg: "Please make sure the teacher_coordinator belongs to the school",
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1111,11 +1278,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -1123,34 +1290,47 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::14 - Passing a non-matching level for the subject in the body", () => {
-      it("should return a non-matching level error", async () => {
+    describe("session::post::14 - Passing a non-matching coordinator for the group and the teacher", () => {
+      it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
+        const findTeacherCoordinator = mockService(
           {
-            ...subjectPayload,
-            level_id: {
+            ...teacherCoordinatorPayload,
+            coordinator_id: {
               _id: otherValidMockId,
-              school_id: validMockSchoolId,
-              schedule_id: validMockScheduleId,
-              name: "Level 101",
+              school_id: schoolPayload,
+              firstName: "Dave",
+              lastName: "Gray",
+              role: "coordinator",
+              status: "active",
             },
           },
-          "findPopulateSubjectById"
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -1161,7 +1341,7 @@ describe("Resource => Session", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the subject belongs to the level",
+          msg: "Please make sure the coordinator has been assigned to both the group and the teacher",
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1171,11 +1351,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -1183,6 +1363,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -1196,13 +1383,17 @@ describe("Resource => Session", () => {
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -1223,11 +1414,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -1235,6 +1426,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).not.toHaveBeenCalled();
@@ -1248,9 +1446,9 @@ describe("Resource => Session", () => {
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           {
@@ -1262,6 +1460,10 @@ describe("Resource => Session", () => {
             },
           },
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -1282,11 +1484,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -1296,29 +1498,36 @@ describe("Resource => Session", () => {
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::17 - Passing a teacher not assigned to the group_coordinator in the body", () => {
-      it("should return a non-assigned teacher to coordinator error", async () => {
+    describe("session::post::17 - Passing a non-matching teacher for the coordinator and the field", () => {
+      it("should return a non-matching teacher error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           {
             ...teacherFieldPayload,
             teacher_id: {
-              _id: validMockTeacherId,
+              _id: otherValidMockId,
               school_id: validMockSchoolId,
               user_id: validMockUserId,
-              coordinator_id: otherValidMockId,
+              coordinator_id: validMockCoordinatorId,
               contractType: "full-time",
               teachingHoursAssignable: 60,
               teachingHoursAssigned: 60,
@@ -1333,6 +1542,10 @@ describe("Resource => Session", () => {
           },
           "findPopulateTeacherFieldById"
         );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
+        );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
         // api call
@@ -1342,7 +1555,7 @@ describe("Resource => Session", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the teacher has been assigned to the coordinator being passed in the group",
+          msg: "Please make sure the teacher assigned to the coordinator is also assigned to the field",
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1352,11 +1565,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -1366,31 +1579,246 @@ describe("Resource => Session", () => {
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::18 - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
+    describe("session::post::18 - Passing a non-existent subject in the body", () => {
+      it("should return a non-existent subject error", async () => {
+        // mock services
+        const findGroupCoordinator = mockService(
+          groupCoordinatorPayload,
+          "findPopulateGroupCoordinatorById"
+        );
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
+        );
+        const insertSession = mockService(sessionNullPayload, "insertSession");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newSession);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the subject exists",
+        });
+        expect(statusCode).toBe(404);
+        expect(findGroupCoordinator).toHaveBeenCalled();
+        expect(findGroupCoordinator).toHaveBeenCalledWith(
+          newSession.groupCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id group_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).toHaveBeenCalled();
+        expect(findTeacherField).toHaveBeenCalledWith(
+          newSession.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertSession).not.toHaveBeenCalled();
+        expect(insertSession).not.toHaveBeenCalledWith(newSession);
+      });
+    });
+    describe("session::post::19 - Passing a non-matching school for the subject in the body", () => {
+      it("should return a non-matching school error", async () => {
+        // mock services
+        const findGroupCoordinator = mockService(
+          groupCoordinatorPayload,
+          "findPopulateGroupCoordinatorById"
+        );
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          {
+            ...subjectPayload,
+            school_id: {
+              _id: otherValidMockId,
+              name: "school 001",
+              groupMaxNumStudents: 40,
+            },
+          },
+          "findPopulateSubjectById"
+        );
+        const insertSession = mockService(sessionNullPayload, "insertSession");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newSession);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the subject belongs to the school",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroupCoordinator).toHaveBeenCalled();
+        expect(findGroupCoordinator).toHaveBeenCalledWith(
+          newSession.groupCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id group_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).toHaveBeenCalled();
+        expect(findTeacherField).toHaveBeenCalledWith(
+          newSession.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertSession).not.toHaveBeenCalled();
+        expect(insertSession).not.toHaveBeenCalledWith(newSession);
+      });
+    });
+    describe("session::post::20 - Passing a non-matching level for the subject in the body", () => {
+      it("should return a non-matching level error", async () => {
+        // mock services
+        const findGroupCoordinator = mockService(
+          groupCoordinatorPayload,
+          "findPopulateGroupCoordinatorById"
+        );
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          {
+            ...subjectPayload,
+            level_id: {
+              _id: otherValidMockId,
+              school_id: validMockSchoolId,
+              schedule_id: validMockScheduleId,
+              name: "Level 101",
+            },
+          },
+          "findPopulateSubjectById"
+        );
+        const insertSession = mockService(sessionNullPayload, "insertSession");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .post(`${endPointUrl}`)
+          .send(newSession);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the subject belongs to the level",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroupCoordinator).toHaveBeenCalled();
+        expect(findGroupCoordinator).toHaveBeenCalledWith(
+          newSession.groupCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id group_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).toHaveBeenCalled();
+        expect(findTeacherField).toHaveBeenCalledWith(
+          newSession.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(insertSession).not.toHaveBeenCalled();
+        expect(insertSession).not.toHaveBeenCalledWith(newSession);
+      });
+    });
+    describe("session::post::21 - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
       it("should return a non-matching field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
           {
-            ...teacherFieldPayload,
+            ...subjectPayload,
             field_id: {
               _id: otherValidMockId,
               school_id: validMockSchoolId,
               name: "Mathematics",
             },
           },
-          "findPopulateTeacherFieldById"
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -1411,11 +1839,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -1425,24 +1853,35 @@ describe("Resource => Session", () => {
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::19 - Passing a session but not being created", () => {
+    describe("session::post::22 - Passing a session but not being created", () => {
       it("should not create a session", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionNullPayload, "insertSession");
 
@@ -1463,11 +1902,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -1477,24 +1916,35 @@ describe("Resource => Session", () => {
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(insertSession).toHaveBeenCalled();
         expect(insertSession).toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::20 - Passing a session correctly to create", () => {
+    describe("session::post::23 - Passing a session correctly to create", () => {
       it("should create a session", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const insertSession = mockService(sessionPayload, "insertSession");
 
@@ -1515,11 +1965,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -1527,6 +1977,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(insertSession).toHaveBeenCalled();
@@ -1876,13 +2333,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -1908,23 +2369,28 @@ describe("Resource => Session", () => {
           },
           {
             location: "body",
-            msg: "Please add the groupCoordinator id",
-            param: "groupCoordinator_id",
-          },
-          {
-            location: "body",
             msg: "Please add the group id",
             param: "group_id",
           },
           {
             location: "body",
-            msg: "Please add the subject id",
-            param: "subject_id",
+            msg: "Please add the groupCoordinator id",
+            param: "groupCoordinator_id",
+          },
+          {
+            location: "body",
+            msg: "Please add the teacherCoordinator id",
+            param: "teacherCoordinator_id",
           },
           {
             location: "body",
             msg: "Please add the teacher_field id",
             param: "teacherField_id",
+          },
+          {
+            location: "body",
+            msg: "Please add the subject id",
+            param: "subject_id",
           },
           {
             location: "body",
@@ -1950,11 +2416,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSessionMissingValues.subject_i,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -1962,6 +2428,13 @@ describe("Resource => Session", () => {
           newSessionMissingValues.teacherField_i,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSessionMissingValues.subject_i,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -1981,13 +2454,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2015,26 +2492,32 @@ describe("Resource => Session", () => {
           },
           {
             location: "body",
-            msg: "The groupCoordinator id field is empty",
-            param: "groupCoordinator_id",
-            value: "",
-          },
-          {
-            location: "body",
             msg: "The group id field is empty",
             param: "group_id",
             value: "",
           },
           {
             location: "body",
-            msg: "The subject id field is empty",
-            param: "subject_id",
+            msg: "The groupCoordinator id field is empty",
+            param: "groupCoordinator_id",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The teacherCoordinator id field is empty",
+            param: "teacherCoordinator_id",
             value: "",
           },
           {
             location: "body",
             msg: "The teacherField id teacher_field is empty",
             param: "teacherField_id",
+            value: "",
+          },
+          {
+            location: "body",
+            msg: "The subject id field is empty",
+            param: "subject_id",
             value: "",
           },
           {
@@ -2064,11 +2547,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSessionEmptyValues.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2076,6 +2559,13 @@ describe("Resource => Session", () => {
           newSessionEmptyValues.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSessionEmptyValues.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2095,13 +2585,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2135,26 +2629,32 @@ describe("Resource => Session", () => {
           },
           {
             location: "body",
-            msg: "The groupCoordinator id is not valid",
-            param: "groupCoordinator_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
             msg: "The group id is not valid",
             param: "group_id",
             value: invalidMockId,
           },
           {
             location: "body",
-            msg: "The subject id is not valid",
-            param: "subject_id",
+            msg: "The groupCoordinator id is not valid",
+            param: "groupCoordinator_id",
+            value: invalidMockId,
+          },
+          {
+            location: "body",
+            msg: "The teacherCoordinator id is not valid",
+            param: "teacherCoordinator_id",
             value: invalidMockId,
           },
           {
             location: "body",
             msg: "The teacher_field id is not valid",
             param: "teacherField_id",
+            value: invalidMockId,
+          },
+          {
+            location: "body",
+            msg: "The subject id is not valid",
+            param: "subject_id",
             value: invalidMockId,
           },
           {
@@ -2184,11 +2684,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSessionNotValidDataTypes.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2196,6 +2696,13 @@ describe("Resource => Session", () => {
           newSessionNotValidDataTypes.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSessionNotValidDataTypes.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2215,13 +2722,17 @@ describe("Resource => Session", () => {
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2262,11 +2773,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSessionWrongLengthValues.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2274,6 +2785,13 @@ describe("Resource => Session", () => {
           newSessionWrongLengthValues.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSessionWrongLengthValues.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2286,20 +2804,24 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::post::05 - Passing a start time past the 23:59 hours", () => {
+    describe("session::put::05 - Passing a start time past the 23:59 hours", () => {
       it("should return a invalid start time error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2323,11 +2845,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2337,6 +2859,13 @@ describe("Resource => Session", () => {
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
@@ -2344,20 +2873,24 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::post::06 - Passing a non-existent group_coordinator in the body", () => {
+    describe("session::put::06 - Passing a non-existent group_coordinator in the body", () => {
       it("should return a non-existent coordinator error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorNullPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2381,11 +2914,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2393,6 +2926,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2416,13 +2956,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2446,11 +2990,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2458,6 +3002,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2483,13 +3034,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2513,11 +3068,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2525,6 +3080,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2550,13 +3112,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2580,11 +3146,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2592,6 +3158,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2618,13 +3191,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2648,11 +3225,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
-        expect(findSubject).not.toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2660,6 +3237,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2686,13 +3270,17 @@ describe("Resource => Session", () => {
           },
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2716,6 +3304,20 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
+        expect(findTeacherCoordinator).not.toHaveBeenCalled();
+        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).not.toHaveBeenCalled();
+        expect(findTeacherField).not.toHaveBeenCalledWith(
+          newSession.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
@@ -2723,13 +3325,6 @@ describe("Resource => Session", () => {
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
-        expect(findTeacherField).not.toHaveBeenCalledWith(
-          newSession.teacherField_id,
-          "-createdAt -updatedAt",
-          "school_id teacher_id field_id",
-          "-createdAt -updatedAt"
-        );
         expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
@@ -2737,20 +3332,24 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::12 - Passing a non-existent subject in the body", () => {
-      it("should return a non-existent subject error", async () => {
+    describe("session::put::12 - Passing a non-existing teacher_coordinator", () => {
+      it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectNullPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorNullPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2764,9 +3363,9 @@ describe("Resource => Session", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the subject exists",
+          msg: "Please make sure the teacher_coordinator assignment exists",
         });
-        expect(statusCode).toBe(400);
+        expect(statusCode).toBe(404);
         expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
@@ -2774,11 +3373,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2788,6 +3387,13 @@ describe("Resource => Session", () => {
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
@@ -2795,27 +3401,31 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::13 - Passing a non-matching school for the subject in the body", () => {
-      it("should return a non-existent school error", async () => {
+    describe("session::put::13 - Passing a non-matching school for the teacher_coordinator", () => {
+      it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
+        const findTeacherCoordinator = mockService(
           {
-            ...subjectPayload,
+            ...teacherCoordinatorPayload,
             school_id: {
               _id: otherValidMockId,
               name: "school 001",
               groupMaxNumStudents: 40,
             },
           },
-          "findPopulateSubjectById"
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2829,7 +3439,7 @@ describe("Resource => Session", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the subject belongs to the school",
+          msg: "Please make sure the teacher_coordinator belongs to the school",
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -2839,11 +3449,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2851,6 +3461,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2860,28 +3477,34 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::14 - Passing a non-matching level for the subject in the body", () => {
-      it("should return a non-matching level error", async () => {
+    describe("session::put::14 - Passing a non-matching coordinator for the group and the teacher", () => {
+      it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
+        const findTeacherCoordinator = mockService(
           {
-            ...subjectPayload,
-            level_id: {
+            ...teacherCoordinatorPayload,
+            coordinator_id: {
               _id: otherValidMockId,
-              school_id: validMockSchoolId,
-              schedule_id: validMockScheduleId,
-              name: "Level 101",
+              school_id: schoolPayload,
+              firstName: "Dave",
+              lastName: "Gray",
+              role: "coordinator",
+              status: "active",
             },
           },
-          "findPopulateSubjectById"
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2895,7 +3518,7 @@ describe("Resource => Session", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the subject belongs to the level",
+          msg: "Please make sure the coordinator has been assigned to both the group and the teacher",
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -2905,11 +3528,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).not.toHaveBeenCalled();
@@ -2917,6 +3540,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2933,13 +3563,17 @@ describe("Resource => Session", () => {
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldNullPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -2963,11 +3597,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -2975,6 +3609,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).not.toHaveBeenCalled();
@@ -2991,9 +3632,9 @@ describe("Resource => Session", () => {
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           {
@@ -3005,6 +3646,10 @@ describe("Resource => Session", () => {
             },
           },
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -3028,11 +3673,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -3042,6 +3687,13 @@ describe("Resource => Session", () => {
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
@@ -3049,25 +3701,25 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::17 - Passing a teacher not assigned to the coordinator in the body", () => {
-      it("should return a non-existent school error", async () => {
+    describe("session::put::17 - Passing a non-matching teacher for the coordinator and the field in the body", () => {
+      it("should return a non-existent subject error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           {
             ...teacherFieldPayload,
             teacher_id: {
-              _id: validMockTeacherId,
+              _id: otherValidMockId,
               school_id: validMockSchoolId,
               user_id: validMockUserId,
-              coordinator_id: otherValidMockId,
+              coordinator_id: validMockCoordinatorId,
               contractType: "full-time",
               teachingHoursAssignable: 60,
               teachingHoursAssigned: 60,
@@ -3082,6 +3734,10 @@ describe("Resource => Session", () => {
           },
           "findPopulateTeacherFieldById"
         );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
+        );
         const updateSession = mockService(
           sessionNullPayload,
           "modifyFilterSession"
@@ -3094,7 +3750,7 @@ describe("Resource => Session", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Please make sure the teacher has been assigned to the coordinator being passed in the group",
+          msg: "Please make sure the teacher assigned to the coordinator is also assigned to the field",
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3104,11 +3760,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -3118,6 +3774,13 @@ describe("Resource => Session", () => {
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).not.toHaveBeenCalled();
+        expect(findSubject).not.toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
@@ -3125,16 +3788,238 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::18 - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
+    describe("session::put::18 - Passing a non-existent subject in the body", () => {
+      it("should return a non-existent subject error", async () => {
+        // mock services
+        const findGroupCoordinator = mockService(
+          groupCoordinatorPayload,
+          "findPopulateGroupCoordinatorById"
+        );
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findPopulateSubjectById"
+        );
+        const updateSession = mockService(
+          sessionNullPayload,
+          "modifyFilterSession"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockSessionId}`)
+          .send(newSession);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the subject exists",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroupCoordinator).toHaveBeenCalled();
+        expect(findGroupCoordinator).toHaveBeenCalledWith(
+          newSession.groupCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id group_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).toHaveBeenCalled();
+        expect(findTeacherField).toHaveBeenCalledWith(
+          newSession.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateSession).not.toHaveBeenCalled();
+        expect(updateSession).not.toHaveBeenCalledWith(
+          { _id: validMockSessionId, school_id: newSession.school_id },
+          newSession
+        );
+      });
+    });
+    describe("session::put::19 - Passing a non-matching school for the subject in the body", () => {
+      it("should return a non-existent school error", async () => {
+        // mock services
+        const findGroupCoordinator = mockService(
+          groupCoordinatorPayload,
+          "findPopulateGroupCoordinatorById"
+        );
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          {
+            ...subjectPayload,
+            school_id: {
+              _id: otherValidMockId,
+              name: "school 001",
+              groupMaxNumStudents: 40,
+            },
+          },
+          "findPopulateSubjectById"
+        );
+        const updateSession = mockService(
+          sessionNullPayload,
+          "modifyFilterSession"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockSessionId}`)
+          .send(newSession);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the subject belongs to the school",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroupCoordinator).toHaveBeenCalled();
+        expect(findGroupCoordinator).toHaveBeenCalledWith(
+          newSession.groupCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id group_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).toHaveBeenCalled();
+        expect(findTeacherField).toHaveBeenCalledWith(
+          newSession.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateSession).not.toHaveBeenCalled();
+        expect(updateSession).not.toHaveBeenCalledWith(
+          { _id: validMockSessionId, school_id: newSession.school_id },
+          newSession
+        );
+      });
+    });
+    describe("session::put::20 - Passing a non-matching level for the subject in the body", () => {
+      it("should return a non-matching level error", async () => {
+        // mock services
+        const findGroupCoordinator = mockService(
+          groupCoordinatorPayload,
+          "findPopulateGroupCoordinatorById"
+        );
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
+        );
+        const findTeacherField = mockService(
+          teacherFieldPayload,
+          "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          {
+            ...subjectPayload,
+            level_id: {
+              _id: otherValidMockId,
+              school_id: validMockSchoolId,
+              schedule_id: validMockScheduleId,
+              name: "Level 101",
+            },
+          },
+          "findPopulateSubjectById"
+        );
+        const updateSession = mockService(
+          sessionNullPayload,
+          "modifyFilterSession"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockSessionId}`)
+          .send(newSession);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Please make sure the subject belongs to the level",
+        });
+        expect(statusCode).toBe(400);
+        expect(findGroupCoordinator).toHaveBeenCalled();
+        expect(findGroupCoordinator).toHaveBeenCalledWith(
+          newSession.groupCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id group_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id coordinator_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findTeacherField).toHaveBeenCalled();
+        expect(findTeacherField).toHaveBeenCalledWith(
+          newSession.teacherField_id,
+          "-createdAt -updatedAt",
+          "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(updateSession).not.toHaveBeenCalled();
+        expect(updateSession).not.toHaveBeenCalledWith(
+          { _id: validMockSessionId, school_id: newSession.school_id },
+          newSession
+        );
+      });
+    });
+    describe("session::put::21 - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
       it("should return a non-matching field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           {
@@ -3146,6 +4031,10 @@ describe("Resource => Session", () => {
             },
           },
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -3169,11 +4058,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -3183,6 +4072,13 @@ describe("Resource => Session", () => {
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
@@ -3190,20 +4086,24 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::19 - Passing a session but not updating it", () => {
+    describe("session::put::22 - Passing a session but not updating it", () => {
       it("should not update a session", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionNullPayload,
@@ -3227,11 +4127,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -3241,6 +4141,13 @@ describe("Resource => Session", () => {
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
+          "-createdAt -updatedAt"
+        );
         expect(updateSession).toHaveBeenCalled();
         expect(updateSession).toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
@@ -3248,20 +4155,24 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::20 - Passing a session correctly to update", () => {
+    describe("session::put::23 - Passing a session correctly to update", () => {
       it("should update a session", async () => {
         // mock services
         const findGroupCoordinator = mockService(
           groupCoordinatorPayload,
           "findPopulateGroupCoordinatorById"
         );
-        const findSubject = mockService(
-          subjectPayload,
-          "findPopulateSubjectById"
+        const findTeacherCoordinator = mockService(
+          teacherCoordinatorPayload,
+          "findPopulateTeacherCoordinatorById"
         );
         const findTeacherField = mockService(
           teacherFieldPayload,
           "findPopulateTeacherFieldById"
+        );
+        const findSubject = mockService(
+          subjectPayload,
+          "findPopulateSubjectById"
         );
         const updateSession = mockService(
           sessionPayload,
@@ -3285,11 +4196,11 @@ describe("Resource => Session", () => {
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
-        expect(findSubject).toHaveBeenCalledWith(
-          newSession.subject_id,
+        expect(findTeacherCoordinator).toHaveBeenCalled();
+        expect(findTeacherCoordinator).toHaveBeenCalledWith(
+          newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
-          "school_id level_id field_id",
+          "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
         expect(findTeacherField).toHaveBeenCalled();
@@ -3297,6 +4208,13 @@ describe("Resource => Session", () => {
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
+          "-createdAt -updatedAt"
+        );
+        expect(findSubject).toHaveBeenCalled();
+        expect(findSubject).toHaveBeenCalledWith(
+          newSession.subject_id,
+          "-createdAt -updatedAt",
+          "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
         expect(updateSession).toHaveBeenCalled();

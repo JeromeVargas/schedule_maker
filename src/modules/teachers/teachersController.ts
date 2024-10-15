@@ -26,7 +26,6 @@ const createTeacher = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
     school_id,
-    coordinator_id,
     user_id,
     contractType,
     teachingHoursAssignable,
@@ -69,20 +68,16 @@ const createTeacher = async ({ body }: Request, res: Response) => {
   if (existingTeacher) {
     throw new ConflictError("User is already a teacher");
   }
-  /* check if the user and coordinator exist */
-  const userSearchCriteria = [coordinator_id, user_id];
+  /* check if the user and  exist */
+  const userSearchCriteria = user_id;
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
   const userFieldsToReturnPopulate = "-createdAt -updatedAt";
-  const existingUserCoordinator = await findPopulateFilterAllUsers(
+  const existingUser = await findPopulateFilterAllUsers(
     userSearchCriteria,
     userFieldsToReturn,
     userFieldsToPopulate,
     userFieldsToReturnPopulate
-  );
-  // if there is not at least one record with an existing user id property, it returns false and triggers an error
-  const existingUser = existingUserCoordinator?.find(
-    (user: User) => user?._id?.toString() === user_id
   );
   if (!existingUser) {
     throw new BadRequestError("Please create the base user first");
@@ -104,30 +99,9 @@ const createTeacher = async ({ body }: Request, res: Response) => {
   if (existingUser?.school_id?._id.toString() !== school_id) {
     throw new BadRequestError("Please make sure the user's school is correct");
   }
-  /* check if the coordinator exists, has a coordinator role and it is active */
-  // if there is not at least one record with an existing coordinator id property, it returns false and triggers an error
-  const existingCoordinator = existingUserCoordinator?.find(
-    (user: User) => user?._id?.toString() === coordinator_id
-  );
-  if (!existingCoordinator) {
-    throw new BadRequestError("Please pass an existent coordinator");
-  }
-  if (existingCoordinator?.role !== "coordinator") {
-    throw new BadRequestError("Please pass a user with a coordinator role");
-  }
-  if (existingCoordinator?.status !== "active") {
-    throw new BadRequestError("Please pass an active coordinator");
-  }
-  // check if the coordinator school exists/
-  if (existingCoordinator?.school_id?._id.toString() !== school_id) {
-    throw new BadRequestError(
-      "Please make sure the coordinator's school is correct"
-    );
-  }
   /* create the teacher */
   const newTeacher = {
     school_id: school_id,
-    coordinator_id: coordinator_id,
     user_id: user_id,
     contractType: contractType,
     teachingHoursAssignable: teachingHoursAssignable,
@@ -199,7 +173,6 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
   const { id: teacherId } = params;
   const {
     school_id,
-    coordinator_id,
     user_id,
     contractType,
     teachingHoursAssignable,
@@ -232,20 +205,16 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
       `teaching hours assigned must not exceed the teaching hours assignable, ${teachingHoursAssignable} hours`
     );
   }
-  /* check if the user and coordinator exist */
-  const userSearchCriteria = [coordinator_id, user_id];
+  /* check if the user exist */
+  const userSearchCriteria = user_id;
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
   const userFieldsToReturnPopulate = "-createdAt -updatedAt";
-  const existingUserCoordinator = await findPopulateFilterAllUsers(
+  const existingUser = await findPopulateFilterAllUsers(
     userSearchCriteria,
     userFieldsToReturn,
     userFieldsToPopulate,
     userFieldsToReturnPopulate
-  );
-  // if there is not at least one record with an existing user id property, it returns false and triggers an error
-  const existingUser = existingUserCoordinator?.find(
-    (user: User) => user?._id?.toString() === user_id
   );
   if (!existingUser) {
     throw new BadRequestError("Please create the base user first");
@@ -267,25 +236,6 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
   if (existingUser?.school_id?._id.toString() !== school_id) {
     throw new BadRequestError("Please make sure the user's school is correct");
   }
-  /* check if coordinator exists, has the role and is active  */
-  const existingCoordinator = existingUserCoordinator?.find(
-    (user: User) => user?._id?.toString() === coordinator_id
-  );
-  if (!existingCoordinator) {
-    throw new BadRequestError("Please pass an existent coordinator");
-  }
-  if (existingCoordinator?.role !== "coordinator") {
-    throw new BadRequestError("Please pass a user with a coordinator role");
-  }
-  if (existingCoordinator?.status !== "active") {
-    throw new BadRequestError("Please pass an active coordinator");
-  }
-  // check if the coordinator school exists/
-  if (existingCoordinator?.school_id?._id.toString() !== school_id) {
-    throw new BadRequestError(
-      "Please make sure the coordinator's school is correct"
-    );
-  }
   /* update if the teacher, user and school ids are the same one as the one passed and update the field */
   const filtersUpdate = {
     _id: teacherId,
@@ -294,7 +244,6 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
   };
   const newTeacher = {
     school_id: school_id,
-    coordinator_id: coordinator_id,
     user_id: user_id,
     contractType: contractType,
     teachingHoursAssignable: teachingHoursAssignable,

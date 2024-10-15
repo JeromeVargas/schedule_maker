@@ -35,7 +35,6 @@ export type Teacher = {
   _id: Types.ObjectId;
   school_id: School;
   user_id: User;
-  coordinator_id: User;
   contractType: ContractType;
   teachingHoursAssignable: number;
   teachingHoursAssigned: number;
@@ -160,10 +159,11 @@ export type Session = {
   _id: Types.ObjectId;
   school_id: School;
   level_id: Level;
-  groupCoordinator_id: Group_Coordinator;
   group_id: Group;
-  subject_id: Group;
+  groupCoordinator_id: Group_Coordinator;
+  teacherCoordinator_id: Teacher_Coordinator;
   teacherField_id: Teacher_Field;
+  subject_id: Group;
   startTime: number;
   groupScheduleSlot: number;
   teacherScheduleSlot: number;

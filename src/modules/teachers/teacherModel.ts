@@ -16,11 +16,6 @@ const TeacherSchema = new Schema<Teacher>(
       unique: true,
       required: [true, "Please provide the user's id"],
     },
-    coordinator_id: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "Please provide the user's coordinator id"],
-    },
     contractType: {
       type: String,
       enum: ["full-time", "part-time", "substitute"],

@@ -13,6 +13,7 @@ import {
   findPopulateGroupCoordinatorById,
   findPopulateSubjectById,
   findPopulateTeacherFieldById,
+  findPopulateTeacherCoordinatorById,
 } from "./sessionServices";
 
 /* global controller reference */
@@ -27,10 +28,11 @@ const createSession = async ({ body }: Request, res: Response) => {
   const {
     school_id,
     level_id,
-    groupCoordinator_id,
     group_id,
-    subject_id,
+    groupCoordinator_id,
+    teacherCoordinator_id,
     teacherField_id,
+    subject_id,
     startTime,
     groupScheduleSlot,
     teacherScheduleSlot,
@@ -39,15 +41,16 @@ const createSession = async ({ body }: Request, res: Response) => {
   if (startTime > maxMinutesInDay) {
     throw new BadRequestError("The session start time must not exceed 23:00");
   }
+
   /* find if the groupCoordinator already exists */
-  const fieldsToReturnGroup = "-createdAt -updatedAt";
-  const fieldsToPopulateGroup = "school_id group_id coordinator_id";
-  const fieldsToReturnPopulateGroup = "-createdAt -updatedAt";
+  const fieldsToReturnGroupCoordinator = "-createdAt -updatedAt";
+  const fieldsToPopulateGroupCoordinator = "school_id group_id coordinator_id";
+  const fieldsToReturnPopulateGroupCoordinator = "-createdAt -updatedAt";
   const groupCoordinatorFound = await findPopulateGroupCoordinatorById(
     groupCoordinator_id,
-    fieldsToReturnGroup,
-    fieldsToPopulateGroup,
-    fieldsToReturnPopulateGroup
+    fieldsToReturnGroupCoordinator,
+    fieldsToPopulateGroupCoordinator,
+    fieldsToReturnPopulateGroupCoordinator
   );
   if (!groupCoordinatorFound) {
     throw new NotFoundError(
@@ -79,32 +82,39 @@ const createSession = async ({ body }: Request, res: Response) => {
   if (groupCoordinatorFound?.coordinator_id?.status !== "active") {
     throw new BadRequestError("Please pass an active coordinator");
   }
-  /* find if the subject already exists */
-  const fieldsToReturnSubject = "-createdAt -updatedAt";
-  const fieldsToPopulateSubject = "school_id level_id field_id";
-  const fieldsToReturnPopulateSubject = "-createdAt -updatedAt";
-  const subjectFound = await findPopulateSubjectById(
-    subject_id,
-    fieldsToReturnSubject,
-    fieldsToPopulateSubject,
-    fieldsToReturnPopulateSubject
+  /* find if the teacherCoordinator already exists */
+  const fieldsToReturnTeacherCoordinator = "-createdAt -updatedAt";
+  const fieldsToPopulateTeacherCoordinator =
+    "school_id teacher_id coordinator_id";
+  const fieldsToReturnPopulateTeacherCoordinator = "-createdAt -updatedAt";
+  const teacherCoordinatorFound = await findPopulateTeacherCoordinatorById(
+    teacherCoordinator_id,
+    fieldsToReturnTeacherCoordinator,
+    fieldsToPopulateTeacherCoordinator,
+    fieldsToReturnPopulateTeacherCoordinator
   );
-  if (!subjectFound) {
-    throw new NotFoundError("Please make sure the subject exists");
-  }
-  // find if the school exists for subject and matches the school in the body
-  if (subjectFound?.school_id?._id?.toString() !== school_id) {
-    throw new BadRequestError(
-      "Please make sure the subject belongs to the school"
+  if (!teacherCoordinatorFound) {
+    throw new NotFoundError(
+      "Please make sure the teacher_coordinator assignment exists"
     );
   }
-  // find if the level exists for subject and matches the level in the body
-  if (subjectFound?.level_id?._id?.toString() !== level_id) {
+  // find if the school exists for the teacherCoordinator and matches the school in the body
+  if (teacherCoordinatorFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
-      "Please make sure the subject belongs to the level"
+      "Please make sure the teacher_coordinator belongs to the school"
     );
   }
-  /* find if the teacher_field already exists */
+  /* find if the coordinator for the teacher and group is the same */
+  // other checks such as the existence, status and role have already been taken care of by the group checks
+  if (
+    teacherCoordinatorFound?.coordinator_id?._id?.toString() !==
+    groupCoordinatorFound?.coordinator_id?._id?.toString()
+  ) {
+    throw new BadRequestError(
+      "Please make sure the coordinator has been assigned to both the group and the teacher"
+    );
+  }
+  /* find if the teacherField already exists */
   const fieldsToReturnTeacherField = "-createdAt -updatedAt";
   const fieldsToPopulateTeacherField = "school_id teacher_id";
   const fieldsToReturnPopulateTeacherField = "-createdAt -updatedAt";
@@ -125,14 +135,38 @@ const createSession = async ({ body }: Request, res: Response) => {
       "Please make sure the field assigned to the teacher belongs to the school"
     );
   }
-  /* find if the coordinator for the teacher and group is the same */
-  // other checks such as the existence, status and role have already been taken care of by the group checks
+  // find if the teacher in teacher_coordinator is the same as the teacher in teacher_field
   if (
-    groupCoordinatorFound?.coordinator_id?._id?.toString() !==
-    teacherFieldFound?.teacher_id?.coordinator_id?.toString()
+    teacherCoordinatorFound?.teacher_id?._id?.toString() !==
+    teacherFieldFound?.teacher_id?._id.toString()
   ) {
     throw new BadRequestError(
-      "Please make sure the teacher has been assigned to the coordinator being passed in the group"
+      "Please make sure the teacher assigned to the coordinator is also assigned to the field"
+    );
+  }
+  /* find if the subject already exists */
+  const fieldsToReturnSubject = "-createdAt -updatedAt";
+  const fieldsToPopulateSubject = "school_id level_id field_id";
+  const fieldsToReturnPopulateSubject = "-createdAt -updatedAt";
+  const subjectFound = await findPopulateSubjectById(
+    subject_id,
+    fieldsToReturnSubject,
+    fieldsToPopulateSubject,
+    fieldsToReturnPopulateSubject
+  );
+  if (!subjectFound) {
+    throw new NotFoundError("Please make sure the subject exists");
+  }
+  // find if the school exists for subject and matches the school in the body
+  if (subjectFound?.school_id?._id?.toString() !== school_id) {
+    throw new BadRequestError(
+      "Please make sure the subject belongs to the school"
+    );
+  }
+  // find if the level exists for the subject and matches the level in the body
+  if (subjectFound?.level_id?._id?.toString() !== level_id) {
+    throw new BadRequestError(
+      "Please make sure the subject belongs to the level"
     );
   }
   /* find if the field for the teacher is the same in parent subject */
@@ -148,10 +182,11 @@ const createSession = async ({ body }: Request, res: Response) => {
   const newSession = {
     school_id: school_id,
     level_id: level_id,
-    groupCoordinator_id: groupCoordinator_id,
     group_id: group_id,
-    subject_id: subject_id,
+    groupCoordinator_id: groupCoordinator_id,
+    teacherCoordinator_id: teacherCoordinator_id,
     teacherField_id: teacherField_id,
+    subject_id: subject_id,
     startTime: startTime,
     groupScheduleSlot: groupScheduleSlot,
     teacherScheduleSlot: teacherScheduleSlot,
@@ -212,10 +247,11 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
   const {
     school_id,
     level_id,
-    groupCoordinator_id,
     group_id,
-    subject_id,
+    groupCoordinator_id,
+    teacherCoordinator_id,
     teacherField_id,
+    subject_id,
     startTime,
     groupScheduleSlot,
     teacherScheduleSlot,
@@ -264,32 +300,39 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
   if (groupCoordinatorFound?.coordinator_id?.status !== "active") {
     throw new BadRequestError("Please pass an active coordinator");
   }
-  /* find if the subject already exists */
-  const fieldsToReturnSubject = "-createdAt -updatedAt";
-  const fieldsToPopulateSubject = "school_id level_id field_id";
-  const fieldsToReturnPopulateSubject = "-createdAt -updatedAt";
-  const subjectFound = await findPopulateSubjectById(
-    subject_id,
-    fieldsToReturnSubject,
-    fieldsToPopulateSubject,
-    fieldsToReturnPopulateSubject
+  /* find if the teacherCoordinator already exists */
+  const fieldsToReturnTeacherCoordinator = "-createdAt -updatedAt";
+  const fieldsToPopulateTeacherCoordinator =
+    "school_id teacher_id coordinator_id";
+  const fieldsToReturnPopulateTeacherCoordinator = "-createdAt -updatedAt";
+  const teacherCoordinatorFound = await findPopulateTeacherCoordinatorById(
+    teacherCoordinator_id,
+    fieldsToReturnTeacherCoordinator,
+    fieldsToPopulateTeacherCoordinator,
+    fieldsToReturnPopulateTeacherCoordinator
   );
-  if (!subjectFound) {
-    throw new BadRequestError("Please make sure the subject exists");
-  }
-  // find if the school exists for subject and matches the school in the body
-  if (subjectFound?.school_id?._id?.toString() !== school_id) {
-    throw new BadRequestError(
-      "Please make sure the subject belongs to the school"
+  if (!teacherCoordinatorFound) {
+    throw new NotFoundError(
+      "Please make sure the teacher_coordinator assignment exists"
     );
   }
-  // find if the level exists for subject and matches the level in the body
-  if (subjectFound?.level_id?._id?.toString() !== level_id) {
+  // find if the school exists for the teacherCoordinator and matches the school in the body
+  if (teacherCoordinatorFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
-      "Please make sure the subject belongs to the level"
+      "Please make sure the teacher_coordinator belongs to the school"
     );
   }
-  /* find if the teacher_field already exists */
+  /* find if the coordinator for the teacher and group is the same */
+  // other checks such as the existence, status and role have already been taken care of by the group checks
+  if (
+    teacherCoordinatorFound?.coordinator_id?._id?.toString() !==
+    groupCoordinatorFound?.coordinator_id?._id?.toString()
+  ) {
+    throw new BadRequestError(
+      "Please make sure the coordinator has been assigned to both the group and the teacher"
+    );
+  }
+  /* find if the teacherField already exists */
   const fieldsToReturnTeacherField = "-createdAt -updatedAt";
   const fieldsToPopulateTeacherField = "school_id teacher_id field_id";
   const fieldsToReturnPopulateTeacherField = "-createdAt -updatedAt";
@@ -310,14 +353,38 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
       "Please make sure the field assigned to the teacher belongs to the school"
     );
   }
-  /* find if the coordinator for the teacher and group is the same */
-  // other checks such as the existence, status and role have already been taken care of by the group checks
+  // find if the teacher in teacher_coordinator is the same as the teacher in teacher_field
   if (
-    groupCoordinatorFound?.coordinator_id?._id?.toString() !==
-    teacherFieldFound?.teacher_id?.coordinator_id?.toString()
+    teacherCoordinatorFound?.teacher_id?._id?.toString() !==
+    teacherFieldFound?.teacher_id?._id.toString()
   ) {
     throw new BadRequestError(
-      "Please make sure the teacher has been assigned to the coordinator being passed in the group"
+      "Please make sure the teacher assigned to the coordinator is also assigned to the field"
+    );
+  }
+  /* find if the subject already exists */
+  const fieldsToReturnSubject = "-createdAt -updatedAt";
+  const fieldsToPopulateSubject = "school_id level_id field_id";
+  const fieldsToReturnPopulateSubject = "-createdAt -updatedAt";
+  const subjectFound = await findPopulateSubjectById(
+    subject_id,
+    fieldsToReturnSubject,
+    fieldsToPopulateSubject,
+    fieldsToReturnPopulateSubject
+  );
+  if (!subjectFound) {
+    throw new BadRequestError("Please make sure the subject exists");
+  }
+  // find if the school exists for subject and matches the school in the body
+  if (subjectFound?.school_id?._id?.toString() !== school_id) {
+    throw new BadRequestError(
+      "Please make sure the subject belongs to the school"
+    );
+  }
+  // find if the level exists for the subject and matches the level in the body
+  if (subjectFound?.level_id?._id?.toString() !== level_id) {
+    throw new BadRequestError(
+      "Please make sure the subject belongs to the level"
     );
   }
   /* find if the field for the teacher is the same in parent subject */
@@ -334,10 +401,11 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
   const newSession = {
     school_id: school_id,
     level_id: level_id,
-    groupCoordinator_id: groupCoordinator_id,
     group_id: group_id,
-    subject_id: subject_id,
+    groupCoordinator_id: groupCoordinator_id,
+    teacherCoordinator_id: teacherCoordinator_id,
     teacherField_id: teacherField_id,
+    subject_id: subject_id,
     startTime: startTime,
     groupScheduleSlot: groupScheduleSlot,
     teacherScheduleSlot: teacherScheduleSlot,
