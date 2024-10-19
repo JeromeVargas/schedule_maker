@@ -1,7 +1,6 @@
 Administrative:
 
 // Todo --> for new projects setup eslint config for unused variables
-// Todo -->
 
 for later:
 
@@ -9,11 +8,11 @@ for later:
 
 Back end:
 
-// Todo --> update the populate endpoint
+// Todo --> work on the on delete functionality using pre in the model for the teacher coordinator entity and the other affected
 // Todo --> do not allow level_id updating in the group or subject, pass it as one of the filters to update
 // Todo --> make routes .route files, also check the dynamic router
-// Todo --> refactor the test to not be attached to the implementation but the results
 // Make all singular, controllers and validators, Maybe??
+// Todo --> refactor the test to not be attached to the implementation but the results
 
 
 for later:
