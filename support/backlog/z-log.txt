@@ -12,6 +12,7 @@ Back end:
 // Todo --> do not allow level_id updating in the group or subject, pass it as one of the filters to update
 // Todo --> make routes .route files, also check the dynamic router
 // Todo --> Make all singular, controllers and validators, Maybe??
+// Todo --> do not delete the schedule if it has other entities extending from it
 // Todo --> check how the soft delete of the school affects other entities controllers
 // Todo --> refactor the test to not be attached to the implementation but the results
 

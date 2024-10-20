@@ -1,6 +1,11 @@
 import { Schema, model } from "mongoose";
-import { Teacher, Teacher_Field } from "../../typings/types";
+import {
+  Teacher,
+  Teacher_Coordinator,
+  Teacher_Field,
+} from "../../typings/types";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
+import TeacherCoordinatorModel from "../teacher_coordinators/teacherCoordinatorModel";
 import SessionModel from "../sessions/sessionModel";
 
 const TeacherSchema = new Schema<Teacher>(
@@ -102,17 +107,37 @@ TeacherSchema.pre(
       .select("_id")
       .lean()
       .exec();
+    // get the teacher_coordinators
+    const findTeacherCoordinators: Teacher_Coordinator[] =
+      await TeacherCoordinatorModel.find({
+        school_id: findTeacher?.school_id,
+        teacher_id: findTeacher?._id,
+      })
+        .select("_id")
+        .lean()
+        .exec();
+
     /* delete entities records in collections */
     // delete the teacher_fields instance/s
     await TeacherFieldModel.deleteMany({
       school_id: findTeacher?.school_id,
       teacher_id: findTeacher?._id,
     }).exec();
+    // delete the teacher_coordinators instance/s
+    await TeacherCoordinatorModel.deleteMany({
+      school_id: findTeacher?.school_id,
+      teacher_id: findTeacher?._id,
+    }).exec();
+
     /* update entities records in collections */
     // update the session instance/s
     await SessionModel.updateMany(
       { teacherField_id: { $in: findTeacherFields } },
       { teacherField_id: null }
+    );
+    await SessionModel.updateMany(
+      { teacherCoordinator_id: { $in: findTeacherCoordinators } },
+      { teacherCoordinator_id: null }
     );
   }
 );
