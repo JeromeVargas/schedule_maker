@@ -12,34 +12,66 @@
     }
   ],
   "users": [
-    {
-      "school_id": null,
-      "firstName": "firstname 001",
-      "lastName": "lastname 001",
-      "email": "user01@yahoo.ca",
-      "password": "12341234",
-      "role": "coordinator",
-      "status": "active"
-    },
-    {
-      "school_id": null,
-      "firstName": "firstname 002",
-      "lastName": "lastname 002",
-      "email": "user02@yahoo.ca",
-      "password": "12341234",
-      "role": "teacher",
-      "status": "active"
-    },
-    {
-      "school_id": null,
-      "firstName": "firstname 003",
-      "lastName": "lastname 003",
-      "email": "user03@yahoo.ca",
-      "password": "12341234",
-      "role": "teacher",
-      "status": "active"
-    }
+    [
+      {
+        "school_id": null,
+        "firstName": "firstname 001",
+        "lastName": "lastname 001",
+        "email": "user01@yahoo.ca",
+        "password": "12341234",
+        "role": "coordinator",
+        "status": "active"
+      },
+      {
+        "school_id": null,
+        "firstName": "firstname 002",
+        "lastName": "lastname 002",
+        "email": "user02@yahoo.ca",
+        "password": "12341234",
+        "role": "teacher",
+        "status": "active"
+      },
+      {
+        "school_id": null,
+        "firstName": "firstname 003",
+        "lastName": "lastname 003",
+        "email": "user03@yahoo.ca",
+        "password": "12341234",
+        "role": "teacher",
+        "status": "active"
+      }
+    ],
+    [
+      {
+        "school_id": null,
+        "firstName": "firstname 004",
+        "lastName": "lastname 004",
+        "email": "user04@yahoo.ca",
+        "password": "12341234",
+        "role": "coordinator",
+        "status": "active"
+      },
+      {
+        "school_id": null,
+        "firstName": "firstname 005",
+        "lastName": "lastname 005",
+        "email": "user05@yahoo.ca",
+        "password": "12341234",
+        "role": "teacher",
+        "status": "active"
+      },
+      {
+        "school_id": null,
+        "firstName": "firstname 006",
+        "lastName": "lastname 006",
+        "email": "user06@yahoo.ca",
+        "password": "12341234",
+        "role": "teacher",
+        "status": "active"
+      }
+    ]
   ],
+
   "teachers": [
     {
       "school_id": null,
@@ -178,10 +210,10 @@
     {
       "school_id": null,
       "level_id": null,
-      "groupCoordinator_id": null,
       "group_id": null,
-      "subject_id": null,
+      "groupCoordinator_id": null,
       "teacherField_id": null,
+      "subject_id": null,
       "startTime": 1439,
       "groupScheduleSlot": 8,
       "teacherScheduleSlot": 9
@@ -189,10 +221,11 @@
     {
       "school_id": null,
       "level_id": null,
-      "groupCoordinator_id": null,
       "group_id": null,
-      "subject_id": null,
+      "groupCoordinator_id": null,
+      "teacherCoordinator_id": null,
       "teacherField_id": null,
+      "subject_id": null,
       "startTime": 1439,
       "groupScheduleSlot": 9,
       "teacherScheduleSlot": 10

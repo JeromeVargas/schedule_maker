@@ -2,6 +2,7 @@ import connectDB from "../../config/connect";
 import SchoolModel from "../schools/schoolModel";
 import UserModel from "../users/userModel";
 import TeacherModel from "../teachers/teacherModel";
+import TeacherCoordinatorModel from "../teacher_coordinators/teacherCoordinatorModel";
 import FieldModel from "../fields/fieldModel";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
 import ScheduleModel from "../schedules/scheduleModel";
@@ -27,15 +28,15 @@ export const populate = async (index: number) => {
     /* CREATE USER */
     // const school = (await SchoolModel.find()).at(0);
     const newCoordinator = school
-      ? { ...entities.users[0], school_id: school._id }
+      ? { ...entities.users[index][0], school_id: school._id }
       : null;
     const coordinator = await UserModel.create(newCoordinator);
     const newUser1 = school
-      ? { ...entities.users[1], school_id: school._id }
+      ? { ...entities.users[index][1], school_id: school._id }
       : null;
     const user1 = await UserModel.create(newUser1);
     const newUser2 = school
-      ? { ...entities.users[2], school_id: school._id }
+      ? { ...entities.users[index][2], school_id: school._id }
       : null;
     const user2 = await UserModel.create(newUser2);
 
@@ -52,7 +53,6 @@ export const populate = async (index: number) => {
             ...entities.teachers[0],
             school_id: user1.school_id,
             user_id: user1._id,
-            coordinator_id: coordinator._id,
           }
         : null;
     const teacher1 = await TeacherModel.create(newTeacher1);
@@ -62,13 +62,29 @@ export const populate = async (index: number) => {
             ...entities.teachers[1],
             school_id: user2.school_id,
             user_id: user2._id,
-            coordinator_id: coordinator._id,
           }
         : null;
     const teacher2 = await TeacherModel.create(newTeacher2);
 
     /* FIND TEACHER */
     // const teacher = (await TeacherModel.find()).at(0);
+
+    /* CREATE TEACHER_COORDINATOR */
+    // const teacher = (await TeacherModel.find()).at(0);
+    // const user = (await FieldModel.find()).at(0);
+    const teacherCoordinator1 = await TeacherCoordinatorModel.create({
+      school_id: teacher1?.school_id,
+      teacher_id: teacher1?._id,
+      coordinator_id: coordinator?._id,
+    });
+    const teacherCoordinator2 = await TeacherCoordinatorModel.create({
+      school_id: teacher2?.school_id,
+      teacher_id: teacher2?._id,
+      coordinator_id: coordinator?._id,
+    });
+
+    /* FIND TEACHER_COORDINATOR */
+    // const teacherCoordinator = (await TeacherCoordinatorModel.find()).at(0);
 
     /* CREATE FIELD */
     // const school = (await SchoolModel.find()).at(0);
@@ -163,7 +179,6 @@ export const populate = async (index: number) => {
           ...entities.groups[0],
           school_id: level1?.school_id,
           level_id: level1?._id,
-          coordinator_id: coordinator?._id,
         }
       : null;
     const group1 = await GroupModel.create(newGroup1);
@@ -172,7 +187,6 @@ export const populate = async (index: number) => {
           ...entities.groups[1],
           school_id: level2?.school_id,
           level_id: level2?._id,
-          coordinator_id: coordinator?._id,
         }
       : null;
     const group2 = await GroupModel.create(newGroup2);
@@ -194,8 +208,8 @@ export const populate = async (index: number) => {
       coordinator_id: coordinator?._id,
     });
 
-    /* FIND TEACHER_FIELD */
-    // const teacherField = (await TeacherFieldModel.find()).at(0);
+    /* FIND GROUP_COORDINATOR */
+    // const groupCoordinator = (await GroupCoordinatorModel.find()).at(0);
 
     /* CREATE SUBJECT */
     // const level = (await LevelModel.find()).at(0);
@@ -232,10 +246,11 @@ export const populate = async (index: number) => {
           ...entities.sessions[0],
           school_id: level1?.school_id,
           level_id: level1?._id,
-          groupCoordinator_id: groupCoordinator1?._id,
           group_id: group1?._id,
-          subject_id: subject1?._id,
+          groupCoordinator_id: groupCoordinator1?._id,
+          teacherCoordinator_id: teacherCoordinator1?._id,
           teacherField_id: teacherField1?._id,
+          subject_id: subject1?._id,
         }
       : null;
     const sessionInstance1 = await SessionModel.create(newSession1);
@@ -244,10 +259,11 @@ export const populate = async (index: number) => {
           ...entities.sessions[1],
           school_id: level2?.school_id,
           level_id: level2?._id,
-          groupCoordinator_id: groupCoordinator2?._id,
           group_id: group2?._id,
-          subject_id: subject2?._id,
+          groupCoordinator_id: groupCoordinator2?._id,
+          teacherCoordinator_id: teacherCoordinator2?._id,
           teacherField_id: teacherField2?._id,
+          subject_id: subject2?._id,
         }
       : null;
     const sessionInstance2 = await SessionModel.create(newSession2);
@@ -261,7 +277,7 @@ export const populate = async (index: number) => {
     // process.exit(0);
   } catch (error) {
     console.log(error);
-    // stops the execution, , 1 = error
+    // stops the execution, 1 = error
     process.exit(1);
   }
 };
@@ -274,11 +290,13 @@ export const flush = async () => {
     await UserModel.deleteMany();
     await TeacherModel.deleteMany();
     await FieldModel.deleteMany();
+    await TeacherCoordinatorModel.deleteMany();
     await TeacherFieldModel.deleteMany();
     await ScheduleModel.deleteMany();
     await BreakModel.deleteMany();
     await LevelModel.deleteMany();
     await GroupModel.deleteMany();
+    await GroupCoordinatorModel.deleteMany();
     await SubjectModel.deleteMany();
     await SessionModel.deleteMany();
 
@@ -287,7 +305,7 @@ export const flush = async () => {
     // process.exit(0);
   } catch (error) {
     console.log(error);
-    // stops the execution, , 1 = error
+    // stops the execution, 1 = error
     process.exit(1);
   }
 };
