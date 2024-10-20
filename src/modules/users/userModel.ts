@@ -1,9 +1,15 @@
 import { Schema, model } from "mongoose";
-import { Teacher_Field, User } from "../../typings/types";
+import {
+  Group_Coordinator,
+  Teacher_Coordinator,
+  Teacher_Field,
+  User,
+} from "../../typings/types";
 import TeacherModel from "../teachers/teacherModel";
 import TeacherFieldModel from "../teacher_fields/teacherFieldModel";
+import TeacherCoordinatorModel from "../teacher_coordinators/teacherCoordinatorModel";
+import GroupCoordinatorModel from "../group_coordinators/groupCoordinatorModel";
 import SessionModel from "../sessions/sessionModel";
-import GroupModel from "../groups/groupModel";
 
 const UserSchema = new Schema<User>(
   {
@@ -61,9 +67,35 @@ UserSchema.pre(
       school_id: findUser?.school_id,
       user_id: findUser?._id,
     })
-      .select("_id")
+      .select("_id school_id")
       .lean()
       .exec();
+    // get the teacher_coordinators
+    const findGroupCoordinators: Group_Coordinator[] =
+      await GroupCoordinatorModel.find({
+        school_id: findUser?.school_id,
+        coordinator_id: findUser?._id,
+      })
+        .select("_id")
+        .lean()
+        .exec();
+    // get the teacher_coordinators
+    const findTeacherCoordinators_teachers: Teacher_Coordinator[] =
+      await TeacherCoordinatorModel.find({
+        school_id: findTeacher?.school_id,
+        teacher_id: findTeacher?._id,
+      })
+        .select("_id")
+        .lean()
+        .exec();
+    const findTeacherCoordinators_coordinators: Teacher_Coordinator[] =
+      await TeacherCoordinatorModel.find({
+        school_id: findUser?.school_id,
+        coordinator_id: findUser?._id,
+      })
+        .select("_id")
+        .lean()
+        .exec();
     // get the teacher_fields
     const findTeacherFields: Teacher_Field[] = await TeacherFieldModel.find({
       school_id: findUser?.school_id,
@@ -72,6 +104,7 @@ UserSchema.pre(
       .select("_id")
       .lean()
       .exec();
+
     /* delete entities records in collections */
     // delete the teacher instance
     const deleteTeacher = await TeacherModel.findOneAndDelete({
@@ -85,24 +118,35 @@ UserSchema.pre(
       school_id: deleteTeacher?.school_id,
       teacher_id: deleteTeacher?._id,
     }).exec();
+    // delete the teacher_coordinators instance/s
+    await TeacherCoordinatorModel.deleteMany({
+      school_id: deleteTeacher?.school_id,
+      teacher_id: deleteTeacher?._id,
+    }).exec();
+    await TeacherCoordinatorModel.deleteMany({
+      school_id: findUser?.school_id,
+      coordinator_id: findUser?._id,
+    }).exec();
+    // delete the group_coordinators instance/s
+    await GroupCoordinatorModel.deleteMany({
+      school_id: findUser?.school_id,
+      coordinator_id: findUser?._id,
+    }).exec();
+
     /* update entities records in collections */
-    // update the teacher instance/s
-    await TeacherModel.updateMany(
-      {
-        school_id: findUser?.school_id,
-        coordinator_id: findUser?._id,
-      },
-      { $set: { coordinator_id: null } }
-    ).exec();
-    // update the group instance/s
-    await GroupModel.updateMany(
-      {
-        school_id: findUser?.school_id,
-        coordinator_id: findUser?._id,
-      },
-      { $set: { coordinator_id: null } }
-    ).exec();
     // update the session instance/s
+    await SessionModel.updateMany(
+      { groupCoordinator_id: { $in: findGroupCoordinators } },
+      { groupCoordinator_id: null }
+    );
+    await SessionModel.updateMany(
+      { teacherCoordinator_id: { $in: findTeacherCoordinators_teachers } },
+      { teacherCoordinator_id: null }
+    );
+    await SessionModel.updateMany(
+      { teacherCoordinator_id: { $in: findTeacherCoordinators_coordinators } },
+      { teacherCoordinator_id: null }
+    );
     await SessionModel.updateMany(
       { teacherField_id: { $in: findTeacherFields } },
       { teacherField_id: null }
