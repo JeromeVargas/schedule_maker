@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { Teacher_Field } from "../../typings/types";
+import SessionModel from "../sessions/sessionModel";
 
 const TeacherFieldSchema = new Schema<Teacher_Field>(
   {
@@ -21,6 +22,29 @@ const TeacherFieldSchema = new Schema<Teacher_Field>(
   {
     timestamps: true,
     versionKey: false,
+  }
+);
+
+TeacherFieldSchema.pre(
+  "findOneAndDelete",
+  { document: false, query: true },
+  async function () {
+    /* get the entities ids and references */
+    // get the field
+    const findTeacherField: Teacher_Field | null = await this.model
+      // getFilter gets the parameters from the parent call, in this case findOneAndDelete
+      .findOne(this.getFilter(), { _id: 1, school_id: 1 })
+      .lean();
+
+    /* update entities records in collections */
+    // update the session instance/s
+    await SessionModel.updateMany(
+      {
+        school_id: findTeacherField?.school_id,
+        teacherField_id: findTeacherField?._id,
+      },
+      { teacherField_id: null }
+    );
   }
 );
 
