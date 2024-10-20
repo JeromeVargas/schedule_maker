@@ -40,14 +40,16 @@ FieldSchema.pre(
       .select("_id")
       .lean()
       .exec();
+
     /* delete entities records in collections */
     // delete the teacher_fields instance/s
     await TeacherFieldModel.deleteMany({
       school_id: findField?.school_id,
       field_id: findField?._id,
     }).exec();
+
     /* update entities records in collections */
-    // update the group instance/s
+    // update the subject instance/s
     await SubjectModel.updateMany(
       {
         school_id: findField?.school_id,
