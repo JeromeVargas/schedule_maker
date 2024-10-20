@@ -71,21 +71,13 @@ ScheduleSchema.pre(
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
+
     /* delete entities records in collections */
     // delete the break instance/s
     await BreakModel.deleteMany({
       school_id: findSchedule?.school_id,
       schedule_id: findSchedule?._id,
     }).exec();
-    /* update entities records in collections */
-    // update the session instance/s
-    await LevelModel.updateMany(
-      {
-        school_id: findSchedule?.school_id,
-        schedule_id: findSchedule?._id,
-      },
-      { $set: { schedule_id: null } }
-    ).exec();
   }
 );
 

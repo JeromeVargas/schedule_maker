@@ -13,6 +13,7 @@ import {
   removeFilterSchedule,
   /* Services from other entities */
   findSchoolById,
+  findAllLevels,
 } from "./scheduleServices";
 
 import { Schedule } from "../../typings/types";
@@ -200,6 +201,17 @@ const deleteSchedule = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: scheduleId } = params;
   const { school_id } = body;
+  /* make sure the schedule does not have any levels extending from it */
+  const filtersExtendingLevels = {
+    school_id: school_id,
+    schedule_id: scheduleId,
+  };
+  const extendingLevels = await findAllLevels(filtersExtendingLevels);
+  if (extendingLevels.length > 0) {
+    throw new ConflictError(
+      "Schedule cannot be deleted because there are levels extending from it"
+    );
+  }
   /* delete schedule */
   const filtersDelete = { school_id: school_id, _id: scheduleId };
   const scheduleDeleted = await removeFilterSchedule(filtersDelete);

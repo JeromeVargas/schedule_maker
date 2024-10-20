@@ -14,6 +14,7 @@ Back end:
 // Todo --> Make all singular, controllers and validators, Maybe??
 // Todo --> do not delete the schedule if it has other entities extending from it
 // Todo --> check how the soft delete of the school affects other entities controllers
+// Todo --> move from end of the page exports to inline exports
 // Todo --> refactor the test to not be attached to the implementation but the results
 
 
