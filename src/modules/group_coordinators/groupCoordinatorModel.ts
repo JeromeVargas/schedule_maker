@@ -36,8 +36,9 @@ GroupCoordinatorSchema.pre(
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
-    /* delete entities records in collections */
-    // delete the session instance/s
+
+    /* update entities records in collections */
+    // update the session instance/s
     await SessionModel.updateMany(
       {
         school_id: findGroupCoordinator?.school_id,
