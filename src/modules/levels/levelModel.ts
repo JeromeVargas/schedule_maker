@@ -36,6 +36,7 @@ LevelSchema.pre(
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
+
     /* delete entities records in collections */
     // delete the group instance/s
     await GroupModel.deleteMany({
