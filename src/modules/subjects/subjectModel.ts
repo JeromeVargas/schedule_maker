@@ -54,6 +54,7 @@ SubjectSchema.pre(
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
+
     /* update entities records in collections */
     // update the session instance/s
     await SessionModel.updateMany(

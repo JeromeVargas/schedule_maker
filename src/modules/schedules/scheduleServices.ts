@@ -1,6 +1,7 @@
 import SchoolModel from "../schools/schoolModel";
 import ScheduleModel from "./scheduleModel";
 import { NewSchedule } from "../../typings/types";
+import LevelModel from "../levels/levelModel";
 
 // CRUD services
 // @desc insert a schedule in database
@@ -72,6 +73,12 @@ const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
   return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
 
+// @desc find a school by id
+// @params schoolId, fieldsToReturn
+const findAllLevels = (filters: { school_id: string; schedule_id: string }) => {
+  return LevelModel.find(filters).lean().exec();
+};
+
 export {
   insertSchedule,
   findScheduleByProperty,
@@ -81,4 +88,5 @@ export {
   removeFilterSchedule,
   /* Services from other entities */
   findSchoolById,
+  findAllLevels,
 };

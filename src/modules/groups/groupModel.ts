@@ -48,6 +48,7 @@ GroupSchema.pre(
         .select("_id")
         .lean()
         .exec();
+
     /* delete entities records in collections */
     // delete the session instance/s
     await GroupCoordinatorModel.deleteMany({

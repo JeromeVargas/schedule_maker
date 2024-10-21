@@ -5,7 +5,7 @@ import { server, connection } from "../../../server";
 
 import * as scheduleServices from "../scheduleServices";
 
-import { Schedule } from "../../../typings/types";
+import { Level, Schedule } from "../../../typings/types";
 
 type Service =
   | "insertSchedule"
@@ -14,7 +14,8 @@ type Service =
   | "findFilterScheduleByProperty"
   | "modifyFilterSchedule"
   | "removeFilterSchedule"
-  | "findSchoolById";
+  | "findSchoolById"
+  | "findAllLevels";
 
 describe("Resource => Schedule", () => {
   /* mock services */
@@ -114,6 +115,27 @@ describe("Resource => Schedule", () => {
     groupMaxNumStudents: 40,
   };
   const schoolNullPayload = null;
+  const levelsPayload = [
+    {
+      _id: new Types.ObjectId().toString(),
+      school_id: new Types.ObjectId().toString(),
+      schedule_id: new Types.ObjectId().toString(),
+      name: "Mathematics",
+    },
+    {
+      _id: new Types.ObjectId().toString(),
+      school_id: new Types.ObjectId().toString(),
+      schedule_id: new Types.ObjectId().toString(),
+      name: "Language",
+    },
+    {
+      _id: new Types.ObjectId().toString(),
+      school_id: new Types.ObjectId().toString(),
+      schedule_id: new Types.ObjectId().toString(),
+      name: "Physics",
+    },
+  ];
+  const levelsNullPayload: Level[] = [];
   const schedulePayload = {
     _id: validMockScheduleId,
     school_id: validMockSchoolId,
@@ -1627,6 +1649,7 @@ describe("Resource => Schedule", () => {
     describe("schedule::delete::01 - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
+        const findAllLevels = mockService(levelsNullPayload, "findAllLevels");
         const deleteSchedule = mockService(
           scheduleNullPayload,
           "removeFilterSchedule"
@@ -1646,6 +1669,11 @@ describe("Resource => Schedule", () => {
           },
         ]);
         expect(statusCode).toBe(400);
+        expect(findAllLevels).not.toHaveBeenCalled();
+        expect(findAllLevels).not.toHaveBeenCalledWith({
+          school_i: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+        });
         expect(deleteSchedule).not.toHaveBeenCalled();
         expect(deleteSchedule).not.toHaveBeenCalledWith({
           school_id: null,
@@ -1656,6 +1684,7 @@ describe("Resource => Schedule", () => {
     describe("schedule::delete::02 - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
         // mock services
+        const findAllLevels = mockService(levelsNullPayload, "findAllLevels");
         const deleteSchedule = mockService(
           scheduleNullPayload,
           "removeFilterSchedule"
@@ -1675,6 +1704,11 @@ describe("Resource => Schedule", () => {
             value: "",
           },
         ]);
+        expect(findAllLevels).not.toHaveBeenCalled();
+        expect(findAllLevels).not.toHaveBeenCalledWith({
+          school_id: "",
+          schedule_id: validMockScheduleId,
+        });
         expect(statusCode).toBe(400);
         expect(deleteSchedule).not.toHaveBeenCalled();
         expect(deleteSchedule).not.toHaveBeenCalledWith({
@@ -1686,6 +1720,7 @@ describe("Resource => Schedule", () => {
     describe("schedule::delete::03 - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
+        const findAllLevels = mockService(levelsNullPayload, "findAllLevels");
         const deleteSchedule = mockService(
           scheduleNullPayload,
           "removeFilterSchedule"
@@ -1711,6 +1746,11 @@ describe("Resource => Schedule", () => {
             value: invalidMockId,
           },
         ]);
+        expect(findAllLevels).not.toHaveBeenCalled();
+        expect(findAllLevels).not.toHaveBeenCalledWith({
+          school_id: invalidMockId,
+          schedule_id: invalidMockId,
+        });
         expect(statusCode).toBe(400);
         expect(deleteSchedule).not.toHaveBeenCalled();
         expect(deleteSchedule).not.toHaveBeenCalledWith({
@@ -1719,9 +1759,41 @@ describe("Resource => Schedule", () => {
         });
       });
     });
-    describe("schedule::delete::04 - Passing a schedule id but not deleting it", () => {
+    describe("schedule::delete::04 - Passing a schedule with levels still extending from it", () => {
+      it("should return a conflict error", async () => {
+        // mock services
+        const findAllLevels = mockService(levelsPayload, "findAllLevels");
+        const deleteSchedule = mockService(
+          scheduleNullPayload,
+          "removeFilterSchedule"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .delete(`${endPointUrl}${validMockScheduleId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Schedule cannot be deleted because there are levels extending from it",
+        });
+        expect(statusCode).toBe(409);
+        expect(findAllLevels).toHaveBeenCalled();
+        expect(findAllLevels).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+        });
+        expect(deleteSchedule).not.toHaveBeenCalled();
+        expect(deleteSchedule).not.toHaveBeenCalledWith({
+          school_id: "",
+          _id: "",
+        });
+      });
+    });
+    describe("schedule::delete::05 - Passing a schedule id but not deleting it", () => {
       it("should not delete a school", async () => {
         // mock services
+        const findAllLevels = mockService(levelsNullPayload, "findAllLevels");
         const deleteSchedule = mockService(
           scheduleNullPayload,
           "removeFilterSchedule"
@@ -1735,6 +1807,11 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Schedule not deleted" });
         expect(statusCode).toBe(404);
+        expect(findAllLevels).toHaveBeenCalled();
+        expect(findAllLevels).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          schedule_id: otherValidMockId,
+        });
         expect(deleteSchedule).toHaveBeenCalled();
         expect(deleteSchedule).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
@@ -1742,9 +1819,10 @@ describe("Resource => Schedule", () => {
         });
       });
     });
-    describe("schedule::delete::05 - Passing a schedule id correctly to delete", () => {
+    describe("schedule::delete::06 - Passing a schedule id correctly to delete", () => {
       it("should delete a field", async () => {
         // mock services
+        const findAllLevels = mockService(levelsNullPayload, "findAllLevels");
         const deleteSchedule = mockService(
           schedulePayload,
           "removeFilterSchedule"
@@ -1758,6 +1836,11 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Schedule deleted" });
         expect(statusCode).toBe(200);
+        expect(findAllLevels).toHaveBeenCalled();
+        expect(findAllLevels).toHaveBeenCalledWith({
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+        });
         expect(deleteSchedule).toHaveBeenCalled();
         expect(deleteSchedule).toHaveBeenCalledWith({
           school_id: validMockSchoolId,

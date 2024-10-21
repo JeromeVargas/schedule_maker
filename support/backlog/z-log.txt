@@ -8,10 +8,11 @@ for later:
 
 Back end:
 
-// Todo --> work on the on delete functionality using pre in the model for the teacher coordinator entity and the other affected
 // Todo --> do not allow level_id updating in the group or subject, pass it as one of the filters to update
 // Todo --> make routes .route files, also check the dynamic router
-// Make all singular, controllers and validators, Maybe??
+// Todo --> Make all singular, controllers and validators, Maybe??
+// Todo --> check how the soft delete of the school affects other entities controllers
+// Todo --> move from end of the page exports to inline exports
 // Todo --> refactor the test to not be attached to the implementation but the results
 
 
