@@ -7,11 +7,11 @@ const router = Router();
 
 readdirSync(PATH_ROUTER).filter((folderName) => {
   console.log(`The /${folderName} route is being loaded`);
-  import(path.join("..", "..", "features", `${folderName}`, "route")).then(
-    (moduleRouter) => {
-      router.use(`/api/v1/${folderName}`, moduleRouter.router);
-    }
-  );
+  import(
+    path.join("..", "..", "features", `${folderName}`, `${folderName}.route`)
+  ).then((moduleRouter) => {
+    router.use(`/api/v1/${folderName}`, moduleRouter.router);
+  });
 });
 
 export { router };
