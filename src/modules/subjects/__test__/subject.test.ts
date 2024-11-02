@@ -1762,7 +1762,11 @@ describe("Resource => subject", () => {
         );
         expect(updateSubject).toHaveBeenCalled();
         expect(updateSubject).toHaveBeenCalledWith(
-          { _id: validMockSubjectId, school_id: newSubject.school_id },
+          {
+            _id: validMockSubjectId,
+            school_id: newSubject.school_id,
+            level_id: newSubject.level_id,
+          },
           newSubject
         );
       });
@@ -1786,7 +1790,7 @@ describe("Resource => subject", () => {
           .put(`${endPointUrl}${validMockSubjectId}`)
           .send(newSubject);
 
-        // assertions;
+        // assertions;f
         expect(body).toStrictEqual({
           msg: "Subject updated!",
         });
@@ -1812,7 +1816,11 @@ describe("Resource => subject", () => {
         );
         expect(updateSubject).toHaveBeenCalled();
         expect(updateSubject).toHaveBeenCalledWith(
-          { _id: validMockSubjectId, school_id: newSubject.school_id },
+          {
+            _id: validMockSubjectId,
+            school_id: newSubject.school_id,
+            level_id: newSubject.level_id,
+          },
           newSubject
         );
       });
