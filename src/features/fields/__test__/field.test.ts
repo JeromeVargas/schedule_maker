@@ -935,7 +935,7 @@ describe("RESOURCE => Field", () => {
         expect(body).toStrictEqual({
           msg: "Field not updated",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(duplicateFieldName).toHaveBeenCalled();
         expect(duplicateFieldName).toHaveBeenCalledWith(
           { school_id: newField.school_id, name: newField.name },

@@ -117,7 +117,7 @@ const updateField = async ({ params, body }: Request, res: Response) => {
   };
   const fieldUpdated = await modifyFilterField(filtersUpdate, newField);
   if (!fieldUpdated) {
-    throw new NotFoundError("Field not updated");
+    throw new BadRequestError("Field not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "Field updated" });
 };
