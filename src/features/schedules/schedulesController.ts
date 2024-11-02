@@ -188,7 +188,7 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
     newSchedule
   );
   if (!scheduleUpdated) {
-    throw new NotFoundError("Schedule not updated");
+    throw new BadRequestError("Schedule not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "Schedule updated" });
 };

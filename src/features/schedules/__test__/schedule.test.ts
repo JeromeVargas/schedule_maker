@@ -1598,7 +1598,7 @@ describe("Resource => Schedule", () => {
 
         // assertions
         expect(body).toStrictEqual({ msg: "Schedule not updated" });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(duplicateScheduleName).toHaveBeenCalled();
         expect(duplicateScheduleName).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
