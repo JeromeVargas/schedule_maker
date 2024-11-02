@@ -1902,7 +1902,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         expect(body).toStrictEqual({
           msg: "The coordinator has not been assigned the updated teacher",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {

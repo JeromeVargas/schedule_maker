@@ -222,7 +222,7 @@ const updateTeacherCoordinator = async (
     newTeacherCoordinator
   );
   if (!teacherCoordinatorUpdated) {
-    throw new NotFoundError(
+    throw new BadRequestError(
       "The coordinator has not been assigned the updated teacher"
     );
   }
