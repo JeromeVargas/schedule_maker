@@ -4,7 +4,6 @@ import BadRequestError from "../../errors/bad-request";
 import ConflictError from "../../errors/conflict";
 import NotFoundError from "../../errors/not-found";
 
-import { User } from "../../typings/types";
 import {
   insertTeacher,
   findTeacherByProperty,
@@ -260,7 +259,7 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
   };
   const teacherUpdated = await modifyFilterTeacher(filtersUpdate, newTeacher);
   if (!teacherUpdated) {
-    throw new NotFoundError("Teacher not updated");
+    throw new BadRequestError("Teacher not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "Teacher updated" });
 };

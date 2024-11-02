@@ -2233,7 +2233,7 @@ describe("RESOURCE => Teacher", () => {
         expect(body).toStrictEqual({
           msg: "Teacher not updated",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(findUser).toHaveBeenCalled();
         expect(findUser).toHaveBeenCalledWith(
           newTeacher.user_id,
