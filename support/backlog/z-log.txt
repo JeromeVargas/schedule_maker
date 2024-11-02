@@ -10,7 +10,6 @@ Back end:
 
 // Todo --> check put call to return a 401 bad request instead of not found 404 if the resource is not updated
 // Todo --> the subject name can be repeated in the school but not in the parent level
-// Todo --> change the entities folder name for features
 // Todo --> make routes .route files, also check the dynamic router
 // Todo --> Make all singular, controllers and validators, Maybe??
 // Todo --> check how the soft delete of the school affects other entities controllers
