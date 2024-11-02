@@ -796,7 +796,7 @@ describe("RESOURCE => School", () => {
           expect(body).toStrictEqual({
             msg: "School not updated",
           });
-          expect(statusCode).toBe(404);
+          expect(statusCode).toBe(400);
           expect(duplicateSchoolName).toHaveBeenCalled();
           expect(duplicateSchoolName).toHaveBeenCalledWith(
             { name: newSchool.name },

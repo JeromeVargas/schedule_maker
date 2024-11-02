@@ -96,7 +96,7 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
   };
   const schoolUpdated = await modifySchool(schoolId, newSchool);
   if (!schoolUpdated) {
-    throw new NotFoundError("School not updated");
+    throw new BadRequestError("School not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "School updated" });
 };
