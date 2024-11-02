@@ -220,7 +220,7 @@ const updateGroupCoordinator = async (
     newGroupCoordinator
   );
   if (!groupCoordinatorUpdated) {
-    throw new NotFoundError(
+    throw new BadRequestError(
       "The coordinator has not been assigned the updated group"
     );
   }

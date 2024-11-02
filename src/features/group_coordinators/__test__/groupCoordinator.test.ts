@@ -1864,7 +1864,7 @@ describe("RESOURCE => Group_coordinator", () => {
         expect(body).toStrictEqual({
           msg: "The coordinator has not been assigned the updated group",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
