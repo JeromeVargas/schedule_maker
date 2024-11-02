@@ -205,7 +205,7 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
     newTeacherField
   );
   if (!fieldUpdated) {
-    throw new NotFoundError(
+    throw new BadRequestError(
       "The teacher has not been assigned the updated field"
     );
   }

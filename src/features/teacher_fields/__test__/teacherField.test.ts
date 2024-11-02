@@ -1804,7 +1804,7 @@ describe("RESOURCE => Teacher_field", () => {
         expect(body).toStrictEqual({
           msg: "The teacher has not been assigned the updated field",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
