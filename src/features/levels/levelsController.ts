@@ -151,7 +151,7 @@ const updateLevel = async ({ params, body }: Request, res: Response) => {
   const filtersUpdate = { _id: levelId, school_id: school_id };
   const levelUpdated = await modifyFilterLevel(filtersUpdate, newLevel);
   if (!levelUpdated) {
-    throw new NotFoundError("Level not updated");
+    throw new BadRequestError("Level not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "Level updated!" });
 };

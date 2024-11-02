@@ -1210,7 +1210,7 @@ describe("Resource => Level", () => {
         expect(body).toStrictEqual({
           msg: "Level not updated",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: newLevel.school_id, name: newLevel.name },
