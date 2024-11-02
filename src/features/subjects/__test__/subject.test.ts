@@ -1740,7 +1740,7 @@ describe("Resource => subject", () => {
         expect(body).toStrictEqual({
           msg: "Subject not updated",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },

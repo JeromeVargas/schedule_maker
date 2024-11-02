@@ -202,7 +202,7 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
   };
   const subjectUpdated = await modifyFilterSubject(filtersUpdate, newSubject);
   if (!subjectUpdated) {
-    throw new NotFoundError("Subject not updated");
+    throw new BadRequestError("Subject not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "Subject updated!" });
 };
