@@ -149,7 +149,7 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
   };
   const breakUpdated = await modifyFilterBreak(filtersUpdate, newBreak);
   if (!breakUpdated) {
-    throw new NotFoundError("Break not updated");
+    throw new BadRequestError("Break not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "Break updated!" });
 };

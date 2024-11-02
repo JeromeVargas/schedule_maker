@@ -1180,7 +1180,7 @@ describe("Resource => Break", () => {
         expect(body).toStrictEqual({
           msg: "Break not updated",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
