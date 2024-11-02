@@ -170,7 +170,7 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
   };
   const groupUpdated = await modifyFilterGroup(filtersUpdate, newGroup);
   if (!groupUpdated) {
-    throw new NotFoundError("Group not updated");
+    throw new BadRequestError("Group not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "Group updated!" });
 };

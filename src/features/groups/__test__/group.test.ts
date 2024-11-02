@@ -1317,6 +1317,7 @@ describe("Resource => Group", () => {
         expect(body).toStrictEqual({
           msg: "Group not updated",
         });
+        expect(statusCode).toBe(400);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
