@@ -416,7 +416,7 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
   };
   const sessionUpdated = await modifyFilterSession(filtersUpdate, newSession);
   if (!sessionUpdated) {
-    throw new NotFoundError("Session not updated");
+    throw new BadRequestError("Session not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "Session updated!" });
 };

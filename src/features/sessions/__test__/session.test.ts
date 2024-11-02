@@ -4119,7 +4119,7 @@ describe("Resource => Session", () => {
         expect(body).toStrictEqual({
           msg: "Session not updated",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
