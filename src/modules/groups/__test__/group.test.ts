@@ -1331,7 +1331,11 @@ describe("Resource => Group", () => {
         );
         expect(updateGroup).toHaveBeenCalled();
         expect(updateGroup).toHaveBeenCalledWith(
-          { _id: validMockGroupId, school_id: newGroup.school_id },
+          {
+            _id: validMockGroupId,
+            school_id: newGroup.school_id,
+            level_id: newGroup.level_id,
+          },
           newGroup
         );
       });
@@ -1370,7 +1374,11 @@ describe("Resource => Group", () => {
         );
         expect(updateGroup).toHaveBeenCalled();
         expect(updateGroup).toHaveBeenCalledWith(
-          { _id: validMockGroupId, school_id: newGroup.school_id },
+          {
+            _id: validMockGroupId,
+            school_id: newGroup.school_id,
+            level_id: newGroup.level_id,
+          },
           newGroup
         );
       });

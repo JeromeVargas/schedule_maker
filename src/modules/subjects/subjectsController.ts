@@ -195,7 +195,11 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
     sessionUnits: sessionUnits,
     frequency: frequency,
   };
-  const filtersUpdate = { _id: subjectId, school_id: school_id };
+  const filtersUpdate = {
+    _id: subjectId,
+    school_id: school_id,
+    level_id: level_id,
+  };
   const subjectUpdated = await modifyFilterSubject(filtersUpdate, newSubject);
   if (!subjectUpdated) {
     throw new NotFoundError("Subject not updated");

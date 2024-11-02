@@ -397,7 +397,11 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
     );
   }
   /* update session */
-  const filtersUpdate = { _id: sessionId, school_id: school_id };
+  const filtersUpdate = {
+    _id: sessionId,
+    school_id: school_id,
+    level_id: level_id,
+  };
   const newSession = {
     school_id: school_id,
     level_id: level_id,

@@ -155,14 +155,19 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
     throw new BadRequestError(
       `Please take into account that the number of students cannot exceed ${maxNumberStudentsPerGroup} students`
     );
-  } /* update group */
+  }
+  /* update group */
   const newGroup = {
     school_id: school_id,
     level_id: level_id,
     name: name,
     numberStudents: numberStudents,
   };
-  const filtersUpdate = { _id: groupId, school_id: school_id };
+  const filtersUpdate = {
+    _id: groupId,
+    school_id: school_id,
+    level_id: level_id,
+  };
   const groupUpdated = await modifyFilterGroup(filtersUpdate, newGroup);
   if (!groupUpdated) {
     throw new NotFoundError("Group not updated");
