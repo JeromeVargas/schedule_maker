@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
 
-import * as breakServices from "../breakServices";
+import * as breakServices from "../breaks.services";
 
 import { Break } from "../../../typings/types";
 

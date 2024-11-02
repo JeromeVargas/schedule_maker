@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
 
-import * as teacherCoordinatorServices from "../teacherCoordinatorServices";
+import * as teacherCoordinatorServices from "../teacher_coordinators.services";
 
 import { Teacher_Coordinator } from "../../../typings/types";
 

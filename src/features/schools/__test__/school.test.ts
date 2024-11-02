@@ -2,7 +2,7 @@ import supertest from "supertest";
 import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
-import * as schoolServices from "../schoolServices";
+import * as schoolServices from "../schools.services";
 
 import { School } from "../../../typings/types";
 

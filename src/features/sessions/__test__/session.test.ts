@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
 
-import * as sessionServices from "../sessionServices";
+import * as sessionServices from "../sessions.services";
 
 import { Session } from "../../../typings/types";
 

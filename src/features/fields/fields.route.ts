@@ -5,7 +5,7 @@ import {
   validateGetFields,
   validateDeleteField,
   validateUpdateField,
-} from "./fieldsValidator";
+} from "./fields.validator";
 
 import {
   getFields,
@@ -13,7 +13,7 @@ import {
   createField,
   updateField,
   deleteField,
-} from "./fieldsController";
+} from "./fields.controller";
 
 const router = Router();
 

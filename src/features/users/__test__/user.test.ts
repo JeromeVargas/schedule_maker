@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
 
-import * as userServices from "../userServices";
+import * as userServices from "../users.services";
 import * as utils from "../../../lib/utilities/utils";
 
 import { User } from "../../../typings/types";

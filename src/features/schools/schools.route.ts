@@ -4,7 +4,7 @@ import {
   validateGetSchool,
   validateDeleteSchool,
   validateUpdateSchool,
-} from "./schoolsValidator";
+} from "./schools.validator";
 
 import {
   getSchools,
@@ -12,7 +12,7 @@ import {
   createSchool,
   updateSchool,
   deleteSchool,
-} from "./schoolsController";
+} from "./schools.controller";
 
 const router = Router();
 

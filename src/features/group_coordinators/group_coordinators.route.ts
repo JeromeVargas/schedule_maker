@@ -5,7 +5,7 @@ import {
   validateGetGroupCoordinator,
   validateDeleteGroupCoordinator,
   validateUpdateGroupCoordinator,
-} from "./groupCoordinatorsValidator";
+} from "./group_coordinators.validator";
 
 import {
   createGroupCoordinator,
@@ -13,7 +13,7 @@ import {
   getGroupCoordinator,
   updateGroupCoordinator,
   deleteGroupCoordinator,
-} from "./groupCoordinatorsController";
+} from "./group_coordinators.controller";
 
 const router = Router();
 

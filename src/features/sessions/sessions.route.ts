@@ -5,7 +5,7 @@ import {
   validateGetSession,
   validateDeleteSession,
   validateUpdateSession,
-} from "./sessionsValidator";
+} from "./sessions.validator";
 
 import {
   createSession,
@@ -13,7 +13,7 @@ import {
   getSession,
   updateSession,
   deleteSession,
-} from "./sessionsController";
+} from "./sessions.controller";
 
 const router = Router();
 

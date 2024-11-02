@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
 
-import * as groupCoordinatorServices from "../groupCoordinatorServices";
+import * as groupCoordinatorServices from "../group_coordinators.services";
 
 import { Group_Coordinator } from "../../../typings/types";
 

@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 import { server, connection } from "../../../server";
 
-import * as scheduleServices from "../scheduleServices";
+import * as scheduleServices from "../schedules.services";
 
 import { Level, Schedule } from "../../../typings/types";
 

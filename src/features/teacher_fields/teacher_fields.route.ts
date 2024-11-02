@@ -5,7 +5,7 @@ import {
   validateGetTeacherField,
   validateDeleteTeacherField,
   validateUpdateTeacherField,
-} from "./teacherFieldsValidator";
+} from "./teacher_fields.validator";
 
 import {
   createTeacherField,
@@ -13,7 +13,7 @@ import {
   getTeacherField,
   updateTeacherField,
   deleteTeacherField,
-} from "./teacherFieldsController";
+} from "./teacher_fields.controller";
 
 const router = Router();
 

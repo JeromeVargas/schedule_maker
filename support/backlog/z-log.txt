@@ -8,17 +8,15 @@ for later:
 
 Back end:
 
-// Todo --> make routes .route files, also check the dynamic router
-// Todo --> Make all plural and .function i.e. model, controller, service and validator, Maybe?? feature.controller and feature.validator
 // Todo --> remove api/v1 magic string
-// Todo --> check how the soft delete of the school affects other entities controllers
 // Todo --> move from end of the page exports to inline exports
 // Todo --> check if the empty just toBeCalled are necessary since you already have toBeCalledWith that might replace it
-// Todo --> make sure populate does not go into production
 // Todo --> type the entities params when need it instead of comments with params types, maybe use zod
+// Todo --> make sure populate does not go into production
+// Todo --> check how the soft delete of the school affects other entities controllers
 // Todo --> simplify the error messages, do not send the entire message in production, make the more user-friendly
 // Todo --> add success confirmation boolean in the response message
-// Todo --> refactor the test to not be attached to the implementation but the results
+// Todo --> refactor the test to not be attached to the implementation but the results, maybe use in-memory-mongo-db or something similar
 
 for later:
 
