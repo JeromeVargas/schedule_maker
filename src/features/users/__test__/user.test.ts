@@ -1476,7 +1476,7 @@ describe("RESOURCE => User", () => {
         expect(body).toStrictEqual({
           msg: "User not updated",
         });
-        expect(statusCode).toBe(404);
+        expect(statusCode).toBe(400);
         expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },

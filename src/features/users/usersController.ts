@@ -132,7 +132,7 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
   };
   const fieldUpdated = await modifyFilterUser(filtersUpdate, newUser);
   if (!fieldUpdated) {
-    throw new NotFoundError("User not updated");
+    throw new BadRequestError("User not updated");
   }
   res.status(StatusCodes.OK).json({ msg: "User updated" });
 };
