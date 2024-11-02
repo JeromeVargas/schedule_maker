@@ -4150,7 +4150,11 @@ describe("Resource => Session", () => {
         );
         expect(updateSession).toHaveBeenCalled();
         expect(updateSession).toHaveBeenCalledWith(
-          { _id: validMockSessionId, school_id: newSession.school_id },
+          {
+            _id: validMockSessionId,
+            school_id: newSession.school_id,
+            level_id: newSession.level_id,
+          },
           newSession
         );
       });
@@ -4219,7 +4223,11 @@ describe("Resource => Session", () => {
         );
         expect(updateSession).toHaveBeenCalled();
         expect(updateSession).toHaveBeenCalledWith(
-          { _id: validMockSessionId, school_id: newSession.school_id },
+          {
+            _id: validMockSessionId,
+            school_id: newSession.school_id,
+            level_id: newSession.level_id,
+          },
           newSession
         );
       });
