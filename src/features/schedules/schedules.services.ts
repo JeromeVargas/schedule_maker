@@ -1,7 +1,7 @@
 import SchoolModel from "../schools/schools.model";
 import ScheduleModel from "./schedule.model";
 import { NewSchedule } from "../../typings/types";
-import LevelModel from "../levels/level.model";
+import LevelModel from "../levels/levels.model";
 
 // CRUD services
 // @desc insert a schedule in database

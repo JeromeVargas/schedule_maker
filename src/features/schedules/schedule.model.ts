@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { Schedule } from "../../typings/types";
 import BreakModel from "../breaks/breaks.model";
-import LevelModel from "../levels/level.model";
+import LevelModel from "../levels/levels.model";
 
 const ScheduleSchema = new Schema<Schedule>(
   {

@@ -20,7 +20,7 @@ import {
 // @route POST /api/v?/levels
 // @access Private
 // @fields: body {school_id:[string] , schedule_id:[string], name:[string]}
-const createLevel = async ({ body }: Request, res: Response) => {
+export const createLevel = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, schedule_id, name } = body;
   /* check if the level name already exists for this school */
@@ -69,7 +69,7 @@ const createLevel = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/Levels
 // @access Private
 // @fields: body {fieldOne:[string]}
-const getLevels = async ({ body }: Request, res: Response) => {
+export const getLevels = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -87,7 +87,7 @@ const getLevels = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/Levels/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
-const getLevel = async ({ params, body }: Request, res: Response) => {
+export const getLevel = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -105,7 +105,7 @@ const getLevel = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/Levels/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string]}
-const updateLevel = async ({ params, body }: Request, res: Response) => {
+export const updateLevel = async ({ params, body }: Request, res: Response) => {
   // /* destructure the fields */
   const { id: levelId } = params;
   const { school_id, schedule_id, name } = body;
@@ -160,7 +160,7 @@ const updateLevel = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v?/Levels/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
-const deleteLevel = async ({ params, body }: Request, res: Response) => {
+export const deleteLevel = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: levelId } = params;
   const { school_id } = body;
@@ -172,5 +172,3 @@ const deleteLevel = async ({ params, body }: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ msg: "Level deleted" });
 };
-
-export { createLevel, getLevels, getLevel, updateLevel, deleteLevel };

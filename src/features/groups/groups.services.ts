@@ -1,4 +1,4 @@
-import LevelModel from "../levels/level.model";
+import LevelModel from "../levels/levels.model";
 import GroupModel from "./groups.Model";
 import UserModel from "../users/users.model";
 

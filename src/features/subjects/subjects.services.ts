@@ -1,5 +1,5 @@
 import SubjectModel from "./subjects.model";
-import LevelModel from "../levels/level.model";
+import LevelModel from "../levels/levels.model";
 import FieldModel from "../fields/fields.model";
 import { NewSubject } from "../../typings/types";
 

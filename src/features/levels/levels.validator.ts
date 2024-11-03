@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string] , schedule_id:[string], name:[string]}
-const validateCreateLevel = [
+export const validateCreateLevel = [
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
@@ -57,7 +57,7 @@ const validateCreateLevel = [
 ];
 
 // @fields: body: {school_id:[string]}
-const validateGetLevels = [
+export const validateGetLevels = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -80,7 +80,7 @@ const validateGetLevels = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetLevel = [
+export const validateGetLevel = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -113,7 +113,7 @@ const validateGetLevel = [
 ];
 
 // @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string]}
-const validateUpdateLevel = [
+export const validateUpdateLevel = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -176,7 +176,7 @@ const validateUpdateLevel = [
 ];
 
 // @fields: body {school_id:[string] , schedule_id:[string], name:[string]}
-const validateDeleteLevel = [
+export const validateDeleteLevel = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -207,11 +207,3 @@ const validateDeleteLevel = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateLevel,
-  validateGetLevels,
-  validateGetLevel,
-  validateUpdateLevel,
-  validateDeleteLevel,
-};

@@ -15,7 +15,7 @@ import {
   deleteLevel,
 } from "./levels.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a level
 // @route   POST /api/v?/levels
@@ -41,5 +41,3 @@ router.put("/:id", validateUpdateLevel, updateLevel);
 // @route   PUT /api/v?/levels/:id
 // @access  Private
 router.delete("/:id", validateDeleteLevel, deleteLevel);
-
-export { router };
