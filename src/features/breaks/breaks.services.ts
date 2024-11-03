@@ -1,4 +1,4 @@
-import ScheduleModel from "../schedules/schedule.model";
+import ScheduleModel from "../schedules/schedules.model";
 import BreakModel from "./breaks.model";
 import { NewBreak } from "../../typings/types";
 

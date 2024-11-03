@@ -1,5 +1,5 @@
 import SchoolModel from "../schools/schools.model";
-import ScheduleModel from "./schedule.model";
+import ScheduleModel from "./schedules.model";
 import { NewSchedule } from "../../typings/types";
 import LevelModel from "../levels/levels.model";
 

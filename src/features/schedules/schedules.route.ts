@@ -15,7 +15,7 @@ import {
   deleteSchedule,
 } from "./schedules.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a schedule
 // @route   POST /api/v?/schedules
@@ -41,5 +41,3 @@ router.put("/:id", validateUpdateSchedule, updateSchedule);
 // @route   PUT /api/v?/schedules/:id
 // @access  Private
 router.delete("/:id", validateDeleteSchedule, deleteSchedule);
-
-export { router };

@@ -5,7 +5,7 @@ import TeacherModel from "../teachers/teachers.model";
 import TeacherCoordinatorModel from "../teacher_coordinators/teacher_coordinators.model";
 import FieldModel from "../fields/fields.model";
 import TeacherFieldModel from "../teacher_fields/teacher_fields.model";
-import ScheduleModel from "../schedules/schedule.model";
+import ScheduleModel from "../schedules/schedules.model";
 import BreakModel from "../breaks/breaks.model";
 import LevelModel from "../levels/levels.model";
 import GroupModel from "../groups/groups.Model";

@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
-const validateCreateSchedule = [
+export const validateCreateSchedule = [
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
@@ -140,7 +140,7 @@ const validateCreateSchedule = [
 ];
 
 // @fields: body {school_id:[string]}
-const validateGetSchedules = [
+export const validateGetSchedules = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -163,7 +163,7 @@ const validateGetSchedules = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetSchedule = [
+export const validateGetSchedule = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -196,7 +196,7 @@ const validateGetSchedule = [
 ];
 
 // @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
-const validateUpdateSchedule = [
+export const validateUpdateSchedule = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -342,7 +342,7 @@ const validateUpdateSchedule = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteSchedule = [
+export const validateDeleteSchedule = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -373,11 +373,3 @@ const validateDeleteSchedule = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateSchedule,
-  validateGetSchedules,
-  validateGetSchedule,
-  validateUpdateSchedule,
-  validateDeleteSchedule,
-};

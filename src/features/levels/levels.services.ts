@@ -1,5 +1,5 @@
 import LevelModel from "./levels.model";
-import ScheduleModel from "../schedules/schedule.model";
+import ScheduleModel from "../schedules/schedules.model";
 import { NewLevel } from "../../typings/types";
 
 // CRUD services

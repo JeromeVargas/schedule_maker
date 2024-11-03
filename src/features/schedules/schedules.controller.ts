@@ -25,7 +25,7 @@ const maxMinutesInDay = 1439;
 // @route POST /api/v?/schedules
 // @access Private
 // @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
-const createSchedule = async ({ body }: Request, res: Response) => {
+export const createSchedule = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
     school_id,
@@ -93,7 +93,7 @@ const createSchedule = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/schedules
 // @access Private
 // @fields: body {school_id:[string]}
-const getSchedules = async ({ body }: Request, res: Response) => {
+export const getSchedules = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -111,7 +111,7 @@ const getSchedules = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/schedules/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getSchedule = async ({ params, body }: Request, res: Response) => {
+export const getSchedule = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -132,7 +132,10 @@ const getSchedule = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/schedules/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
-const updateSchedule = async ({ params, body }: Request, res: Response) => {
+export const updateSchedule = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields*/
   const { id: scheduleId } = params;
   const {
@@ -197,7 +200,10 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v?/schedules/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteSchedule = async ({ params, body }: Request, res: Response) => {
+export const deleteSchedule = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields from the params and body */
   const { id: scheduleId } = params;
   const { school_id } = body;
@@ -219,12 +225,4 @@ const deleteSchedule = async ({ params, body }: Request, res: Response) => {
     throw new NotFoundError("Schedule not deleted");
   }
   res.status(StatusCodes.OK).json({ msg: "Schedule deleted" });
-};
-
-export {
-  createSchedule,
-  getSchedules,
-  getSchedule,
-  updateSchedule,
-  deleteSchedule,
 };
