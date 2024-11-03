@@ -15,7 +15,7 @@ import {
   deleteTeacherField,
 } from "./teacher_fields.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a teacher_field
 // @route   POST /api/v?/teacher_fields
@@ -41,5 +41,3 @@ router.put("/:id", validateUpdateTeacherField, updateTeacherField);
 // @route   PUT /api/v?/teacher_fields/:id
 // @access  Private
 router.delete("/:id", validateDeleteTeacherField, deleteTeacherField);
-
-export { router };

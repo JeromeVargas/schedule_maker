@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string] , teacher_id:[string], field_id:[string]}
-const validateCreateTeacherField = [
+export const validateCreateTeacherField = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -60,7 +60,7 @@ const validateCreateTeacherField = [
 ];
 
 // @fields: body {school_id:[string]}
-const validateGetTeacherFields = [
+export const validateGetTeacherFields = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -83,7 +83,7 @@ const validateGetTeacherFields = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetTeacherField = [
+export const validateGetTeacherField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -116,7 +116,7 @@ const validateGetTeacherField = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], field_id:[string]}
-const validateUpdateTeacherField = [
+export const validateUpdateTeacherField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -181,7 +181,7 @@ const validateUpdateTeacherField = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteTeacherField = [
+export const validateDeleteTeacherField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -212,11 +212,3 @@ const validateDeleteTeacherField = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateTeacherField,
-  validateGetTeacherFields,
-  validateGetTeacherField,
-  validateUpdateTeacherField,
-  validateDeleteTeacherField,
-};

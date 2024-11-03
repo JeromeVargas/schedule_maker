@@ -19,7 +19,7 @@ import {
 // @route POST /api/v?/teacher_fields
 // @access Private
 // @fields: body {school_id:[string], teacher_id:[string], field_id:[string]}
-const createTeacherField = async ({ body }: Request, res: Response) => {
+export const createTeacherField = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, teacher_id, field_id } = body;
   /* find if the teacher has the field already assigned, so to avoid duplicity when you pass the field again for the same teacher */
@@ -92,7 +92,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/teacher_fields
 // @access Private
 // @fields: body {school_id:[string]}
-const getTeacherFields = async ({ body }: Request, res: Response) => {
+export const getTeacherFields = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -113,7 +113,10 @@ const getTeacherFields = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/teacher_fields/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getTeacherField = async ({ params, body }: Request, res: Response) => {
+export const getTeacherField = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -134,7 +137,10 @@ const getTeacherField = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/teacher_fields/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], field_id:[string]}
-const updateTeacherField = async ({ params, body }: Request, res: Response) => {
+export const updateTeacherField = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id, teacher_id, field_id } = body;
@@ -218,7 +224,10 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v?/teacher_fields/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteTeacherField = async ({ params, body }: Request, res: Response) => {
+export const deleteTeacherField = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { id: teacherFieldId } = params;
   const { school_id } = body;
@@ -229,12 +238,4 @@ const deleteTeacherField = async ({ params, body }: Request, res: Response) => {
     throw new NotFoundError("Teacher_Field not deleted");
   }
   res.status(StatusCodes.OK).json({ msg: "Teacher_Field deleted" });
-};
-
-export {
-  createTeacherField,
-  getTeacherFields,
-  getTeacherField,
-  updateTeacherField,
-  deleteTeacherField,
 };
