@@ -15,7 +15,7 @@ import {
   deleteTeacherCoordinator,
 } from "./teacher_coordinators.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a teacher_coordinator
 // @route   POST /api/v?/teacher_coordinators
@@ -45,5 +45,3 @@ router.delete(
   validateDeleteTeacherCoordinator,
   deleteTeacherCoordinator
 );
-
-export { router };

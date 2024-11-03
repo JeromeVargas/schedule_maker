@@ -19,7 +19,10 @@ import {
 // @route POST /api/v?/teacher_coordinator
 // @access Private
 // @fields: body {school_id:[string], teacher_id:[string], coordinator_id:[string]}
-const createTeacherCoordinator = async ({ body }: Request, res: Response) => {
+export const createTeacherCoordinator = async (
+  { body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { school_id, teacher_id, coordinator_id } = body;
   /* find if the teacher has the coordinator already assigned, so to avoid duplicity when you pass the field again for the same teacher */
@@ -100,7 +103,10 @@ const createTeacherCoordinator = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/teacher_coordinator
 // @access Private
 // @fields: body {school_id:[string]}
-const getTeacherCoordinators = async ({ body }: Request, res: Response) => {
+export const getTeacherCoordinators = async (
+  { body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -121,7 +127,7 @@ const getTeacherCoordinators = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/teacher_coordinators/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getTeacherCoordinator = async (
+export const getTeacherCoordinator = async (
   { params, body }: Request,
   res: Response
 ) => {
@@ -145,7 +151,7 @@ const getTeacherCoordinator = async (
 // @route PUT /api/v?/teacher_fields/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], coordinator_id:[string]}
-const updateTeacherCoordinator = async (
+export const updateTeacherCoordinator = async (
   { params, body }: Request,
   res: Response
 ) => {
@@ -235,7 +241,7 @@ const updateTeacherCoordinator = async (
 // @route DELETE /api/v?/teacher_coordinators/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteTeacherCoordinator = async (
+export const deleteTeacherCoordinator = async (
   { params, body }: Request,
   res: Response
 ) => {
@@ -254,12 +260,4 @@ const deleteTeacherCoordinator = async (
     throw new NotFoundError("Teacher_coordinator not deleted");
   }
   res.status(StatusCodes.OK).json({ msg: "Teacher_coordinator deleted" });
-};
-
-export {
-  createTeacherCoordinator,
-  getTeacherCoordinators,
-  getTeacherCoordinator,
-  updateTeacherCoordinator,
-  deleteTeacherCoordinator,
 };

@@ -3,8 +3,8 @@ import { check } from "express-validator";
 import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
-// @fields: body {school_id:[string] , teacher_id:[string], coordinator_id:[string]}
-const validateCreateTeacherCoordinator = [
+// @fields: body {school_id:[string], teacher_id:[string], coordinator_id:[string]}
+export const validateCreateTeacherCoordinator = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -60,7 +60,7 @@ const validateCreateTeacherCoordinator = [
 ];
 
 // @fields: body {school_id:[string]}
-const validateGetTeacherCoordinators = [
+export const validateGetTeacherCoordinators = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -83,7 +83,7 @@ const validateGetTeacherCoordinators = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetTeacherCoordinator = [
+export const validateGetTeacherCoordinator = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -116,7 +116,7 @@ const validateGetTeacherCoordinator = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], coordinator_id:[string]}
-const validateUpdateTeacherCoordinator = [
+export const validateUpdateTeacherCoordinator = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -181,7 +181,7 @@ const validateUpdateTeacherCoordinator = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteTeacherCoordinator = [
+export const validateDeleteTeacherCoordinator = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -212,11 +212,3 @@ const validateDeleteTeacherCoordinator = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateTeacherCoordinator,
-  validateGetTeacherCoordinators,
-  validateGetTeacherCoordinator,
-  validateUpdateTeacherCoordinator,
-  validateDeleteTeacherCoordinator,
-};

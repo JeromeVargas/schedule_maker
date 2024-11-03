@@ -6,7 +6,7 @@ import { NewTeacher_Coordinator } from "../../typings/types";
 // CRUD services
 // @desc insert a teacher_field in database
 // @params teacherCoordinator
-const insertTeacherCoordinator = (
+export const insertTeacherCoordinator = (
   teacherCoordinator: NewTeacher_Coordinator
 ) => {
   return TeacherCoordinatorModel.create(teacherCoordinator);
@@ -14,7 +14,7 @@ const insertTeacherCoordinator = (
 
 // @desc find all teacher_fields by school id
 // @params filters, fields to return
-const findFilterAllTeacherCoordinators = (
+export const findFilterAllTeacherCoordinators = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
@@ -26,7 +26,7 @@ const findFilterAllTeacherCoordinators = (
 
 // @desc find a teacher_field by teacher id, field id and school id
 // @params filters, fields to return
-const findTeacherCoordinatorByProperty = (
+export const findTeacherCoordinatorByProperty = (
   filters:
     | { school_id: string; teacher_id: string; coordinator_id: string }
     | { school_id: string; _id: string },
@@ -41,7 +41,7 @@ const findTeacherCoordinatorByProperty = (
 
 // @desc find a teacher_field and filter by school_id, teacher_id and field_id
 // @params filters, fields to return
-const findFilterTeacherCoordinatorByProperty = (
+export const findFilterTeacherCoordinatorByProperty = (
   filters: { school_id: string; teacher_id: string; field_id: string },
   fieldsToReturn: string
 ) => {
@@ -54,7 +54,7 @@ const findFilterTeacherCoordinatorByProperty = (
 
 // @desc update a teacher_field by some properties _id, school_id and teacher_id
 // @params filters, teacherCoordinator
-const modifyFilterTeacherCoordinator = (
+export const modifyFilterTeacherCoordinator = (
   filters: { _id: string; school_id: string; teacher_id: string },
   teacherCoordinator: NewTeacher_Coordinator
 ) => {
@@ -66,7 +66,7 @@ const modifyFilterTeacherCoordinator = (
 
 // @desc delete a teacher_field by school_id and teacher field id
 // @params filters
-const removeFilterTeacherCoordinator = (filters: {
+export const removeFilterTeacherCoordinator = (filters: {
   school_id: string;
   _id: string;
 }) => {
@@ -76,7 +76,7 @@ const removeFilterTeacherCoordinator = (filters: {
 /* Services from other entities */
 // @desc find a teacher by id and populate the embedded entities
 // @params teacherId, fields to return, fields to populate, fields to return populate
-const findPopulateTeacherById = (
+export const findPopulateTeacherById = (
   teacherId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -91,7 +91,7 @@ const findPopulateTeacherById = (
 
 // @desc find a field by id and populate the embedded entities
 // @params coordinatorId, fields to return, fields to populate, fields to return populate
-const findPopulateCoordinatorById = (
+export const findPopulateCoordinatorById = (
   coordinatorId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -102,16 +102,4 @@ const findPopulateCoordinatorById = (
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-};
-
-export {
-  insertTeacherCoordinator,
-  findFilterAllTeacherCoordinators,
-  findTeacherCoordinatorByProperty,
-  findFilterTeacherCoordinatorByProperty,
-  modifyFilterTeacherCoordinator,
-  removeFilterTeacherCoordinator,
-  /* Services from other entities */
-  findPopulateTeacherById,
-  findPopulateCoordinatorById,
 };
