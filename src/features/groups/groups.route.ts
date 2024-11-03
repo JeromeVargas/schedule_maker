@@ -15,7 +15,7 @@ import {
   deleteGroup,
 } from "./groups.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a group
 // @route   POST /api/v?/groups
@@ -41,5 +41,3 @@ router.put("/:id", validateUpdateGroup, updateGroup);
 // @route   PUT /api/v?/groups/:id
 // @access  Private
 router.delete("/:id", validateDeleteGroup, deleteGroup);
-
-export { router };

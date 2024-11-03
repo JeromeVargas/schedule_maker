@@ -14,13 +14,13 @@ import {
   removeFilterGroup,
   /* Services from other entities */
   findPopulateLevelById,
-} from "./group.services";
+} from "./groups.services";
 
 // @desc create a group
 // @route POST /api/v?/groups
 // @access Private
 // @fields: body {school_id:[string], level_id:[string], name:[string], numberStudents:[number]}
-const createGroup = async ({ body }: Request, res: Response) => {
+export const createGroup = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, level_id, name, numberStudents } = body;
   /* check if the group name already exists for this school */
@@ -77,7 +77,7 @@ const createGroup = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/Groups
 // @access Private
 // @fields: body {school_id:[string]}
-const getGroups = async ({ body }: Request, res: Response) => {
+export const getGroups = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -95,7 +95,7 @@ const getGroups = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/Groups/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getGroup = async ({ params, body }: Request, res: Response) => {
+export const getGroup = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -113,7 +113,7 @@ const getGroup = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/Groups/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string], numberStudents:[number]}
-const updateGroup = async ({ params, body }: Request, res: Response) => {
+export const updateGroup = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: groupId } = params;
   const { school_id, level_id, name, numberStudents } = body;
@@ -179,7 +179,7 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v?/Groups/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteGroup = async ({ params, body }: Request, res: Response) => {
+export const deleteGroup = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: groupId } = params;
   const { school_id } = body;
@@ -191,5 +191,3 @@ const deleteGroup = async ({ params, body }: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ msg: "Group deleted" });
 };
-
-export { createGroup, getGroups, getGroup, updateGroup, deleteGroup };
