@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
-const validateCreateSubject = [
+export const validateCreateSubject = [
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
@@ -95,7 +95,7 @@ const validateCreateSubject = [
 ];
 
 // @fields: body: {school_id:[string]}
-const validateGetSubjects = [
+export const validateGetSubjects = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -118,7 +118,7 @@ const validateGetSubjects = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetSubject = [
+export const validateGetSubject = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -151,7 +151,7 @@ const validateGetSubject = [
 ];
 
 // @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
-const validateUpdateSubject = [
+export const validateUpdateSubject = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -253,7 +253,7 @@ const validateUpdateSubject = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteSubject = [
+export const validateDeleteSubject = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -284,11 +284,3 @@ const validateDeleteSubject = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateSubject,
-  validateGetSubjects,
-  validateGetSubject,
-  validateUpdateSubject,
-  validateDeleteSubject,
-};

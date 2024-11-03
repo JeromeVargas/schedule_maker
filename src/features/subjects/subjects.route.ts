@@ -15,7 +15,7 @@ import {
   deleteSubject,
 } from "./subjects.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a subject
 // @route   POST /api/v?/subjects
@@ -41,5 +41,3 @@ router.put("/:id", validateUpdateSubject, updateSubject);
 // @route   PUT /api/v?/subjects/:id
 // @access  Private
 router.delete("/:id", validateDeleteSubject, deleteSubject);
-
-export { router };

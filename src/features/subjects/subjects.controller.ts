@@ -21,7 +21,7 @@ import {
 // @route POST /api/v?/subjects
 // @access Private
 // @fields body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
-const createSubject = async ({ body }: Request, res: Response) => {
+export const createSubject = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, level_id, field_id, name, sessionUnits, frequency } = body;
   /* check if the subject name already exists for this level */
@@ -92,7 +92,7 @@ const createSubject = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/Subjects
 // @access Private
 // @fields: body: {school_id:[string]}
-const getSubjects = async ({ body }: Request, res: Response) => {
+export const getSubjects = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -110,7 +110,7 @@ const getSubjects = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/Subjects/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getSubject = async ({ params, body }: Request, res: Response) => {
+export const getSubject = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -131,7 +131,10 @@ const getSubject = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/Subjects/:id
 // @access Private
 // @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
-const updateSubject = async ({ params, body }: Request, res: Response) => {
+export const updateSubject = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { id: subjectId } = params;
   const { school_id, level_id, field_id, name, sessionUnits, frequency } = body;
@@ -211,7 +214,10 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v?/Subjects/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteSubject = async ({ params, body }: Request, res: Response) => {
+export const deleteSubject = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields from the params and body */
   const { id: subjectId } = params;
   const { school_id } = body;
@@ -223,5 +229,3 @@ const deleteSubject = async ({ params, body }: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ msg: "Subject deleted" });
 };
-
-export { createSubject, getSubjects, getSubject, updateSubject, deleteSubject };
