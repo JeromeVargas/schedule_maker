@@ -14,7 +14,7 @@ import {
   deleteSchool,
 } from "./schools.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a school
 // @route   POST /api/v?/school
@@ -40,5 +40,3 @@ router.put("/:id", validateUpdateSchool, updateSchool);
 // @route   PUT /api/v?/school/:id
 // @access  Private
 router.delete("/:id", validateDeleteSchool, deleteSchool);
-
-export { router };

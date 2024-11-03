@@ -17,7 +17,7 @@ import {
 // @route POST /api/v?/schools
 // @access Private
 // @fields: body {name:[string], groupMaxNumStudents: [number]}
-const createSchool = async ({ body }: Request, res: Response) => {
+export const createSchool = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { name, groupMaxNumStudents, status } = body;
   /* find if the school name already exists */
@@ -47,7 +47,7 @@ const createSchool = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/schools
 // @access Private
 // @fields: no fields
-const getSchools = async (req: Request, res: Response) => {
+export const getSchools = async (req: Request, res: Response) => {
   /* get all schools */
   const fieldsToReturn = "-createdAt -updatedAt";
   const schoolsFound = await findAllSchools(fieldsToReturn);
@@ -61,7 +61,7 @@ const getSchools = async (req: Request, res: Response) => {
 // @route GET /api/v?/schools/:id
 // @access Private
 // @fields: params: {id:[string]}
-const getSchool = async ({ params }: Request, res: Response) => {
+export const getSchool = async ({ params }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: schoolId } = params;
   /* get the school */
@@ -77,7 +77,10 @@ const getSchool = async ({ params }: Request, res: Response) => {
 // @route PUT /api/v?/schools/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {name:[string], groupMaxNumStudents: [number]}
-const updateSchool = async ({ body, params }: Request, res: Response) => {
+export const updateSchool = async (
+  { body, params }: Request,
+  res: Response
+) => {
   /* destructure the fields*/
   const { id: schoolId } = params;
   const { name, groupMaxNumStudents, status } = body;
@@ -105,7 +108,7 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
 // @route DELETE /api/v?/schools/:id
 // @access Private
 // @fields: params: {id:[string]}}
-const deleteSchool = async ({ params }: Request, res: Response) => {
+export const deleteSchool = async ({ params }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: schoolId } = params;
   /* delete school */
@@ -115,5 +118,3 @@ const deleteSchool = async ({ params }: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ msg: "School deleted" });
 };
-
-export { getSchools, getSchool, createSchool, updateSchool, deleteSchool };

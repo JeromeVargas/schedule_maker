@@ -4,25 +4,25 @@ import SchoolModel from "./schools.model";
 // CRUD services
 // @desc insert a school in database
 // @params school
-const insertSchool = (school: NewSchool) => {
+export const insertSchool = (school: NewSchool) => {
   return SchoolModel.create(school);
 };
 
 // @desc find all schools
 // @params fieldsToReturn
-const findAllSchools = (fieldsToReturn: string) => {
+export const findAllSchools = (fieldsToReturn: string) => {
   return SchoolModel.find().select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a school by id
 // @params schoolId, fieldsToReturn
-const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
+export const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
   return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a school by name
 // @params filters, fieldsToReturn
-const findSchoolByProperty = (
+export const findSchoolByProperty = (
   filters: { name: string },
   fieldsToReturn: string
 ) => {
@@ -35,7 +35,7 @@ const findSchoolByProperty = (
 
 // @desc update a school by id
 // @params schoolId, school
-const modifySchool = (schoolId: string, school: NewSchool) => {
+export const modifySchool = (schoolId: string, school: NewSchool) => {
   return SchoolModel.findByIdAndUpdate(schoolId, school, {
     new: true,
     runValidators: true,
@@ -44,15 +44,6 @@ const modifySchool = (schoolId: string, school: NewSchool) => {
 
 // @desc delete a school by id
 // @params schoolId
-const removeSchool = (schoolId: string) => {
+export const removeSchool = (schoolId: string) => {
   return SchoolModel.findOneAndRemove({ _id: schoolId }).lean().exec();
-};
-
-export {
-  insertSchool,
-  findAllSchools,
-  findSchoolById,
-  findSchoolByProperty,
-  modifySchool,
-  removeSchool,
 };

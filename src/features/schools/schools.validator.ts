@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {name:[string], groupMaxNumStudents: [number], status: [string]}
-const validateCreateSchool = [
+export const validateCreateSchool = [
   check("name")
     .exists()
     .withMessage("Please add a school name")
@@ -52,7 +52,7 @@ const validateCreateSchool = [
 ];
 
 // @fields: params: {id:[string]}
-const validateGetSchool = [
+export const validateGetSchool = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -69,7 +69,7 @@ const validateGetSchool = [
 ];
 
 // @fields: params: {id:[string]},  body: {name:[string], groupMaxNumStudents: [number], status: [string]}
-const validateUpdateSchool = [
+export const validateUpdateSchool = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -127,7 +127,7 @@ const validateUpdateSchool = [
 ];
 
 // @fields: params: {id:[string]}}
-const validateDeleteSchool = [
+export const validateDeleteSchool = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -142,10 +142,3 @@ const validateDeleteSchool = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateSchool,
-  validateGetSchool,
-  validateUpdateSchool,
-  validateDeleteSchool,
-};
