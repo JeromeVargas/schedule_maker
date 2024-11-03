@@ -21,7 +21,7 @@ const maxHours = 70; // number of hours in a week
 // @route POST /api/v?/teachers
 // @access Private
 // @fields: body: {user_id: [string],  coordinator_id: [string],  contractType: [string], teachingHoursAssignable: [number],  teachingHoursAssigned: [number], adminHoursAssignable: [number], adminHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
-const createTeacher = async ({ body }: Request, res: Response) => {
+export const createTeacher = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
     school_id,
@@ -128,7 +128,7 @@ const createTeacher = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/teachers
 // @access Private
 // @fields: body: {school_id:[string]}
-const getTeachers = async ({ body }: Request, res: Response) => {
+export const getTeachers = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -146,7 +146,7 @@ const getTeachers = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/teachers/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getTeacher = async ({ params, body }: Request, res: Response) => {
+export const getTeacher = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -167,7 +167,10 @@ const getTeacher = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/teachers/:id
 // @access Private
 // @fields: params: {id:[string]}, body: {user_id: [string], coordinator_id: [string], contractType: [string], teachingHoursAssignable: [number],  teachingHoursAssigned: [number], adminHoursAssignable: [number],  adminHoursAssigned: [number],monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
-const updateTeacher = async ({ body, params }: Request, res: Response) => {
+export const updateTeacher = async (
+  { body, params }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { id: teacherId } = params;
   const {
@@ -268,7 +271,10 @@ const updateTeacher = async ({ body, params }: Request, res: Response) => {
 // @route DELETE /api/v?/teachers/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteTeacher = async ({ params, body }: Request, res: Response) => {
+export const deleteTeacher = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { id: teacherId } = params;
   const { school_id } = body;
@@ -280,5 +286,3 @@ const deleteTeacher = async ({ params, body }: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ msg: "Teacher deleted" });
 };
-
-export { createTeacher, getTeachers, getTeacher, updateTeacher, deleteTeacher };

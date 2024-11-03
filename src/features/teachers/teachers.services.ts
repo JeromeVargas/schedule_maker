@@ -5,13 +5,13 @@ import TeacherModel from "./teachers.model";
 // CRUD services
 // @desc insert a teacher in database
 // @params teacher
-const insertTeacher = (teacher: NewTeacher) => {
+export const insertTeacher = (teacher: NewTeacher) => {
   return TeacherModel.create(teacher);
 };
 
 // @desc find all teachers by school id
 // @params filters, fieldsToReturn
-const findFilterAllTeachers = (
+export const findFilterAllTeachers = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
@@ -20,7 +20,7 @@ const findFilterAllTeachers = (
 
 // @desc find a teacher by school id and user id or school id and teacher id
 // @params filters, fieldsToReturn
-const findTeacherByProperty = (
+export const findTeacherByProperty = (
   filters:
     | { school_id: string; user_id: string }
     | { school_id: string; _id: string },
@@ -35,7 +35,7 @@ const findTeacherByProperty = (
 
 // @desc update a teacher by teacher id, school id and user id
 // @params filters, teacher
-const modifyFilterTeacher = (
+export const modifyFilterTeacher = (
   filters: { _id: string; school_id: string; user_id: string },
   teacher: NewTeacher
 ) => {
@@ -47,14 +47,17 @@ const modifyFilterTeacher = (
 
 // @desc delete a teacher by school id and teacher id
 // @params teacherId, filters
-const removeFilterTeacher = (filters: { school_id: string; _id: string }) => {
+export const removeFilterTeacher = (filters: {
+  school_id: string;
+  _id: string;
+}) => {
   return TeacherModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
 // @desc find a user by coordinator and used id, also populate the school
 // @params filters, fields to return, fields to populate, fields to return populate, resourceName
-const findPopulateFilterAllUsers = (
+export const findPopulateFilterAllUsers = (
   filters: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -69,7 +72,7 @@ const findPopulateFilterAllUsers = (
 
 // @desc find a user by id and school id properties
 // @params filters, fields to return
-const findUserByProperty = (
+export const findUserByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
@@ -78,15 +81,4 @@ const findUserByProperty = (
     .select(fieldsToReturn)
     .lean()
     .exec();
-};
-
-export {
-  insertTeacher,
-  findTeacherByProperty,
-  findFilterAllTeachers,
-  modifyFilterTeacher,
-  removeFilterTeacher,
-  /* Services from other entities */
-  findPopulateFilterAllUsers,
-  findUserByProperty,
 };

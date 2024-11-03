@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body: {school_id: [string], user_id: [string],  coordinator_id: [string],  contractType: [string],  teachingHoursAssignable: [number];  teachingHoursAssigned: [number], adminHoursAssignable: [number];  adminHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
-const validateCreateTeacher = [
+export const validateCreateTeacher = [
   check("school_id")
     .exists()
     .withMessage("Please add the user's school id")
@@ -175,7 +175,7 @@ const validateCreateTeacher = [
 ];
 
 // @fields: body: {school_id:[string]}
-const validateGetTeachers = [
+export const validateGetTeachers = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -198,7 +198,7 @@ const validateGetTeachers = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetTeacher = [
+export const validateGetTeacher = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -231,7 +231,7 @@ const validateGetTeacher = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id: [string], user_id: [string],  coordinator_id: [string],  contractType: [string],  teachingHoursAssignable: [number],  teachingHoursAssigned: [number], adminHoursAssignable: [number];  adminHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
-const validateUpdateTeacher = [
+export const validateUpdateTeacher = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -412,7 +412,7 @@ const validateUpdateTeacher = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteTeacher = [
+export const validateDeleteTeacher = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -443,11 +443,3 @@ const validateDeleteTeacher = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateTeacher,
-  validateGetTeachers,
-  validateGetTeacher,
-  validateUpdateTeacher,
-  validateDeleteTeacher,
-};
