@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string], level_id:[string], groupCoordinator_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
-const validateCreateSession = [
+export const validateCreateSession = [
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
@@ -156,7 +156,7 @@ const validateCreateSession = [
 ];
 
 // @fields: body {school_id:[string]}
-const validateGetSessions = [
+export const validateGetSessions = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -179,7 +179,7 @@ const validateGetSessions = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetSession = [
+export const validateGetSession = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -212,7 +212,7 @@ const validateGetSession = [
 ];
 
 // @fields: params: {id:[string]},  body {school_id:[string], group_id:[string], subject_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
-const validateUpdateSession = [
+export const validateUpdateSession = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -374,7 +374,7 @@ const validateUpdateSession = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteSession = [
+export const validateDeleteSession = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -405,11 +405,3 @@ const validateDeleteSession = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateSession,
-  validateGetSessions,
-  validateGetSession,
-  validateUpdateSession,
-  validateDeleteSession,
-};

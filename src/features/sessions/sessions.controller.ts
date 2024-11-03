@@ -23,7 +23,7 @@ const maxMinutesInDay = 1439;
 // @route POST /api/v?/sessions
 // @access Private
 // @fields: body {school_id:[string], level_id:[string], groupCoordinator_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
-const createSession = async ({ body }: Request, res: Response) => {
+export const createSession = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
     school_id,
@@ -202,7 +202,7 @@ const createSession = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/sessions
 // @access Private
 // @fields: body {school_id:[string]}
-const getSessions = async ({ body }: Request, res: Response) => {
+export const getSessions = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -220,7 +220,7 @@ const getSessions = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/sessions/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getSession = async ({ params, body }: Request, res: Response) => {
+export const getSession = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -241,7 +241,10 @@ const getSession = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/sessions/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string], level_id:[string], group_id:[string], subject_id:[string],  teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
-const updateSession = async ({ params, body }: Request, res: Response) => {
+export const updateSession = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { id: sessionId } = params;
   const {
@@ -425,7 +428,10 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v?/sessions/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteSession = async ({ params, body }: Request, res: Response) => {
+export const deleteSession = async (
+  { params, body }: Request,
+  res: Response
+) => {
   /* destructure the fields from the params and body */
   const { id: sessionId } = params;
   const { school_id } = body;
@@ -437,5 +443,3 @@ const deleteSession = async ({ params, body }: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ msg: "Session deleted" });
 };
-
-export { createSession, getSessions, getSession, updateSession, deleteSession };

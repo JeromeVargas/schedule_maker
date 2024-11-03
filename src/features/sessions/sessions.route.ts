@@ -15,7 +15,7 @@ import {
   deleteSession,
 } from "./sessions.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a session
 // @route   POST /api/v?/sessions
@@ -41,5 +41,3 @@ router.put("/:id", validateUpdateSession, updateSession);
 // @route   PUT /api/v?/sessions/:id
 // @access  Private
 router.delete("/:id", validateDeleteSession, deleteSession);
-
-export { router };

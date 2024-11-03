@@ -1,5 +1,4 @@
 import SessionModel from "./sessions.model";
-import GroupModel from "../groups/groups.Model";
 import SubjectModel from "../subjects/subjects.model";
 import TeacherFieldModel from "../teacher_fields/teacher_fields.model";
 import GroupCoordinatorModel from "../group_coordinators/group_coordinators.model";
@@ -10,14 +9,14 @@ import TeacherCoordinatorModel from "../teacher_coordinators/teacher_coordinator
 // CRUD services
 // @desc insert a session in database
 // @params session
-const insertSession = (sessionSession: NewSession) => {
+export const insertSession = (sessionSession: NewSession) => {
   const sessionInsert = SessionModel.create(sessionSession);
   return sessionInsert;
 };
 
 // @desc find all sessions by school id
 // @params filters, fields to return
-const findFilterAllSessions = (
+export const findFilterAllSessions = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
@@ -26,7 +25,7 @@ const findFilterAllSessions = (
 
 // @desc find a session by school id and session id
 // @params sessionProperty, fields to return
-const findSessionByProperty = (
+export const findSessionByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
@@ -39,7 +38,7 @@ const findSessionByProperty = (
 
 // @desc update a session by session id and school id
 // @params sessionId, session
-const modifyFilterSession = (
+export const modifyFilterSession = (
   filters: { _id: string; school_id: string },
   sessionSession: NewSession
 ) => {
@@ -51,14 +50,17 @@ const modifyFilterSession = (
 
 // @desc delete a session by school id and session id
 // @params sessionId, filters
-const removeFilterSession = (filters: { school_id: string; _id: string }) => {
+export const removeFilterSession = (filters: {
+  school_id: string;
+  _id: string;
+}) => {
   return SessionModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
 // @desc find a group_coordinator by id and populate the embedded entities
 // @params groupId, fields to return, fields to populate, fields to return populate
-const findPopulateGroupCoordinatorById = (
+export const findPopulateGroupCoordinatorById = (
   groupCoordinatorId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -73,7 +75,7 @@ const findPopulateGroupCoordinatorById = (
 
 // @desc find a teacher_coordinator by id and populate the embedded entities
 // @params groupId, fields to return, fields to populate, fields to return populate
-const findPopulateTeacherCoordinatorById = (
+export const findPopulateTeacherCoordinatorById = (
   teacherCoordinatorId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -88,7 +90,7 @@ const findPopulateTeacherCoordinatorById = (
 
 // @desc find a teacher_filed by id and populate the embedded entities
 // @params teacherFieldId, fields to return, fields to populate, fields to return populate
-const findPopulateTeacherFieldById = (
+export const findPopulateTeacherFieldById = (
   teacherFieldId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -103,7 +105,7 @@ const findPopulateTeacherFieldById = (
 
 // @desc find a subject by id and populate the embedded entities
 // @params subjectId, fields to return, fields to populate, fields to return populate
-const findPopulateSubjectById = (
+export const findPopulateSubjectById = (
   subjectId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -114,17 +116,4 @@ const findPopulateSubjectById = (
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-};
-
-export {
-  insertSession,
-  findFilterAllSessions,
-  findSessionByProperty,
-  modifyFilterSession,
-  removeFilterSession,
-  /* Services from other entities */
-  findPopulateGroupCoordinatorById,
-  findPopulateTeacherCoordinatorById,
-  findPopulateTeacherFieldById,
-  findPopulateSubjectById,
 };
