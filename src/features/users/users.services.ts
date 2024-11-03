@@ -5,13 +5,13 @@ import UserModel from "./users.model";
 // CRUD services
 // @desc insert a user in the database
 // @params user
-const insertUser = (user: NewUser) => {
+export const insertUser = (user: NewUser) => {
   return UserModel.create(user);
 };
 
 // @desc find all users by school id
 // @params filters, fieldsToReturn
-const findFilterAllUsers = (
+export const findFilterAllUsers = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
@@ -20,7 +20,7 @@ const findFilterAllUsers = (
 
 // @desc find a user by school id and email or school id and user id
 // @params filters, fieldsToReturn
-const findUserByProperty = (
+export const findUserByProperty = (
   filters:
     | { school_id: string; email: string }
     | { school_id: string; _id: string },
@@ -35,7 +35,7 @@ const findUserByProperty = (
 
 // @desc update a user by school id and other property
 // @params filters, user
-const modifyFilterUser = (
+export const modifyFilterUser = (
   filters: {
     school_id: string;
     _id: string;
@@ -50,23 +50,16 @@ const modifyFilterUser = (
 
 // @desc delete a user by school id and other property
 // @params filters
-const removeFilterUser = (filters: { school_id: string; _id: string }) => {
+export const removeFilterUser = (filters: {
+  school_id: string;
+  _id: string;
+}) => {
   return UserModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
 // @desc find a school by id
 // @params schoolId, fieldsToReturn
-const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
+export const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
   return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
-};
-
-export {
-  insertUser,
-  findFilterAllUsers,
-  findUserByProperty,
-  modifyFilterUser,
-  removeFilterUser,
-  /* Services from other entities */
-  findSchoolById,
 };

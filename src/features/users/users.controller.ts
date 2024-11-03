@@ -19,7 +19,7 @@ import {
 // @route POST /api/v?/users
 // @access Private
 // @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string]}
-const createUser = async ({ body }: Request, res: Response) => {
+export const createUser = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, firstName, lastName, email, password, role, status } =
     body;
@@ -66,7 +66,7 @@ const createUser = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/users
 // @access Private
 // @fields: body: {school_id:[string]}
-const getUsers = async ({ body }: Request, res: Response) => {
+export const getUsers = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -84,7 +84,7 @@ const getUsers = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/users/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getUser = async ({ params, body }: Request, res: Response) => {
+export const getUser = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -102,7 +102,7 @@ const getUser = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/users/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string]}
-const updateUser = async ({ params, body }: Request, res: Response) => {
+export const updateUser = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: userId } = params;
   const { school_id, firstName, lastName, email, password, role, status } =
@@ -141,7 +141,7 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v?/users/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteUser = async ({ params, body }: Request, res: Response) => {
+export const deleteUser = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: userId } = params;
   const { school_id } = body;
@@ -153,5 +153,3 @@ const deleteUser = async ({ params, body }: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ msg: "User deleted" });
 };
-
-export { createUser, getUsers, getUser, updateUser, deleteUser };
