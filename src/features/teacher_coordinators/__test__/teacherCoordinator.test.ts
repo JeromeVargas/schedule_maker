@@ -5,7 +5,9 @@ import { server, connection } from "../../../server";
 
 import * as teacherCoordinatorServices from "../teacher_coordinators.services";
 
-import { Teacher_Coordinator } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Teacher_Coordinator } from "../../../typings/types";
 
 type Service =
   | "insertTeacherCoordinator"
@@ -32,7 +34,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/teacher_coordinators/";
+  const endPointUrl = `${BASE_URL}teacher_coordinators/`;
 
   /* inputs */
   const validMockTeacherCoordinatorId = new Types.ObjectId().toString();

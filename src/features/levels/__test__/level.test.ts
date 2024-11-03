@@ -5,7 +5,9 @@ import { server, connection } from "../../../server";
 
 import * as levelServices from "../levels.services";
 
-import { Level } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Level } from "../../../typings/types";
 
 type Service =
   | "insertLevel"
@@ -30,7 +32,7 @@ describe("Resource => Level", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/levels/";
+  const endPointUrl = `${BASE_URL}levels/`;
 
   /* inputs */
   const validMockLevelId = new Types.ObjectId().toString();

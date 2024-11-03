@@ -5,7 +5,9 @@ import { server, connection } from "../../../server";
 
 import * as breakServices from "../breaks.services";
 
-import { Break } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Break } from "../../../typings/types";
 
 type Service =
   | "insertBreak"
@@ -28,7 +30,7 @@ describe("Resource => Break", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/breaks/";
+  const endPointUrl = `${BASE_URL}breaks/`;
 
   /* inputs */
   const validMockBreakId = new Types.ObjectId().toString();

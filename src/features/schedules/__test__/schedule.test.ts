@@ -5,7 +5,9 @@ import { server, connection } from "../../../server";
 
 import * as scheduleServices from "../schedules.services";
 
-import { Level, Schedule } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Level, Schedule } from "../../../typings/types";
 
 type Service =
   | "insertSchedule"
@@ -30,7 +32,7 @@ describe("Resource => Schedule", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/schedules/";
+  const endPointUrl = `${BASE_URL}schedules/`;
 
   /* inputs */
   const validMockScheduleId = new Types.ObjectId().toString();

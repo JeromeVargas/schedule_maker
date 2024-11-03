@@ -5,7 +5,9 @@ import { server, connection } from "../../../server";
 
 import * as groupServices from "../group.services";
 
-import { Group } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Group } from "../../../typings/types";
 
 type Service =
   | "insertGroup"
@@ -30,7 +32,7 @@ describe("Resource => Group", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/groups/";
+  const endPointUrl = `${BASE_URL}groups/`;
 
   /* inputs */
   const validMockGroupId = new Types.ObjectId().toString();

@@ -5,7 +5,9 @@ import { server, connection } from "../../../server";
 
 import * as sessionServices from "../sessions.services";
 
-import { Session } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Session } from "../../../typings/types";
 
 type Service =
   | "insertSession"
@@ -31,7 +33,7 @@ describe("Resource => Session", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/sessions/";
+  const endPointUrl = `${BASE_URL}sessions/`;
 
   /* inputs */
   const validMockSessionId = new Types.ObjectId().toString();

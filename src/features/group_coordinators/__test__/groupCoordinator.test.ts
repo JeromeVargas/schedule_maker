@@ -5,7 +5,9 @@ import { server, connection } from "../../../server";
 
 import * as groupCoordinatorServices from "../group_coordinators.services";
 
-import { Group_Coordinator } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Group_Coordinator } from "../../../typings/types";
 
 type Service =
   | "insertGroupCoordinator"
@@ -32,7 +34,7 @@ describe("RESOURCE => Group_coordinator", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/group_coordinators/";
+  const endPointUrl = `${BASE_URL}group_coordinators/`;
 
   /* inputs */
   const validMockGroupCoordinatorId = new Types.ObjectId().toString();

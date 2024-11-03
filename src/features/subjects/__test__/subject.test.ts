@@ -4,7 +4,9 @@ import { Types } from "mongoose";
 import { server, connection } from "../../../server";
 import * as subjectServices from "../subjects.services";
 
-import { Subject } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Subject } from "../../../typings/types";
 
 type Service =
   | "insertSubject"
@@ -29,7 +31,7 @@ describe("Resource => subject", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/subjects/";
+  const endPointUrl = `${BASE_URL}subjects/`;
 
   /* inputs */
   const validMockSubjectId = new Types.ObjectId().toString();

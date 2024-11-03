@@ -5,7 +5,9 @@ import { server, connection } from "../../../server";
 
 import * as teacherServices from "../teachers.services";
 
-import { Teacher, User } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Teacher } from "../../../typings/types";
 
 type Service =
   | "insertTeacher"
@@ -29,7 +31,7 @@ describe("RESOURCE => Teacher", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/teachers/";
+  const endPointUrl = `${BASE_URL}teachers/`;
 
   /* inputs */
   const validMockUserId = new Types.ObjectId().toString();

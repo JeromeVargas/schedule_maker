@@ -2,7 +2,7 @@ import { Router } from "express";
 import { readdirSync } from "fs";
 import path from "path";
 
-const BASE_URL = "/api/v1/";
+export const BASE_URL = "/api/v1/";
 
 const PATH_ROUTER = path.join("src", "features");
 const router = Router();

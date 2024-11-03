@@ -5,7 +5,9 @@ import { server, connection } from "../../../server";
 
 import * as teacherFieldServices from "../teacher_fields.services";
 
-import { Teacher_Field } from "../../../typings/types";
+import { BASE_URL } from "../../../lib/router";
+
+import type { Teacher_Field } from "../../../typings/types";
 
 type Service =
   | "insertTeacherField"
@@ -30,7 +32,7 @@ describe("RESOURCE => Teacher_field", () => {
   });
 
   /* end point url */
-  const endPointUrl = "/api/v1/teacher_fields/";
+  const endPointUrl = `${BASE_URL}teacher_fields/`;
 
   /* inputs */
   const validMockTeacherFieldId = new Types.ObjectId().toString();
