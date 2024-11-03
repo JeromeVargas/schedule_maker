@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CustomAPIError } from "../errors";
+import CustomAPIError from "../errors/custom-error";
 import { StatusCodes } from "http-status-codes";
 import { ValidationError } from "express-validator";
 
