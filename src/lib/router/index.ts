@@ -5,7 +5,7 @@ import path from "path";
 export const BASE_URL = "/api/v1/";
 
 const PATH_ROUTER = path.join("src", "features");
-const router = Router();
+export const router = Router();
 
 readdirSync(PATH_ROUTER).filter((folderName) => {
   console.log(`The /${folderName} route is being loaded`);
@@ -15,5 +15,3 @@ readdirSync(PATH_ROUTER).filter((folderName) => {
     router.use(`${BASE_URL}${folderName}`, moduleRouter.router);
   });
 });
-
-export { router };
