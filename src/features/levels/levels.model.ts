@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import SessionModel from "../sessions/sessions.model";
-import GroupModel from "../groups/groups.Model";
+import GroupModel from "../groups/groups.model";
 import SubjectModel from "../subjects/subjects.model";
 import { Group, Level } from "../../typings/types";
 

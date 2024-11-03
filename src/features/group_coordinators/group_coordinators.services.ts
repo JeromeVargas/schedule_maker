@@ -1,6 +1,6 @@
 import GroupCoordinatorModel from "./group_coordinators.model";
 import { NewGroup_Coordinator } from "../../typings/types";
-import GroupModel from "../groups/groups.Model";
+import GroupModel from "../groups/groups.model";
 import UserModel from "../users/users.model";
 
 // CRUD services

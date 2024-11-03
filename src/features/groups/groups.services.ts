@@ -1,5 +1,5 @@
 import LevelModel from "../levels/levels.model";
-import GroupModel from "./groups.Model";
+import GroupModel from "./groups.model";
 import UserModel from "../users/users.model";
 
 import { NewGroup } from "../../typings/types";

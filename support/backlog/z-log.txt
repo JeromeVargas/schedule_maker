@@ -1,6 +1,5 @@
 Back end:
 
-// Todo --> move from end of the page exports to inline exports
 // Todo --> make sure populate does not go into production, maybe work on the dynamic router
 // Todo --> simplify the error messages, do not send the entire message in production, make the more user-friendly, there is an issue with the mongo unique record rule on repeated values, it takes the server down
 // Todo --> add success confirmation boolean in the response message
