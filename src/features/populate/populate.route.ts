@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { flush, populate } from "./populate";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Populate the database in development
 // @route   POST /api/v?/populate/:index
@@ -14,9 +14,7 @@ router.post("/:index", ({ params }, res) => {
 // @desc    flush the database in development
 // @route   POST /api/v?/delete
 // @access  Public / Development
-router.delete("/", ({ params }, res) => {
+router.delete("/", (_, res) => {
   flush();
   res.json({ msg: "Database flushed" });
 });
-
-export { router };
