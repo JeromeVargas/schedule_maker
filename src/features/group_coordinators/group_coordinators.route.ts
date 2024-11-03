@@ -15,7 +15,7 @@ import {
   deleteGroupCoordinator,
 } from "./group_coordinators.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a teacher_field
 // @route   POST /api/v?/teacher_fields
@@ -41,5 +41,3 @@ router.put("/:id", validateUpdateGroupCoordinator, updateGroupCoordinator);
 // @route   PUT /api/v?/teacher_fields/:id
 // @access  Private
 router.delete("/:id", validateDeleteGroupCoordinator, deleteGroupCoordinator);
-
-export { router };

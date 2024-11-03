@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string] , group_id:[string], coordinator_id:[string]}
-const validateCreateGroupCoordinator = [
+export const validateCreateGroupCoordinator = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -60,7 +60,7 @@ const validateCreateGroupCoordinator = [
 ];
 
 // @fields: body {school_id:[string]}
-const validateGetGroupCoordinators = [
+export const validateGetGroupCoordinators = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -83,7 +83,7 @@ const validateGetGroupCoordinators = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetGroupCoordinator = [
+export const validateGetGroupCoordinator = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -116,7 +116,7 @@ const validateGetGroupCoordinator = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string], group_id:[string], coordinator_id:[string]}
-const validateUpdateGroupCoordinator = [
+export const validateUpdateGroupCoordinator = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -181,7 +181,7 @@ const validateUpdateGroupCoordinator = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteGroupCoordinator = [
+export const validateDeleteGroupCoordinator = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -212,11 +212,3 @@ const validateDeleteGroupCoordinator = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateGroupCoordinator,
-  validateGetGroupCoordinators,
-  validateGetGroupCoordinator,
-  validateUpdateGroupCoordinator,
-  validateDeleteGroupCoordinator,
-};

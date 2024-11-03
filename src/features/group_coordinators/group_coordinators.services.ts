@@ -6,13 +6,15 @@ import UserModel from "../users/users.model";
 // CRUD services
 // @desc insert a teacher_field in database
 // @params groupCoordinator
-const insertGroupCoordinator = (groupCoordinator: NewGroup_Coordinator) => {
+export const insertGroupCoordinator = (
+  groupCoordinator: NewGroup_Coordinator
+) => {
   return GroupCoordinatorModel.create(groupCoordinator);
 };
 
 // @desc find all teacher_fields by school id
 // @params filters, fields to return
-const findFilterAllGroupCoordinators = (
+export const findFilterAllGroupCoordinators = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
@@ -24,7 +26,7 @@ const findFilterAllGroupCoordinators = (
 
 // @desc find a teacher_field by teacher id, field id and school id
 // @params filters, fields to return
-const findGroupCoordinatorByProperty = (
+export const findGroupCoordinatorByProperty = (
   filters:
     | { school_id: string; group_id: string; coordinator_id: string }
     | { school_id: string; _id: string },
@@ -39,7 +41,7 @@ const findGroupCoordinatorByProperty = (
 
 // @desc find a teacher_field and filter by school_id, teacher_id and field_id
 // @params filters, fields to return
-const findFilterGroupCoordinatorByProperty = (
+export const findFilterGroupCoordinatorByProperty = (
   filters: { school_id: string; teacher_id: string; field_id: string },
   fieldsToReturn: string
 ) => {
@@ -52,7 +54,7 @@ const findFilterGroupCoordinatorByProperty = (
 
 // @desc update a teacher_field by some properties _id, school_id and teacher_id
 // @params filters, groupCoordinator
-const modifyFilterGroupCoordinator = (
+export const modifyFilterGroupCoordinator = (
   filters: { _id: string; school_id: string; group_id: string },
   groupCoordinator: NewGroup_Coordinator
 ) => {
@@ -64,7 +66,7 @@ const modifyFilterGroupCoordinator = (
 
 // @desc delete a teacher_field by school_id and teacher field id
 // @params filters
-const removeFilterGroupCoordinator = (filters: {
+export const removeFilterGroupCoordinator = (filters: {
   school_id: string;
   _id: string;
 }) => {
@@ -74,7 +76,7 @@ const removeFilterGroupCoordinator = (filters: {
 /* Services from other entities */
 // @desc find a group by id and populate the embedded entities
 // @params groupId, fields to return, fields to populate, fields to return populate
-const findPopulateGroupById = (
+export const findPopulateGroupById = (
   groupId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -89,7 +91,7 @@ const findPopulateGroupById = (
 
 // @desc find a field by id and populate the embedded entities
 // @params coordinatorId, fields to return, fields to populate, fields to return populate
-const findPopulateCoordinatorById = (
+export const findPopulateCoordinatorById = (
   coordinatorId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -100,16 +102,4 @@ const findPopulateCoordinatorById = (
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-};
-
-export {
-  insertGroupCoordinator,
-  findFilterAllGroupCoordinators,
-  findGroupCoordinatorByProperty,
-  findFilterGroupCoordinatorByProperty,
-  modifyFilterGroupCoordinator,
-  removeFilterGroupCoordinator,
-  /* Services from other entities */
-  findPopulateGroupById,
-  findPopulateCoordinatorById,
 };

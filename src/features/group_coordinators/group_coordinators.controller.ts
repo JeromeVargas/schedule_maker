@@ -19,7 +19,10 @@ import {
 // @route POST /api/v?/group_coordinator
 // @access Private
 // @fields: body {school_id:[string], group_id:[string], coordinator_id:[string]}
-const createGroupCoordinator = async ({ body }: Request, res: Response) => {
+export const createGroupCoordinator = async (
+  { body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { school_id, group_id, coordinator_id } = body;
   /* find if the group has the coordinator already assigned, so to avoid duplicity when you pass the field again for the same teacher */
@@ -98,7 +101,10 @@ const createGroupCoordinator = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/group_coordinator
 // @access Private
 // @fields: body {school_id:[string]}
-const getGroupCoordinators = async ({ body }: Request, res: Response) => {
+export const getGroupCoordinators = async (
+  { body }: Request,
+  res: Response
+) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -119,7 +125,7 @@ const getGroupCoordinators = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/group_coordinators/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getGroupCoordinator = async (
+export const getGroupCoordinator = async (
   { params, body }: Request,
   res: Response
 ) => {
@@ -143,7 +149,7 @@ const getGroupCoordinator = async (
 // @route PUT /api/v?/teacher_fields/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], group_id:[string], coordinator_id:[string]}
-const updateGroupCoordinator = async (
+export const updateGroupCoordinator = async (
   { params, body }: Request,
   res: Response
 ) => {
@@ -233,7 +239,7 @@ const updateGroupCoordinator = async (
 // @route DELETE /api/v?/group_coordinators/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteGroupCoordinator = async (
+export const deleteGroupCoordinator = async (
   { params, body }: Request,
   res: Response
 ) => {
@@ -252,12 +258,4 @@ const deleteGroupCoordinator = async (
     throw new NotFoundError("Group_coordinator not deleted");
   }
   res.status(StatusCodes.OK).json({ msg: "Group_coordinator deleted" });
-};
-
-export {
-  createGroupCoordinator,
-  getGroupCoordinators,
-  getGroupCoordinator,
-  updateGroupCoordinator,
-  deleteGroupCoordinator,
 };
