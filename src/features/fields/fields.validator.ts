@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string] , name:[string]}
-const validateCreateField = [
+export const validateCreateField = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -41,7 +41,7 @@ const validateCreateField = [
 ];
 
 // @fields: body {school_id:[string]}
-const validateGetFields = [
+export const validateGetFields = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -64,7 +64,7 @@ const validateGetFields = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetField = [
+export const validateGetField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -97,7 +97,7 @@ const validateGetField = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string], name:[string]}
-const validateUpdateField = [
+export const validateUpdateField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -144,7 +144,7 @@ const validateUpdateField = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteField = [
+export const validateDeleteField = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -175,11 +175,3 @@ const validateDeleteField = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateField,
-  validateGetFields,
-  validateGetField,
-  validateUpdateField,
-  validateDeleteField,
-};

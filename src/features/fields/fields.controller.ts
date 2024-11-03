@@ -21,7 +21,7 @@ import { Field } from "../../typings/types";
 // @route POST /api/v?/fields
 // @access Private
 // @fields: body {school_id:[string] , name:[string]}
-const createField = async ({ body }: Request, res: Response) => {
+export const createField = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, name } = body;
   /* find if the school already exists */
@@ -55,7 +55,7 @@ const createField = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/fields
 // @access Private
 // @fields: body {school_id:[string]}
-const getFields = async ({ body }: Request, res: Response) => {
+export const getFields = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -73,7 +73,7 @@ const getFields = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/field/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getField = async ({ params, body }: Request, res: Response) => {
+export const getField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -91,7 +91,7 @@ const getField = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/field/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], name:[string]}
-const updateField = async ({ params, body }: Request, res: Response) => {
+export const updateField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: fieldId } = params;
   const { school_id, name } = body;
@@ -126,7 +126,7 @@ const updateField = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v?/field/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteField = async ({ params, body }: Request, res: Response) => {
+export const deleteField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: fieldId } = params;
   const { school_id } = body;
@@ -138,5 +138,3 @@ const deleteField = async ({ params, body }: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ msg: "Field deleted" });
 };
-
-export { getFields, getField, createField, updateField, deleteField };
