@@ -17,7 +17,7 @@ import {
 } from "./group.services";
 
 // @desc create a group
-// @route POST /api/v1/groups
+// @route POST /api/v?/groups
 // @access Private
 // @fields: body {school_id:[string], level_id:[string], name:[string], numberStudents:[number]}
 const createGroup = async ({ body }: Request, res: Response) => {
@@ -74,7 +74,7 @@ const createGroup = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the Groups
-// @route GET /api/v1/Groups
+// @route GET /api/v?/Groups
 // @access Private
 // @fields: body {school_id:[string]}
 const getGroups = async ({ body }: Request, res: Response) => {
@@ -92,7 +92,7 @@ const getGroups = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the Group by id
-// @route GET /api/v1/Groups/:id
+// @route GET /api/v?/Groups/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getGroup = async ({ params, body }: Request, res: Response) => {
@@ -110,7 +110,7 @@ const getGroup = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc update a Group
-// @route PUT /api/v1/Groups/:id
+// @route PUT /api/v?/Groups/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string], numberStudents:[number]}
 const updateGroup = async ({ params, body }: Request, res: Response) => {
@@ -176,7 +176,7 @@ const updateGroup = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc delete a Group
-// @route DELETE /api/v1/Groups/:id
+// @route DELETE /api/v?/Groups/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteGroup = async ({ params, body }: Request, res: Response) => {

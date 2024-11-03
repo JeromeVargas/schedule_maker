@@ -4,7 +4,7 @@ import { flush, populate } from "./populate";
 const router = Router();
 
 // @desc    Populate the database in development
-// @route   POST /api/v1/populate/:index
+// @route   POST /api/v?/populate/:index
 // @access  Public / Development
 router.post("/:index", ({ params }, res) => {
   populate(+params.index);
@@ -12,7 +12,7 @@ router.post("/:index", ({ params }, res) => {
 });
 
 // @desc    flush the database in development
-// @route   POST /api/v1/delete
+// @route   POST /api/v?/delete
 // @access  Public / Development
 router.delete("/", ({ params }, res) => {
   flush();

@@ -17,7 +17,7 @@ import {
 const maxMinutesInDay = 1439;
 
 // @desc create a break
-// @route POST /api/v1/breaks
+// @route POST /api/v?/breaks
 // @access Private
 // @fields: body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
 const createBreak = async ({ body }: Request, res: Response) => {
@@ -67,7 +67,7 @@ const createBreak = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the Breaks
-// @route GET /api/v1/breaks
+// @route GET /api/v?/breaks
 // @access Private
 // @fields: body {school_id:[string]}
 const getBreaks = async ({ body }: Request, res: Response) => {
@@ -85,7 +85,7 @@ const getBreaks = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the Break by id
-// @route GET /api/v1/breaks/:id
+// @route GET /api/v?/breaks/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getBreak = async ({ params, body }: Request, res: Response) => {
@@ -103,7 +103,7 @@ const getBreak = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc update a Break
-// @route PUT /api/v1/breaks/:id
+// @route PUT /api/v?/breaks/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
 const updateBreak = async ({ params, body }: Request, res: Response) => {
@@ -155,7 +155,7 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc delete a Break
-// @route DELETE /api/v1/breaks/:id
+// @route DELETE /api/v?/breaks/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteBreak = async ({ params, body }: Request, res: Response) => {

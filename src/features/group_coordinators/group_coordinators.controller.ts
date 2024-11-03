@@ -16,7 +16,7 @@ import {
 } from "./group_coordinators.services";
 
 // @desc create a group_coordinator
-// @route POST /api/v1/group_coordinator
+// @route POST /api/v?/group_coordinator
 // @access Private
 // @fields: body {school_id:[string], group_id:[string], coordinator_id:[string]}
 const createGroupCoordinator = async ({ body }: Request, res: Response) => {
@@ -95,7 +95,7 @@ const createGroupCoordinator = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the group_coordinator
-// @route GET /api/v1/group_coordinator
+// @route GET /api/v?/group_coordinator
 // @access Private
 // @fields: body {school_id:[string]}
 const getGroupCoordinators = async ({ body }: Request, res: Response) => {
@@ -116,7 +116,7 @@ const getGroupCoordinators = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the group_coordinator by id
-// @route GET /api/v1/group_coordinators/:id
+// @route GET /api/v?/group_coordinators/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getGroupCoordinator = async (
@@ -140,7 +140,7 @@ const getGroupCoordinator = async (
 };
 
 // @desc update a teacher_field
-// @route PUT /api/v1/teacher_fields/:id
+// @route PUT /api/v?/teacher_fields/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], group_id:[string], coordinator_id:[string]}
 const updateGroupCoordinator = async (
@@ -230,7 +230,7 @@ const updateGroupCoordinator = async (
 };
 
 // @desc delete a group_coordinator
-// @route DELETE /api/v1/group_coordinators/:id
+// @route DELETE /api/v?/group_coordinators/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteGroupCoordinator = async (

@@ -16,7 +16,7 @@ import {
 } from "./users.services";
 
 // @desc create a user
-// @route POST /api/v1/users
+// @route POST /api/v?/users
 // @access Private
 // @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string]}
 const createUser = async ({ body }: Request, res: Response) => {
@@ -63,7 +63,7 @@ const createUser = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the users
-// @route GET /api/v1/users
+// @route GET /api/v?/users
 // @access Private
 // @fields: body: {school_id:[string]}
 const getUsers = async ({ body }: Request, res: Response) => {
@@ -81,7 +81,7 @@ const getUsers = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the user by id
-// @route GET /api/v1/users/:id
+// @route GET /api/v?/users/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getUser = async ({ params, body }: Request, res: Response) => {
@@ -99,7 +99,7 @@ const getUser = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc update a user
-// @route PUT /api/v1/users/:id
+// @route PUT /api/v?/users/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string]}
 const updateUser = async ({ params, body }: Request, res: Response) => {
@@ -138,7 +138,7 @@ const updateUser = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc delete a user
-// @route DELETE /api/v1/users/:id
+// @route DELETE /api/v?/users/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteUser = async ({ params, body }: Request, res: Response) => {

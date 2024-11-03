@@ -18,7 +18,7 @@ import {
 } from "./subjects.services";
 
 // @desc create a subject
-// @route POST /api/v1/subjects
+// @route POST /api/v?/subjects
 // @access Private
 // @fields body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
 const createSubject = async ({ body }: Request, res: Response) => {
@@ -89,7 +89,7 @@ const createSubject = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the Subjects
-// @route GET /api/v1/Subjects
+// @route GET /api/v?/Subjects
 // @access Private
 // @fields: body: {school_id:[string]}
 const getSubjects = async ({ body }: Request, res: Response) => {
@@ -107,7 +107,7 @@ const getSubjects = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the Subject by id
-// @route GET /api/v1/Subjects/:id
+// @route GET /api/v?/Subjects/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getSubject = async ({ params, body }: Request, res: Response) => {
@@ -128,7 +128,7 @@ const getSubject = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc update a Subject
-// @route PUT /api/v1/Subjects/:id
+// @route PUT /api/v?/Subjects/:id
 // @access Private
 // @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
 const updateSubject = async ({ params, body }: Request, res: Response) => {
@@ -208,7 +208,7 @@ const updateSubject = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc delete a Subject
-// @route DELETE /api/v1/Subjects/:id
+// @route DELETE /api/v?/Subjects/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteSubject = async ({ params, body }: Request, res: Response) => {

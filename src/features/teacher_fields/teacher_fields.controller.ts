@@ -16,7 +16,7 @@ import {
 } from "./teacher_fields.services";
 
 // @desc create a teacher_field
-// @route POST /api/v1/teacher_fields
+// @route POST /api/v?/teacher_fields
 // @access Private
 // @fields: body {school_id:[string], teacher_id:[string], field_id:[string]}
 const createTeacherField = async ({ body }: Request, res: Response) => {
@@ -89,7 +89,7 @@ const createTeacherField = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the teacher_fields
-// @route GET /api/v1/teacher_fields
+// @route GET /api/v?/teacher_fields
 // @access Private
 // @fields: body {school_id:[string]}
 const getTeacherFields = async ({ body }: Request, res: Response) => {
@@ -110,7 +110,7 @@ const getTeacherFields = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the teacher_field by id
-// @route GET /api/v1/teacher_fields/:id
+// @route GET /api/v?/teacher_fields/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getTeacherField = async ({ params, body }: Request, res: Response) => {
@@ -131,7 +131,7 @@ const getTeacherField = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc update a teacher_field
-// @route PUT /api/v1/teacher_fields/:id
+// @route PUT /api/v?/teacher_fields/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], field_id:[string]}
 const updateTeacherField = async ({ params, body }: Request, res: Response) => {
@@ -215,7 +215,7 @@ const updateTeacherField = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc delete a teacher_field
-// @route DELETE /api/v1/teacher_fields/:id
+// @route DELETE /api/v?/teacher_fields/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteTeacherField = async ({ params, body }: Request, res: Response) => {

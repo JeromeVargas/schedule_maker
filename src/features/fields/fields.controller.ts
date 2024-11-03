@@ -18,7 +18,7 @@ import {
 import { Field } from "../../typings/types";
 
 // @desc create a field
-// @route POST /api/v1/fields
+// @route POST /api/v?/fields
 // @access Private
 // @fields: body {school_id:[string] , name:[string]}
 const createField = async ({ body }: Request, res: Response) => {
@@ -52,7 +52,7 @@ const createField = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the fields
-// @route GET /api/v1/fields
+// @route GET /api/v?/fields
 // @access Private
 // @fields: body {school_id:[string]}
 const getFields = async ({ body }: Request, res: Response) => {
@@ -70,7 +70,7 @@ const getFields = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the field by id
-// @route GET /api/v1/field/:id
+// @route GET /api/v?/field/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getField = async ({ params, body }: Request, res: Response) => {
@@ -88,7 +88,7 @@ const getField = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc update a field
-// @route PUT /api/v1/field/:id
+// @route PUT /api/v?/field/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string], name:[string]}
 const updateField = async ({ params, body }: Request, res: Response) => {
@@ -123,7 +123,7 @@ const updateField = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc delete a field
-// @route DELETE /api/v1/field/:id
+// @route DELETE /api/v?/field/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteField = async ({ params, body }: Request, res: Response) => {

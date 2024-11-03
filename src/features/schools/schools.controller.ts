@@ -14,7 +14,7 @@ import {
 } from "./schools.services";
 
 // @desc create a school
-// @route POST /api/v1/schools
+// @route POST /api/v?/schools
 // @access Private
 // @fields: body {name:[string], groupMaxNumStudents: [number]}
 const createSchool = async ({ body }: Request, res: Response) => {
@@ -44,7 +44,7 @@ const createSchool = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the schools
-// @route GET /api/v1/schools
+// @route GET /api/v?/schools
 // @access Private
 // @fields: no fields
 const getSchools = async (req: Request, res: Response) => {
@@ -58,7 +58,7 @@ const getSchools = async (req: Request, res: Response) => {
 };
 
 // @desc get the school by id
-// @route GET /api/v1/schools/:id
+// @route GET /api/v?/schools/:id
 // @access Private
 // @fields: params: {id:[string]}
 const getSchool = async ({ params }: Request, res: Response) => {
@@ -74,7 +74,7 @@ const getSchool = async ({ params }: Request, res: Response) => {
 };
 
 // @desc update a school
-// @route PUT /api/v1/schools/:id
+// @route PUT /api/v?/schools/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {name:[string], groupMaxNumStudents: [number]}
 const updateSchool = async ({ body, params }: Request, res: Response) => {
@@ -102,7 +102,7 @@ const updateSchool = async ({ body, params }: Request, res: Response) => {
 };
 
 // @desc delete a school
-// @route DELETE /api/v1/schools/:id
+// @route DELETE /api/v?/schools/:id
 // @access Private
 // @fields: params: {id:[string]}}
 const deleteSchool = async ({ params }: Request, res: Response) => {

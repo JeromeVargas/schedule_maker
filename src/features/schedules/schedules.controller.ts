@@ -22,7 +22,7 @@ import { Schedule } from "../../typings/types";
 const maxMinutesInDay = 1439;
 
 // @desc create a schedule
-// @route POST /api/v1/schedules
+// @route POST /api/v?/schedules
 // @access Private
 // @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const createSchedule = async ({ body }: Request, res: Response) => {
@@ -90,7 +90,7 @@ const createSchedule = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the Schedules
-// @route GET /api/v1/schedules
+// @route GET /api/v?/schedules
 // @access Private
 // @fields: body {school_id:[string]}
 const getSchedules = async ({ body }: Request, res: Response) => {
@@ -108,7 +108,7 @@ const getSchedules = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the Schedule by id
-// @route GET /api/v1/schedules/:id
+// @route GET /api/v?/schedules/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getSchedule = async ({ params, body }: Request, res: Response) => {
@@ -129,7 +129,7 @@ const getSchedule = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc update a Schedule
-// @route PUT /api/v1/schedules/:id
+// @route PUT /api/v?/schedules/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 const updateSchedule = async ({ params, body }: Request, res: Response) => {
@@ -194,7 +194,7 @@ const updateSchedule = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc delete a Schedule
-// @route DELETE /api/v1/schedules/:id
+// @route DELETE /api/v?/schedules/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteSchedule = async ({ params, body }: Request, res: Response) => {

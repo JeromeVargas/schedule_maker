@@ -20,7 +20,7 @@ import {
 const maxMinutesInDay = 1439;
 
 // @desc create a session
-// @route POST /api/v1/sessions
+// @route POST /api/v?/sessions
 // @access Private
 // @fields: body {school_id:[string], level_id:[string], groupCoordinator_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 const createSession = async ({ body }: Request, res: Response) => {
@@ -199,7 +199,7 @@ const createSession = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the sessions
-// @route GET /api/v1/sessions
+// @route GET /api/v?/sessions
 // @access Private
 // @fields: body {school_id:[string]}
 const getSessions = async ({ body }: Request, res: Response) => {
@@ -217,7 +217,7 @@ const getSessions = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the Session by id
-// @route GET /api/v1/sessions/:id
+// @route GET /api/v?/sessions/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const getSession = async ({ params, body }: Request, res: Response) => {
@@ -238,7 +238,7 @@ const getSession = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc update a Session
-// @route PUT /api/v1/sessions/:id
+// @route PUT /api/v?/sessions/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string], level_id:[string], group_id:[string], subject_id:[string],  teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 const updateSession = async ({ params, body }: Request, res: Response) => {
@@ -422,7 +422,7 @@ const updateSession = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc delete a Session
-// @route DELETE /api/v1/sessions/:id
+// @route DELETE /api/v?/sessions/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
 const deleteSession = async ({ params, body }: Request, res: Response) => {

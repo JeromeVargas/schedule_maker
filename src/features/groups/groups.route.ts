@@ -18,27 +18,27 @@ import {
 const router = Router();
 
 // @desc    Create a group
-// @route   POST /api/v1/groups
+// @route   POST /api/v?/groups
 // @access  Private
 router.post("/", validateCreateGroup, createGroup);
 
 // @desc    Get groups data
-// @route   GET /api/v1/groups
+// @route   GET /api/v?/groups
 // @access  Private
 router.get("/", validateGetGroups, getGroups);
 
 // @desc    Get a group data
-// @route   GET /api/v1/groups/:id
+// @route   GET /api/v?/groups/:id
 // @access  Private
 router.get("/:id", validateGetGroup, getGroup);
 
 // @desc    Update a group data
-// @route   PUT /api/v1/groups/:id
+// @route   PUT /api/v?/groups/:id
 // @access  Private
 router.put("/:id", validateUpdateGroup, updateGroup);
 
 // @desc    Delete a group data
-// @route   PUT /api/v1/groups/:id
+// @route   PUT /api/v?/groups/:id
 // @access  Private
 router.delete("/:id", validateDeleteGroup, deleteGroup);
 

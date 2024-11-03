@@ -17,7 +17,7 @@ import {
 } from "./levels.services";
 
 // @desc create a level
-// @route POST /api/v1/levels
+// @route POST /api/v?/levels
 // @access Private
 // @fields: body {school_id:[string] , schedule_id:[string], name:[string]}
 const createLevel = async ({ body }: Request, res: Response) => {
@@ -66,7 +66,7 @@ const createLevel = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get all the Levels
-// @route GET /api/v1/Levels
+// @route GET /api/v?/Levels
 // @access Private
 // @fields: body {fieldOne:[string]}
 const getLevels = async ({ body }: Request, res: Response) => {
@@ -84,7 +84,7 @@ const getLevels = async ({ body }: Request, res: Response) => {
 };
 
 // @desc get the Level by id
-// @route GET /api/v1/Levels/:id
+// @route GET /api/v?/Levels/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
 const getLevel = async ({ params, body }: Request, res: Response) => {
@@ -102,7 +102,7 @@ const getLevel = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc update a Level
-// @route PUT /api/v1/Levels/:id
+// @route PUT /api/v?/Levels/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string]}
 const updateLevel = async ({ params, body }: Request, res: Response) => {
@@ -157,7 +157,7 @@ const updateLevel = async ({ params, body }: Request, res: Response) => {
 };
 
 // @desc delete a Level
-// @route DELETE /api/v1/Levels/:id
+// @route DELETE /api/v?/Levels/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {fieldOne:[string]}
 const deleteLevel = async ({ params, body }: Request, res: Response) => {

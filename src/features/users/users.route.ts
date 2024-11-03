@@ -18,27 +18,27 @@ import {
 const router = Router();
 
 // @desc    Create a school
-// @route   POST /api/v1/school
+// @route   POST /api/v?/school
 // @access  Private
 router.post("/", validateCreateUser, createUser);
 
 // @desc    Get schools data
-// @route   GET /api/v1/school
+// @route   GET /api/v?/school
 // @access  Private
 router.get("/", validateGetUsers, getUsers);
 
 // @desc    Get a school data
-// @route   GET /api/v1/school/:id
+// @route   GET /api/v?/school/:id
 // @access  Private
 router.get("/:id", validateGetUser, getUser);
 
 // @desc    Update a school data
-// @route   PUT /api/v1/school/:id
+// @route   PUT /api/v?/school/:id
 // @access  Private
 router.put("/:id", validateUpdateUser, updateUser);
 
 // @desc    Delete a school data
-// @route   PUT /api/v1/school/:id
+// @route   PUT /api/v?/school/:id
 // @access  Private
 router.delete("/:id", validateDeleteUser, deleteUser);
 
