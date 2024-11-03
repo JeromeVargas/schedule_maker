@@ -10,12 +10,12 @@ interface ExpressError extends Error {
   errors?: ValidationError;
 }
 
-const errorHandlerMiddleware = (
+export default function errorHandlerMiddleware(
   err: ExpressError,
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+) {
   // The error is part of the set custom error
   if (err instanceof CustomAPIError) {
     return res.status(err.statusCode).json({ msg: err.message });
@@ -40,6 +40,4 @@ const errorHandlerMiddleware = (
     msg: "Something unexpected happened, please try again",
     info: process.env.NODE_ENV === "production" ? "Internal error" : err,
   });
-};
-
-export default errorHandlerMiddleware;
+}
