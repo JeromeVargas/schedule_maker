@@ -15,7 +15,7 @@ import {
   deleteBreak,
 } from "./breaks.controller";
 
-const router = Router();
+export const router = Router();
 
 // @desc    Create a break
 // @route   POST /api/v?/breaks
@@ -41,5 +41,3 @@ router.put("/:id", validateUpdateBreak, updateBreak);
 // @route   PUT /api/v?/breaks/:id
 // @access  Private
 router.delete("/:id", validateDeleteBreak, deleteBreak);
-
-export { router };

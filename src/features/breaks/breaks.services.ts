@@ -5,13 +5,13 @@ import { NewBreak } from "../../typings/types";
 // CRUD services
 // @desc insert a break in database
 // @params break
-const insertBreak = (scheduleBreak: NewBreak) => {
+export const insertBreak = (scheduleBreak: NewBreak) => {
   return BreakModel.create(scheduleBreak);
 };
 
 // @desc find all breaks by school id
 // @params filters, fields to return
-const findFilterAllBreaks = (
+export const findFilterAllBreaks = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
@@ -20,7 +20,7 @@ const findFilterAllBreaks = (
 
 // @desc find a break by school id and break id
 // @params breakProperty, fields to return
-const findBreakByProperty = (
+export const findBreakByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
 ) => {
@@ -33,7 +33,7 @@ const findBreakByProperty = (
 
 // @desc update a break by school id and break id
 // @params filters, break
-const modifyFilterBreak = (
+export const modifyFilterBreak = (
   filters: { _id: string; school_id: string },
   scheduleBreak: NewBreak
 ) => {
@@ -45,14 +45,17 @@ const modifyFilterBreak = (
 
 // @desc delete a break by school id and break id
 // @params filters
-const removeFilterBreak = (filters: { school_id: string; _id: string }) => {
+export const removeFilterBreak = (filters: {
+  school_id: string;
+  _id: string;
+}) => {
   return BreakModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
 // @desc find a schedule by id and populate the embedded entities
 // @params scheduleId, fields to return, fields to populate, fields to return populate
-const findPopulateScheduleById = (
+export const findPopulateScheduleById = (
   scheduleId: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -63,14 +66,4 @@ const findPopulateScheduleById = (
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
-};
-
-export {
-  insertBreak,
-  findFilterAllBreaks,
-  findBreakByProperty,
-  modifyFilterBreak,
-  removeFilterBreak,
-  /* Services from other entities */
-  findPopulateScheduleById,
 };

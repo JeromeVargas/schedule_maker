@@ -4,7 +4,7 @@ import validateResult from "../../lib/helpers/validateHelper";
 import { isValidId } from "../../lib/utilities/utils";
 
 // @fields: body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
-const validateCreateBreak = [
+export const validateCreateBreak = [
   check("school_id")
     .exists()
     .withMessage("Please add the school id")
@@ -66,7 +66,7 @@ const validateCreateBreak = [
 ];
 
 // @fields: body {school_id:[string]}
-const validateGetBreaks = [
+export const validateGetBreaks = [
   check("school_id")
     .exists()
     .withMessage("Please add a school id")
@@ -89,7 +89,7 @@ const validateGetBreaks = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateGetBreak = [
+export const validateGetBreak = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -122,7 +122,7 @@ const validateGetBreak = [
 ];
 
 // @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
-const validateUpdateBreak = [
+export const validateUpdateBreak = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -197,7 +197,7 @@ const validateUpdateBreak = [
 ];
 
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const validateDeleteBreak = [
+export const validateDeleteBreak = [
   check("id")
     .custom((value) => {
       const validId = isValidId(value);
@@ -228,11 +228,3 @@ const validateDeleteBreak = [
     validateResult(req, res, next);
   },
 ];
-
-export {
-  validateCreateBreak,
-  validateGetBreaks,
-  validateGetBreak,
-  validateUpdateBreak,
-  validateDeleteBreak,
-};

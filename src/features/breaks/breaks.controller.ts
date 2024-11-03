@@ -20,7 +20,7 @@ const maxMinutesInDay = 1439;
 // @route POST /api/v?/breaks
 // @access Private
 // @fields: body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
-const createBreak = async ({ body }: Request, res: Response) => {
+export const createBreak = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, schedule_id, breakStart, numberMinutes } = body;
   /* check if the shift starts within a day */
@@ -70,7 +70,7 @@ const createBreak = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/breaks
 // @access Private
 // @fields: body {school_id:[string]}
-const getBreaks = async ({ body }: Request, res: Response) => {
+export const getBreaks = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
   /* filter by school id */
@@ -88,7 +88,7 @@ const getBreaks = async ({ body }: Request, res: Response) => {
 // @route GET /api/v?/breaks/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const getBreak = async ({ params, body }: Request, res: Response) => {
+export const getBreak = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
   const { school_id } = body;
@@ -106,7 +106,7 @@ const getBreak = async ({ params, body }: Request, res: Response) => {
 // @route PUT /api/v?/breaks/:id
 // @access Private
 // @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
-const updateBreak = async ({ params, body }: Request, res: Response) => {
+export const updateBreak = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: breakId } = params;
   const { school_id, schedule_id, breakStart, numberMinutes } = body;
@@ -158,7 +158,7 @@ const updateBreak = async ({ params, body }: Request, res: Response) => {
 // @route DELETE /api/v?/breaks/:id
 // @access Private
 // @fields: params: {id:[string]},  body: {school_id:[string]}
-const deleteBreak = async ({ params, body }: Request, res: Response) => {
+export const deleteBreak = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: breakId } = params;
   const { school_id } = body;
@@ -170,5 +170,3 @@ const deleteBreak = async ({ params, body }: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ msg: "Break deleted" });
 };
-
-export { createBreak, getBreaks, getBreak, updateBreak, deleteBreak };
