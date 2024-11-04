@@ -4,7 +4,7 @@ import { Types } from "mongoose";
 import { server, connection } from "../../../server";
 
 import * as userServices from "../users.services";
-import * as utils from "../../../lib/utilities/utils";
+import * as utils from "../../../lib/utilities/validation";
 
 import { BASE_URL } from "../../../lib/router";
 

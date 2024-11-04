@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
-import validateResult from "../../lib/helpers/validateHelper";
-import { isValidId } from "../../lib/utilities/utils";
+import validateResult from "../../lib/express-validator/validateHelper";
+import { isValidId } from "../../lib/utilities/validation";
 
 // @fields: body {school_id:[string], level_id:[string], groupCoordinator_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 export const validateCreateSession = [

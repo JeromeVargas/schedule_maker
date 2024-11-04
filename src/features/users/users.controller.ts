@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../../errors/bad-request";
 import ConflictError from "../../errors/conflict";
 import NotFoundError from "../../errors/not-found";
-import { hashPwd } from "../../lib/utilities/utils";
+import { hashPwd } from "../../lib/utilities/validation";
 
 import {
   insertUser,
