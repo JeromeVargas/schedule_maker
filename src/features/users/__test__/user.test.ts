@@ -167,43 +167,46 @@ describe("RESOURCE => User", () => {
           .send(newUserMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            msg: "Please add the user's school id",
-            param: "school_id",
-            location: "body",
-          },
-          {
-            msg: "Please add the user's first name",
-            param: "firstName",
-            location: "body",
-          },
-          {
-            msg: "Please add the user's last name",
-            param: "lastName",
-            location: "body",
-          },
-          {
-            msg: "Please add the user's email",
-            param: "email",
-            location: "body",
-          },
-          {
-            msg: "Please add the user's password",
-            param: "password",
-            location: "body",
-          },
-          {
-            msg: "Please add the user's role",
-            param: "role",
-            location: "body",
-          },
-          {
-            msg: "Please add the user's current status",
-            param: "status",
-            location: "body",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              msg: "Please add the user's school id",
+              param: "school_id",
+              location: "body",
+            },
+            {
+              msg: "Please add the user's first name",
+              param: "firstName",
+              location: "body",
+            },
+            {
+              msg: "Please add the user's last name",
+              param: "lastName",
+              location: "body",
+            },
+            {
+              msg: "Please add the user's email",
+              param: "email",
+              location: "body",
+            },
+            {
+              msg: "Please add the user's password",
+              param: "password",
+              location: "body",
+            },
+            {
+              msg: "Please add the user's role",
+              param: "role",
+              location: "body",
+            },
+            {
+              msg: "Please add the user's current status",
+              param: "status",
+              location: "body",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -241,50 +244,53 @@ describe("RESOURCE => User", () => {
           .send(newUserEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            msg: "The school field is empty",
-            param: "school_id",
-            location: "body",
-            value: "",
-          },
-          {
-            msg: "The first name field is empty",
-            param: "firstName",
-            location: "body",
-            value: "",
-          },
-          {
-            msg: "The last name field is empty",
-            param: "lastName",
-            location: "body",
-            value: "",
-          },
-          {
-            msg: "The email field is empty",
-            param: "email",
-            location: "body",
-            value: "",
-          },
-          {
-            msg: "The password field is empty",
-            param: "password",
-            location: "body",
-            value: "",
-          },
-          {
-            msg: "The role field is empty",
-            param: "role",
-            location: "body",
-            value: "",
-          },
-          {
-            msg: "The status field is empty",
-            param: "status",
-            location: "body",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              msg: "The school field is empty",
+              param: "school_id",
+              location: "body",
+              value: "",
+            },
+            {
+              msg: "The first name field is empty",
+              param: "firstName",
+              location: "body",
+              value: "",
+            },
+            {
+              msg: "The last name field is empty",
+              param: "lastName",
+              location: "body",
+              value: "",
+            },
+            {
+              msg: "The email field is empty",
+              param: "email",
+              location: "body",
+              value: "",
+            },
+            {
+              msg: "The password field is empty",
+              param: "password",
+              location: "body",
+              value: "",
+            },
+            {
+              msg: "The role field is empty",
+              param: "role",
+              location: "body",
+              value: "",
+            },
+            {
+              msg: "The status field is empty",
+              param: "status",
+              location: "body",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -322,50 +328,53 @@ describe("RESOURCE => User", () => {
           .send(newUserNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The first name is not valid",
-            param: "firstName",
-            value: 9087432156,
-          },
-          {
-            location: "body",
-            msg: "The last name is not valid",
-            param: "lastName",
-            value: 890213429039,
-          },
-          {
-            location: "body",
-            msg: "email is not valid",
-            param: "email",
-            value: 9808934123,
-          },
-          {
-            location: "body",
-            msg: "The password is not valid",
-            param: "password",
-            value: 12341234,
-          },
-          {
-            location: "body",
-            msg: "role is not valid",
-            param: "role",
-            value: 93870134699832,
-          },
-          {
-            location: "body",
-            msg: "status is not valid",
-            param: "status",
-            value: 43124314,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The first name is not valid",
+              param: "firstName",
+              value: 9087432156,
+            },
+            {
+              location: "body",
+              msg: "The last name is not valid",
+              param: "lastName",
+              value: 890213429039,
+            },
+            {
+              location: "body",
+              msg: "email is not valid",
+              param: "email",
+              value: 9808934123,
+            },
+            {
+              location: "body",
+              msg: "The password is not valid",
+              param: "password",
+              value: 12341234,
+            },
+            {
+              location: "body",
+              msg: "role is not valid",
+              param: "role",
+              value: 93870134699832,
+            },
+            {
+              location: "body",
+              msg: "status is not valid",
+              param: "status",
+              value: 43124314,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -405,32 +414,35 @@ describe("RESOURCE => User", () => {
           .send(newUserWrongLengthValues);
 
         //assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The first name must not exceed 50 characters",
-            param: "firstName",
-            value: "Jerome Je Jerome Je Jerome Je Jerome Je Jerome Je 1",
-          },
-          {
-            location: "body",
-            msg: "The last name must not exceed 50 characters",
-            param: "lastName",
-            value: "Vargas Va Vargas Va Vargas Va Vargas Va Vargas Va  1",
-          },
-          {
-            location: "body",
-            msg: "The email must not exceed 50 characters",
-            param: "email",
-            value: "jeromejeromejeromejeromejeromejeromejerom@gmail.com",
-          },
-          {
-            location: "body",
-            msg: "The password must be at least 8 characters long",
-            param: "password",
-            value: "1234123",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The first name must not exceed 50 characters",
+              param: "firstName",
+              value: "Jerome Je Jerome Je Jerome Je Jerome Je Jerome Je 1",
+            },
+            {
+              location: "body",
+              msg: "The last name must not exceed 50 characters",
+              param: "lastName",
+              value: "Vargas Va Vargas Va Vargas Va Vargas Va Vargas Va  1",
+            },
+            {
+              location: "body",
+              msg: "The email must not exceed 50 characters",
+              param: "email",
+              value: "jeromejeromejeromejeromejeromejeromejerom@gmail.com",
+            },
+            {
+              location: "body",
+              msg: "The password must be at least 8 characters long",
+              param: "password",
+              value: "1234123",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -473,14 +485,17 @@ describe("RESOURCE => User", () => {
           });
 
         //assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The password must not exceed 128 characters",
-            param: "password",
-            value: tooLongPassword,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The password must not exceed 128 characters",
+              param: "password",
+              value: tooLongPassword,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -521,26 +536,29 @@ describe("RESOURCE => User", () => {
           .send(newUserWrongInputValues);
 
         //assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "please add a correct email address",
-            param: "email",
-            value: "jerome@gmail",
-          },
-          {
-            location: "body",
-            msg: "the role provided is not a valid option",
-            param: "role",
-            value: "coordinador",
-          },
-          {
-            location: "body",
-            msg: "the status provided is not a valid option",
-            param: "status",
-            value: "activo",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "please add a correct email address",
+              param: "email",
+              value: "jerome@gmail",
+            },
+            {
+              location: "body",
+              msg: "the role provided is not a valid option",
+              param: "role",
+              value: "coordinador",
+            },
+            {
+              location: "body",
+              msg: "the status provided is not a valid option",
+              param: "status",
+              value: "activo",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -582,6 +600,7 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please create the school first",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(findSchool).toHaveBeenCalled();
@@ -619,6 +638,7 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please try a different email address",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(findSchool).toHaveBeenCalled();
@@ -657,6 +677,7 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "User not created",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchool).toHaveBeenCalled();
@@ -731,13 +752,16 @@ describe("RESOURCE => User", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findUsers).not.toHaveBeenCalled();
           expect(findUsers).not.toHaveBeenCalledWith(
@@ -757,14 +781,17 @@ describe("RESOURCE => User", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findUsers).not.toHaveBeenCalled();
           expect(findUsers).not.toHaveBeenCalledWith(
@@ -784,14 +811,17 @@ describe("RESOURCE => User", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findUsers).not.toHaveBeenCalled();
           expect(findUsers).not.toHaveBeenCalledWith(
@@ -813,6 +843,7 @@ describe("RESOURCE => User", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "No users found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findUsers).toHaveBeenCalled();
@@ -886,13 +917,16 @@ describe("RESOURCE => User", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findUser).not.toHaveBeenCalled();
           expect(findUser).not.toHaveBeenCalledWith(
@@ -912,14 +946,17 @@ describe("RESOURCE => User", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findUser).not.toHaveBeenCalled();
           expect(findUser).not.toHaveBeenCalledWith(
@@ -939,20 +976,23 @@ describe("RESOURCE => User", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The user id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The user id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findUser).not.toHaveBeenCalled();
           expect(findUser).not.toHaveBeenCalledWith(
@@ -974,6 +1014,7 @@ describe("RESOURCE => User", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "User not found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findUser).toHaveBeenCalled();
@@ -1031,43 +1072,46 @@ describe("RESOURCE => User", () => {
           .send(newUserMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the user's school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the user's first name",
-            param: "firstName",
-          },
-          {
-            location: "body",
-            msg: "Please add the user's last name",
-            param: "lastName",
-          },
-          {
-            location: "body",
-            msg: "Please add the user's email",
-            param: "email",
-          },
-          {
-            location: "body",
-            msg: "Please add the user's password",
-            param: "password",
-          },
-          {
-            location: "body",
-            msg: "Please add the user's role",
-            param: "role",
-          },
-          {
-            location: "body",
-            msg: "Please add the user's current status",
-            param: "status",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the user's school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the user's first name",
+              param: "firstName",
+            },
+            {
+              location: "body",
+              msg: "Please add the user's last name",
+              param: "lastName",
+            },
+            {
+              location: "body",
+              msg: "Please add the user's email",
+              param: "email",
+            },
+            {
+              location: "body",
+              msg: "Please add the user's password",
+              param: "password",
+            },
+            {
+              location: "body",
+              msg: "Please add the user's role",
+              param: "role",
+            },
+            {
+              location: "body",
+              msg: "Please add the user's current status",
+              param: "status",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -1102,50 +1146,53 @@ describe("RESOURCE => User", () => {
           .send(newUserEmptyValues);
 
         //assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The first name field is empty",
-            param: "firstName",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The last name field is empty",
-            param: "lastName",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The email field is empty",
-            param: "email",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The password field is empty",
-            param: "password",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The role field is empty",
-            param: "role",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The status field is empty",
-            param: "status",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The first name field is empty",
+              param: "firstName",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The last name field is empty",
+              param: "lastName",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The email field is empty",
+              param: "email",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The password field is empty",
+              param: "password",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The role field is empty",
+              param: "role",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The status field is empty",
+              param: "status",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -1180,56 +1227,59 @@ describe("RESOURCE => User", () => {
           .send(newUserNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The user id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The first name is not valid",
-            param: "firstName",
-            value: 9087432156,
-          },
-          {
-            location: "body",
-            msg: "The last name is not valid",
-            param: "lastName",
-            value: 890213429039,
-          },
-          {
-            location: "body",
-            msg: "email is not valid",
-            param: "email",
-            value: 9808934123,
-          },
-          {
-            location: "body",
-            msg: "The password is not valid",
-            param: "password",
-            value: 12341234,
-          },
-          {
-            location: "body",
-            msg: "role is not valid",
-            param: "role",
-            value: 93870134699832,
-          },
-          {
-            location: "body",
-            msg: "status is not valid",
-            param: "status",
-            value: 43124314,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The user id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The first name is not valid",
+              param: "firstName",
+              value: 9087432156,
+            },
+            {
+              location: "body",
+              msg: "The last name is not valid",
+              param: "lastName",
+              value: 890213429039,
+            },
+            {
+              location: "body",
+              msg: "email is not valid",
+              param: "email",
+              value: 9808934123,
+            },
+            {
+              location: "body",
+              msg: "The password is not valid",
+              param: "password",
+              value: 12341234,
+            },
+            {
+              location: "body",
+              msg: "role is not valid",
+              param: "role",
+              value: 93870134699832,
+            },
+            {
+              location: "body",
+              msg: "status is not valid",
+              param: "status",
+              value: 43124314,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -1266,32 +1316,35 @@ describe("RESOURCE => User", () => {
           .send(newUserWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The first name must not exceed 50 characters",
-            param: "firstName",
-            value: "Jerome Je Jerome Je Jerome Je Jerome Je Jerome Je 1",
-          },
-          {
-            location: "body",
-            msg: "The last name must not exceed 50 characters",
-            param: "lastName",
-            value: "Vargas Va Vargas Va Vargas Va Vargas Va Vargas Va  1",
-          },
-          {
-            location: "body",
-            msg: "The email must not exceed 50 characters",
-            param: "email",
-            value: "jeromejeromejeromejeromejeromejeromejerom@gmail.com",
-          },
-          {
-            location: "body",
-            msg: "The password must be at least 8 characters long",
-            param: "password",
-            value: "1234123",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The first name must not exceed 50 characters",
+              param: "firstName",
+              value: "Jerome Je Jerome Je Jerome Je Jerome Je Jerome Je 1",
+            },
+            {
+              location: "body",
+              msg: "The last name must not exceed 50 characters",
+              param: "lastName",
+              value: "Vargas Va Vargas Va Vargas Va Vargas Va Vargas Va  1",
+            },
+            {
+              location: "body",
+              msg: "The email must not exceed 50 characters",
+              param: "email",
+              value: "jeromejeromejeromejeromejeromejeromejerom@gmail.com",
+            },
+            {
+              location: "body",
+              msg: "The password must be at least 8 characters long",
+              param: "password",
+              value: "1234123",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -1334,14 +1387,17 @@ describe("RESOURCE => User", () => {
           });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The password must not exceed 128 characters",
-            param: "password",
-            value: tooLongPassword,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The password must not exceed 128 characters",
+              param: "password",
+              value: tooLongPassword,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -1382,26 +1438,29 @@ describe("RESOURCE => User", () => {
           .send(newUserWrongInputValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "please add a correct email address",
-            param: "email",
-            value: "jerome@gmail",
-          },
-          {
-            location: "body",
-            msg: "the role provided is not a valid option",
-            param: "role",
-            value: "coordinador",
-          },
-          {
-            location: "body",
-            msg: "the status provided is not a valid option",
-            param: "status",
-            value: "activo",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "please add a correct email address",
+              param: "email",
+              value: "jerome@gmail",
+            },
+            {
+              location: "body",
+              msg: "the role provided is not a valid option",
+              param: "role",
+              value: "coordinador",
+            },
+            {
+              location: "body",
+              msg: "the status provided is not a valid option",
+              param: "status",
+              value: "activo",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
@@ -1443,6 +1502,7 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please try a different email address",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateUserEmail).toHaveBeenCalled();
@@ -1477,6 +1537,7 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "User not updated",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateUserEmail).toHaveBeenCalled();
@@ -1545,13 +1606,16 @@ describe("RESOURCE => User", () => {
           .send({ school_i: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteUser).not.toHaveBeenCalled();
         expect(deleteUser).not.toHaveBeenCalledWith({
@@ -1571,14 +1635,17 @@ describe("RESOURCE => User", () => {
           .send({ school_id: "" });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteUser).not.toHaveBeenCalled();
         expect(deleteUser).not.toHaveBeenCalledWith({
@@ -1598,20 +1665,23 @@ describe("RESOURCE => User", () => {
           .send({ school_id: invalidMockId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The user id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The user id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteUser).not.toHaveBeenCalled();
         expect(deleteUser).not.toHaveBeenCalledWith({
@@ -1633,6 +1703,7 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "User not deleted",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(deleteUser).toHaveBeenCalled();

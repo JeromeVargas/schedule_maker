@@ -102,18 +102,21 @@ describe("RESOURCE => Field", () => {
           .send(newFieldMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a field name",
-            param: "name",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a field name",
+              param: "name",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -148,20 +151,23 @@ describe("RESOURCE => Field", () => {
           .send(newFieldEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The field name is empty",
-            param: "name",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The field name is empty",
+              param: "name",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -196,20 +202,23 @@ describe("RESOURCE => Field", () => {
           .send(newFieldNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The field name is not valid",
-            param: "name",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The field name is not valid",
+              param: "name",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -244,15 +253,18 @@ describe("RESOURCE => Field", () => {
           .send(newFieldWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The field name must not exceed 100 characters",
-            param: "name",
-            value:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The field name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -289,6 +301,7 @@ describe("RESOURCE => Field", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the school exists",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchool).toHaveBeenCalled();
@@ -318,7 +331,10 @@ describe("RESOURCE => Field", () => {
           .send(newField);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "This field name already exists" });
+        expect(body).toStrictEqual({
+          msg: "This field name already exists",
+          success: false,
+        });
         expect(statusCode).toBe(409);
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
@@ -350,7 +366,10 @@ describe("RESOURCE => Field", () => {
           .send(newField);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Field not created!" });
+        expect(body).toStrictEqual({
+          msg: "Field not created!",
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
@@ -382,7 +401,9 @@ describe("RESOURCE => Field", () => {
           .send(newField);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Field created successfully!" });
+        expect(body).toStrictEqual({
+          msg: "Field created successfully!",
+        });
         expect(statusCode).toBe(201);
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
@@ -416,13 +437,16 @@ describe("RESOURCE => Field", () => {
             .send();
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findFields).not.toHaveBeenCalled();
           expect(findFields).not.toHaveBeenCalledWith(
@@ -445,14 +469,17 @@ describe("RESOURCE => Field", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findFields).not.toHaveBeenCalled();
           expect(findFields).not.toHaveBeenCalledWith(
@@ -475,14 +502,17 @@ describe("RESOURCE => Field", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findFields).not.toHaveBeenCalled();
           expect(findFields).not.toHaveBeenCalledWith(
@@ -507,6 +537,7 @@ describe("RESOURCE => Field", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "No fields found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findFields).toHaveBeenCalled();
@@ -568,13 +599,16 @@ describe("RESOURCE => Field", () => {
             .send();
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findField).not.toHaveBeenCalled();
           expect(findField).not.toHaveBeenCalledWith(
@@ -597,14 +631,17 @@ describe("RESOURCE => Field", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findField).not.toHaveBeenCalled();
           expect(findField).not.toHaveBeenCalledWith(
@@ -627,20 +664,23 @@ describe("RESOURCE => Field", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The field id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The field id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findField).not.toHaveBeenCalled();
           expect(findField).not.toHaveBeenCalledWith(
@@ -665,6 +705,7 @@ describe("RESOURCE => Field", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "Field not found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findField).toHaveBeenCalled();
@@ -717,18 +758,21 @@ describe("RESOURCE => Field", () => {
           .send(newFieldMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a field name",
-            param: "name",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a field name",
+              param: "name",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateFieldName).not.toHaveBeenCalled();
         expect(duplicateFieldName).not.toHaveBeenCalledWith(
@@ -760,20 +804,23 @@ describe("RESOURCE => Field", () => {
           .send(newFieldEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The name field is empty",
-            param: "name",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The name field is empty",
+              param: "name",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateFieldName).not.toHaveBeenCalled();
         expect(duplicateFieldName).not.toHaveBeenCalledWith(
@@ -806,26 +853,29 @@ describe("RESOURCE => Field", () => {
           .send(newFieldNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The field id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The field name is not valid",
-            param: "name",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The field id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The field name is not valid",
+              param: "name",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateFieldName).not.toHaveBeenCalled();
         expect(duplicateFieldName).not.toHaveBeenCalledWith(
@@ -860,15 +910,18 @@ describe("RESOURCE => Field", () => {
           .send(newFieldWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The name must not exceed 100 characters",
-            param: "name",
-            value:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateFieldName).not.toHaveBeenCalled();
         expect(duplicateFieldName).not.toHaveBeenCalledWith(
@@ -905,6 +958,7 @@ describe("RESOURCE => Field", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "This field name already exists!",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateFieldName).toHaveBeenCalled();
@@ -936,6 +990,7 @@ describe("RESOURCE => Field", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Field not updated",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateFieldName).toHaveBeenCalled();
@@ -993,13 +1048,16 @@ describe("RESOURCE => Field", () => {
           .send();
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteField).not.toHaveBeenCalled();
         expect(deleteField).not.toHaveBeenCalledWith({
@@ -1019,14 +1077,17 @@ describe("RESOURCE => Field", () => {
           .send({ school_id: "" });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteField).not.toHaveBeenCalled();
         expect(deleteField).not.toHaveBeenCalledWith({
@@ -1046,20 +1107,23 @@ describe("RESOURCE => Field", () => {
           .send({ school_id: invalidMockId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The field id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The field id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteField).not.toHaveBeenCalled();
         expect(deleteField).not.toHaveBeenCalledWith({
@@ -1079,7 +1143,10 @@ describe("RESOURCE => Field", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Field not deleted" });
+        expect(body).toStrictEqual({
+          msg: "Field not deleted",
+          success: false,
+        });
         expect(statusCode).toBe(404);
         expect(deleteField).toHaveBeenCalled();
         expect(deleteField).toHaveBeenCalledWith({

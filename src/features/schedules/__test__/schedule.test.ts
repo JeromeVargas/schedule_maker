@@ -224,68 +224,71 @@ describe("Resource => Schedule", () => {
           .send(newScheduleMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a schedule name",
-            param: "name",
-          },
-          {
-            location: "body",
-            msg: "Please add the school day start time",
-            param: "dayStart",
-          },
-          {
-            location: "body",
-            msg: "Please add the school shift number of minutes",
-            param: "shiftNumberMinutes",
-          },
-          {
-            location: "body",
-            msg: "Please add the session unit length",
-            param: "sessionUnitMinutes",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Mondays",
-            param: "monday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Tuesdays",
-            param: "tuesday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Wednesdays",
-            param: "wednesday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Thursdays",
-            param: "thursday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Fridays",
-            param: "friday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Saturdays",
-            param: "saturday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Sundays",
-            param: "sunday",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a schedule name",
+              param: "name",
+            },
+            {
+              location: "body",
+              msg: "Please add the school day start time",
+              param: "dayStart",
+            },
+            {
+              location: "body",
+              msg: "Please add the school shift number of minutes",
+              param: "shiftNumberMinutes",
+            },
+            {
+              location: "body",
+              msg: "Please add the session unit length",
+              param: "sessionUnitMinutes",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Mondays",
+              param: "monday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Tuesdays",
+              param: "tuesday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Wednesdays",
+              param: "wednesday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Thursdays",
+              param: "thursday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Fridays",
+              param: "friday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Saturdays",
+              param: "saturday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Sundays",
+              param: "sunday",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -325,80 +328,83 @@ describe("Resource => Schedule", () => {
           .send(newScheduleEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The schedule name field is empty",
-            param: "name",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The day start field is empty",
-            param: "dayStart",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The number of minutes field is empty",
-            param: "shiftNumberMinutes",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The session unit length field is empty",
-            param: "sessionUnitMinutes",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The monday field is empty",
-            param: "monday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The tuesday field is empty",
-            param: "tuesday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The wednesday field is empty",
-            param: "wednesday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The thursday field is empty",
-            param: "thursday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The friday field is empty",
-            param: "friday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The saturday field is empty",
-            param: "saturday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The sunday field is empty",
-            param: "sunday",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The schedule name field is empty",
+              param: "name",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The day start field is empty",
+              param: "dayStart",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The number of minutes field is empty",
+              param: "shiftNumberMinutes",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The session unit length field is empty",
+              param: "sessionUnitMinutes",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The monday field is empty",
+              param: "monday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The tuesday field is empty",
+              param: "tuesday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The wednesday field is empty",
+              param: "wednesday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The thursday field is empty",
+              param: "thursday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The friday field is empty",
+              param: "friday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The saturday field is empty",
+              param: "saturday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The sunday field is empty",
+              param: "sunday",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -436,80 +442,83 @@ describe("Resource => Schedule", () => {
           .send(newScheduleNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The schedule name is not valid",
-            param: "name",
-            value: 432,
-          },
-          {
-            location: "body",
-            msg: "day start value is not valid",
-            param: "dayStart",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "number of minutes value is not valid",
-            param: "shiftNumberMinutes",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "session unit length value is not valid",
-            param: "sessionUnitMinutes",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "monday value is not valid",
-            param: "monday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "tuesday value is not valid",
-            param: "tuesday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "wednesday value is not valid",
-            param: "wednesday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "thursday value is not valid",
-            param: "thursday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "friday value is not valid",
-            param: "friday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "saturday value is not valid",
-            param: "saturday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "sunday value is not valid",
-            param: "sunday",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The schedule name is not valid",
+              param: "name",
+              value: 432,
+            },
+            {
+              location: "body",
+              msg: "day start value is not valid",
+              param: "dayStart",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "number of minutes value is not valid",
+              param: "shiftNumberMinutes",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "session unit length value is not valid",
+              param: "sessionUnitMinutes",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "monday value is not valid",
+              param: "monday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "tuesday value is not valid",
+              param: "tuesday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "wednesday value is not valid",
+              param: "wednesday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "thursday value is not valid",
+              param: "thursday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "friday value is not valid",
+              param: "friday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "saturday value is not valid",
+              param: "saturday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "sunday value is not valid",
+              param: "sunday",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -549,33 +558,36 @@ describe("Resource => Schedule", () => {
           .send(newScheduleWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The schedule name must not exceed 100 characters",
-            param: "name",
-            value:
-              "fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkjsdfi07879sdf0fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkj879sdf01",
-          },
-          {
-            location: "body",
-            msg: "The day start time must not exceed 9 digits",
-            param: "dayStart",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The day start time must not exceed 9 digits",
-            param: "shiftNumberMinutes",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The day start time must not exceed 9 digits",
-            param: "sessionUnitMinutes",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The schedule name must not exceed 100 characters",
+              param: "name",
+              value:
+                "fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkjsdfi07879sdf0fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkj879sdf01",
+            },
+            {
+              location: "body",
+              msg: "The day start time must not exceed 9 digits",
+              param: "dayStart",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The day start time must not exceed 9 digits",
+              param: "shiftNumberMinutes",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The day start time must not exceed 9 digits",
+              param: "sessionUnitMinutes",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
@@ -614,6 +626,7 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The school shift start must exceed 11:59 p.m.",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchool).not.toHaveBeenCalled();
@@ -648,6 +661,7 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please create the school first",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(findSchool).toHaveBeenCalled();
@@ -685,6 +699,7 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "This schedule name already exists",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(findSchool).toHaveBeenCalled();
@@ -722,6 +737,7 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Schedule not created",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchool).toHaveBeenCalled();
@@ -790,13 +806,16 @@ describe("Resource => Schedule", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSchedules).not.toHaveBeenCalled();
           expect(findSchedules).not.toHaveBeenCalledWith(
@@ -819,14 +838,17 @@ describe("Resource => Schedule", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSchedules).not.toHaveBeenCalled();
           expect(findSchedules).not.toHaveBeenCalledWith(
@@ -849,14 +871,17 @@ describe("Resource => Schedule", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSchedules).not.toHaveBeenCalled();
           expect(findSchedules).not.toHaveBeenCalledWith(
@@ -881,6 +906,7 @@ describe("Resource => Schedule", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "No schedules found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findSchedules).toHaveBeenCalled();
@@ -975,13 +1001,16 @@ describe("Resource => Schedule", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSchedule).not.toHaveBeenCalled();
           expect(findSchedule).not.toHaveBeenCalledWith(
@@ -1004,14 +1033,17 @@ describe("Resource => Schedule", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSchedule).not.toHaveBeenCalled();
           expect(findSchedule).not.toHaveBeenCalledWith(
@@ -1034,20 +1066,23 @@ describe("Resource => Schedule", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The schedule id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The schedule id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSchedule).not.toHaveBeenCalled();
           expect(findSchedule).not.toHaveBeenCalledWith(
@@ -1072,6 +1107,7 @@ describe("Resource => Schedule", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "Schedule not found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findSchedule).toHaveBeenCalled();
@@ -1140,68 +1176,71 @@ describe("Resource => Schedule", () => {
           .send(newScheduleMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a schedule name",
-            param: "name",
-          },
-          {
-            location: "body",
-            msg: "Please add the school day start time",
-            param: "dayStart",
-          },
-          {
-            location: "body",
-            msg: "Please add the school shift number of minutes",
-            param: "shiftNumberMinutes",
-          },
-          {
-            location: "body",
-            msg: "Please add the session unit length",
-            param: "sessionUnitMinutes",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Mondays",
-            param: "monday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Tuesdays",
-            param: "tuesday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Wednesdays",
-            param: "wednesday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Thursdays",
-            param: "thursday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Fridays",
-            param: "friday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Saturdays",
-            param: "saturday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Sundays",
-            param: "sunday",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a schedule name",
+              param: "name",
+            },
+            {
+              location: "body",
+              msg: "Please add the school day start time",
+              param: "dayStart",
+            },
+            {
+              location: "body",
+              msg: "Please add the school shift number of minutes",
+              param: "shiftNumberMinutes",
+            },
+            {
+              location: "body",
+              msg: "Please add the session unit length",
+              param: "sessionUnitMinutes",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Mondays",
+              param: "monday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Tuesdays",
+              param: "tuesday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Wednesdays",
+              param: "wednesday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Thursdays",
+              param: "thursday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Fridays",
+              param: "friday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Saturdays",
+              param: "saturday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Sundays",
+              param: "sunday",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
@@ -1239,80 +1278,83 @@ describe("Resource => Schedule", () => {
           .send(newScheduleEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The schedule name field is empty",
-            param: "name",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The day start field is empty",
-            param: "dayStart",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The number of minutes field is empty",
-            param: "shiftNumberMinutes",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The session unit length field is empty",
-            param: "sessionUnitMinutes",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The monday field is empty",
-            param: "monday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The tuesday field is empty",
-            param: "tuesday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The wednesday field is empty",
-            param: "wednesday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The thursday field is empty",
-            param: "thursday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The friday field is empty",
-            param: "friday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The saturday field is empty",
-            param: "saturday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The sunday field is empty",
-            param: "sunday",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The schedule name field is empty",
+              param: "name",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The day start field is empty",
+              param: "dayStart",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The number of minutes field is empty",
+              param: "shiftNumberMinutes",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The session unit length field is empty",
+              param: "sessionUnitMinutes",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The monday field is empty",
+              param: "monday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The tuesday field is empty",
+              param: "tuesday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The wednesday field is empty",
+              param: "wednesday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The thursday field is empty",
+              param: "thursday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The friday field is empty",
+              param: "friday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The saturday field is empty",
+              param: "saturday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The sunday field is empty",
+              param: "sunday",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
@@ -1350,86 +1392,89 @@ describe("Resource => Schedule", () => {
           .send(newScheduleNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The schedule id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The schedule name is not valid",
-            param: "name",
-            value: 432,
-          },
-          {
-            location: "body",
-            msg: "day start value is not valid",
-            param: "dayStart",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "number of minutes value is not valid",
-            param: "shiftNumberMinutes",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "session unit length value is not valid",
-            param: "sessionUnitMinutes",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "monday value is not valid",
-            param: "monday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "tuesday value is not valid",
-            param: "tuesday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "wednesday value is not valid",
-            param: "wednesday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "thursday value is not valid",
-            param: "thursday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "friday value is not valid",
-            param: "friday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "saturday value is not valid",
-            param: "saturday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "sunday value is not valid",
-            param: "sunday",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The schedule id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The schedule name is not valid",
+              param: "name",
+              value: 432,
+            },
+            {
+              location: "body",
+              msg: "day start value is not valid",
+              param: "dayStart",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "number of minutes value is not valid",
+              param: "shiftNumberMinutes",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "session unit length value is not valid",
+              param: "sessionUnitMinutes",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "monday value is not valid",
+              param: "monday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "tuesday value is not valid",
+              param: "tuesday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "wednesday value is not valid",
+              param: "wednesday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "thursday value is not valid",
+              param: "thursday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "friday value is not valid",
+              param: "friday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "saturday value is not valid",
+              param: "saturday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "sunday value is not valid",
+              param: "sunday",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
@@ -1467,33 +1512,36 @@ describe("Resource => Schedule", () => {
           .send(newScheduleWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The schedule name must not exceed 100 characters",
-            param: "name",
-            value:
-              "fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkjsdfi07879sdf0fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkj879sdf01",
-          },
-          {
-            location: "body",
-            msg: "The day start time must not exceed 9 digits",
-            param: "dayStart",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The day start time must not exceed 9 digits",
-            param: "shiftNumberMinutes",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The day start time must not exceed 9 digits",
-            param: "sessionUnitMinutes",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The schedule name must not exceed 100 characters",
+              param: "name",
+              value:
+                "fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkjsdfi07879sdf0fdssdfsdfsdfeqwerdfasdf12341234asdfjñlkj879sdf01",
+            },
+            {
+              location: "body",
+              msg: "The day start time must not exceed 9 digits",
+              param: "dayStart",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The day start time must not exceed 9 digits",
+              param: "shiftNumberMinutes",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The day start time must not exceed 9 digits",
+              param: "sessionUnitMinutes",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
@@ -1533,6 +1581,7 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The school shift start must exceed 11:59 p.m.",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).not.toHaveBeenCalled();
@@ -1567,6 +1616,7 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "This schedule name already exists!",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateScheduleName).toHaveBeenCalled();
@@ -1599,7 +1649,10 @@ describe("Resource => Schedule", () => {
           .send(newSchedule);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Schedule not updated" });
+        expect(body).toStrictEqual({
+          msg: "Schedule not updated",
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateScheduleName).toHaveBeenCalled();
         expect(duplicateScheduleName).toHaveBeenCalledWith(
@@ -1663,13 +1716,16 @@ describe("Resource => Schedule", () => {
           .send({ school_i: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findAllLevels).not.toHaveBeenCalled();
         expect(findAllLevels).not.toHaveBeenCalledWith({
@@ -1698,14 +1754,17 @@ describe("Resource => Schedule", () => {
           .send({ school_id: "" });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(findAllLevels).not.toHaveBeenCalled();
         expect(findAllLevels).not.toHaveBeenCalledWith({
           school_id: "",
@@ -1734,20 +1793,23 @@ describe("Resource => Schedule", () => {
           .send({ school_id: invalidMockId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The schedule id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The schedule id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(findAllLevels).not.toHaveBeenCalled();
         expect(findAllLevels).not.toHaveBeenCalledWith({
           school_id: invalidMockId,
@@ -1778,6 +1840,7 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Schedule cannot be deleted because there are levels extending from it",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(findAllLevels).toHaveBeenCalled();
@@ -1807,7 +1870,10 @@ describe("Resource => Schedule", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Schedule not deleted" });
+        expect(body).toStrictEqual({
+          msg: "Schedule not deleted",
+          success: false,
+        });
         expect(statusCode).toBe(404);
         expect(findAllLevels).toHaveBeenCalled();
         expect(findAllLevels).toHaveBeenCalledWith({

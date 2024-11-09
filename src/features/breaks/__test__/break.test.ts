@@ -141,28 +141,31 @@ describe("Resource => Break", () => {
           .send(newBreakMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the schedule id",
-            param: "schedule_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the break day start time",
-            param: "breakStart",
-          },
-          {
-            location: "body",
-            msg: "Please add the break number of minutes",
-            param: "numberMinutes",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the schedule id",
+              param: "schedule_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the break day start time",
+              param: "breakStart",
+            },
+            {
+              location: "body",
+              msg: "Please add the break number of minutes",
+              param: "numberMinutes",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -190,32 +193,35 @@ describe("Resource => Break", () => {
           .send(newBreakEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The schedule id field is empty",
-            param: "schedule_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The start field is empty",
-            param: "breakStart",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The break number of minutes field is empty",
-            param: "numberMinutes",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The schedule id field is empty",
+              param: "schedule_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The start field is empty",
+              param: "breakStart",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The break number of minutes field is empty",
+              param: "numberMinutes",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -243,32 +249,35 @@ describe("Resource => Break", () => {
           .send(newBreakNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: 9769231419,
-          },
-          {
-            location: "body",
-            msg: "The schedule id is not valid",
-            param: "schedule_id",
-            value: 9769231419,
-          },
-          {
-            location: "body",
-            msg: "start value is not valid",
-            param: "breakStart",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "break number of minutes value is not valid",
-            param: "numberMinutes",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: 9769231419,
+            },
+            {
+              location: "body",
+              msg: "The schedule id is not valid",
+              param: "schedule_id",
+              value: 9769231419,
+            },
+            {
+              location: "body",
+              msg: "start value is not valid",
+              param: "breakStart",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "break number of minutes value is not valid",
+              param: "numberMinutes",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -296,20 +305,23 @@ describe("Resource => Break", () => {
           .send(newBreakWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The break start time must not exceed 9 digits",
-            param: "breakStart",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The break number of minutes must not exceed 9 digits",
-            param: "numberMinutes",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The break start time must not exceed 9 digits",
+              param: "breakStart",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The break number of minutes must not exceed 9 digits",
+              param: "numberMinutes",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -339,6 +351,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The school shift start must exceed 11:59 p.m.",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
@@ -369,6 +382,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the schedule exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(findSchedule).toHaveBeenCalled();
@@ -399,6 +413,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the schedule belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchedule).toHaveBeenCalled();
@@ -429,6 +444,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please take into account that the break start time cannot be earlier than the schedule start time",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchedule).toHaveBeenCalled();
@@ -459,6 +475,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Break not created!",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchedule).toHaveBeenCalled();
@@ -520,13 +537,16 @@ describe("Resource => Break", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findBreaks).not.toHaveBeenCalled();
           expect(findBreaks).not.toHaveBeenCalledWith(
@@ -549,14 +569,17 @@ describe("Resource => Break", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findBreaks).not.toHaveBeenCalled();
           expect(findBreaks).not.toHaveBeenCalledWith(
@@ -579,14 +602,17 @@ describe("Resource => Break", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findBreaks).not.toHaveBeenCalled();
           expect(findBreaks).not.toHaveBeenCalledWith(
@@ -609,7 +635,10 @@ describe("Resource => Break", () => {
             .send({ school_id: otherValidMockId });
 
           // assertions
-          expect(body).toStrictEqual({ msg: "No breaks found" });
+          expect(body).toStrictEqual({
+            msg: "No breaks found",
+            success: false,
+          });
           expect(statusCode).toBe(404);
           expect(findBreaks).toHaveBeenCalled();
           expect(findBreaks).toHaveBeenCalledWith(
@@ -676,13 +705,16 @@ describe("Resource => Break", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findBreak).not.toHaveBeenCalled();
           expect(findBreak).not.toHaveBeenCalledWith(
@@ -705,14 +737,17 @@ describe("Resource => Break", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findBreak).not.toHaveBeenCalled();
           expect(findBreak).not.toHaveBeenCalledWith(
@@ -735,20 +770,23 @@ describe("Resource => Break", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The break id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The break id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findBreak).not.toHaveBeenCalled();
           expect(findBreak).not.toHaveBeenCalledWith(
@@ -773,6 +811,7 @@ describe("Resource => Break", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "Break not found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findBreak).toHaveBeenCalled();
@@ -827,28 +866,31 @@ describe("Resource => Break", () => {
           .send(newBreakMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the schedule id",
-            param: "schedule_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the break day start time",
-            param: "breakStart",
-          },
-          {
-            location: "body",
-            msg: "Please add the break number of minutes",
-            param: "numberMinutes",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the schedule id",
+              param: "schedule_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the break day start time",
+              param: "breakStart",
+            },
+            {
+              location: "body",
+              msg: "Please add the break number of minutes",
+              param: "numberMinutes",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -879,32 +921,35 @@ describe("Resource => Break", () => {
           .send(newBreakEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The schedule id field is empty",
-            param: "schedule_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The start field is empty",
-            param: "breakStart",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The break number of minutes field is empty",
-            param: "numberMinutes",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The schedule id field is empty",
+              param: "schedule_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The start field is empty",
+              param: "breakStart",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The break number of minutes field is empty",
+              param: "numberMinutes",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -935,38 +980,41 @@ describe("Resource => Break", () => {
           .send(newBreakNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The break id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: 9769231419,
-          },
-          {
-            location: "body",
-            msg: "The schedule id is not valid",
-            param: "schedule_id",
-            value: 9769231419,
-          },
-          {
-            location: "body",
-            msg: "start value is not valid",
-            param: "breakStart",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "break number of minutes value is not valid",
-            param: "numberMinutes",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The break id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: 9769231419,
+            },
+            {
+              location: "body",
+              msg: "The schedule id is not valid",
+              param: "schedule_id",
+              value: 9769231419,
+            },
+            {
+              location: "body",
+              msg: "start value is not valid",
+              param: "breakStart",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "break number of minutes value is not valid",
+              param: "numberMinutes",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -1000,20 +1048,23 @@ describe("Resource => Break", () => {
           .send(newBreakWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The break start time must not exceed 9 digits",
-            param: "breakStart",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The break start time must not exceed 9 digits",
-            param: "numberMinutes",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The break start time must not exceed 9 digits",
+              param: "breakStart",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The break start time must not exceed 9 digits",
+              param: "numberMinutes",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
@@ -1049,6 +1100,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The school shift start must exceed 11:59 p.m.",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchedule).not.toHaveBeenCalled();
@@ -1082,6 +1134,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the schedule exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(findSchedule).toHaveBeenCalled();
@@ -1115,6 +1168,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the schedule belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchedule).toHaveBeenCalled();
@@ -1148,6 +1202,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please take into account that the break start time cannot be earlier than the schedule start time",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchedule).toHaveBeenCalled();
@@ -1181,6 +1236,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Break not updated",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findSchedule).toHaveBeenCalled();
@@ -1244,13 +1300,16 @@ describe("Resource => Break", () => {
           .send({ school_i: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteBreak).not.toHaveBeenCalled();
         expect(deleteBreak).not.toHaveBeenCalledWith({
@@ -1270,14 +1329,17 @@ describe("Resource => Break", () => {
           .send({ school_id: "" });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteBreak).not.toHaveBeenCalled();
         expect(deleteBreak).not.toHaveBeenCalledWith({
@@ -1297,20 +1359,23 @@ describe("Resource => Break", () => {
           .send({ school_id: invalidMockId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The break id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The break id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteBreak).not.toHaveBeenCalled();
         expect(deleteBreak).not.toHaveBeenCalledWith({
@@ -1330,7 +1395,10 @@ describe("Resource => Break", () => {
           .send({ school_id: otherValidMockId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Break not deleted" });
+        expect(body).toStrictEqual({
+          msg: "Break not deleted",
+          success: false,
+        });
         expect(statusCode).toBe(404);
         expect(deleteBreak).toHaveBeenCalled();
         expect(deleteBreak).toHaveBeenCalledWith({

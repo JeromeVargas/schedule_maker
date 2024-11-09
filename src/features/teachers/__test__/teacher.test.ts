@@ -246,79 +246,82 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacherMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the user's school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacher`s user id",
-            param: "user_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacher`s contract type",
-            param: "contractType",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of teaching hours assignable to the teacher",
-            param: "teachingHoursAssignable",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of teaching hours assigned to the teacher",
-            param: "teachingHoursAssigned",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of admin hours assignable to the teacher",
-            param: "adminHoursAssignable",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of admin hours assigned to the teacher",
-            param: "adminHoursAssigned",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Mondays",
-            param: "monday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Tuesdays",
-            param: "tuesday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Wednesdays",
-            param: "wednesday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Thursdays",
-            param: "thursday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Fridays",
-            param: "friday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Saturdays",
-            param: "saturday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Sundays",
-            param: "sunday",
-            // param: "sunday",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the user's school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacher`s user id",
+              param: "user_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacher`s contract type",
+              param: "contractType",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of teaching hours assignable to the teacher",
+              param: "teachingHoursAssignable",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of teaching hours assigned to the teacher",
+              param: "teachingHoursAssigned",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of admin hours assignable to the teacher",
+              param: "adminHoursAssignable",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of admin hours assigned to the teacher",
+              param: "adminHoursAssigned",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Mondays",
+              param: "monday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Tuesdays",
+              param: "tuesday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Wednesdays",
+              param: "wednesday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Thursdays",
+              param: "thursday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Fridays",
+              param: "friday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Saturdays",
+              param: "saturday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Sundays",
+              param: "sunday",
+              // param: "sunday",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
         expect(duplicateTeacher).not.toHaveBeenCalledWith(
@@ -358,92 +361,95 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacherEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacher's user id field is empty",
-            param: "user_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The contract type field is empty",
-            param: "contractType",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teaching hours assignable field is empty",
-            param: "teachingHoursAssignable",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teaching hours assigned field is empty",
-            param: "teachingHoursAssigned",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The admin hours assignable field is empty",
-            param: "adminHoursAssignable",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The admin hours assigned field is empty",
-            param: "adminHoursAssigned",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The monday field is empty",
-            param: "monday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The tuesday field is empty",
-            param: "tuesday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The wednesday field is empty",
-            param: "wednesday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The thursday field is empty",
-            param: "thursday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The friday field is empty",
-            param: "friday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The saturday field is empty",
-            param: "saturday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The sunday field is empty",
-            param: "sunday",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacher's user id field is empty",
+              param: "user_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The contract type field is empty",
+              param: "contractType",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teaching hours assignable field is empty",
+              param: "teachingHoursAssignable",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teaching hours assigned field is empty",
+              param: "teachingHoursAssigned",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The admin hours assignable field is empty",
+              param: "adminHoursAssignable",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The admin hours assigned field is empty",
+              param: "adminHoursAssigned",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The monday field is empty",
+              param: "monday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The tuesday field is empty",
+              param: "tuesday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The wednesday field is empty",
+              param: "wednesday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The thursday field is empty",
+              param: "thursday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The friday field is empty",
+              param: "friday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The saturday field is empty",
+              param: "saturday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The sunday field is empty",
+              param: "sunday",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
         expect(duplicateTeacher).not.toHaveBeenCalledWith(
@@ -483,92 +489,95 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacherNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The teacher's user id is not valid",
-            param: "user_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "contract type is not valid",
-            param: "contractType",
-            value: true,
-          },
-          {
-            location: "body",
-            msg: "teaching hours assignable value is not valid",
-            param: "teachingHoursAssignable",
-            value: "house",
-          },
-          {
-            location: "body",
-            msg: "teaching hours assigned value is not valid",
-            param: "teachingHoursAssigned",
-            value: "three3",
-          },
-          {
-            location: "body",
-            msg: "admin hours assignable value is not valid",
-            param: "adminHoursAssignable",
-            value: "house",
-          },
-          {
-            location: "body",
-            msg: "admin hours assigned value is not valid",
-            param: "adminHoursAssigned",
-            value: "three3",
-          },
-          {
-            location: "body",
-            msg: "monday value is not valid",
-            param: "monday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "tuesday value is not valid",
-            param: "tuesday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "wednesday value is not valid",
-            param: "wednesday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "thursday value is not valid",
-            param: "thursday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "friday value is not valid",
-            param: "friday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "saturday value is not valid",
-            param: "saturday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "sunday value is not valid",
-            param: "sunday",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacher's user id is not valid",
+              param: "user_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "contract type is not valid",
+              param: "contractType",
+              value: true,
+            },
+            {
+              location: "body",
+              msg: "teaching hours assignable value is not valid",
+              param: "teachingHoursAssignable",
+              value: "house",
+            },
+            {
+              location: "body",
+              msg: "teaching hours assigned value is not valid",
+              param: "teachingHoursAssigned",
+              value: "three3",
+            },
+            {
+              location: "body",
+              msg: "admin hours assignable value is not valid",
+              param: "adminHoursAssignable",
+              value: "house",
+            },
+            {
+              location: "body",
+              msg: "admin hours assigned value is not valid",
+              param: "adminHoursAssigned",
+              value: "three3",
+            },
+            {
+              location: "body",
+              msg: "monday value is not valid",
+              param: "monday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "tuesday value is not valid",
+              param: "tuesday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "wednesday value is not valid",
+              param: "wednesday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "thursday value is not valid",
+              param: "thursday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "friday value is not valid",
+              param: "friday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "saturday value is not valid",
+              param: "saturday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "sunday value is not valid",
+              param: "sunday",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
         expect(duplicateTeacher).not.toHaveBeenCalledWith(
@@ -610,32 +619,35 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacherWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "teaching hours assignable must not exceed 9 digits",
-            param: "teachingHoursAssignable",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "teaching hours assigned must not exceed 9 digits",
-            param: "teachingHoursAssigned",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "admin hours assignable must not exceed 9 digits",
-            param: "adminHoursAssignable",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "admin hours assigned must not exceed 9 digits",
-            param: "adminHoursAssigned",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "teaching hours assignable must not exceed 9 digits",
+              param: "teachingHoursAssignable",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "teaching hours assigned must not exceed 9 digits",
+              param: "teachingHoursAssigned",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "admin hours assignable must not exceed 9 digits",
+              param: "adminHoursAssignable",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "admin hours assigned must not exceed 9 digits",
+              param: "adminHoursAssigned",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
         expect(duplicateTeacher).not.toHaveBeenCalledWith(
@@ -677,14 +689,17 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacherWrongInputValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "the contract type provided is not a valid option",
-            param: "contractType",
-            value: "tiempo-completo",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "the contract type provided is not a valid option",
+              param: "contractType",
+              value: "tiempo-completo",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
         expect(duplicateTeacher).not.toHaveBeenCalledWith(
@@ -732,6 +747,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "total hours assignable must not exceed 70 hours",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
@@ -774,6 +790,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: `teaching hours assigned must not exceed the teaching hours assignable, ${newTeacher.teachingHoursAssignable} hours`,
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
@@ -813,6 +830,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: `admin hours assigned must not exceed the admin hours assignable, ${newTeacher.adminHoursAssignable} hours`,
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).not.toHaveBeenCalled();
@@ -852,6 +870,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "User is already a teacher",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateTeacher).toHaveBeenCalled();
@@ -891,6 +910,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please create the base user first",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).toHaveBeenCalled();
@@ -928,7 +948,10 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacher);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "The user is inactive" });
+        expect(body).toStrictEqual({
+          msg: "The user is inactive",
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).toHaveBeenCalled();
         expect(duplicateTeacher).toHaveBeenCalledWith(
@@ -967,6 +990,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass a user with a teacher function assignable role such as: teacher, coordinator or headmaster",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).toHaveBeenCalled();
@@ -1009,6 +1033,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the user's school is correct",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).toHaveBeenCalled();
@@ -1045,6 +1070,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Teacher not created",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacher).toHaveBeenCalled();
@@ -1115,13 +1141,16 @@ describe("RESOURCE => Teacher", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeachers).not.toHaveBeenCalled();
           expect(findTeachers).not.toHaveBeenCalledWith(
@@ -1144,14 +1173,17 @@ describe("RESOURCE => Teacher", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeachers).not.toHaveBeenCalled();
           expect(findTeachers).not.toHaveBeenCalledWith(
@@ -1174,14 +1206,17 @@ describe("RESOURCE => Teacher", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeachers).not.toHaveBeenCalled();
           expect(findTeachers).not.toHaveBeenCalledWith(
@@ -1206,6 +1241,7 @@ describe("RESOURCE => Teacher", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "No teachers found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findTeachers).toHaveBeenCalled();
@@ -1307,13 +1343,16 @@ describe("RESOURCE => Teacher", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeacher).not.toHaveBeenCalled();
           expect(findTeacher).not.toHaveBeenCalledWith(
@@ -1336,14 +1375,17 @@ describe("RESOURCE => Teacher", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeacher).not.toHaveBeenCalled();
           expect(findTeacher).not.toHaveBeenCalledWith(
@@ -1366,20 +1408,23 @@ describe("RESOURCE => Teacher", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The teacher id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The teacher id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeacher).not.toHaveBeenCalled();
           expect(findTeacher).not.toHaveBeenCalledWith(
@@ -1404,6 +1449,7 @@ describe("RESOURCE => Teacher", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "Teacher not found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findTeacher).toHaveBeenCalled();
@@ -1474,78 +1520,81 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacherMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacher's user id",
-            param: "user_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacher`s contract type",
-            param: "contractType",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of teaching hours assignable to the teacher",
-            param: "teachingHoursAssignable",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of teaching hours assigned to the teacher",
-            param: "teachingHoursAssigned",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of admin hours assignable to the teacher",
-            param: "adminHoursAssignable",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of admin hours assigned to the teacher",
-            param: "adminHoursAssigned",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Mondays",
-            param: "monday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Tuesdays",
-            param: "tuesday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Wednesdays",
-            param: "wednesday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Thursdays",
-            param: "thursday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Fridays",
-            param: "friday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Saturdays",
-            param: "saturday",
-          },
-          {
-            location: "body",
-            msg: "Please add if the teacher is available to work on Sundays",
-            param: "sunday",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacher's user id",
+              param: "user_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacher`s contract type",
+              param: "contractType",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of teaching hours assignable to the teacher",
+              param: "teachingHoursAssignable",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of teaching hours assigned to the teacher",
+              param: "teachingHoursAssigned",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of admin hours assignable to the teacher",
+              param: "adminHoursAssignable",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of admin hours assigned to the teacher",
+              param: "adminHoursAssigned",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Mondays",
+              param: "monday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Tuesdays",
+              param: "tuesday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Wednesdays",
+              param: "wednesday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Thursdays",
+              param: "thursday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Fridays",
+              param: "friday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Saturdays",
+              param: "saturday",
+            },
+            {
+              location: "body",
+              msg: "Please add if the teacher is available to work on Sundays",
+              param: "sunday",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findUser).not.toHaveBeenCalled();
         expect(findUser).not.toHaveBeenCalledWith(
@@ -1582,92 +1631,95 @@ describe("RESOURCE => Teacher", () => {
           .put(`${endPointUrl}${validMockUserId}`)
           .send(newTeacherEmptyValues);
         //assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacher`s user id field is empty",
-            param: "user_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The contract type field is empty",
-            param: "contractType",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teaching hours assignable field is empty",
-            param: "teachingHoursAssignable",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teaching hours assigned field is empty",
-            param: "teachingHoursAssigned",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The admin hours assignable field is empty",
-            param: "adminHoursAssignable",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The admin hours assigned field is empty",
-            param: "adminHoursAssigned",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The monday field is empty",
-            param: "monday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The tuesday field is empty",
-            param: "tuesday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The wednesday field is empty",
-            param: "wednesday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The thursday field is empty",
-            param: "thursday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The friday field is empty",
-            param: "friday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The saturday field is empty",
-            param: "saturday",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The sunday field is empty",
-            param: "sunday",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacher`s user id field is empty",
+              param: "user_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The contract type field is empty",
+              param: "contractType",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teaching hours assignable field is empty",
+              param: "teachingHoursAssignable",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teaching hours assigned field is empty",
+              param: "teachingHoursAssigned",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The admin hours assignable field is empty",
+              param: "adminHoursAssignable",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The admin hours assigned field is empty",
+              param: "adminHoursAssigned",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The monday field is empty",
+              param: "monday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The tuesday field is empty",
+              param: "tuesday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The wednesday field is empty",
+              param: "wednesday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The thursday field is empty",
+              param: "thursday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The friday field is empty",
+              param: "friday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The saturday field is empty",
+              param: "saturday",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The sunday field is empty",
+              param: "sunday",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findUser).not.toHaveBeenCalled();
         expect(findUser).not.toHaveBeenCalledWith(
@@ -1705,98 +1757,101 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacherNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The teacher's id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The teacher's user id is not valid",
-            param: "user_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "contract type is not valid",
-            param: "contractType",
-            value: true,
-          },
-          {
-            location: "body",
-            msg: "teaching hours assignable value is not valid",
-            param: "teachingHoursAssignable",
-            value: "house",
-          },
-          {
-            location: "body",
-            msg: "teaching hours assigned value is not valid",
-            param: "teachingHoursAssigned",
-            value: "three3",
-          },
-          {
-            location: "body",
-            msg: "admin hours assignable value is not valid",
-            param: "adminHoursAssignable",
-            value: "house",
-          },
-          {
-            location: "body",
-            msg: "admin hours assigned value is not valid",
-            param: "adminHoursAssigned",
-            value: "three3",
-          },
-          {
-            location: "body",
-            msg: "monday value is not valid",
-            param: "monday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "tuesday value is not valid",
-            param: "tuesday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "wednesday value is not valid",
-            param: "wednesday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "thursday value is not valid",
-            param: "thursday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "friday value is not valid",
-            param: "friday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "saturday value is not valid",
-            param: "saturday",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "sunday value is not valid",
-            param: "sunday",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The teacher's id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacher's user id is not valid",
+              param: "user_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "contract type is not valid",
+              param: "contractType",
+              value: true,
+            },
+            {
+              location: "body",
+              msg: "teaching hours assignable value is not valid",
+              param: "teachingHoursAssignable",
+              value: "house",
+            },
+            {
+              location: "body",
+              msg: "teaching hours assigned value is not valid",
+              param: "teachingHoursAssigned",
+              value: "three3",
+            },
+            {
+              location: "body",
+              msg: "admin hours assignable value is not valid",
+              param: "adminHoursAssignable",
+              value: "house",
+            },
+            {
+              location: "body",
+              msg: "admin hours assigned value is not valid",
+              param: "adminHoursAssigned",
+              value: "three3",
+            },
+            {
+              location: "body",
+              msg: "monday value is not valid",
+              param: "monday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "tuesday value is not valid",
+              param: "tuesday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "wednesday value is not valid",
+              param: "wednesday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "thursday value is not valid",
+              param: "thursday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "friday value is not valid",
+              param: "friday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "saturday value is not valid",
+              param: "saturday",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "sunday value is not valid",
+              param: "sunday",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findUser).not.toHaveBeenCalled();
         expect(findUser).not.toHaveBeenCalledWith(
@@ -1834,32 +1889,35 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacherWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "teaching hours assignable must not exceed 9 digits",
-            param: "teachingHoursAssignable",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "teaching hours assigned must not exceed 9 digits",
-            param: "teachingHoursAssigned",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "admin hours assignable must not exceed 9 digits",
-            param: "adminHoursAssignable",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "admin hours assigned must not exceed 9 digits",
-            param: "adminHoursAssigned",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "teaching hours assignable must not exceed 9 digits",
+              param: "teachingHoursAssignable",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "teaching hours assigned must not exceed 9 digits",
+              param: "teachingHoursAssigned",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "admin hours assignable must not exceed 9 digits",
+              param: "adminHoursAssignable",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "admin hours assigned must not exceed 9 digits",
+              param: "adminHoursAssigned",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findUser).not.toHaveBeenCalled();
         expect(findUser).not.toHaveBeenCalledWith(
@@ -1897,14 +1955,17 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacherWrongInputValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "the contract type provided is not a valid option",
-            param: "contractType",
-            value: "tiempo-completo",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "the contract type provided is not a valid option",
+              param: "contractType",
+              value: "tiempo-completo",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findUser).not.toHaveBeenCalled();
         expect(findUser).not.toHaveBeenCalledWith(
@@ -1948,6 +2009,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "total hours assignable must not exceed 70 hours",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findUser).not.toHaveBeenCalled();
@@ -1988,6 +2050,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: `teaching hours assigned must not exceed the teaching hours assignable, ${newTeacher.teachingHoursAssignable} hours`,
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findUser).not.toHaveBeenCalled();
@@ -2028,6 +2091,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: `admin hours assigned must not exceed the admin hours assignable, ${newTeacher.adminHoursAssignable} hours`,
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findUser).not.toHaveBeenCalled();
@@ -2068,6 +2132,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please create the base user first",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findUser).toHaveBeenCalled();
@@ -2111,6 +2176,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The user is inactive",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findUser).toHaveBeenCalled();
@@ -2154,6 +2220,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass a user with a teacher function assignable role such as: teacher, coordinator or headmaster",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findUser).toHaveBeenCalled();
@@ -2197,6 +2264,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the user's school is correct",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findUser).toHaveBeenCalled();
@@ -2234,6 +2302,7 @@ describe("RESOURCE => Teacher", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Teacher not updated",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findUser).toHaveBeenCalled();
@@ -2308,13 +2377,16 @@ describe("RESOURCE => Teacher", () => {
           });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
@@ -2339,14 +2411,17 @@ describe("RESOURCE => Teacher", () => {
           });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
@@ -2371,20 +2446,23 @@ describe("RESOURCE => Teacher", () => {
           });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The teacher's id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The teacher's id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
@@ -2409,7 +2487,10 @@ describe("RESOURCE => Teacher", () => {
           });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Teacher not deleted" });
+        expect(body).toStrictEqual({
+          msg: "Teacher not deleted",
+          success: false,
+        });
         expect(statusCode).toBe(404);
         expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({

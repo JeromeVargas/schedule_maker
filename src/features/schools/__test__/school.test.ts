@@ -108,23 +108,26 @@ describe("RESOURCE => School", () => {
           .send(newSchoolMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school name",
-            param: "name",
-          },
-          {
-            location: "body",
-            msg: "Please add the group max number of students",
-            param: "groupMaxNumStudents",
-          },
-          {
-            location: "body",
-            msg: "Please add the school's current status",
-            param: "status",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school name",
+              param: "name",
+            },
+            {
+              location: "body",
+              msg: "Please add the group max number of students",
+              param: "groupMaxNumStudents",
+            },
+            {
+              location: "body",
+              msg: "Please add the school's current status",
+              param: "status",
+            },
+          ],
+          success: false,
+        });
 
         expect(statusCode).toBe(400);
         expect(duplicateSchoolName).not.toHaveBeenCalled();
@@ -151,26 +154,29 @@ describe("RESOURCE => School", () => {
           .send(newSchoolEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school name field is empty",
-            param: "name",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The group max number of students field is empty",
-            param: "groupMaxNumStudents",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The status field is empty",
-            param: "status",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school name field is empty",
+              param: "name",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The group max number of students field is empty",
+              param: "groupMaxNumStudents",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The status field is empty",
+              param: "status",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSchoolName).not.toHaveBeenCalled();
         expect(duplicateSchoolName).not.toHaveBeenCalledWith(
@@ -196,26 +202,29 @@ describe("RESOURCE => School", () => {
           .send(newSchoolNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school name is not valid",
-            param: "name",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "group max number of students value is not valid",
-            param: "groupMaxNumStudents",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "status is not valid",
-            param: "status",
-            value: 123456789,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school name is not valid",
+              param: "name",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "group max number of students value is not valid",
+              param: "groupMaxNumStudents",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "status is not valid",
+              param: "status",
+              value: 123456789,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSchoolName).not.toHaveBeenCalled();
         expect(duplicateSchoolName).not.toHaveBeenCalledWith(
@@ -241,21 +250,24 @@ describe("RESOURCE => School", () => {
           .send(newSchoolWrongLengthValues);
 
         //assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The name must not exceed 100 characters",
-            param: "name",
-            value:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          },
-          {
-            location: "body",
-            msg: "group max number of students must not exceed 9 digits",
-            param: "groupMaxNumStudents",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+            {
+              location: "body",
+              msg: "group max number of students must not exceed 9 digits",
+              param: "groupMaxNumStudents",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSchoolName).not.toHaveBeenCalled();
         expect(duplicateSchoolName).not.toHaveBeenCalledWith(
@@ -281,14 +293,17 @@ describe("RESOURCE => School", () => {
           .send({ ...newSchool, status: "hello" });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "the status provided is not a valid option",
-            param: "status",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "the status provided is not a valid option",
+              param: "status",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSchoolName).not.toHaveBeenCalled();
         expect(duplicateSchoolName).not.toHaveBeenCalledWith(
@@ -316,6 +331,7 @@ describe("RESOURCE => School", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "This school name already exists",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateSchoolName).toHaveBeenCalled();
@@ -344,6 +360,7 @@ describe("RESOURCE => School", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "School not created",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateSchoolName).toHaveBeenCalled();
@@ -401,6 +418,7 @@ describe("RESOURCE => School", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "No schools found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findSchools).toHaveBeenCalled();
@@ -456,14 +474,17 @@ describe("RESOURCE => School", () => {
               .send();
 
             // assertions
-            expect(body).toStrictEqual([
-              {
-                location: "params",
-                msg: "The school id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-            ]);
+            expect(body).toStrictEqual({
+              msg: [
+                {
+                  location: "params",
+                  msg: "The school id is not valid",
+                  param: "id",
+                  value: invalidMockId,
+                },
+              ],
+              success: false,
+            });
             expect(statusCode).toBe(400);
             expect(findSchool).not.toHaveBeenCalled();
             expect(findSchool).not.toHaveBeenCalledWith(
@@ -485,6 +506,7 @@ describe("RESOURCE => School", () => {
             // assertions
             expect(body).toStrictEqual({
               msg: "School not found",
+              success: false,
             });
             expect(statusCode).toBe(404);
             expect(findSchool).toHaveBeenCalled();
@@ -538,23 +560,26 @@ describe("RESOURCE => School", () => {
             .send(newSchoolMissingValues);
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a name",
-              param: "name",
-            },
-            {
-              location: "body",
-              msg: "Please add the group max number of students",
-              param: "groupMaxNumStudents",
-            },
-            {
-              location: "body",
-              msg: "Please add the school's current status",
-              param: "status",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a name",
+                param: "name",
+              },
+              {
+                location: "body",
+                msg: "Please add the group max number of students",
+                param: "groupMaxNumStudents",
+              },
+              {
+                location: "body",
+                msg: "Please add the school's current status",
+                param: "status",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
@@ -583,26 +608,29 @@ describe("RESOURCE => School", () => {
             .send(newSchoolEmptyValues);
 
           //assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The name field is empty",
-              param: "name",
-              value: "",
-            },
-            {
-              location: "body",
-              msg: "The group max number of students field is empty",
-              param: "groupMaxNumStudents",
-              value: "",
-            },
-            {
-              location: "body",
-              msg: "The status field is empty",
-              param: "status",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The name field is empty",
+                param: "name",
+                value: "",
+              },
+              {
+                location: "body",
+                msg: "The group max number of students field is empty",
+                param: "groupMaxNumStudents",
+                value: "",
+              },
+              {
+                location: "body",
+                msg: "The status field is empty",
+                param: "status",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
@@ -631,32 +659,35 @@ describe("RESOURCE => School", () => {
             .send(newSchoolNotValidDataTypes);
 
           //assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The school id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school name is not valid",
-              param: "name",
-              value: 1234567890,
-            },
-            {
-              location: "body",
-              msg: "group max number of students value is not valid",
-              param: "groupMaxNumStudents",
-              value: "hello",
-            },
-            {
-              location: "body",
-              msg: "status is not valid",
-              param: "status",
-              value: 123456789,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The school id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school name is not valid",
+                param: "name",
+                value: 1234567890,
+              },
+              {
+                location: "body",
+                msg: "group max number of students value is not valid",
+                param: "groupMaxNumStudents",
+                value: "hello",
+              },
+              {
+                location: "body",
+                msg: "status is not valid",
+                param: "status",
+                value: 123456789,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
@@ -685,21 +716,24 @@ describe("RESOURCE => School", () => {
             .send(newSchoolWrongLengthValues);
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The name must not exceed 100 characters",
-              param: "name",
-              value:
-                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-            },
-            {
-              location: "body",
-              msg: "group max number of students must not exceed 9 digits",
-              param: "groupMaxNumStudents",
-              value: 1234567890,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The name must not exceed 100 characters",
+                param: "name",
+                value:
+                  "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+              },
+              {
+                location: "body",
+                msg: "group max number of students must not exceed 9 digits",
+                param: "groupMaxNumStudents",
+                value: 1234567890,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
@@ -728,14 +762,17 @@ describe("RESOURCE => School", () => {
             .send({ ...newSchool, status: "hello" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "the status provided is not a valid option",
-              param: "status",
-              value: "hello",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "the status provided is not a valid option",
+                param: "status",
+                value: "hello",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
@@ -766,6 +803,7 @@ describe("RESOURCE => School", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "This school name already exists",
+            success: false,
           });
           expect(statusCode).toBe(409);
           expect(duplicateSchoolName).toHaveBeenCalled();
@@ -797,6 +835,7 @@ describe("RESOURCE => School", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "School not updated",
+            success: false,
           });
           expect(statusCode).toBe(400);
           expect(duplicateSchoolName).toHaveBeenCalled();
@@ -854,14 +893,17 @@ describe("RESOURCE => School", () => {
             .send();
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The school id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The school id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(deleteSchool).not.toHaveBeenCalled();
           expect(deleteSchool).not.toHaveBeenCalledWith(validMockSchoolId);
@@ -880,6 +922,7 @@ describe("RESOURCE => School", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "School not deleted",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(deleteSchool).toHaveBeenCalled();
