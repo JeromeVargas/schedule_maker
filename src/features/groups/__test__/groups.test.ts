@@ -582,7 +582,7 @@ describe("Resource => Group", () => {
           .send(newGroup);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Group created!" });
+        expect(body).toStrictEqual({ msg: "Group created!", success: true });
         expect(statusCode).toBe(200);
         expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
@@ -739,7 +739,7 @@ describe("Resource => Group", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(groupsPayload);
+          expect(body).toStrictEqual({ payload: groupsPayload, success: true });
           expect(statusCode).toBe(200);
           expect(findGroups).toHaveBeenCalled();
           expect(findGroups).toHaveBeenCalledWith(
@@ -891,7 +891,7 @@ describe("Resource => Group", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(groupPayload);
+          expect(body).toStrictEqual({ payload: groupPayload, success: true });
           expect(statusCode).toBe(200);
           expect(findGroup).toHaveBeenCalled();
           expect(findGroup).toHaveBeenCalledWith(
@@ -1409,6 +1409,7 @@ describe("Resource => Group", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Group updated!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateGroupName).toHaveBeenCalled();
@@ -1566,7 +1567,7 @@ describe("Resource => Group", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Group deleted" });
+        expect(body).toStrictEqual({ msg: "Group deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteGroup).toHaveBeenCalled();
         expect(deleteGroup).toHaveBeenCalledWith({

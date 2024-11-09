@@ -403,6 +403,7 @@ describe("RESOURCE => Field", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Field created successfully!",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(findSchool).toHaveBeenCalled();
@@ -558,23 +559,26 @@ describe("RESOURCE => Field", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              name: "Mathematics",
-              school_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              name: "Language",
-              school_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              name: "Physics",
-              school_id: expect.any(String),
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                name: "Mathematics",
+                school_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                name: "Language",
+                school_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                name: "Physics",
+                school_id: expect.any(String),
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findFields).toHaveBeenCalled();
           expect(findFields).toHaveBeenCalledWith(
@@ -727,9 +731,12 @@ describe("RESOURCE => Field", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            _id: validMockFieldId,
-            school_id: validMockSchoolId,
-            name: "Mathematics",
+            payload: {
+              _id: validMockFieldId,
+              school_id: validMockSchoolId,
+              name: "Mathematics",
+            },
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findField).toHaveBeenCalled();
@@ -1020,7 +1027,7 @@ describe("RESOURCE => Field", () => {
           .send(newField);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Field updated" });
+        expect(body).toStrictEqual({ msg: "Field updated", success: true });
         expect(statusCode).toBe(200);
         expect(findFieldNameDuplicateByPropertyService).toHaveBeenCalled();
         expect(findFieldNameDuplicateByPropertyService).toHaveBeenCalledWith(
@@ -1163,10 +1170,10 @@ describe("RESOURCE => Field", () => {
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockFieldId}`)
-          .send({ school_id: validMockSchoolId });
+          .send({ school_id: validMockSchoolId, success: true });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Field deleted" });
+        expect(body).toStrictEqual({ msg: "Field deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteField).toHaveBeenCalled();
         expect(deleteField).toHaveBeenCalledWith({

@@ -791,6 +791,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Subject created!",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -958,7 +959,10 @@ describe("Resource => subject", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(subjectsPayload);
+          expect(body).toStrictEqual({
+            payload: subjectsPayload,
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findSubjects).toHaveBeenCalled();
           expect(findSubjects).toHaveBeenCalledWith(
@@ -1113,7 +1117,10 @@ describe("Resource => subject", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(subjectPayload);
+          expect(body).toStrictEqual({
+            payload: subjectPayload,
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findSubject).toHaveBeenCalled();
           expect(findSubject).toHaveBeenCalledWith(
@@ -1853,6 +1860,7 @@ describe("Resource => subject", () => {
         // assertions;f
         expect(body).toStrictEqual({
           msg: "Subject updated!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -2032,7 +2040,7 @@ describe("Resource => subject", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Subject deleted" });
+        expect(body).toStrictEqual({ msg: "Subject deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteSubject).toHaveBeenCalled();
         expect(deleteSubject).toHaveBeenCalledWith({

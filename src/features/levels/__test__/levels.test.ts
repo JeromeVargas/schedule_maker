@@ -540,6 +540,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Level created!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -697,7 +698,7 @@ describe("Resource => Level", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(levelsPayload);
+          expect(body).toStrictEqual({ payload: levelsPayload, success: true });
           expect(statusCode).toBe(200);
           expect(findLevels).toHaveBeenCalled();
           expect(findLevels).toHaveBeenCalledWith(
@@ -849,7 +850,7 @@ describe("Resource => Level", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(levelPayload);
+          expect(body).toStrictEqual({ payload: levelPayload, success: true });
           expect(statusCode).toBe(200);
           expect(findLevel).toHaveBeenCalled();
           expect(findLevel).toHaveBeenCalledWith(
@@ -1307,6 +1308,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Level updated!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -1461,7 +1463,7 @@ describe("Resource => Level", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Level deleted" });
+        expect(body).toStrictEqual({ msg: "Level deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteLevel).toHaveBeenCalled();
         expect(deleteLevel).toHaveBeenCalledWith({

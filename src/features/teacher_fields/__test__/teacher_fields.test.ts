@@ -807,6 +807,7 @@ describe("RESOURCE => Teacher_field", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Field has been successfully assigned the to teacher",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(duplicateTeacherField).toHaveBeenCalled();
@@ -978,26 +979,29 @@ describe("RESOURCE => Teacher_field", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              field_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              field_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              field_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                field_id: expect.any(String),
+                school_id: expect.any(String),
+                teacher_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                field_id: expect.any(String),
+                school_id: expect.any(String),
+                teacher_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                field_id: expect.any(String),
+                school_id: expect.any(String),
+                teacher_id: expect.any(String),
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findTeacherFields).toHaveBeenCalled();
           expect(findTeacherFields).toHaveBeenCalledWith(
@@ -1156,10 +1160,13 @@ describe("RESOURCE => Teacher_field", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            _id: validMockTeacherFieldId,
-            field_id: validMockFieldId,
-            school_id: validMockSchoolId,
-            teacher_id: validMockTeacherId,
+            payload: {
+              _id: validMockTeacherFieldId,
+              field_id: validMockFieldId,
+              school_id: validMockSchoolId,
+              teacher_id: validMockTeacherId,
+            },
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findTeacherField).toHaveBeenCalled();
@@ -1918,6 +1925,7 @@ describe("RESOURCE => Teacher_field", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The teacher has been successfully assigned the updated field",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateTeacherField).toHaveBeenCalled();
@@ -2101,7 +2109,10 @@ describe("RESOURCE => Teacher_field", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Teacher_Field deleted" });
+        expect(body).toStrictEqual({
+          msg: "Teacher_Field deleted",
+          success: true,
+        });
         expect(statusCode).toBe(200);
         expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({

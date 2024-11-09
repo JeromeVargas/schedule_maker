@@ -389,6 +389,7 @@ describe("RESOURCE => School", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "School created successfully!",
+          success: true,
         });
 
         expect(statusCode).toBe(201);
@@ -436,26 +437,29 @@ describe("RESOURCE => School", () => {
             .send();
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              name: "school 001",
-              groupMaxNumStudents: 40,
-              status: "active",
-            },
-            {
-              _id: expect.any(String),
-              name: "school 002",
-              groupMaxNumStudents: 40,
-              status: "active",
-            },
-            {
-              _id: expect.any(String),
-              name: "school 003",
-              groupMaxNumStudents: 40,
-              status: "inactive",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                name: "school 001",
+                groupMaxNumStudents: 40,
+                status: "active",
+              },
+              {
+                _id: expect.any(String),
+                name: "school 002",
+                groupMaxNumStudents: 40,
+                status: "active",
+              },
+              {
+                _id: expect.any(String),
+                name: "school 003",
+                groupMaxNumStudents: 40,
+                status: "inactive",
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findSchools).toHaveBeenCalled();
           expect(findSchools).toHaveBeenCalledWith("-createdAt -updatedAt");
@@ -528,10 +532,13 @@ describe("RESOURCE => School", () => {
 
             // assertions
             expect(body).toStrictEqual({
-              _id: validMockSchoolId,
-              name: "school 001",
-              groupMaxNumStudents: 40,
-              status: "active",
+              payload: {
+                _id: validMockSchoolId,
+                name: "school 001",
+                groupMaxNumStudents: 40,
+                status: "active",
+              },
+              success: true,
             });
             expect(statusCode).toBe(200);
             expect(findSchool).toHaveBeenCalled();
@@ -865,7 +872,7 @@ describe("RESOURCE => School", () => {
             .send(newSchool);
 
           // assertions
-          expect(body).toStrictEqual({ msg: "School updated" });
+          expect(body).toStrictEqual({ msg: "School updated", success: true });
           expect(statusCode).toBe(200);
           expect(duplicateSchoolName).toHaveBeenCalled();
           expect(duplicateSchoolName).toHaveBeenCalledWith(
@@ -940,7 +947,7 @@ describe("RESOURCE => School", () => {
             .send();
 
           // assertions
-          expect(body).toStrictEqual({ msg: "School deleted" });
+          expect(body).toStrictEqual({ msg: "School deleted", success: true });
           expect(statusCode).toBe(200);
           expect(deleteSchool).toHaveBeenCalled();
           expect(deleteSchool).toHaveBeenCalledWith(validMockSchoolId);

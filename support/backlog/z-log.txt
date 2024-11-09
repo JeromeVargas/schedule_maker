@@ -1,11 +1,12 @@
 Back end:
 
-// Todo --> add success message
+// Todo --> stabilize payloads in tests
 // Todo --> check how the soft delete of the school affects other entities controllers
 // Todo --> tests, validators, controllers and routes labeling might not be scalable
 // Todo --> type the entities params when need it instead of comments with params types, maybe use zod
 // Todo --> check if the empty just toBeCalled are necessary since you already have toBeCalledWith that might replace it
 // Todo --> refactor the test to not be attached to the implementation but the results, maybe use in-memory-mongo-db or something similar
+// Todo --> add linter
 // Todo --> update cross-env from global to development
 // Todo --> make sure populate does not go into production, maybe work on a file to be call on the terminal, there is some issue with the modules, maybe try something different form ts-node
 

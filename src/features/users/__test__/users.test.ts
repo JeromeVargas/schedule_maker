@@ -716,7 +716,10 @@ describe("RESOURCE => User", () => {
           .send(newUser);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "User created successfully!" });
+        expect(body).toStrictEqual({
+          msg: "User created successfully!",
+          success: true,
+        });
         expect(statusCode).toBe(201);
         expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
@@ -864,38 +867,41 @@ describe("RESOURCE => User", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              email: "jerome@gmail.com",
-              firstName: "Jerome",
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                email: "jerome@gmail.com",
+                firstName: "Jerome",
 
-              lastName: "Vargas",
-              role: "headmaster",
-              school_id: expect.any(String),
-              status: "inactive",
-            },
-            {
-              _id: expect.any(String),
-              email: "dave@hotmail.com",
-              firstName: "Dave",
+                lastName: "Vargas",
+                role: "headmaster",
+                school_id: expect.any(String),
+                status: "inactive",
+              },
+              {
+                _id: expect.any(String),
+                email: "dave@hotmail.com",
+                firstName: "Dave",
 
-              lastName: "Gray",
-              role: "coordinator",
-              school_id: expect.any(String),
-              status: "active",
-            },
-            {
-              _id: expect.any(String),
-              email: "ania@yahoo.com",
-              firstName: "Ania",
+                lastName: "Gray",
+                role: "coordinator",
+                school_id: expect.any(String),
+                status: "active",
+              },
+              {
+                _id: expect.any(String),
+                email: "ania@yahoo.com",
+                firstName: "Ania",
 
-              lastName: "Kubow",
-              role: "teacher",
-              school_id: expect.any(String),
-              status: "on_leave",
-            },
-          ]);
+                lastName: "Kubow",
+                role: "teacher",
+                school_id: expect.any(String),
+                status: "on_leave",
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findUsers).toHaveBeenCalled();
           expect(findUsers).toHaveBeenCalledWith(
@@ -1036,13 +1042,16 @@ describe("RESOURCE => User", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            _id: validMockUserId,
-            school_id: validMockSchoolId,
-            firstName: "Jerome",
-            lastName: "Vargas",
-            email: "jerome@gmail.com",
-            status: "active",
-            role: "coordinator",
+            payload: {
+              _id: validMockUserId,
+              school_id: validMockSchoolId,
+              firstName: "Jerome",
+              lastName: "Vargas",
+              email: "jerome@gmail.com",
+              status: "active",
+              role: "coordinator",
+            },
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findUser).toHaveBeenCalled();
@@ -1573,7 +1582,7 @@ describe("RESOURCE => User", () => {
           .send(newUser);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "User updated" });
+        expect(body).toStrictEqual({ msg: "User updated", success: true });
         expect(statusCode).toBe(200);
         expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
@@ -1724,7 +1733,7 @@ describe("RESOURCE => User", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "User deleted" });
+        expect(body).toStrictEqual({ msg: "User deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteUser).toHaveBeenCalled();
         expect(deleteUser).toHaveBeenCalledWith({

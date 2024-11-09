@@ -1105,7 +1105,10 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacher);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Teacher created successfully!" });
+        expect(body).toStrictEqual({
+          msg: "Teacher created successfully!",
+          success: true,
+        });
         expect(statusCode).toBe(201);
         expect(duplicateTeacher).toHaveBeenCalled();
         expect(duplicateTeacher).toHaveBeenCalledWith(
@@ -1265,60 +1268,62 @@ describe("RESOURCE => Teacher", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              contractType: "full-time",
-
-              teachingHoursAssignable: 35,
-              teachingHoursAssigned: 35,
-              adminHoursAssignable: 35,
-              adminHoursAssigned: 35,
-              school_id: expect.any(String),
-              user_id: expect.any(String),
-              monday: true,
-              tuesday: true,
-              wednesday: true,
-              thursday: true,
-              friday: true,
-              saturday: true,
-              sunday: true,
-            },
-            {
-              _id: expect.any(String),
-              contractType: "part-time",
-              teachingHoursAssignable: 35,
-              teachingHoursAssigned: 35,
-              adminHoursAssignable: 35,
-              adminHoursAssigned: 35,
-              school_id: expect.any(String),
-              user_id: expect.any(String),
-              monday: true,
-              tuesday: true,
-              wednesday: true,
-              thursday: true,
-              friday: true,
-              saturday: true,
-              sunday: true,
-            },
-            {
-              _id: expect.any(String),
-              contractType: "substitute",
-              teachingHoursAssignable: 35,
-              teachingHoursAssigned: 35,
-              adminHoursAssignable: 35,
-              adminHoursAssigned: 35,
-              school_id: expect.any(String),
-              user_id: expect.any(String),
-              monday: true,
-              tuesday: true,
-              wednesday: true,
-              thursday: true,
-              friday: true,
-              saturday: true,
-              sunday: true,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                contractType: "full-time",
+                teachingHoursAssignable: 35,
+                teachingHoursAssigned: 35,
+                adminHoursAssignable: 35,
+                adminHoursAssigned: 35,
+                school_id: expect.any(String),
+                user_id: expect.any(String),
+                monday: true,
+                tuesday: true,
+                wednesday: true,
+                thursday: true,
+                friday: true,
+                saturday: true,
+                sunday: true,
+              },
+              {
+                _id: expect.any(String),
+                contractType: "part-time",
+                teachingHoursAssignable: 35,
+                teachingHoursAssigned: 35,
+                adminHoursAssignable: 35,
+                adminHoursAssigned: 35,
+                school_id: expect.any(String),
+                user_id: expect.any(String),
+                monday: true,
+                tuesday: true,
+                wednesday: true,
+                thursday: true,
+                friday: true,
+                saturday: true,
+                sunday: true,
+              },
+              {
+                _id: expect.any(String),
+                contractType: "substitute",
+                teachingHoursAssignable: 35,
+                teachingHoursAssigned: 35,
+                adminHoursAssignable: 35,
+                adminHoursAssigned: 35,
+                school_id: expect.any(String),
+                user_id: expect.any(String),
+                monday: true,
+                tuesday: true,
+                wednesday: true,
+                thursday: true,
+                friday: true,
+                saturday: true,
+                sunday: true,
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findTeachers).toHaveBeenCalled();
           expect(findTeachers).toHaveBeenCalledWith(
@@ -1475,21 +1480,24 @@ describe("RESOURCE => Teacher", () => {
           // assertions
           expect(statusCode).toBe(200);
           expect(body).toStrictEqual({
-            _id: validMockTeacherId,
-            school_id: validMockSchoolId,
-            user_id: validMockUserId,
-            contractType: "full-time",
-            teachingHoursAssignable: 35,
-            teachingHoursAssigned: 35,
-            adminHoursAssignable: 35,
-            adminHoursAssigned: 35,
-            monday: true,
-            tuesday: true,
-            wednesday: true,
-            thursday: true,
-            friday: true,
-            saturday: true,
-            sunday: true,
+            payload: {
+              _id: validMockTeacherId,
+              school_id: validMockSchoolId,
+              user_id: validMockUserId,
+              contractType: "full-time",
+              teachingHoursAssignable: 35,
+              teachingHoursAssigned: 35,
+              adminHoursAssignable: 35,
+              adminHoursAssigned: 35,
+              monday: true,
+              tuesday: true,
+              wednesday: true,
+              thursday: true,
+              friday: true,
+              saturday: true,
+              sunday: true,
+            },
+            success: true,
           });
           expect(findTeacher).toHaveBeenCalled();
           expect(findTeacher).toHaveBeenCalledWith(
@@ -2338,7 +2346,7 @@ describe("RESOURCE => Teacher", () => {
           .send(newTeacher);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Teacher updated" });
+        expect(body).toStrictEqual({ msg: "Teacher updated", success: true });
         expect(statusCode).toBe(200);
         expect(findUser).toHaveBeenCalled();
         expect(findUser).toHaveBeenCalledWith(
@@ -2515,7 +2523,7 @@ describe("RESOURCE => Teacher", () => {
           });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Teacher deleted" });
+        expect(body).toStrictEqual({ msg: "Teacher deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({

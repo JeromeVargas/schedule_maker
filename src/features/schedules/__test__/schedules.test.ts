@@ -772,6 +772,7 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Schedule created successfully!",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(findSchool).toHaveBeenCalled();
@@ -930,53 +931,56 @@ describe("Resource => Schedule", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              sessionUnitMinutes: 40,
-              dayStart: 420,
-              friday: true,
-              monday: true,
-              name: "Schedule 001",
-              shiftNumberMinutes: 360,
-              saturday: true,
-              sunday: true,
-              thursday: true,
-              tuesday: true,
-              wednesday: true,
-            },
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              sessionUnitMinutes: 40,
-              dayStart: 420,
-              friday: true,
-              monday: true,
-              name: "Schedule 002",
-              shiftNumberMinutes: 360,
-              saturday: true,
-              sunday: true,
-              thursday: true,
-              tuesday: true,
-              wednesday: true,
-            },
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              sessionUnitMinutes: 40,
-              dayStart: 420,
-              friday: true,
-              monday: true,
-              name: "Schedule 003",
-              shiftNumberMinutes: 360,
-              saturday: true,
-              sunday: true,
-              thursday: true,
-              tuesday: true,
-              wednesday: true,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                sessionUnitMinutes: 40,
+                dayStart: 420,
+                friday: true,
+                monday: true,
+                name: "Schedule 001",
+                shiftNumberMinutes: 360,
+                saturday: true,
+                sunday: true,
+                thursday: true,
+                tuesday: true,
+                wednesday: true,
+              },
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                sessionUnitMinutes: 40,
+                dayStart: 420,
+                friday: true,
+                monday: true,
+                name: "Schedule 002",
+                shiftNumberMinutes: 360,
+                saturday: true,
+                sunday: true,
+                thursday: true,
+                tuesday: true,
+                wednesday: true,
+              },
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                sessionUnitMinutes: 40,
+                dayStart: 420,
+                friday: true,
+                monday: true,
+                name: "Schedule 003",
+                shiftNumberMinutes: 360,
+                saturday: true,
+                sunday: true,
+                thursday: true,
+                tuesday: true,
+                wednesday: true,
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findSchedules).toHaveBeenCalled();
           expect(findSchedules).toHaveBeenCalledWith(
@@ -1132,19 +1136,22 @@ describe("Resource => Schedule", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            _id: validMockScheduleId,
-            school_id: validMockSchoolId,
-            sessionUnitMinutes: 40,
-            dayStart: 420,
-            friday: true,
-            monday: true,
-            name: "Schedule 001",
-            shiftNumberMinutes: 360,
-            saturday: true,
-            sunday: true,
-            thursday: true,
-            tuesday: true,
-            wednesday: true,
+            payload: {
+              _id: validMockScheduleId,
+              school_id: validMockSchoolId,
+              sessionUnitMinutes: 40,
+              dayStart: 420,
+              friday: true,
+              monday: true,
+              name: "Schedule 001",
+              shiftNumberMinutes: 360,
+              saturday: true,
+              sunday: true,
+              thursday: true,
+              tuesday: true,
+              wednesday: true,
+            },
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findSchedule).toHaveBeenCalled();
@@ -1684,7 +1691,7 @@ describe("Resource => Schedule", () => {
           .send(newSchedule);
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Schedule updated" });
+        expect(body).toStrictEqual({ msg: "Schedule updated", success: true });
         expect(statusCode).toBe(200);
         expect(duplicateScheduleName).toHaveBeenCalled();
         expect(duplicateScheduleName).toHaveBeenCalledWith(
@@ -1902,7 +1909,7 @@ describe("Resource => Schedule", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Schedule deleted" });
+        expect(body).toStrictEqual({ msg: "Schedule deleted", success: true });
         expect(statusCode).toBe(200);
         expect(findAllLevels).toHaveBeenCalled();
         expect(findAllLevels).toHaveBeenCalledWith({

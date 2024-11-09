@@ -506,6 +506,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Break created!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(findSchedule).toHaveBeenCalled();
@@ -658,29 +659,32 @@ describe("Resource => Break", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              schedule_id: expect.any(String),
-              breakStart: 600,
-              numberMinutes: 40,
-            },
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              schedule_id: expect.any(String),
-              breakStart: 600,
-              numberMinutes: 20,
-            },
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              schedule_id: expect.any(String),
-              breakStart: 600,
-              numberMinutes: 30,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                schedule_id: expect.any(String),
+                breakStart: 600,
+                numberMinutes: 40,
+              },
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                schedule_id: expect.any(String),
+                breakStart: 600,
+                numberMinutes: 20,
+              },
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                schedule_id: expect.any(String),
+                breakStart: 600,
+                numberMinutes: 30,
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findBreaks).toHaveBeenCalled();
           expect(findBreaks).toHaveBeenCalledWith(
@@ -833,11 +837,14 @@ describe("Resource => Break", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            _id: validMockBreakId,
-            school_id: validMockSchoolId,
-            schedule_id: validMockScheduleId,
-            breakStart: 600,
-            numberMinutes: 40,
+            payload: {
+              _id: validMockBreakId,
+              school_id: validMockSchoolId,
+              schedule_id: validMockScheduleId,
+              breakStart: 600,
+              numberMinutes: 40,
+            },
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findBreak).toHaveBeenCalled();
@@ -1270,6 +1277,7 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Break updated!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(findSchedule).toHaveBeenCalled();
@@ -1418,7 +1426,7 @@ describe("Resource => Break", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Break deleted" });
+        expect(body).toStrictEqual({ msg: "Break deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteBreak).toHaveBeenCalled();
         expect(deleteBreak).toHaveBeenCalledWith({

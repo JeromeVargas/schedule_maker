@@ -876,6 +876,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Coordinator has been successfully assigned the to teacher",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -1039,26 +1040,29 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .get(`${endPointUrl}`)
             .send({ school_id: validMockSchoolId });
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              coordinator_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              coordinator_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              coordinator_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                coordinator_id: expect.any(String),
+                school_id: expect.any(String),
+                teacher_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                coordinator_id: expect.any(String),
+                school_id: expect.any(String),
+                teacher_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                coordinator_id: expect.any(String),
+                school_id: expect.any(String),
+                teacher_id: expect.any(String),
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findTeacherCoordinators).toHaveBeenCalled();
           expect(findTeacherCoordinators).toHaveBeenCalledWith(
@@ -1207,10 +1211,13 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .send({ school_id: validMockSchoolId });
           // assertions
           expect(body).toStrictEqual({
-            _id: validMockTeacherCoordinatorId,
-            coordinator_id: validMockCoordinatorId,
-            school_id: validMockSchoolId,
-            teacher_id: validMockTeacherId,
+            payload: {
+              _id: validMockTeacherCoordinatorId,
+              coordinator_id: validMockCoordinatorId,
+              school_id: validMockSchoolId,
+              teacher_id: validMockTeacherId,
+            },
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findTeacherCoordinator).toHaveBeenCalled();
@@ -2021,6 +2028,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The coordinator has been successfully assigned the updated teacher",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -2194,7 +2202,10 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .delete(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_id: validMockSchoolId });
         // assertions
-        expect(body).toStrictEqual({ msg: "Teacher_coordinator deleted" });
+        expect(body).toStrictEqual({
+          msg: "Teacher_coordinator deleted",
+          success: true,
+        });
         expect(statusCode).toBe(200);
         expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({

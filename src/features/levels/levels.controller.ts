@@ -62,7 +62,7 @@ export const createLevel = async ({ body }: Request, res: Response) => {
   if (!levelCreated) {
     throw new BadRequestError("Level not created!");
   }
-  res.status(StatusCodes.OK).json({ msg: "Level created!" });
+  res.status(StatusCodes.OK).json({ msg: "Level created!", success: true });
 };
 
 // @desc get all the Levels
@@ -80,7 +80,11 @@ export const getLevels = async ({ body }: Request, res: Response) => {
   if (levelsFound?.length === 0) {
     throw new NotFoundError("No levels found");
   }
-  res.status(StatusCodes.OK).json(levelsFound);
+  const response = {
+    payload: levelsFound,
+    success: true,
+  };
+  res.status(StatusCodes.OK).json(response);
 };
 
 // @desc get the Level by id
@@ -98,7 +102,11 @@ export const getLevel = async ({ params, body }: Request, res: Response) => {
   if (!levelFound) {
     throw new NotFoundError("Level not found");
   }
-  res.status(StatusCodes.OK).json(levelFound);
+  const response = {
+    payload: levelFound,
+    success: true,
+  };
+  res.status(StatusCodes.OK).json(response);
 };
 
 // @desc update a Level
@@ -153,7 +161,7 @@ export const updateLevel = async ({ params, body }: Request, res: Response) => {
   if (!levelUpdated) {
     throw new BadRequestError("Level not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "Level updated!" });
+  res.status(StatusCodes.OK).json({ msg: "Level updated!", success: true });
 };
 
 // @desc delete a Level
@@ -170,5 +178,5 @@ export const deleteLevel = async ({ params, body }: Request, res: Response) => {
   if (!levelDeleted) {
     throw new NotFoundError("Level not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Level deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Level deleted", success: true });
 };

@@ -1988,6 +1988,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Session created!",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -2164,44 +2165,47 @@ describe("Resource => Session", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              level_id: expect.any(String),
-              groupCoordinator_id: expect.any(String),
-              group_id: expect.any(String),
-              subject_id: expect.any(String),
-              teacherField_id: expect.any(String),
-              startTime: 420,
-              groupScheduleSlot: 2,
-              teacherScheduleSlot: 2,
-            },
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              level_id: expect.any(String),
-              groupCoordinator_id: expect.any(String),
-              group_id: expect.any(String),
-              subject_id: expect.any(String),
-              teacherField_id: expect.any(String),
-              startTime: 420,
-              groupScheduleSlot: 2,
-              teacherScheduleSlot: 2,
-            },
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              level_id: expect.any(String),
-              groupCoordinator_id: expect.any(String),
-              group_id: expect.any(String),
-              subject_id: expect.any(String),
-              teacherField_id: expect.any(String),
-              startTime: 420,
-              groupScheduleSlot: 2,
-              teacherScheduleSlot: 2,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                level_id: expect.any(String),
+                groupCoordinator_id: expect.any(String),
+                group_id: expect.any(String),
+                subject_id: expect.any(String),
+                teacherField_id: expect.any(String),
+                startTime: 420,
+                groupScheduleSlot: 2,
+                teacherScheduleSlot: 2,
+              },
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                level_id: expect.any(String),
+                groupCoordinator_id: expect.any(String),
+                group_id: expect.any(String),
+                subject_id: expect.any(String),
+                teacherField_id: expect.any(String),
+                startTime: 420,
+                groupScheduleSlot: 2,
+                teacherScheduleSlot: 2,
+              },
+              {
+                _id: expect.any(String),
+                school_id: expect.any(String),
+                level_id: expect.any(String),
+                groupCoordinator_id: expect.any(String),
+                group_id: expect.any(String),
+                subject_id: expect.any(String),
+                teacherField_id: expect.any(String),
+                startTime: 420,
+                groupScheduleSlot: 2,
+                teacherScheduleSlot: 2,
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findSessions).toHaveBeenCalled();
           expect(findSessions).toHaveBeenCalledWith(
@@ -2357,16 +2361,19 @@ describe("Resource => Session", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            _id: expect.any(String),
-            school_id: expect.any(String),
-            level_id: expect.any(String),
-            groupCoordinator_id: expect.any(String),
-            group_id: expect.any(String),
-            subject_id: expect.any(String),
-            teacherField_id: expect.any(String),
-            startTime: 420,
-            groupScheduleSlot: 2,
-            teacherScheduleSlot: 2,
+            payload: {
+              _id: expect.any(String),
+              school_id: expect.any(String),
+              level_id: expect.any(String),
+              groupCoordinator_id: expect.any(String),
+              group_id: expect.any(String),
+              subject_id: expect.any(String),
+              teacherField_id: expect.any(String),
+              startTime: 420,
+              groupScheduleSlot: 2,
+              teacherScheduleSlot: 2,
+            },
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findSession).toHaveBeenCalled();
@@ -4275,6 +4282,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Session updated!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -4463,7 +4471,7 @@ describe("Resource => Session", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Session deleted" });
+        expect(body).toStrictEqual({ msg: "Session deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteSession).toHaveBeenCalled();
         expect(deleteSession).toHaveBeenCalledWith({

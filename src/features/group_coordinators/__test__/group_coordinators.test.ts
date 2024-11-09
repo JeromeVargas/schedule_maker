@@ -857,6 +857,7 @@ describe("RESOURCE => Group_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Coordinator has been successfully assigned the to group",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(duplicateGroupCoordinator).toHaveBeenCalled();
@@ -1024,26 +1025,29 @@ describe("RESOURCE => Group_coordinator", () => {
             .get(`${endPointUrl}`)
             .send({ school_id: validMockSchoolId });
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              coordinator_id: expect.any(String),
-              school_id: expect.any(String),
-              group_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              coordinator_id: expect.any(String),
-              school_id: expect.any(String),
-              group_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              coordinator_id: expect.any(String),
-              school_id: expect.any(String),
-              group_id: expect.any(String),
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: [
+              {
+                _id: expect.any(String),
+                coordinator_id: expect.any(String),
+                school_id: expect.any(String),
+                group_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                coordinator_id: expect.any(String),
+                school_id: expect.any(String),
+                group_id: expect.any(String),
+              },
+              {
+                _id: expect.any(String),
+                coordinator_id: expect.any(String),
+                school_id: expect.any(String),
+                group_id: expect.any(String),
+              },
+            ],
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findGroupCoordinators).toHaveBeenCalled();
           expect(findGroupCoordinators).toHaveBeenCalledWith(
@@ -1192,10 +1196,13 @@ describe("RESOURCE => Group_coordinator", () => {
             .send({ school_id: validMockSchoolId });
           // assertions
           expect(body).toStrictEqual({
-            _id: validMockGroupCoordinatorId,
-            coordinator_id: validMockCoordinatorId,
-            school_id: validMockSchoolId,
-            group_id: validMockGroupId,
+            payload: {
+              _id: validMockGroupCoordinatorId,
+              coordinator_id: validMockCoordinatorId,
+              school_id: validMockSchoolId,
+              group_id: validMockGroupId,
+            },
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1984,6 +1991,7 @@ describe("RESOURCE => Group_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The coordinator has been successfully assigned the updated group",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateGroupCoordinator).toHaveBeenCalled();
@@ -2157,7 +2165,10 @@ describe("RESOURCE => Group_coordinator", () => {
           .delete(`${endPointUrl}${validMockGroupCoordinatorId}`)
           .send({ school_id: validMockSchoolId });
         // assertions
-        expect(body).toStrictEqual({ msg: "Group_coordinator deleted" });
+        expect(body).toStrictEqual({
+          msg: "Group_coordinator deleted",
+          success: true,
+        });
         expect(statusCode).toBe(200);
         expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({
