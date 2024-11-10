@@ -83,9 +83,10 @@ export const createTeacherField = async ({ body }: Request, res: Response) => {
   if (!teacherFieldCreated) {
     throw new BadRequestError("Field has not been assigned the to teacher");
   }
-  res
-    .status(StatusCodes.CREATED)
-    .json({ msg: "Field has been successfully assigned the to teacher" });
+  res.status(StatusCodes.CREATED).json({
+    msg: "Field has been successfully assigned the to teacher",
+    success: true,
+  });
 };
 
 // @desc get all the teacher_fields
@@ -106,7 +107,10 @@ export const getTeacherFields = async ({ body }: Request, res: Response) => {
   if (teacherFieldsFound?.length === 0) {
     throw new NotFoundError("No fields assigned to any teachers yet");
   }
-  res.status(StatusCodes.OK).json(teacherFieldsFound);
+  res.status(StatusCodes.OK).json({
+    payload: teacherFieldsFound,
+    success: true,
+  });
 };
 
 // @desc get the teacher_field by id
@@ -130,7 +134,10 @@ export const getTeacherField = async (
   if (!teacherFieldFound) {
     throw new NotFoundError("Teacher_Field not found");
   }
-  res.status(StatusCodes.OK).json(teacherFieldFound);
+  res.status(StatusCodes.OK).json({
+    payload: teacherFieldFound,
+    success: true,
+  });
 };
 
 // @desc update a teacher_field
@@ -217,6 +224,7 @@ export const updateTeacherField = async (
   }
   res.status(StatusCodes.OK).json({
     msg: "The teacher has been successfully assigned the updated field",
+    success: true,
   });
 };
 
@@ -237,5 +245,7 @@ export const deleteTeacherField = async (
   if (!fieldDeleted) {
     throw new NotFoundError("Teacher_Field not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Teacher_Field deleted" });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Teacher_Field deleted", success: true });
 };

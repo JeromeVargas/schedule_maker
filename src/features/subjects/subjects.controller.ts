@@ -85,7 +85,9 @@ export const createSubject = async ({ body }: Request, res: Response) => {
   if (!subjectCreated) {
     throw new BadRequestError("Subject not created!");
   }
-  res.status(StatusCodes.CREATED).json({ msg: "Subject created!" });
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "Subject created!", success: true });
 };
 
 // @desc get all the Subjects
@@ -103,7 +105,10 @@ export const getSubjects = async ({ body }: Request, res: Response) => {
   if (subjectsFound?.length === 0) {
     throw new NotFoundError("No subjects found");
   }
-  res.status(StatusCodes.OK).json(subjectsFound);
+  res.status(StatusCodes.OK).json({
+    payload: subjectsFound,
+    success: true,
+  });
 };
 
 // @desc get the Subject by id
@@ -124,7 +129,10 @@ export const getSubject = async ({ params, body }: Request, res: Response) => {
   if (!subjectFound) {
     throw new NotFoundError("Subject not found");
   }
-  res.status(StatusCodes.OK).json(subjectFound);
+  res.status(StatusCodes.OK).json({
+    payload: subjectFound,
+    success: true,
+  });
 };
 
 // @desc update a Subject
@@ -207,7 +215,7 @@ export const updateSubject = async (
   if (!subjectUpdated) {
     throw new BadRequestError("Subject not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "Subject updated!" });
+  res.status(StatusCodes.OK).json({ msg: "Subject updated!", success: true });
 };
 
 // @desc delete a Subject
@@ -227,5 +235,5 @@ export const deleteSubject = async (
   if (!subjectDeleted) {
     throw new NotFoundError("Subject not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Subject deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Subject deleted", success: true });
 };

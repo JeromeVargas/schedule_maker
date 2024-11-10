@@ -138,23 +138,26 @@ describe("Resource => Level", () => {
           .send(newLevelMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the schedule id",
-            param: "schedule_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a level name",
-            param: "name",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the schedule id",
+              param: "schedule_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a level name",
+              param: "name",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
@@ -196,26 +199,29 @@ describe("Resource => Level", () => {
           .send(newLevelEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The schedule id field is empty",
-            param: "schedule_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The level name field is empty",
-            param: "name",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The schedule id field is empty",
+              param: "schedule_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The level name field is empty",
+              param: "name",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
@@ -255,26 +261,29 @@ describe("Resource => Level", () => {
           .send(newLevelNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The schedule id is not valid",
-            param: "schedule_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The level name is not valid",
-            param: "name",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The schedule id is not valid",
+              param: "schedule_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The level name is not valid",
+              param: "name",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
@@ -316,15 +325,18 @@ describe("Resource => Level", () => {
           .send(newLevelWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The level name must not exceed 100 characters",
-            param: "name",
-            value:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The level name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
@@ -368,6 +380,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "This level name already exists",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -407,6 +420,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the schedule exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -446,6 +460,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the schedule belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -485,6 +500,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Level not created!",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -524,6 +540,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Level created!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -560,13 +577,16 @@ describe("Resource => Level", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findLevels).not.toHaveBeenCalled();
           expect(findLevels).not.toHaveBeenCalledWith(
@@ -589,14 +609,17 @@ describe("Resource => Level", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findLevels).not.toHaveBeenCalled();
           expect(findLevels).not.toHaveBeenCalledWith(
@@ -619,14 +642,17 @@ describe("Resource => Level", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findLevels).not.toHaveBeenCalled();
           expect(findLevels).not.toHaveBeenCalledWith(
@@ -649,7 +675,10 @@ describe("Resource => Level", () => {
             .send({ school_id: otherValidMockId });
 
           // assertions
-          expect(body).toStrictEqual({ msg: "No levels found" });
+          expect(body).toStrictEqual({
+            msg: "No levels found",
+            success: false,
+          });
           expect(statusCode).toBe(404);
           expect(findLevels).toHaveBeenCalled();
           expect(findLevels).toHaveBeenCalledWith(
@@ -669,7 +698,7 @@ describe("Resource => Level", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(levelsPayload);
+          expect(body).toStrictEqual({ payload: levelsPayload, success: true });
           expect(statusCode).toBe(200);
           expect(findLevels).toHaveBeenCalled();
           expect(findLevels).toHaveBeenCalledWith(
@@ -694,13 +723,16 @@ describe("Resource => Level", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findLevel).not.toHaveBeenCalled();
           expect(findLevel).not.toHaveBeenCalledWith(
@@ -723,14 +755,17 @@ describe("Resource => Level", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findLevel).not.toHaveBeenCalled();
           expect(findLevel).not.toHaveBeenCalledWith(
@@ -753,20 +788,23 @@ describe("Resource => Level", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The level id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The level id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findLevel).not.toHaveBeenCalled();
           expect(findLevel).not.toHaveBeenCalledWith(
@@ -791,6 +829,7 @@ describe("Resource => Level", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "Level not found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findLevel).toHaveBeenCalled();
@@ -811,7 +850,7 @@ describe("Resource => Level", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(levelPayload);
+          expect(body).toStrictEqual({ payload: levelPayload, success: true });
           expect(statusCode).toBe(200);
           expect(findLevel).toHaveBeenCalled();
           expect(findLevel).toHaveBeenCalledWith(
@@ -843,23 +882,26 @@ describe("Resource => Level", () => {
           .send(newLevelMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the schedule id",
-            param: "schedule_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a level name",
-            param: "name",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the schedule id",
+              param: "schedule_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a level name",
+              param: "name",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
@@ -902,26 +944,29 @@ describe("Resource => Level", () => {
           .send(newLevelEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The schedule id field is empty",
-            param: "schedule_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The level name field is empty",
-            param: "name",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The schedule id field is empty",
+              param: "schedule_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The level name field is empty",
+              param: "name",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
@@ -964,32 +1009,35 @@ describe("Resource => Level", () => {
           .send(newLevelNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The level id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The schedule id is not valid",
-            param: "schedule_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The level name is not valid",
-            param: "name",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The level id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The schedule id is not valid",
+              param: "schedule_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The level name is not valid",
+              param: "name",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
@@ -1032,15 +1080,18 @@ describe("Resource => Level", () => {
           .send(newLevelWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The level name must not exceed 100 characters",
-            param: "name",
-            value:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The level name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
@@ -1088,6 +1139,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "This level name already exists!",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -1127,6 +1179,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the schedule exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -1169,6 +1222,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the schedule belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -1211,6 +1265,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Level not updated",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -1253,6 +1308,7 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Level updated!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateLevelName).toHaveBeenCalled();
@@ -1288,13 +1344,16 @@ describe("Resource => Level", () => {
           .send({ school_i: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteLevel).not.toHaveBeenCalled();
         expect(deleteLevel).not.toHaveBeenCalledWith({
@@ -1314,14 +1373,17 @@ describe("Resource => Level", () => {
           .send({ school_id: "" });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteLevel).not.toHaveBeenCalled();
         expect(deleteLevel).not.toHaveBeenCalledWith({
@@ -1341,20 +1403,23 @@ describe("Resource => Level", () => {
           .send({ school_id: invalidMockId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The level id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The level id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteLevel).not.toHaveBeenCalled();
         expect(deleteLevel).not.toHaveBeenCalledWith({
@@ -1375,7 +1440,10 @@ describe("Resource => Level", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Level not deleted" });
+        expect(body).toStrictEqual({
+          msg: "Level not deleted",
+          success: false,
+        });
         expect(statusCode).toBe(404);
         expect(deleteLevel).toHaveBeenCalled();
         expect(deleteLevel).toHaveBeenCalledWith({
@@ -1395,7 +1463,7 @@ describe("Resource => Level", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Level deleted" });
+        expect(body).toStrictEqual({ msg: "Level deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteLevel).toHaveBeenCalled();
         expect(deleteLevel).toHaveBeenCalledWith({

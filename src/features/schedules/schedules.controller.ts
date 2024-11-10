@@ -86,7 +86,7 @@ export const createSchedule = async ({ body }: Request, res: Response) => {
   }
   res
     .status(StatusCodes.CREATED)
-    .json({ msg: "Schedule created successfully!" });
+    .json({ msg: "Schedule created successfully!", success: true });
 };
 
 // @desc get all the Schedules
@@ -104,7 +104,7 @@ export const getSchedules = async ({ body }: Request, res: Response) => {
   if (schedulesFound?.length === 0) {
     throw new NotFoundError("No schedules found");
   }
-  res.status(StatusCodes.OK).json(schedulesFound);
+  res.status(StatusCodes.OK).json({ payload: schedulesFound, success: true });
 };
 
 // @desc get the Schedule by id
@@ -125,7 +125,7 @@ export const getSchedule = async ({ params, body }: Request, res: Response) => {
   if (!scheduleFound) {
     throw new NotFoundError("Schedule not found");
   }
-  res.status(StatusCodes.OK).json(scheduleFound);
+  res.status(StatusCodes.OK).json({ payload: scheduleFound, success: true });
 };
 
 // @desc update a Schedule
@@ -193,7 +193,7 @@ export const updateSchedule = async (
   if (!scheduleUpdated) {
     throw new BadRequestError("Schedule not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "Schedule updated" });
+  res.status(StatusCodes.OK).json({ msg: "Schedule updated", success: true });
 };
 
 // @desc delete a Schedule
@@ -224,5 +224,5 @@ export const deleteSchedule = async (
   if (!scheduleDeleted) {
     throw new NotFoundError("Schedule not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Schedule deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Schedule deleted", success: true });
 };

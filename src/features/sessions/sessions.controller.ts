@@ -195,7 +195,9 @@ export const createSession = async ({ body }: Request, res: Response) => {
   if (!sessionCreated) {
     throw new BadRequestError("Session not created");
   }
-  res.status(StatusCodes.CREATED).json({ msg: "Session created!" });
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "Session created!", success: true });
 };
 
 // @desc get all the sessions
@@ -213,7 +215,10 @@ export const getSessions = async ({ body }: Request, res: Response) => {
   if (sessionsFound?.length === 0) {
     throw new NotFoundError("No sessions found");
   }
-  res.status(StatusCodes.OK).json(sessionsFound);
+  res.status(StatusCodes.OK).json({
+    payload: sessionsFound,
+    success: true,
+  });
 };
 
 // @desc get the Session by id
@@ -234,7 +239,7 @@ export const getSession = async ({ params, body }: Request, res: Response) => {
   if (!sessionFound) {
     throw new NotFoundError("Session not found");
   }
-  res.status(StatusCodes.OK).json(sessionFound);
+  res.status(StatusCodes.OK).json({ payload: sessionFound, success: true });
 };
 
 // @desc update a Session
@@ -421,7 +426,7 @@ export const updateSession = async (
   if (!sessionUpdated) {
     throw new BadRequestError("Session not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "Session updated!" });
+  res.status(StatusCodes.OK).json({ msg: "Session updated!", success: true });
 };
 
 // @desc delete a Session
@@ -441,5 +446,5 @@ export const deleteSession = async (
   if (!sessionDeleted) {
     throw new NotFoundError("Session not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Session deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Session deleted", success: true });
 };

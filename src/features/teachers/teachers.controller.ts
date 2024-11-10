@@ -121,7 +121,7 @@ export const createTeacher = async ({ body }: Request, res: Response) => {
   }
   res
     .status(StatusCodes.CREATED)
-    .json({ msg: "Teacher created successfully!" });
+    .json({ msg: "Teacher created successfully!", success: true });
 };
 
 // @desc get all the users
@@ -139,7 +139,10 @@ export const getTeachers = async ({ body }: Request, res: Response) => {
   if (teachersFound?.length === 0) {
     throw new NotFoundError("No teachers found");
   }
-  res.status(StatusCodes.OK).json(teachersFound);
+  res.status(StatusCodes.OK).json({
+    payload: teachersFound,
+    success: true,
+  });
 };
 
 // @desc get the user by id
@@ -160,7 +163,10 @@ export const getTeacher = async ({ params, body }: Request, res: Response) => {
   if (!teacherFound) {
     throw new NotFoundError("Teacher not found");
   }
-  res.status(StatusCodes.OK).json(teacherFound);
+  res.status(StatusCodes.OK).json({
+    payload: teacherFound,
+    success: true,
+  });
 };
 
 // @desc update a user
@@ -264,7 +270,7 @@ export const updateTeacher = async (
   if (!teacherUpdated) {
     throw new BadRequestError("Teacher not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "Teacher updated" });
+  res.status(StatusCodes.OK).json({ msg: "Teacher updated", success: true });
 };
 
 // @desc delete a user
@@ -284,5 +290,5 @@ export const deleteTeacher = async (
   if (!fieldDeleted) {
     throw new NotFoundError("Teacher not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Teacher deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Teacher deleted", success: true });
 };

@@ -1,13 +1,13 @@
 Back end:
 
-// Todo --> simplify the error messages, do not send the entire message in production, make the more user-friendly, there is an issue with the mongo unique record rule on repeated values, it takes the server down
-// Todo --> add success confirmation boolean in the response message
 // Todo --> check how the soft delete of the school affects other entities controllers
-// Todo --> tests, validators, controllers and routes labeling might not be scalable
 // Todo --> check if the empty just toBeCalled are necessary since you already have toBeCalledWith that might replace it
+// Todo --> tests, validators, controllers and routes labeling might not be scalable
 // Todo --> type the entities params when need it instead of comments with params types, maybe use zod
 // Todo --> refactor the test to not be attached to the implementation but the results, maybe use in-memory-mongo-db or something similar
-// Todo --> make sure populate does not go into production, maybe work on a file to be call on the terminal, there is some issue with the modules, maybe try something different form ts-node
+// Todo --> add linter
+// Todo --> update cross-env from global to development dependency
+// Todo --> make sure populate does not go into production, maybe work on a file to be call on the terminal, there is some issue with the modules, maybe try something different from ts-node
 
 
 for later:

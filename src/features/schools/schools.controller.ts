@@ -40,7 +40,9 @@ export const createSchool = async ({ body }: Request, res: Response) => {
   if (!schoolCreated) {
     throw new BadRequestError("School not created");
   }
-  res.status(StatusCodes.CREATED).json({ msg: "School created successfully!" });
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "School created successfully!", success: true });
 };
 
 // @desc get all the schools
@@ -54,7 +56,7 @@ export const getSchools = async (req: Request, res: Response) => {
   if (schoolsFound?.length === 0) {
     throw new NotFoundError("No schools found");
   }
-  res.status(StatusCodes.OK).json(schoolsFound);
+  res.status(StatusCodes.OK).json({ payload: schoolsFound, success: true });
 };
 
 // @desc get the school by id
@@ -70,7 +72,7 @@ export const getSchool = async ({ params }: Request, res: Response) => {
   if (!schoolFound) {
     throw new NotFoundError("School not found");
   }
-  res.status(StatusCodes.OK).json(schoolFound);
+  res.status(StatusCodes.OK).json({ payload: schoolFound, success: true });
 };
 
 // @desc update a school
@@ -101,7 +103,7 @@ export const updateSchool = async (
   if (!schoolUpdated) {
     throw new BadRequestError("School not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "School updated" });
+  res.status(StatusCodes.OK).json({ msg: "School updated", success: true });
 };
 
 // @desc delete a school
@@ -116,5 +118,5 @@ export const deleteSchool = async ({ params }: Request, res: Response) => {
   if (!schoolDeleted) {
     throw new NotFoundError("School not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "School deleted" });
+  res.status(StatusCodes.OK).json({ msg: "School deleted", success: true });
 };

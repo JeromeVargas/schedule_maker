@@ -70,7 +70,7 @@ export const createGroup = async ({ body }: Request, res: Response) => {
   if (!groupCreated) {
     throw new BadRequestError("Group not created!");
   }
-  res.status(StatusCodes.OK).json({ msg: "Group created!" });
+  res.status(StatusCodes.OK).json({ msg: "Group created!", success: true });
 };
 
 // @desc get all the Groups
@@ -88,7 +88,10 @@ export const getGroups = async ({ body }: Request, res: Response) => {
   if (groupsFound?.length === 0) {
     throw new NotFoundError("No groups found");
   }
-  res.status(StatusCodes.OK).json(groupsFound);
+  res.status(StatusCodes.OK).json({
+    payload: groupsFound,
+    success: true,
+  });
 };
 
 // @desc get the Group by id
@@ -106,7 +109,10 @@ export const getGroup = async ({ params, body }: Request, res: Response) => {
   if (!groupFound) {
     throw new NotFoundError("Group not found");
   }
-  res.status(StatusCodes.OK).json(groupFound);
+  res.status(StatusCodes.OK).json({
+    payload: groupFound,
+    success: true,
+  });
 };
 
 // @desc update a Group
@@ -172,7 +178,7 @@ export const updateGroup = async ({ params, body }: Request, res: Response) => {
   if (!groupUpdated) {
     throw new BadRequestError("Group not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "Group updated!" });
+  res.status(StatusCodes.OK).json({ msg: "Group updated!", success: true });
 };
 
 // @desc delete a Group
@@ -189,5 +195,5 @@ export const deleteGroup = async ({ params, body }: Request, res: Response) => {
   if (!groupDeleted) {
     throw new NotFoundError("Group not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Group deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Group deleted", success: true });
 };

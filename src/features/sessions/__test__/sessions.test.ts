@@ -273,58 +273,61 @@ describe("Resource => Session", () => {
           .send(newSessionMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the level id",
-            param: "level_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the group id",
-            param: "group_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the groupCoordinator id",
-            param: "groupCoordinator_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacherCoordinator id",
-            param: "teacherCoordinator_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacher_field id",
-            param: "teacherField_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the subject id",
-            param: "subject_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the start time for the session",
-            param: "startTime",
-          },
-          {
-            location: "body",
-            msg: "Please add the group schedule slot number for this session",
-            param: "groupScheduleSlot",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacher schedule slot number for this session",
-            param: "teacherScheduleSlot",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the level id",
+              param: "level_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the group id",
+              param: "group_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the groupCoordinator id",
+              param: "groupCoordinator_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacherCoordinator id",
+              param: "teacherCoordinator_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacher_field id",
+              param: "teacherField_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the subject id",
+              param: "subject_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the start time for the session",
+              param: "startTime",
+            },
+            {
+              location: "body",
+              msg: "Please add the group schedule slot number for this session",
+              param: "groupScheduleSlot",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacher schedule slot number for this session",
+              param: "teacherScheduleSlot",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
@@ -385,68 +388,71 @@ describe("Resource => Session", () => {
           .send(newSessionEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The level id field is empty",
-            param: "level_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The group id field is empty",
-            param: "group_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The groupCoordinator id field is empty",
-            param: "groupCoordinator_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacherCoordinator id field is empty",
-            param: "teacherCoordinator_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacherField id teacher_field is empty",
-            param: "teacherField_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The subject id field is empty",
-            param: "subject_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The start time field is empty",
-            param: "startTime",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The group schedule slot number field is empty",
-            param: "groupScheduleSlot",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacher schedule slot number field is empty",
-            param: "teacherScheduleSlot",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The level id field is empty",
+              param: "level_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The group id field is empty",
+              param: "group_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The groupCoordinator id field is empty",
+              param: "groupCoordinator_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacherCoordinator id field is empty",
+              param: "teacherCoordinator_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacherField id teacher_field is empty",
+              param: "teacherField_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject id field is empty",
+              param: "subject_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The start time field is empty",
+              param: "startTime",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The group schedule slot number field is empty",
+              param: "groupScheduleSlot",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacher schedule slot number field is empty",
+              param: "teacherScheduleSlot",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
@@ -507,68 +513,71 @@ describe("Resource => Session", () => {
           .send(newSessionNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The level id is not valid",
-            param: "level_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The group id is not valid",
-            param: "group_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The groupCoordinator id is not valid",
-            param: "groupCoordinator_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The teacherCoordinator id is not valid",
-            param: "teacherCoordinator_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The teacher_field id is not valid",
-            param: "teacherField_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The subject id is not valid",
-            param: "subject_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "start time value is not valid",
-            param: "startTime",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "group schedule slot number value is not valid",
-            param: "groupScheduleSlot",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "teacher schedule slot number value is not valid",
-            param: "teacherScheduleSlot",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The level id is not valid",
+              param: "level_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The group id is not valid",
+              param: "group_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The groupCoordinator id is not valid",
+              param: "groupCoordinator_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacherCoordinator id is not valid",
+              param: "teacherCoordinator_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacher_field id is not valid",
+              param: "teacherField_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The subject id is not valid",
+              param: "subject_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "start time value is not valid",
+              param: "startTime",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "group schedule slot number value is not valid",
+              param: "groupScheduleSlot",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "teacher schedule slot number value is not valid",
+              param: "teacherScheduleSlot",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
@@ -631,26 +640,29 @@ describe("Resource => Session", () => {
           .send(newSessionWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The start time must not exceed 9 digits",
-            param: "startTime",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The group schedule slot number must not exceed 9 digits",
-            param: "groupScheduleSlot",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The teacher schedule slot number must not exceed 9 digits",
-            param: "teacherScheduleSlot",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The start time must not exceed 9 digits",
+              param: "startTime",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The group schedule slot number must not exceed 9 digits",
+              param: "groupScheduleSlot",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The teacher schedule slot number must not exceed 9 digits",
+              param: "teacherScheduleSlot",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
@@ -715,6 +727,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The session start time must not exceed 23:00",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
@@ -778,6 +791,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the group_coordinator assignment exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -848,6 +862,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the group_coordinator belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -920,6 +935,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the group belongs to the level",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -992,6 +1008,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the group is the same assigned to the coordinator",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1065,6 +1082,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass a user with a coordinator role",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1138,6 +1156,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass an active coordinator",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1201,6 +1220,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher_coordinator assignment exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1271,6 +1291,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher_coordinator belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1344,6 +1365,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the coordinator has been assigned to both the group and the teacher",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1407,6 +1429,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field_teacher assignment exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1477,6 +1500,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field assigned to the teacher belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1558,6 +1582,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher assigned to the coordinator is also assigned to the field",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1621,6 +1646,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the subject exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1691,6 +1717,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the subject belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1762,6 +1789,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the subject belongs to the level",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1832,6 +1860,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field assigned to teacher is the same in the parent subject",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1895,6 +1924,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Session not created",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -1958,6 +1988,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Session created!",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -2010,13 +2041,16 @@ describe("Resource => Session", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSessions).not.toHaveBeenCalled();
           expect(findSessions).not.toHaveBeenCalledWith(
@@ -2039,14 +2073,17 @@ describe("Resource => Session", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSessions).not.toHaveBeenCalled();
           expect(findSessions).not.toHaveBeenCalledWith(
@@ -2069,14 +2106,17 @@ describe("Resource => Session", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSessions).not.toHaveBeenCalled();
           expect(findSessions).not.toHaveBeenCalledWith(
@@ -2099,7 +2139,10 @@ describe("Resource => Session", () => {
             .send({ school_id: otherValidMockId });
 
           // assertions
-          expect(body).toStrictEqual({ msg: "No sessions found" });
+          expect(body).toStrictEqual({
+            msg: "No sessions found",
+            success: false,
+          });
           expect(statusCode).toBe(404);
           expect(findSessions).toHaveBeenCalled();
           expect(findSessions).toHaveBeenCalledWith(
@@ -2122,44 +2165,10 @@ describe("Resource => Session", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              level_id: expect.any(String),
-              groupCoordinator_id: expect.any(String),
-              group_id: expect.any(String),
-              subject_id: expect.any(String),
-              teacherField_id: expect.any(String),
-              startTime: 420,
-              groupScheduleSlot: 2,
-              teacherScheduleSlot: 2,
-            },
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              level_id: expect.any(String),
-              groupCoordinator_id: expect.any(String),
-              group_id: expect.any(String),
-              subject_id: expect.any(String),
-              teacherField_id: expect.any(String),
-              startTime: 420,
-              groupScheduleSlot: 2,
-              teacherScheduleSlot: 2,
-            },
-            {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              level_id: expect.any(String),
-              groupCoordinator_id: expect.any(String),
-              group_id: expect.any(String),
-              subject_id: expect.any(String),
-              teacherField_id: expect.any(String),
-              startTime: 420,
-              groupScheduleSlot: 2,
-              teacherScheduleSlot: 2,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: sessionsPayload,
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findSessions).toHaveBeenCalled();
           expect(findSessions).toHaveBeenCalledWith(
@@ -2184,13 +2193,16 @@ describe("Resource => Session", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSession).not.toHaveBeenCalled();
           expect(findSession).not.toHaveBeenCalledWith(
@@ -2213,14 +2225,17 @@ describe("Resource => Session", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSession).not.toHaveBeenCalled();
           expect(findSession).not.toHaveBeenCalledWith(
@@ -2243,20 +2258,23 @@ describe("Resource => Session", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The session id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The session id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSession).not.toHaveBeenCalled();
           expect(findSession).not.toHaveBeenCalledWith(
@@ -2281,6 +2299,7 @@ describe("Resource => Session", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "Session not found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findSession).toHaveBeenCalled();
@@ -2305,16 +2324,8 @@ describe("Resource => Session", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            _id: expect.any(String),
-            school_id: expect.any(String),
-            level_id: expect.any(String),
-            groupCoordinator_id: expect.any(String),
-            group_id: expect.any(String),
-            subject_id: expect.any(String),
-            teacherField_id: expect.any(String),
-            startTime: 420,
-            groupScheduleSlot: 2,
-            teacherScheduleSlot: 2,
+            payload: sessionPayload,
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findSession).toHaveBeenCalled();
@@ -2358,58 +2369,61 @@ describe("Resource => Session", () => {
           .send(newSessionMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the level id",
-            param: "level_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the group id",
-            param: "group_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the groupCoordinator id",
-            param: "groupCoordinator_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacherCoordinator id",
-            param: "teacherCoordinator_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacher_field id",
-            param: "teacherField_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the subject id",
-            param: "subject_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the start time for the session",
-            param: "startTime",
-          },
-          {
-            location: "body",
-            msg: "Please add the group schedule slot number for this session",
-            param: "groupScheduleSlot",
-          },
-          {
-            location: "body",
-            msg: "Please add the teacher schedule slot number for this session",
-            param: "teacherScheduleSlot",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the level id",
+              param: "level_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the group id",
+              param: "group_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the groupCoordinator id",
+              param: "groupCoordinator_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacherCoordinator id",
+              param: "teacherCoordinator_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacher_field id",
+              param: "teacherField_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the subject id",
+              param: "subject_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the start time for the session",
+              param: "startTime",
+            },
+            {
+              location: "body",
+              msg: "Please add the group schedule slot number for this session",
+              param: "groupScheduleSlot",
+            },
+            {
+              location: "body",
+              msg: "Please add the teacher schedule slot number for this session",
+              param: "teacherScheduleSlot",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
@@ -2479,68 +2493,71 @@ describe("Resource => Session", () => {
           .send(newSessionEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The level id field is empty",
-            param: "level_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The group id field is empty",
-            param: "group_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The groupCoordinator id field is empty",
-            param: "groupCoordinator_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacherCoordinator id field is empty",
-            param: "teacherCoordinator_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacherField id teacher_field is empty",
-            param: "teacherField_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The subject id field is empty",
-            param: "subject_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The start time field is empty",
-            param: "startTime",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The group schedule slot number field is empty",
-            param: "groupScheduleSlot",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacher schedule slot number field is empty",
-            param: "teacherScheduleSlot",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The level id field is empty",
+              param: "level_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The group id field is empty",
+              param: "group_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The groupCoordinator id field is empty",
+              param: "groupCoordinator_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacherCoordinator id field is empty",
+              param: "teacherCoordinator_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacherField id teacher_field is empty",
+              param: "teacherField_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject id field is empty",
+              param: "subject_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The start time field is empty",
+              param: "startTime",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The group schedule slot number field is empty",
+              param: "groupScheduleSlot",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacher schedule slot number field is empty",
+              param: "teacherScheduleSlot",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
@@ -2610,74 +2627,77 @@ describe("Resource => Session", () => {
           .send(newSessionNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The session id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The level id is not valid",
-            param: "level_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The group id is not valid",
-            param: "group_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The groupCoordinator id is not valid",
-            param: "groupCoordinator_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The teacherCoordinator id is not valid",
-            param: "teacherCoordinator_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The teacher_field id is not valid",
-            param: "teacherField_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The subject id is not valid",
-            param: "subject_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "start time value is not valid",
-            param: "startTime",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "group schedule slot number value is not valid",
-            param: "groupScheduleSlot",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "teacher schedule slot number value is not valid",
-            param: "teacherScheduleSlot",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The session id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The level id is not valid",
+              param: "level_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The group id is not valid",
+              param: "group_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The groupCoordinator id is not valid",
+              param: "groupCoordinator_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacherCoordinator id is not valid",
+              param: "teacherCoordinator_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacher_field id is not valid",
+              param: "teacherField_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The subject id is not valid",
+              param: "subject_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "start time value is not valid",
+              param: "startTime",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "group schedule slot number value is not valid",
+              param: "groupScheduleSlot",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "teacher schedule slot number value is not valid",
+              param: "teacherScheduleSlot",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
@@ -2747,26 +2767,29 @@ describe("Resource => Session", () => {
           .send(newSessionWrongLengthValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The start time must not exceed 9 digits",
-            param: "startTime",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The group schedule slot number must not exceed 9 digits",
-            param: "groupScheduleSlot",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The teacher schedule slot number must not exceed 9 digits",
-            param: "teacherScheduleSlot",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The start time must not exceed 9 digits",
+              param: "startTime",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The group schedule slot number must not exceed 9 digits",
+              param: "groupScheduleSlot",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The teacher schedule slot number must not exceed 9 digits",
+              param: "teacherScheduleSlot",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
@@ -2838,6 +2861,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The session start time must not exceed 23:00",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).not.toHaveBeenCalled();
@@ -2907,6 +2931,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the group_coordinator assignment exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -2983,6 +3008,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the group_coordinator belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3061,6 +3087,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the group belongs to the level",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3139,6 +3166,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the group is the same assigned to the coordinator",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3218,6 +3246,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass a user with a coordinator role",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3297,6 +3326,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass an active coordinator",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3366,6 +3396,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher_coordinator assignment exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3442,6 +3473,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher_coordinator belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3521,6 +3553,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the coordinator has been assigned to both the group and the teacher",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3590,6 +3623,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field_teacher assignment exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3666,6 +3700,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field assigned to the teacher belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3753,6 +3788,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher assigned to the coordinator is also assigned to the field",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3822,6 +3858,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the subject exists",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3898,6 +3935,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the subject belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -3975,6 +4013,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the subject belongs to the level",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -4051,6 +4090,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the field assigned to teacher is the same in the parent subject",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -4120,6 +4160,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Session not updated",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -4193,6 +4234,7 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Session updated!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(findGroupCoordinator).toHaveBeenCalled();
@@ -4251,13 +4293,16 @@ describe("Resource => Session", () => {
           .send({ school_i: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteSession).not.toHaveBeenCalled();
         expect(deleteSession).not.toHaveBeenCalledWith({
@@ -4280,14 +4325,17 @@ describe("Resource => Session", () => {
           .send({ school_id: "" });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteSession).not.toHaveBeenCalled();
         expect(deleteSession).not.toHaveBeenCalledWith({
@@ -4310,20 +4358,23 @@ describe("Resource => Session", () => {
           .send({ school_id: invalidMockId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The session id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The session id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteSession).not.toHaveBeenCalled();
         expect(deleteSession).not.toHaveBeenCalledWith({
@@ -4346,7 +4397,10 @@ describe("Resource => Session", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Session not deleted" });
+        expect(body).toStrictEqual({
+          msg: "Session not deleted",
+          success: false,
+        });
         expect(statusCode).toBe(404);
         expect(deleteSession).toHaveBeenCalled();
         expect(deleteSession).toHaveBeenCalledWith({
@@ -4369,7 +4423,7 @@ describe("Resource => Session", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Session deleted" });
+        expect(body).toStrictEqual({ msg: "Session deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteSession).toHaveBeenCalled();
         expect(deleteSession).toHaveBeenCalledWith({

@@ -59,7 +59,9 @@ export const createUser = async ({ body }: Request, res: Response) => {
   if (!userCreated) {
     throw new BadRequestError("User not created");
   }
-  res.status(StatusCodes.CREATED).json({ msg: "User created successfully!" });
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "User created successfully!", success: true });
 };
 
 // @desc get all the users
@@ -77,7 +79,10 @@ export const getUsers = async ({ body }: Request, res: Response) => {
   if (usersFound?.length === 0) {
     throw new NotFoundError("No users found");
   }
-  res.status(StatusCodes.OK).json(usersFound);
+  res.status(StatusCodes.OK).json({
+    payload: usersFound,
+    success: true,
+  });
 };
 
 // @desc get the user by id
@@ -95,7 +100,10 @@ export const getUser = async ({ params, body }: Request, res: Response) => {
   if (!userFound) {
     throw new NotFoundError("User not found");
   }
-  res.status(StatusCodes.OK).json(userFound);
+  res.status(StatusCodes.OK).json({
+    payload: userFound,
+    success: true,
+  });
 };
 
 // @desc update a user
@@ -134,7 +142,7 @@ export const updateUser = async ({ params, body }: Request, res: Response) => {
   if (!fieldUpdated) {
     throw new BadRequestError("User not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "User updated" });
+  res.status(StatusCodes.OK).json({ msg: "User updated", success: true });
 };
 
 // @desc delete a user
@@ -151,5 +159,5 @@ export const deleteUser = async ({ params, body }: Request, res: Response) => {
   if (!userDeleted) {
     throw new NotFoundError("User not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "User deleted" });
+  res.status(StatusCodes.OK).json({ msg: "User deleted", success: true });
 };

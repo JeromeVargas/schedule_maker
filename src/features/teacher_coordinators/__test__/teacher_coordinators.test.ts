@@ -146,23 +146,26 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .send(newTeacherCoordinatorMissingValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a teacher id",
-            param: "teacher_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a coordinator id",
-            param: "coordinator_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a teacher id",
+              param: "teacher_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a coordinator id",
+              param: "coordinator_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
@@ -219,26 +222,29 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .send(newTeacherCoordinatorEmptyValues);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacher id field is empty",
-            param: "teacher_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The coordinator id field is empty",
-            param: "coordinator_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacher id field is empty",
+              param: "teacher_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The coordinator id field is empty",
+              param: "coordinator_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
@@ -295,26 +301,29 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .send(newTeacherCoordinatorNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The teacher id is not valid",
-            param: "teacher_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The coordinator id is not valid",
-            param: "coordinator_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacher id is not valid",
+              param: "teacher_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The coordinator id is not valid",
+              param: "coordinator_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
@@ -374,6 +383,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "This teacher has already been assigned this coordinator",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -433,6 +443,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -492,6 +503,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -551,6 +563,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the coordinator exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -617,6 +630,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the coordinator belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -679,6 +693,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass a user with a coordinator role",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -741,6 +756,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass an active coordinator",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -800,6 +816,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Coordinator has not been assigned the to teacher",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -859,6 +876,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Coordinator has been successfully assigned the to teacher",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -906,13 +924,16 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .get(`${endPointUrl}`)
             .send({ school_i: validMockSchoolId });
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeacherCoordinators).not.toHaveBeenCalled();
           expect(findTeacherCoordinators).not.toHaveBeenCalledWith(
@@ -933,14 +954,17 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .get(`${endPointUrl}`)
             .send({ school_id: "" });
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeacherCoordinators).not.toHaveBeenCalled();
           expect(findTeacherCoordinators).not.toHaveBeenCalledWith(
@@ -961,14 +985,17 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .get(`${endPointUrl}`)
             .send({ school_id: invalidMockId });
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeacherCoordinators).not.toHaveBeenCalled();
           expect(findTeacherCoordinators).not.toHaveBeenCalledWith(
@@ -991,6 +1018,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "No coordinators assigned to any teachers yet",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findTeacherCoordinators).toHaveBeenCalled();
@@ -1012,26 +1040,10 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .get(`${endPointUrl}`)
             .send({ school_id: validMockSchoolId });
           // assertions
-          expect(body).toStrictEqual([
-            {
-              _id: expect.any(String),
-              coordinator_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              coordinator_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
-            },
-            {
-              _id: expect.any(String),
-              coordinator_id: expect.any(String),
-              school_id: expect.any(String),
-              teacher_id: expect.any(String),
-            },
-          ]);
+          expect(body).toStrictEqual({
+            payload: teacherCoordinatorsPayload,
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findTeacherCoordinators).toHaveBeenCalled();
           expect(findTeacherCoordinators).toHaveBeenCalledWith(
@@ -1054,13 +1066,16 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .get(`${endPointUrl}${validMockTeacherCoordinatorId}`)
             .send({ school_i: validMockSchoolId });
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
           expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
@@ -1081,14 +1096,17 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .get(`${endPointUrl}${validMockTeacherCoordinatorId}`)
             .send({ school_id: "" });
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeacherCoordinator).not.toHaveBeenCalled();
           expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
@@ -1109,20 +1127,23 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .get(`${endPointUrl}${invalidMockId}`)
             .send({ school_id: invalidMockId });
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The teacher_coordinator id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The teacher_coordinator id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findTeacherCoordinator).not.toHaveBeenCalled();
           expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
@@ -1145,6 +1166,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "Teacher_coordinator not found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findTeacherCoordinator).toHaveBeenCalled();
@@ -1170,10 +1192,8 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .send({ school_id: validMockSchoolId });
           // assertions
           expect(body).toStrictEqual({
-            _id: validMockTeacherCoordinatorId,
-            coordinator_id: validMockCoordinatorId,
-            school_id: validMockSchoolId,
-            teacher_id: validMockTeacherId,
+            payload: teacherCoordinatorPayload,
+            success: true,
           });
           expect(statusCode).toBe(200);
           expect(findTeacherCoordinator).toHaveBeenCalled();
@@ -1214,23 +1234,26 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .put(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send(newTeacherCoordinatorMissingValues);
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a teacher id",
-            param: "teacher_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a coordinator id",
-            param: "coordinator_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a teacher id",
+              param: "teacher_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a coordinator id",
+              param: "coordinator_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
@@ -1290,26 +1313,29 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .put(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send(newTeacherCoordinatorEmptyValues);
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The teacher id field is empty",
-            param: "teacher_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The coordinator id field is empty",
-            param: "coordinator_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The teacher id field is empty",
+              param: "teacher_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The coordinator id field is empty",
+              param: "coordinator_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
@@ -1371,26 +1397,29 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .send(newTeacherCoordinatorNotValidDataTypes);
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The teacher id is not valid",
-            param: "teacher_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The coordinator id is not valid",
-            param: "coordinator_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The teacher id is not valid",
+              param: "teacher_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The coordinator id is not valid",
+              param: "coordinator_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
@@ -1427,7 +1456,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         );
       });
     });
-    describe("teacher_coordinator::put::03 - teacher has the coordinator already assigned", () => {
+    describe("teacher_coordinator::put::04 - teacher has the coordinator already assigned", () => {
       it("should return an already assigned coordinator", async () => {
         // mock services
         const duplicateTeacherCoordinator = mockService(
@@ -1455,6 +1484,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "This teacher has already been assigned this coordinator",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -1519,6 +1549,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -1583,6 +1614,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the teacher belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -1647,6 +1679,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the coordinator exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -1711,6 +1744,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please make sure the coordinator belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -1775,6 +1809,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass a user with a coordinator role",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -1839,6 +1874,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "Please pass an active coordinator",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -1903,6 +1939,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The coordinator has not been assigned the updated teacher",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -1967,6 +2004,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
         // assertions
         expect(body).toStrictEqual({
           msg: "The coordinator has been successfully assigned the updated teacher",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateTeacherCoordinator).toHaveBeenCalled();
@@ -2018,13 +2056,16 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .delete(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_i: validMockSchoolId });
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
@@ -2045,14 +2086,17 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .delete(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_id: "" });
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
@@ -2073,20 +2117,23 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .delete(`${endPointUrl}${invalidMockId}`)
           .send({ school_id: invalidMockId });
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The teacher_coordinator id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The teacher_coordinator id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
@@ -2107,7 +2154,10 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .delete(`${endPointUrl}${otherValidMockId}`)
           .send({ school_id: validMockSchoolId });
         // assertions
-        expect(body).toStrictEqual({ msg: "Teacher_coordinator not deleted" });
+        expect(body).toStrictEqual({
+          msg: "Teacher_coordinator not deleted",
+          success: false,
+        });
         expect(statusCode).toBe(404);
         expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({
@@ -2128,7 +2178,10 @@ describe("RESOURCE => Teacher_coordinator", () => {
           .delete(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_id: validMockSchoolId });
         // assertions
-        expect(body).toStrictEqual({ msg: "Teacher_coordinator deleted" });
+        expect(body).toStrictEqual({
+          msg: "Teacher_coordinator deleted",
+          success: true,
+        });
         expect(statusCode).toBe(200);
         expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({

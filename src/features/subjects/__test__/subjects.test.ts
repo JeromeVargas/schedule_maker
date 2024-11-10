@@ -168,38 +168,41 @@ describe("Resource => subject", () => {
           .send(newSubjectMissingValues);
 
         // assertions;
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the level id",
-            param: "level_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the field id",
-            param: "field_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a subject name",
-            param: "name",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of session units",
-            param: "sessionUnits",
-          },
-          {
-            location: "body",
-            msg: "Please add the subject session frequency",
-            param: "frequency",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the level id",
+              param: "level_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the field id",
+              param: "field_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a subject name",
+              param: "name",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of session units",
+              param: "sessionUnits",
+            },
+            {
+              location: "body",
+              msg: "Please add the subject session frequency",
+              param: "frequency",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
@@ -250,44 +253,47 @@ describe("Resource => subject", () => {
           .send(newSubjectEmptyValues);
 
         // assertions;
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The level id field is empty",
-            param: "level_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The field id field is empty",
-            param: "field_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The subject name field is empty",
-            param: "name",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The number of session units field is empty",
-            param: "sessionUnits",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The subject session frequency field is empty",
-            param: "frequency",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The level id field is empty",
+              param: "level_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The field id field is empty",
+              param: "field_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject name field is empty",
+              param: "name",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The number of session units field is empty",
+              param: "sessionUnits",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject session frequency field is empty",
+              param: "frequency",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
@@ -338,44 +344,47 @@ describe("Resource => subject", () => {
           .send(newSubjectNotValidDataTypes);
 
         // assertions;
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The level id is not valid",
-            param: "level_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The field id is not valid",
-            param: "field_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The subject name is not valid",
-            param: "name",
-            value: 92334428,
-          },
-          {
-            location: "body",
-            msg: "number of session units value is not valid",
-            param: "sessionUnits",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "subject session frequency value is not valid",
-            param: "frequency",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The level id is not valid",
+              param: "level_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The field id is not valid",
+              param: "field_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The subject name is not valid",
+              param: "name",
+              value: 92334428,
+            },
+            {
+              location: "body",
+              msg: "number of session units value is not valid",
+              param: "sessionUnits",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "subject session frequency value is not valid",
+              param: "frequency",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
@@ -428,27 +437,30 @@ describe("Resource => subject", () => {
           .send(newSubjectWrongLengthValues);
 
         // assertions;
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The subject name must not exceed 100 characters",
-            param: "name",
-            value:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          },
-          {
-            location: "body",
-            msg: "The number of session units must not exceed 9 digits",
-            param: "sessionUnits",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The subject session frequency must not exceed 9 digits",
-            param: "frequency",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The subject name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+            {
+              location: "body",
+              msg: "The number of session units must not exceed 9 digits",
+              param: "sessionUnits",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The subject session frequency must not exceed 9 digits",
+              param: "frequency",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
@@ -497,6 +509,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "This subject name already exists for this level",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -544,6 +557,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Please make sure the level exists",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -591,6 +605,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Please make sure the level belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -638,6 +653,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Please make sure the field exists",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -685,6 +701,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Please make sure the field belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -729,6 +746,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Subject not created!",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -773,6 +791,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Subject created!",
+          success: true,
         });
         expect(statusCode).toBe(201);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -816,13 +835,16 @@ describe("Resource => subject", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSubjects).not.toHaveBeenCalled();
           expect(findSubjects).not.toHaveBeenCalledWith(
@@ -845,14 +867,17 @@ describe("Resource => subject", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSubjects).not.toHaveBeenCalled();
           expect(findSubjects).not.toHaveBeenCalledWith(
@@ -875,14 +900,17 @@ describe("Resource => subject", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSubjects).not.toHaveBeenCalled();
           expect(findSubjects).not.toHaveBeenCalledWith(
@@ -905,7 +933,10 @@ describe("Resource => subject", () => {
             .send({ school_id: otherValidMockId });
 
           // assertions
-          expect(body).toStrictEqual({ msg: "No subjects found" });
+          expect(body).toStrictEqual({
+            msg: "No subjects found",
+            success: false,
+          });
           expect(statusCode).toBe(404);
           expect(findSubjects).toHaveBeenCalled();
           expect(findSubjects).toHaveBeenCalledWith(
@@ -928,7 +959,10 @@ describe("Resource => subject", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(subjectsPayload);
+          expect(body).toStrictEqual({
+            payload: subjectsPayload,
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findSubjects).toHaveBeenCalled();
           expect(findSubjects).toHaveBeenCalledWith(
@@ -953,13 +987,16 @@ describe("Resource => subject", () => {
             .send({ school_i: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "Please add a school id",
-              param: "school_id",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "Please add a school id",
+                param: "school_id",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSubject).not.toHaveBeenCalled();
           expect(findSubject).not.toHaveBeenCalledWith(
@@ -982,14 +1019,17 @@ describe("Resource => subject", () => {
             .send({ school_id: "" });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "body",
-              msg: "The school id field is empty",
-              param: "school_id",
-              value: "",
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "body",
+                msg: "The school id field is empty",
+                param: "school_id",
+                value: "",
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSubject).not.toHaveBeenCalled();
           expect(findSubject).not.toHaveBeenCalledWith(
@@ -1012,20 +1052,23 @@ describe("Resource => subject", () => {
             .send({ school_id: invalidMockId });
 
           // assertions
-          expect(body).toStrictEqual([
-            {
-              location: "params",
-              msg: "The subject id is not valid",
-              param: "id",
-              value: invalidMockId,
-            },
-            {
-              location: "body",
-              msg: "The school id is not valid",
-              param: "school_id",
-              value: invalidMockId,
-            },
-          ]);
+          expect(body).toStrictEqual({
+            msg: [
+              {
+                location: "params",
+                msg: "The subject id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+              {
+                location: "body",
+                msg: "The school id is not valid",
+                param: "school_id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
           expect(statusCode).toBe(400);
           expect(findSubject).not.toHaveBeenCalled();
           expect(findSubject).not.toHaveBeenCalledWith(
@@ -1050,6 +1093,7 @@ describe("Resource => subject", () => {
           // assertions
           expect(body).toStrictEqual({
             msg: "Subject not found",
+            success: false,
           });
           expect(statusCode).toBe(404);
           expect(findSubject).toHaveBeenCalled();
@@ -1073,7 +1117,10 @@ describe("Resource => subject", () => {
             .send({ school_id: validMockSchoolId });
 
           // assertions
-          expect(body).toStrictEqual(subjectPayload);
+          expect(body).toStrictEqual({
+            payload: subjectPayload,
+            success: true,
+          });
           expect(statusCode).toBe(200);
           expect(findSubject).toHaveBeenCalled();
           expect(findSubject).toHaveBeenCalledWith(
@@ -1112,38 +1159,41 @@ describe("Resource => subject", () => {
           .send(newSubjectMissingValues);
 
         // assertions;
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add the school id",
-            param: "school_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the level id",
-            param: "level_id",
-          },
-          {
-            location: "body",
-            msg: "Please add the field id",
-            param: "field_id",
-          },
-          {
-            location: "body",
-            msg: "Please add a subject name",
-            param: "name",
-          },
-          {
-            location: "body",
-            msg: "Please add the number of session units",
-            param: "sessionUnits",
-          },
-          {
-            location: "body",
-            msg: "Please add the subject session frequency",
-            param: "frequency",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add the school id",
+              param: "school_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the level id",
+              param: "level_id",
+            },
+            {
+              location: "body",
+              msg: "Please add the field id",
+              param: "field_id",
+            },
+            {
+              location: "body",
+              msg: "Please add a subject name",
+              param: "name",
+            },
+            {
+              location: "body",
+              msg: "Please add the number of session units",
+              param: "sessionUnits",
+            },
+            {
+              location: "body",
+              msg: "Please add the subject session frequency",
+              param: "frequency",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
@@ -1203,44 +1253,47 @@ describe("Resource => subject", () => {
           .send(newSubjectEmptyValues);
 
         // assertions;
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The level id field is empty",
-            param: "level_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The field id field is empty",
-            param: "field_id",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The subject name field is empty",
-            param: "name",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The number of session units field is empty",
-            param: "sessionUnits",
-            value: "",
-          },
-          {
-            location: "body",
-            msg: "The subject session frequency field is empty",
-            param: "frequency",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The level id field is empty",
+              param: "level_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The field id field is empty",
+              param: "field_id",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject name field is empty",
+              param: "name",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The number of session units field is empty",
+              param: "sessionUnits",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The subject session frequency field is empty",
+              param: "frequency",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
@@ -1300,50 +1353,53 @@ describe("Resource => subject", () => {
           .send(newSubjectNotValidDataTypes);
 
         // assertions;
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The subject id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The level id is not valid",
-            param: "level_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The field id is not valid",
-            param: "field_id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The subject name is not valid",
-            param: "name",
-            value: 92334428,
-          },
-          {
-            location: "body",
-            msg: "number of session units value is not valid",
-            param: "sessionUnits",
-            value: "hello",
-          },
-          {
-            location: "body",
-            msg: "subject session frequency value is not valid",
-            param: "frequency",
-            value: "hello",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The subject id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The level id is not valid",
+              param: "level_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The field id is not valid",
+              param: "field_id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The subject name is not valid",
+              param: "name",
+              value: 92334428,
+            },
+            {
+              location: "body",
+              msg: "number of session units value is not valid",
+              param: "sessionUnits",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "subject session frequency value is not valid",
+              param: "frequency",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
@@ -1403,27 +1459,30 @@ describe("Resource => subject", () => {
           .send(newSubjectWrongLengthValues);
 
         // assertions;
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The subject name must not exceed 100 characters",
-            param: "name",
-            value:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-          },
-          {
-            location: "body",
-            msg: "The number of session units must not exceed 9 digits",
-            param: "sessionUnits",
-            value: 1234567890,
-          },
-          {
-            location: "body",
-            msg: "The subject session frequency must not exceed 9 digits",
-            param: "frequency",
-            value: 1234567890,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The subject name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+            {
+              location: "body",
+              msg: "The number of session units must not exceed 9 digits",
+              param: "sessionUnits",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "The subject session frequency must not exceed 9 digits",
+              param: "frequency",
+              value: 1234567890,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
@@ -1479,6 +1538,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "This subject name already exists for this level",
+          success: false,
         });
         expect(statusCode).toBe(409);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -1532,6 +1592,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Please make sure the level exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -1585,6 +1646,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Please make sure the level belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -1638,6 +1700,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Please make sure the field exists",
+          success: false,
         });
         expect(statusCode).toBe(404);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -1691,6 +1754,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Please make sure the field belongs to the school",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -1741,6 +1805,7 @@ describe("Resource => subject", () => {
         // assertions;
         expect(body).toStrictEqual({
           msg: "Subject not updated",
+          success: false,
         });
         expect(statusCode).toBe(400);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -1795,6 +1860,7 @@ describe("Resource => subject", () => {
         // assertions;f
         expect(body).toStrictEqual({
           msg: "Subject updated!",
+          success: true,
         });
         expect(statusCode).toBe(200);
         expect(duplicateSubjectName).toHaveBeenCalled();
@@ -1844,13 +1910,16 @@ describe("Resource => subject", () => {
           .send({ school_i: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "Please add a school id",
-            param: "school_id",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteSubject).not.toHaveBeenCalled();
         expect(deleteSubject).not.toHaveBeenCalledWith({
@@ -1873,14 +1942,17 @@ describe("Resource => subject", () => {
           .send({ school_id: "" });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "body",
-            msg: "The school id field is empty",
-            param: "school_id",
-            value: "",
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteSubject).not.toHaveBeenCalled();
         expect(deleteSubject).not.toHaveBeenCalledWith({
@@ -1903,20 +1975,23 @@ describe("Resource => subject", () => {
           .send({ school_id: invalidMockId });
 
         // assertions
-        expect(body).toStrictEqual([
-          {
-            location: "params",
-            msg: "The subject id is not valid",
-            param: "id",
-            value: invalidMockId,
-          },
-          {
-            location: "body",
-            msg: "The school id is not valid",
-            param: "school_id",
-            value: invalidMockId,
-          },
-        ]);
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The subject id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
         expect(statusCode).toBe(400);
         expect(deleteSubject).not.toHaveBeenCalled();
         expect(deleteSubject).not.toHaveBeenCalledWith({
@@ -1939,7 +2014,10 @@ describe("Resource => subject", () => {
           .send({ school_id: otherValidMockId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Subject not deleted" });
+        expect(body).toStrictEqual({
+          msg: "Subject not deleted",
+          success: false,
+        });
         expect(statusCode).toBe(404);
         expect(deleteSubject).toHaveBeenCalled();
         expect(deleteSubject).toHaveBeenCalledWith({
@@ -1962,7 +2040,7 @@ describe("Resource => subject", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ msg: "Subject deleted" });
+        expect(body).toStrictEqual({ msg: "Subject deleted", success: true });
         expect(statusCode).toBe(200);
         expect(deleteSubject).toHaveBeenCalled();
         expect(deleteSubject).toHaveBeenCalledWith({

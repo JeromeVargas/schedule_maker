@@ -48,7 +48,9 @@ export const createField = async ({ body }: Request, res: Response) => {
   if (!fieldCreated) {
     throw new BadRequestError("Field not created!");
   }
-  res.status(StatusCodes.CREATED).json({ msg: "Field created successfully!" });
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "Field created successfully!", success: true });
 };
 
 // @desc get all the fields
@@ -66,7 +68,10 @@ export const getFields = async ({ body }: Request, res: Response) => {
   if (fieldsFound?.length === 0) {
     throw new NotFoundError("No fields found");
   }
-  res.status(StatusCodes.OK).json(fieldsFound);
+  res.status(StatusCodes.OK).json({
+    payload: fieldsFound,
+    success: true,
+  });
 };
 
 // @desc get the field by id
@@ -84,7 +89,10 @@ export const getField = async ({ params, body }: Request, res: Response) => {
   if (!fieldFound) {
     throw new NotFoundError("Field not found");
   }
-  res.status(StatusCodes.OK).json(fieldFound);
+  res.status(StatusCodes.OK).json({
+    payload: fieldFound,
+    success: true,
+  });
 };
 
 // @desc update a field
@@ -119,7 +127,7 @@ export const updateField = async ({ params, body }: Request, res: Response) => {
   if (!fieldUpdated) {
     throw new BadRequestError("Field not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "Field updated" });
+  res.status(StatusCodes.OK).json({ msg: "Field updated", success: true });
 };
 
 // @desc delete a field
@@ -136,5 +144,5 @@ export const deleteField = async ({ params, body }: Request, res: Response) => {
   if (!fieldDeleted) {
     throw new NotFoundError("Field not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Field deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Field deleted", success: true });
 };

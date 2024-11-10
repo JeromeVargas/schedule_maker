@@ -63,7 +63,7 @@ export const createBreak = async ({ body }: Request, res: Response) => {
   if (!breakCreated) {
     throw new BadRequestError("Break not created!");
   }
-  res.status(StatusCodes.OK).json({ msg: "Break created!" });
+  res.status(StatusCodes.OK).json({ msg: "Break created!", success: true });
 };
 
 // @desc get all the Breaks
@@ -81,7 +81,10 @@ export const getBreaks = async ({ body }: Request, res: Response) => {
   if (breaksFound?.length === 0) {
     throw new NotFoundError("No breaks found");
   }
-  res.status(StatusCodes.OK).json(breaksFound);
+  res.status(StatusCodes.OK).json({
+    payload: breaksFound,
+    success: true,
+  });
 };
 
 // @desc get the Break by id
@@ -99,7 +102,10 @@ export const getBreak = async ({ params, body }: Request, res: Response) => {
   if (!breakFound) {
     throw new NotFoundError("Break not found");
   }
-  res.status(StatusCodes.OK).json(breakFound);
+  res.status(StatusCodes.OK).json({
+    payload: breakFound,
+    success: true,
+  });
 };
 
 // @desc update a Break
@@ -151,7 +157,7 @@ export const updateBreak = async ({ params, body }: Request, res: Response) => {
   if (!breakUpdated) {
     throw new BadRequestError("Break not updated");
   }
-  res.status(StatusCodes.OK).json({ msg: "Break updated!" });
+  res.status(StatusCodes.OK).json({ msg: "Break updated!", success: true });
 };
 
 // @desc delete a Break
@@ -168,5 +174,5 @@ export const deleteBreak = async ({ params, body }: Request, res: Response) => {
   if (!breakDeleted) {
     throw new NotFoundError("Break not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Break deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Break deleted", success: true });
 };

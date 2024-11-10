@@ -92,9 +92,10 @@ export const createGroupCoordinator = async (
   if (!groupCoordinatorCreated) {
     throw new BadRequestError("Coordinator has not been assigned the to group");
   }
-  res
-    .status(StatusCodes.CREATED)
-    .json({ msg: "Coordinator has been successfully assigned the to group" });
+  res.status(StatusCodes.CREATED).json({
+    msg: "Coordinator has been successfully assigned the to group",
+    success: true,
+  });
 };
 
 // @desc get all the group_coordinator
@@ -118,7 +119,10 @@ export const getGroupCoordinators = async (
   if (groupCoordinatorsFound?.length === 0) {
     throw new NotFoundError("No coordinators assigned to any groups yet");
   }
-  res.status(StatusCodes.OK).json(groupCoordinatorsFound);
+  res.status(StatusCodes.OK).json({
+    payload: groupCoordinatorsFound,
+    success: true,
+  });
 };
 
 // @desc get the group_coordinator by id
@@ -142,7 +146,10 @@ export const getGroupCoordinator = async (
   if (!groupCoordinatorFound) {
     throw new NotFoundError("Group_coordinator not found");
   }
-  res.status(StatusCodes.OK).json(groupCoordinatorFound);
+  res.status(StatusCodes.OK).json({
+    payload: groupCoordinatorFound,
+    success: true,
+  });
 };
 
 // @desc update a teacher_field
@@ -232,6 +239,7 @@ export const updateGroupCoordinator = async (
   }
   res.status(StatusCodes.OK).json({
     msg: "The coordinator has been successfully assigned the updated group",
+    success: true,
   });
 };
 
@@ -257,5 +265,7 @@ export const deleteGroupCoordinator = async (
   if (!groupCoordinatorDeleted) {
     throw new NotFoundError("Group_coordinator not deleted");
   }
-  res.status(StatusCodes.OK).json({ msg: "Group_coordinator deleted" });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Group_coordinator deleted", success: true });
 };
