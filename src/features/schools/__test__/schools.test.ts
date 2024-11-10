@@ -438,26 +438,7 @@ describe("RESOURCE => School", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                name: "school 001",
-                groupMaxNumStudents: 40,
-                status: "active",
-              },
-              {
-                _id: expect.any(String),
-                name: "school 002",
-                groupMaxNumStudents: 40,
-                status: "active",
-              },
-              {
-                _id: expect.any(String),
-                name: "school 003",
-                groupMaxNumStudents: 40,
-                status: "inactive",
-              },
-            ],
+            payload: schoolsPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -532,12 +513,7 @@ describe("RESOURCE => School", () => {
 
             // assertions
             expect(body).toStrictEqual({
-              payload: {
-                _id: validMockSchoolId,
-                name: "school 001",
-                groupMaxNumStudents: 40,
-                status: "active",
-              },
+              payload: schoolPayload,
               success: true,
             });
             expect(statusCode).toBe(200);

@@ -1269,59 +1269,7 @@ describe("RESOURCE => Teacher", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                contractType: "full-time",
-                teachingHoursAssignable: 35,
-                teachingHoursAssigned: 35,
-                adminHoursAssignable: 35,
-                adminHoursAssigned: 35,
-                school_id: expect.any(String),
-                user_id: expect.any(String),
-                monday: true,
-                tuesday: true,
-                wednesday: true,
-                thursday: true,
-                friday: true,
-                saturday: true,
-                sunday: true,
-              },
-              {
-                _id: expect.any(String),
-                contractType: "part-time",
-                teachingHoursAssignable: 35,
-                teachingHoursAssigned: 35,
-                adminHoursAssignable: 35,
-                adminHoursAssigned: 35,
-                school_id: expect.any(String),
-                user_id: expect.any(String),
-                monday: true,
-                tuesday: true,
-                wednesday: true,
-                thursday: true,
-                friday: true,
-                saturday: true,
-                sunday: true,
-              },
-              {
-                _id: expect.any(String),
-                contractType: "substitute",
-                teachingHoursAssignable: 35,
-                teachingHoursAssigned: 35,
-                adminHoursAssignable: 35,
-                adminHoursAssigned: 35,
-                school_id: expect.any(String),
-                user_id: expect.any(String),
-                monday: true,
-                tuesday: true,
-                wednesday: true,
-                thursday: true,
-                friday: true,
-                saturday: true,
-                sunday: true,
-              },
-            ],
+            payload: teachersPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -1480,23 +1428,7 @@ describe("RESOURCE => Teacher", () => {
           // assertions
           expect(statusCode).toBe(200);
           expect(body).toStrictEqual({
-            payload: {
-              _id: validMockTeacherId,
-              school_id: validMockSchoolId,
-              user_id: validMockUserId,
-              contractType: "full-time",
-              teachingHoursAssignable: 35,
-              teachingHoursAssigned: 35,
-              adminHoursAssignable: 35,
-              adminHoursAssigned: 35,
-              monday: true,
-              tuesday: true,
-              wednesday: true,
-              thursday: true,
-              friday: true,
-              saturday: true,
-              sunday: true,
-            },
+            payload: teacherPayload,
             success: true,
           });
           expect(findTeacher).toHaveBeenCalled();

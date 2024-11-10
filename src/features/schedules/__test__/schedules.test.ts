@@ -932,53 +932,7 @@ describe("Resource => Schedule", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                school_id: expect.any(String),
-                sessionUnitMinutes: 40,
-                dayStart: 420,
-                friday: true,
-                monday: true,
-                name: "Schedule 001",
-                shiftNumberMinutes: 360,
-                saturday: true,
-                sunday: true,
-                thursday: true,
-                tuesday: true,
-                wednesday: true,
-              },
-              {
-                _id: expect.any(String),
-                school_id: expect.any(String),
-                sessionUnitMinutes: 40,
-                dayStart: 420,
-                friday: true,
-                monday: true,
-                name: "Schedule 002",
-                shiftNumberMinutes: 360,
-                saturday: true,
-                sunday: true,
-                thursday: true,
-                tuesday: true,
-                wednesday: true,
-              },
-              {
-                _id: expect.any(String),
-                school_id: expect.any(String),
-                sessionUnitMinutes: 40,
-                dayStart: 420,
-                friday: true,
-                monday: true,
-                name: "Schedule 003",
-                shiftNumberMinutes: 360,
-                saturday: true,
-                sunday: true,
-                thursday: true,
-                tuesday: true,
-                wednesday: true,
-              },
-            ],
+            payload: schedulesPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -1136,21 +1090,7 @@ describe("Resource => Schedule", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: {
-              _id: validMockScheduleId,
-              school_id: validMockSchoolId,
-              sessionUnitMinutes: 40,
-              dayStart: 420,
-              friday: true,
-              monday: true,
-              name: "Schedule 001",
-              shiftNumberMinutes: 360,
-              saturday: true,
-              sunday: true,
-              thursday: true,
-              tuesday: true,
-              wednesday: true,
-            },
+            payload: schedulePayload,
             success: true,
           });
           expect(statusCode).toBe(200);

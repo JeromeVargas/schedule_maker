@@ -1026,26 +1026,7 @@ describe("RESOURCE => Group_coordinator", () => {
             .send({ school_id: validMockSchoolId });
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                coordinator_id: expect.any(String),
-                school_id: expect.any(String),
-                group_id: expect.any(String),
-              },
-              {
-                _id: expect.any(String),
-                coordinator_id: expect.any(String),
-                school_id: expect.any(String),
-                group_id: expect.any(String),
-              },
-              {
-                _id: expect.any(String),
-                coordinator_id: expect.any(String),
-                school_id: expect.any(String),
-                group_id: expect.any(String),
-              },
-            ],
+            payload: groupCoordinatorsPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -1196,12 +1177,7 @@ describe("RESOURCE => Group_coordinator", () => {
             .send({ school_id: validMockSchoolId });
           // assertions
           expect(body).toStrictEqual({
-            payload: {
-              _id: validMockGroupCoordinatorId,
-              coordinator_id: validMockCoordinatorId,
-              school_id: validMockSchoolId,
-              group_id: validMockGroupId,
-            },
+            payload: groupCoordinatorPayload,
             success: true,
           });
           expect(statusCode).toBe(200);

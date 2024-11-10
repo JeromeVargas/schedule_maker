@@ -980,26 +980,7 @@ describe("RESOURCE => Teacher_field", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                field_id: expect.any(String),
-                school_id: expect.any(String),
-                teacher_id: expect.any(String),
-              },
-              {
-                _id: expect.any(String),
-                field_id: expect.any(String),
-                school_id: expect.any(String),
-                teacher_id: expect.any(String),
-              },
-              {
-                _id: expect.any(String),
-                field_id: expect.any(String),
-                school_id: expect.any(String),
-                teacher_id: expect.any(String),
-              },
-            ],
+            payload: teacherFieldsPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -1160,12 +1141,7 @@ describe("RESOURCE => Teacher_field", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: {
-              _id: validMockTeacherFieldId,
-              field_id: validMockFieldId,
-              school_id: validMockSchoolId,
-              teacher_id: validMockTeacherId,
-            },
+            payload: teacherFieldPayload,
             success: true,
           });
           expect(statusCode).toBe(200);

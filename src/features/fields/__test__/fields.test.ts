@@ -560,23 +560,7 @@ describe("RESOURCE => Field", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                name: "Mathematics",
-                school_id: expect.any(String),
-              },
-              {
-                _id: expect.any(String),
-                name: "Language",
-                school_id: expect.any(String),
-              },
-              {
-                _id: expect.any(String),
-                name: "Physics",
-                school_id: expect.any(String),
-              },
-            ],
+            payload: fieldsPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -731,11 +715,7 @@ describe("RESOURCE => Field", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: {
-              _id: validMockFieldId,
-              school_id: validMockSchoolId,
-              name: "Mathematics",
-            },
+            payload: fieldPayload,
             success: true,
           });
           expect(statusCode).toBe(200);

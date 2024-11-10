@@ -2166,44 +2166,7 @@ describe("Resource => Session", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                school_id: expect.any(String),
-                level_id: expect.any(String),
-                groupCoordinator_id: expect.any(String),
-                group_id: expect.any(String),
-                subject_id: expect.any(String),
-                teacherField_id: expect.any(String),
-                startTime: 420,
-                groupScheduleSlot: 2,
-                teacherScheduleSlot: 2,
-              },
-              {
-                _id: expect.any(String),
-                school_id: expect.any(String),
-                level_id: expect.any(String),
-                groupCoordinator_id: expect.any(String),
-                group_id: expect.any(String),
-                subject_id: expect.any(String),
-                teacherField_id: expect.any(String),
-                startTime: 420,
-                groupScheduleSlot: 2,
-                teacherScheduleSlot: 2,
-              },
-              {
-                _id: expect.any(String),
-                school_id: expect.any(String),
-                level_id: expect.any(String),
-                groupCoordinator_id: expect.any(String),
-                group_id: expect.any(String),
-                subject_id: expect.any(String),
-                teacherField_id: expect.any(String),
-                startTime: 420,
-                groupScheduleSlot: 2,
-                teacherScheduleSlot: 2,
-              },
-            ],
+            payload: sessionsPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -2361,18 +2324,7 @@ describe("Resource => Session", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: {
-              _id: expect.any(String),
-              school_id: expect.any(String),
-              level_id: expect.any(String),
-              groupCoordinator_id: expect.any(String),
-              group_id: expect.any(String),
-              subject_id: expect.any(String),
-              teacherField_id: expect.any(String),
-              startTime: 420,
-              groupScheduleSlot: 2,
-              teacherScheduleSlot: 2,
-            },
+            payload: sessionPayload,
             success: true,
           });
           expect(statusCode).toBe(200);

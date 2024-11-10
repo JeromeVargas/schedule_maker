@@ -868,38 +868,7 @@ describe("RESOURCE => User", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                email: "jerome@gmail.com",
-                firstName: "Jerome",
-
-                lastName: "Vargas",
-                role: "headmaster",
-                school_id: expect.any(String),
-                status: "inactive",
-              },
-              {
-                _id: expect.any(String),
-                email: "dave@hotmail.com",
-                firstName: "Dave",
-
-                lastName: "Gray",
-                role: "coordinator",
-                school_id: expect.any(String),
-                status: "active",
-              },
-              {
-                _id: expect.any(String),
-                email: "ania@yahoo.com",
-                firstName: "Ania",
-
-                lastName: "Kubow",
-                role: "teacher",
-                school_id: expect.any(String),
-                status: "on_leave",
-              },
-            ],
+            payload: usersPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -1042,15 +1011,7 @@ describe("RESOURCE => User", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: {
-              _id: validMockUserId,
-              school_id: validMockSchoolId,
-              firstName: "Jerome",
-              lastName: "Vargas",
-              email: "jerome@gmail.com",
-              status: "active",
-              role: "coordinator",
-            },
+            payload: userPayload,
             success: true,
           });
           expect(statusCode).toBe(200);

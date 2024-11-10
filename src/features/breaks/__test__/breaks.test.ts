@@ -660,29 +660,7 @@ describe("Resource => Break", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                school_id: expect.any(String),
-                schedule_id: expect.any(String),
-                breakStart: 600,
-                numberMinutes: 40,
-              },
-              {
-                _id: expect.any(String),
-                school_id: expect.any(String),
-                schedule_id: expect.any(String),
-                breakStart: 600,
-                numberMinutes: 20,
-              },
-              {
-                _id: expect.any(String),
-                school_id: expect.any(String),
-                schedule_id: expect.any(String),
-                breakStart: 600,
-                numberMinutes: 30,
-              },
-            ],
+            payload: breaksPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -837,13 +815,7 @@ describe("Resource => Break", () => {
 
           // assertions
           expect(body).toStrictEqual({
-            payload: {
-              _id: validMockBreakId,
-              school_id: validMockSchoolId,
-              schedule_id: validMockScheduleId,
-              breakStart: 600,
-              numberMinutes: 40,
-            },
+            payload: breakPayload,
             success: true,
           });
           expect(statusCode).toBe(200);

@@ -1041,26 +1041,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .send({ school_id: validMockSchoolId });
           // assertions
           expect(body).toStrictEqual({
-            payload: [
-              {
-                _id: expect.any(String),
-                coordinator_id: expect.any(String),
-                school_id: expect.any(String),
-                teacher_id: expect.any(String),
-              },
-              {
-                _id: expect.any(String),
-                coordinator_id: expect.any(String),
-                school_id: expect.any(String),
-                teacher_id: expect.any(String),
-              },
-              {
-                _id: expect.any(String),
-                coordinator_id: expect.any(String),
-                school_id: expect.any(String),
-                teacher_id: expect.any(String),
-              },
-            ],
+            payload: teacherCoordinatorsPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
@@ -1211,12 +1192,7 @@ describe("RESOURCE => Teacher_coordinator", () => {
             .send({ school_id: validMockSchoolId });
           // assertions
           expect(body).toStrictEqual({
-            payload: {
-              _id: validMockTeacherCoordinatorId,
-              coordinator_id: validMockCoordinatorId,
-              school_id: validMockSchoolId,
-              teacher_id: validMockTeacherId,
-            },
+            payload: teacherCoordinatorPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
