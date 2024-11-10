@@ -6,7 +6,7 @@ export type School = {
   _id: Types.ObjectId;
   name: string;
   groupMaxNumStudents: number;
-  status: School;
+  status: SchoolStatus;
 };
 
 export type NewSchool = Omit<School, "_id">;
