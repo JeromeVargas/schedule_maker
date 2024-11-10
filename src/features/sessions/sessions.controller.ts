@@ -215,11 +215,10 @@ export const getSessions = async ({ body }: Request, res: Response) => {
   if (sessionsFound?.length === 0) {
     throw new NotFoundError("No sessions found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: sessionsFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the Session by id
@@ -240,8 +239,7 @@ export const getSession = async ({ params, body }: Request, res: Response) => {
   if (!sessionFound) {
     throw new NotFoundError("Session not found");
   }
-  const response = { payload: sessionFound, success: true };
-  res.status(StatusCodes.OK).json(response);
+  res.status(StatusCodes.OK).json({ payload: sessionFound, success: true });
 };
 
 // @desc update a Session

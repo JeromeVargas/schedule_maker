@@ -68,11 +68,10 @@ export const getFields = async ({ body }: Request, res: Response) => {
   if (fieldsFound?.length === 0) {
     throw new NotFoundError("No fields found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: fieldsFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the field by id
@@ -90,11 +89,10 @@ export const getField = async ({ params, body }: Request, res: Response) => {
   if (!fieldFound) {
     throw new NotFoundError("Field not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: fieldFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a field

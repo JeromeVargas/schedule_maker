@@ -88,11 +88,10 @@ export const getGroups = async ({ body }: Request, res: Response) => {
   if (groupsFound?.length === 0) {
     throw new NotFoundError("No groups found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: groupsFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the Group by id
@@ -110,11 +109,10 @@ export const getGroup = async ({ params, body }: Request, res: Response) => {
   if (!groupFound) {
     throw new NotFoundError("Group not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: groupFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a Group

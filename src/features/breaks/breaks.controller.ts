@@ -81,11 +81,10 @@ export const getBreaks = async ({ body }: Request, res: Response) => {
   if (breaksFound?.length === 0) {
     throw new NotFoundError("No breaks found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: breaksFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the Break by id
@@ -103,11 +102,10 @@ export const getBreak = async ({ params, body }: Request, res: Response) => {
   if (!breakFound) {
     throw new NotFoundError("Break not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: breakFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a Break

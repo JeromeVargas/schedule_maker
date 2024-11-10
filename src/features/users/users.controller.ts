@@ -79,11 +79,10 @@ export const getUsers = async ({ body }: Request, res: Response) => {
   if (usersFound?.length === 0) {
     throw new NotFoundError("No users found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: usersFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the user by id
@@ -101,11 +100,10 @@ export const getUser = async ({ params, body }: Request, res: Response) => {
   if (!userFound) {
     throw new NotFoundError("User not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: userFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a user

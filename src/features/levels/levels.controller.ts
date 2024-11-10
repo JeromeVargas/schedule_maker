@@ -80,11 +80,10 @@ export const getLevels = async ({ body }: Request, res: Response) => {
   if (levelsFound?.length === 0) {
     throw new NotFoundError("No levels found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: levelsFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the Level by id
@@ -102,11 +101,10 @@ export const getLevel = async ({ params, body }: Request, res: Response) => {
   if (!levelFound) {
     throw new NotFoundError("Level not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: levelFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a Level

@@ -92,12 +92,10 @@ export const createGroupCoordinator = async (
   if (!groupCoordinatorCreated) {
     throw new BadRequestError("Coordinator has not been assigned the to group");
   }
-  res
-    .status(StatusCodes.CREATED)
-    .json({
-      msg: "Coordinator has been successfully assigned the to group",
-      success: true,
-    });
+  res.status(StatusCodes.CREATED).json({
+    msg: "Coordinator has been successfully assigned the to group",
+    success: true,
+  });
 };
 
 // @desc get all the group_coordinator
@@ -121,11 +119,10 @@ export const getGroupCoordinators = async (
   if (groupCoordinatorsFound?.length === 0) {
     throw new NotFoundError("No coordinators assigned to any groups yet");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: groupCoordinatorsFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the group_coordinator by id
@@ -149,11 +146,10 @@ export const getGroupCoordinator = async (
   if (!groupCoordinatorFound) {
     throw new NotFoundError("Group_coordinator not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: groupCoordinatorFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a teacher_field

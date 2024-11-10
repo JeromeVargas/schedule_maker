@@ -83,12 +83,10 @@ export const createTeacherField = async ({ body }: Request, res: Response) => {
   if (!teacherFieldCreated) {
     throw new BadRequestError("Field has not been assigned the to teacher");
   }
-  res
-    .status(StatusCodes.CREATED)
-    .json({
-      msg: "Field has been successfully assigned the to teacher",
-      success: true,
-    });
+  res.status(StatusCodes.CREATED).json({
+    msg: "Field has been successfully assigned the to teacher",
+    success: true,
+  });
 };
 
 // @desc get all the teacher_fields
@@ -109,11 +107,10 @@ export const getTeacherFields = async ({ body }: Request, res: Response) => {
   if (teacherFieldsFound?.length === 0) {
     throw new NotFoundError("No fields assigned to any teachers yet");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: teacherFieldsFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the teacher_field by id
@@ -137,11 +134,10 @@ export const getTeacherField = async (
   if (!teacherFieldFound) {
     throw new NotFoundError("Teacher_Field not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: teacherFieldFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a teacher_field

@@ -139,11 +139,10 @@ export const getTeachers = async ({ body }: Request, res: Response) => {
   if (teachersFound?.length === 0) {
     throw new NotFoundError("No teachers found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: teachersFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the user by id
@@ -164,11 +163,10 @@ export const getTeacher = async ({ params, body }: Request, res: Response) => {
   if (!teacherFound) {
     throw new NotFoundError("Teacher not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: teacherFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a user

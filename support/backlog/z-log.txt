@@ -1,6 +1,6 @@
 Back end:
 
-// Todo --> stabilize payloads in tests
+// Todo --> stabilize payloads in tests, specially get blocks
 // Todo --> check how the soft delete of the school affects other entities controllers
 // Todo --> tests, validators, controllers and routes labeling might not be scalable
 // Todo --> type the entities params when need it instead of comments with params types, maybe use zod

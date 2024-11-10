@@ -94,12 +94,10 @@ export const createTeacherCoordinator = async (
       "Coordinator has not been assigned the to teacher"
     );
   }
-  res
-    .status(StatusCodes.CREATED)
-    .json({
-      msg: "Coordinator has been successfully assigned the to teacher",
-      success: true,
-    });
+  res.status(StatusCodes.CREATED).json({
+    msg: "Coordinator has been successfully assigned the to teacher",
+    success: true,
+  });
 };
 
 // @desc get all the teacher_coordinator
@@ -123,11 +121,10 @@ export const getTeacherCoordinators = async (
   if (teacherCoordinatorsFound?.length === 0) {
     throw new NotFoundError("No coordinators assigned to any teachers yet");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: teacherCoordinatorsFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the teacher_coordinator by id
@@ -151,11 +148,10 @@ export const getTeacherCoordinator = async (
   if (!teacherCoordinatorFound) {
     throw new NotFoundError("Teacher_coordinator not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: teacherCoordinatorFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a teacher_field

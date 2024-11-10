@@ -105,11 +105,10 @@ export const getSubjects = async ({ body }: Request, res: Response) => {
   if (subjectsFound?.length === 0) {
     throw new NotFoundError("No subjects found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: subjectsFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc get the Subject by id
@@ -130,11 +129,10 @@ export const getSubject = async ({ params, body }: Request, res: Response) => {
   if (!subjectFound) {
     throw new NotFoundError("Subject not found");
   }
-  const response = {
+  res.status(StatusCodes.OK).json({
     payload: subjectFound,
     success: true,
-  };
-  res.status(StatusCodes.OK).json(response);
+  });
 };
 
 // @desc update a Subject
