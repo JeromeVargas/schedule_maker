@@ -167,14 +167,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreakMissingValues.schedule_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertBreak).not.toHaveBeenCalled();
         expect(insertBreak).not.toHaveBeenCalledWith(newBreakMissingValues);
       });
     });
@@ -223,14 +221,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreakEmptyValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertBreak).not.toHaveBeenCalled();
         expect(insertBreak).not.toHaveBeenCalledWith(newBreakEmptyValues);
       });
     });
@@ -279,14 +275,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreakNotValidDataTypes.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertBreak).not.toHaveBeenCalled();
         expect(insertBreak).not.toHaveBeenCalledWith(newBreakNotValidDataTypes);
       });
     });
@@ -323,14 +317,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreakWrongLengthValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt ull-updatedAt"
         );
-        expect(insertBreak).not.toHaveBeenCalled();
         expect(insertBreak).not.toHaveBeenCalledWith(newBreakWrongLengthValues);
       });
     });
@@ -354,14 +346,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertBreak).not.toHaveBeenCalled();
         expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
@@ -385,14 +375,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertBreak).not.toHaveBeenCalled();
         expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
@@ -416,14 +404,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertBreak).not.toHaveBeenCalled();
         expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
@@ -447,14 +433,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertBreak).not.toHaveBeenCalled();
         expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
@@ -478,14 +462,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertBreak).toHaveBeenCalled();
         expect(insertBreak).toHaveBeenCalledWith(newBreak);
       });
     });
@@ -509,14 +491,12 @@ describe("Resource => Break", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertBreak).toHaveBeenCalled();
         expect(insertBreak).toHaveBeenCalledWith(newBreak);
       });
     });
@@ -549,7 +529,6 @@ describe("Resource => Break", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findBreaks).not.toHaveBeenCalled();
           expect(findBreaks).not.toHaveBeenCalledWith(
             { school_id: null },
             "-createdAt -updatedAt"
@@ -582,7 +561,6 @@ describe("Resource => Break", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findBreaks).not.toHaveBeenCalled();
           expect(findBreaks).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-createdAt -updatedAt"
@@ -615,7 +593,6 @@ describe("Resource => Break", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findBreaks).not.toHaveBeenCalled();
           expect(findBreaks).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -641,7 +618,6 @@ describe("Resource => Break", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findBreaks).toHaveBeenCalled();
           expect(findBreaks).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -664,7 +640,6 @@ describe("Resource => Break", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findBreaks).toHaveBeenCalled();
           expect(findBreaks).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -698,7 +673,6 @@ describe("Resource => Break", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findBreak).not.toHaveBeenCalled();
           expect(findBreak).not.toHaveBeenCalledWith(
             { school_id: null, _id: validMockBreakId },
             "-createdAt -updatedAt"
@@ -731,7 +705,6 @@ describe("Resource => Break", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findBreak).not.toHaveBeenCalled();
           expect(findBreak).not.toHaveBeenCalledWith(
             { school_id: "", _id: validMockBreakId },
             "-createdAt -updatedAt"
@@ -770,7 +743,6 @@ describe("Resource => Break", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findBreak).not.toHaveBeenCalled();
           expect(findBreak).not.toHaveBeenCalledWith(
             { school_id: invalidMockId, _id: invalidMockId },
             "-createdAt -updatedAt"
@@ -796,7 +768,6 @@ describe("Resource => Break", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findBreak).toHaveBeenCalled();
           expect(findBreak).toHaveBeenCalledWith(
             { school_id: validMockSchoolId, _id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -819,7 +790,6 @@ describe("Resource => Break", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findBreak).toHaveBeenCalled();
           expect(findBreak).toHaveBeenCalledWith(
             { school_id: validMockSchoolId, _id: validMockBreakId },
             "-createdAt -updatedAt"
@@ -871,14 +841,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreakMissingValues.schedule_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
           { _id: validMockBreakId, school_id: newBreakMissingValues.school_i },
           newBreakMissingValues
@@ -930,14 +898,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreakEmptyValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
           { _id: validMockBreakId, school_id: newBreakEmptyValues.school_id },
           newBreakEmptyValues
@@ -995,14 +961,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreakNotValidDataTypes.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
           {
             _id: invalidMockId,
@@ -1045,14 +1009,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreakWrongLengthValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
           {
             _id: validMockBreakId,
@@ -1082,14 +1044,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
           { _id: validMockBreakId, school_id: newBreak.school_id },
           newBreak
@@ -1116,14 +1076,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
           { _id: validMockBreakId, school_id: newBreak.school_id },
           newBreak
@@ -1150,14 +1108,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
           { _id: validMockBreakId, school_id: newBreak.school_id },
           newBreak
@@ -1184,14 +1140,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).not.toHaveBeenCalled();
         expect(updateBreak).not.toHaveBeenCalledWith(
           { _id: validMockBreakId, school_id: newBreak.school_id },
           newBreak
@@ -1218,14 +1172,12 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).toHaveBeenCalled();
         expect(updateBreak).toHaveBeenCalledWith(
           { _id: validMockBreakId, school_id: newBreak.school_id },
           newBreak
@@ -1252,14 +1204,12 @@ describe("Resource => Break", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newBreak.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateBreak).toHaveBeenCalled();
         expect(updateBreak).toHaveBeenCalledWith(
           { _id: validMockBreakId, school_id: newBreak.school_id },
           newBreak
@@ -1291,7 +1241,6 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteBreak).not.toHaveBeenCalled();
         expect(deleteBreak).not.toHaveBeenCalledWith({
           school_id: null,
           _id: validMockBreakId,
@@ -1321,7 +1270,6 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteBreak).not.toHaveBeenCalled();
         expect(deleteBreak).not.toHaveBeenCalledWith({
           school_id: "",
           _id: validMockBreakId,
@@ -1357,7 +1305,6 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteBreak).not.toHaveBeenCalled();
         expect(deleteBreak).not.toHaveBeenCalledWith({
           school_id: invalidMockId,
           _id: invalidMockId,
@@ -1380,7 +1327,6 @@ describe("Resource => Break", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteBreak).toHaveBeenCalled();
         expect(deleteBreak).toHaveBeenCalledWith({
           school_id: otherValidMockId,
           _id: validMockBreakId,
@@ -1400,7 +1346,6 @@ describe("Resource => Break", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Break deleted", success: true });
         expect(statusCode).toBe(200);
-        expect(deleteBreak).toHaveBeenCalled();
         expect(deleteBreak).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           _id: validMockBreakId,

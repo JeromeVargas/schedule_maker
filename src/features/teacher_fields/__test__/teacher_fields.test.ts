@@ -179,7 +179,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherFieldMissingValues.school_i,
@@ -188,21 +187,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherFieldMissingValues.teacher_i,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherFieldMissingValues.field_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(
           newTeacherFieldMissingValues
         );
@@ -258,7 +254,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherFieldEmptyValues.school_id,
@@ -267,21 +262,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherFieldEmptyValues.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherFieldEmptyValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(
           newTeacherFieldEmptyValues
         );
@@ -337,7 +329,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherFieldNotValidDataTypes.school_id,
@@ -346,21 +337,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherFieldNotValidDataTypes.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherFieldNotValidDataTypes.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(
           newTeacherFieldNotValidDataTypes
         );
@@ -394,7 +382,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -403,21 +390,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
@@ -449,7 +433,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -458,21 +441,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
@@ -511,7 +491,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -520,21 +499,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
@@ -577,7 +553,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -586,21 +561,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
@@ -635,7 +607,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -644,21 +615,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
@@ -700,7 +668,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -709,21 +676,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).not.toHaveBeenCalled();
         expect(insertTeacherField).not.toHaveBeenCalledWith(newTeacherField);
       });
     });
@@ -755,7 +719,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -764,21 +727,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).toHaveBeenCalled();
         expect(insertTeacherField).toHaveBeenCalledWith(newTeacherField);
       });
     });
@@ -810,7 +770,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: true,
         });
         expect(statusCode).toBe(201);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -819,21 +778,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newTeacherField.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherField).toHaveBeenCalled();
         expect(insertTeacherField).toHaveBeenCalledWith(newTeacherField);
       });
     });
@@ -866,7 +822,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherFields).not.toHaveBeenCalled();
           expect(findTeacherFields).not.toHaveBeenCalledWith(
             { school_id: null },
             "-createdAt -updatedAt"
@@ -899,7 +854,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherFields).not.toHaveBeenCalled();
           expect(findTeacherFields).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-createdAt -updatedAt"
@@ -932,7 +886,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherFields).not.toHaveBeenCalled();
           expect(findTeacherFields).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -958,7 +911,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findTeacherFields).toHaveBeenCalled();
           expect(findTeacherFields).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -984,7 +936,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findTeacherFields).toHaveBeenCalled();
           expect(findTeacherFields).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -1018,7 +969,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(duplicateTeacherField).not.toHaveBeenCalled();
           expect(duplicateTeacherField).not.toHaveBeenCalledWith(
             { _id: validMockTeacherFieldId, school_id: null },
             "-createdAt -updatedAt"
@@ -1051,7 +1001,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherField).not.toHaveBeenCalled();
           expect(findTeacherField).not.toHaveBeenCalledWith(
             { _id: validMockTeacherFieldId, school_id: "" },
             "-createdAt -updatedAt"
@@ -1090,7 +1039,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherField).not.toHaveBeenCalled();
           expect(findTeacherField).not.toHaveBeenCalledWith(
             { _id: invalidMockId, school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -1116,7 +1064,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findTeacherField).toHaveBeenCalled();
           expect(findTeacherField).toHaveBeenCalledWith(
             {
               _id: otherValidMockId,
@@ -1145,7 +1092,6 @@ describe("RESOURCE => Teacher_field", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findTeacherField).toHaveBeenCalled();
           expect(findTeacherField).toHaveBeenCalledWith(
             { _id: validMockTeacherFieldId, school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -1203,7 +1149,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherFieldMissingValues.school_i,
@@ -1212,21 +1157,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherFieldMissingValues.field_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherFieldMissingValues.teacher_i,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1287,7 +1229,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherFieldEmptyValues.school_id,
@@ -1296,21 +1237,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherFieldEmptyValues.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherFieldEmptyValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1377,7 +1315,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).not.toHaveBeenCalled();
         expect(duplicateTeacherField).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherFieldNotValidDataTypes.school_id,
@@ -1386,21 +1323,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherFieldNotValidDataTypes.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newTeacherFieldNotValidDataTypes.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1439,7 +1373,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -1448,21 +1381,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1501,7 +1431,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -1510,21 +1439,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1570,7 +1496,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -1579,21 +1504,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1643,7 +1565,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -1652,21 +1573,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1708,7 +1626,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -1717,21 +1634,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1780,7 +1694,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -1789,21 +1702,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).not.toHaveBeenCalled();
         expect(updateTeacherField).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1842,7 +1752,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -1851,21 +1760,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).toHaveBeenCalled();
         expect(updateTeacherField).toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1904,7 +1810,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateTeacherField).toHaveBeenCalled();
         expect(duplicateTeacherField).toHaveBeenCalledWith(
           {
             school_id: newTeacherField.school_id,
@@ -1913,21 +1818,18 @@ describe("RESOURCE => Teacher_field", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherField.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           validMockFieldId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherField).toHaveBeenCalled();
         expect(updateTeacherField).toHaveBeenCalledWith(
           {
             _id: validMockTeacherFieldId,
@@ -1966,7 +1868,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
           _id: validMockTeacherFieldId,
           school_id: null,
@@ -1999,7 +1900,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
           _id: validMockTeacherFieldId,
           school_id: "",
@@ -2038,7 +1938,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
           _id: invalidMockId,
           school_id: invalidMockId,
@@ -2064,7 +1963,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({
           _id: otherValidMockId,
           school_id: validMockSchoolId,
@@ -2090,7 +1988,6 @@ describe("RESOURCE => Teacher_field", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({
           _id: validMockTeacherFieldId,
           school_id: validMockSchoolId,

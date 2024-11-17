@@ -159,7 +159,6 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
           {
             school_id: newGroupMissingValues.school_i,
@@ -167,14 +166,12 @@ describe("Resource => Group", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newGroupMissingValues.level_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).not.toHaveBeenCalled();
         expect(insertGroup).not.toHaveBeenCalledWith(newGroupMissingValues);
       });
     });
@@ -227,7 +224,6 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
           {
             school_id: newGroupEmptyValues.school_id,
@@ -235,14 +231,12 @@ describe("Resource => Group", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newGroupEmptyValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).not.toHaveBeenCalled();
         expect(insertGroup).not.toHaveBeenCalledWith(newGroupEmptyValues);
       });
     });
@@ -295,19 +289,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
           { school_id: invalidMockId, name: newGroupNotValidDataTypes.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           invalidMockId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).not.toHaveBeenCalled();
         expect(insertGroup).not.toHaveBeenCalledWith(newGroupNotValidDataTypes);
       });
     });
@@ -349,7 +340,6 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
           {
             school_id: newGroupWrongLengthValues.school_id,
@@ -357,14 +347,12 @@ describe("Resource => Group", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newGroupWrongLengthValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).not.toHaveBeenCalled();
         expect(insertGroup).not.toHaveBeenCalledWith(newGroupWrongLengthValues);
       });
     });
@@ -389,19 +377,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).not.toHaveBeenCalled();
         expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
@@ -429,19 +414,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).not.toHaveBeenCalled();
         expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
@@ -476,19 +458,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).not.toHaveBeenCalled();
         expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
@@ -513,19 +492,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).not.toHaveBeenCalled();
         expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
@@ -550,19 +526,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).toHaveBeenCalled();
         expect(insertGroup).toHaveBeenCalledWith(newGroup);
       });
     });
@@ -584,19 +557,16 @@ describe("Resource => Group", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Group created!", success: true });
         expect(statusCode).toBe(200);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroup).toHaveBeenCalled();
         expect(insertGroup).toHaveBeenCalledWith(newGroup);
       });
     });
@@ -629,7 +599,6 @@ describe("Resource => Group", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroups).not.toHaveBeenCalled();
           expect(findGroups).not.toHaveBeenCalledWith(
             { school_id: null },
             "-createdAt -updatedAt"
@@ -662,7 +631,6 @@ describe("Resource => Group", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroups).not.toHaveBeenCalled();
           expect(findGroups).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-createdAt -updatedAt"
@@ -695,7 +663,6 @@ describe("Resource => Group", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroups).not.toHaveBeenCalled();
           expect(findGroups).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -721,7 +688,6 @@ describe("Resource => Group", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findGroups).toHaveBeenCalled();
           expect(findGroups).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -741,7 +707,6 @@ describe("Resource => Group", () => {
           // assertions
           expect(body).toStrictEqual({ payload: groupsPayload, success: true });
           expect(statusCode).toBe(200);
-          expect(findGroups).toHaveBeenCalled();
           expect(findGroups).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -775,7 +740,6 @@ describe("Resource => Group", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroup).not.toHaveBeenCalled();
           expect(findGroup).not.toHaveBeenCalledWith(
             { school_id: null, _id: validMockGroupId },
             "-createdAt -updatedAt"
@@ -808,7 +772,6 @@ describe("Resource => Group", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroup).not.toHaveBeenCalled();
           expect(findGroup).not.toHaveBeenCalledWith(
             { school_id: "", _id: validMockGroupId },
             "-createdAt -updatedAt"
@@ -847,7 +810,6 @@ describe("Resource => Group", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroup).not.toHaveBeenCalled();
           expect(findGroup).not.toHaveBeenCalledWith(
             { school_id: invalidMockId, _id: invalidMockId },
             "-createdAt -updatedAt"
@@ -873,7 +835,6 @@ describe("Resource => Group", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findGroup).toHaveBeenCalled();
           expect(findGroup).toHaveBeenCalledWith(
             { school_id: validMockSchoolId, _id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -893,7 +854,6 @@ describe("Resource => Group", () => {
           // assertions
           expect(body).toStrictEqual({ payload: groupPayload, success: true });
           expect(statusCode).toBe(200);
-          expect(findGroup).toHaveBeenCalled();
           expect(findGroup).toHaveBeenCalledWith(
             { school_id: validMockSchoolId, _id: validMockGroupId },
             "-createdAt -updatedAt"
@@ -949,20 +909,17 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
           { school_id: newGroupMissingValues.school_i },
           { name: newGroupMissingValues.nam },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newGroupMissingValues.level_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
           { _id: validMockGroupId },
           { school_id: newGroupMissingValues.school_i },
@@ -1019,20 +976,17 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
           { school_id: newGroupEmptyValues.school_id },
           { name: newGroupEmptyValues.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newGroupEmptyValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
           { _id: validMockGroupId },
           { school_id: newGroupEmptyValues.school_id },
@@ -1095,20 +1049,17 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
           { school_id: invalidMockId },
           { name: newGroupNotValidDataTypes.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           invalidMockId,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
           { _id: invalidMockId, school_id: invalidMockId },
           newGroupNotValidDataTypes
@@ -1153,20 +1104,17 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).not.toHaveBeenCalled();
         expect(duplicateGroupName).not.toHaveBeenCalledWith(
           { school_id: newGroupWrongLengthValues.school_id },
           { name: newGroupWrongLengthValues.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newGroupWrongLengthValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
           { _id: validMockGroupId },
           { school_id: newGroupWrongLengthValues.school_id },
@@ -1195,19 +1143,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newGroup.school_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
           { _id: validMockGroupId, school_id: newGroup.school_id },
           newGroup
@@ -1238,19 +1183,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
           { _id: validMockGroupId, school_id: newGroup.school_id },
           newGroup
@@ -1288,19 +1230,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: validMockSchoolId, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
           { _id: validMockGroupId, school_id: newGroup.school_id },
           newGroup
@@ -1328,19 +1267,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).not.toHaveBeenCalled();
         expect(updateGroup).not.toHaveBeenCalledWith(
           { _id: validMockGroupId, school_id: newGroup.school_id },
           newGroup
@@ -1368,19 +1304,16 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).toHaveBeenCalled();
         expect(updateGroup).toHaveBeenCalledWith(
           {
             _id: validMockGroupId,
@@ -1412,19 +1345,16 @@ describe("Resource => Group", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateGroupName).toHaveBeenCalled();
         expect(duplicateGroupName).toHaveBeenCalledWith(
           { school_id: newGroup.school_id, name: newGroup.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newGroup.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroup).toHaveBeenCalled();
         expect(updateGroup).toHaveBeenCalledWith(
           {
             _id: validMockGroupId,
@@ -1460,7 +1390,6 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteGroup).not.toHaveBeenCalled();
         expect(deleteGroup).not.toHaveBeenCalledWith({
           school_id: null,
           _id: validMockGroupId,
@@ -1490,7 +1419,6 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteGroup).not.toHaveBeenCalled();
         expect(deleteGroup).not.toHaveBeenCalledWith({
           school_id: "",
           _id: validMockGroupId,
@@ -1526,7 +1454,6 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteGroup).not.toHaveBeenCalled();
         expect(deleteGroup).not.toHaveBeenCalledWith({
           school_id: invalidMockId,
           _id: invalidMockId,
@@ -1549,7 +1476,6 @@ describe("Resource => Group", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteGroup).toHaveBeenCalled();
         expect(deleteGroup).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           _id: otherValidMockId,
@@ -1569,7 +1495,6 @@ describe("Resource => Group", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Group deleted", success: true });
         expect(statusCode).toBe(200);
-        expect(deleteGroup).toHaveBeenCalled();
         expect(deleteGroup).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           _id: validMockGroupId,

@@ -204,7 +204,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
           {
             level_id: newSubjectMissingValues.level_i,
@@ -212,21 +211,18 @@ describe("Resource => subject", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubjectMissingValues.level_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubjectMissingValues.field_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(newSubjectMissingValues);
       });
     });
@@ -295,7 +291,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
           {
             level_id: newSubjectEmptyValues.level_id,
@@ -303,21 +298,18 @@ describe("Resource => subject", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubjectEmptyValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubjectEmptyValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(newSubjectEmptyValues);
       });
     });
@@ -386,7 +378,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
           {
             level_id: newSubjectNotValidDataTypes.level_id,
@@ -394,21 +385,18 @@ describe("Resource => subject", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubjectNotValidDataTypes.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubjectNotValidDataTypes.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(
           newSubjectNotValidDataTypes
         );
@@ -462,7 +450,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
           {
             level_id: newSubjectWrongLengthValues.level_id,
@@ -470,21 +457,18 @@ describe("Resource => subject", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubjectWrongLengthValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubjectWrongLengthValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(
           newSubjectWrongLengthValues
         );
@@ -512,26 +496,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
@@ -560,26 +540,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
@@ -608,26 +584,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
@@ -656,26 +628,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
@@ -704,26 +672,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).not.toHaveBeenCalled();
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
@@ -749,26 +713,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).toHaveBeenCalled();
         expect(insertSubject).toHaveBeenCalledWith(newSubject);
       });
     });
@@ -794,26 +754,22 @@ describe("Resource => subject", () => {
           success: true,
         });
         expect(statusCode).toBe(201);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSubject).toHaveBeenCalled();
         expect(insertSubject).toHaveBeenCalledWith(newSubject);
       });
     });
@@ -846,7 +802,6 @@ describe("Resource => subject", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSubjects).not.toHaveBeenCalled();
           expect(findSubjects).not.toHaveBeenCalledWith(
             { school_id: null },
             "-createdAt -updatedAt"
@@ -879,7 +834,6 @@ describe("Resource => subject", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSubjects).not.toHaveBeenCalled();
           expect(findSubjects).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-createdAt -updatedAt"
@@ -912,7 +866,6 @@ describe("Resource => subject", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSubjects).not.toHaveBeenCalled();
           expect(findSubjects).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -938,7 +891,6 @@ describe("Resource => subject", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findSubjects).toHaveBeenCalled();
           expect(findSubjects).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -964,7 +916,6 @@ describe("Resource => subject", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findSubjects).toHaveBeenCalled();
           expect(findSubjects).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -998,7 +949,6 @@ describe("Resource => subject", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSubject).not.toHaveBeenCalled();
           expect(findSubject).not.toHaveBeenCalledWith(
             { _id: validMockSubjectId, school_id: null },
             "-createdAt -updatedAt"
@@ -1031,7 +981,6 @@ describe("Resource => subject", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSubject).not.toHaveBeenCalled();
           expect(findSubject).not.toHaveBeenCalledWith(
             { _id: validMockSubjectId, school_id: "" },
             "-createdAt -updatedAt"
@@ -1070,7 +1019,6 @@ describe("Resource => subject", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSubject).not.toHaveBeenCalled();
           expect(findSubject).not.toHaveBeenCalledWith(
             { _id: invalidMockId, school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -1096,7 +1044,6 @@ describe("Resource => subject", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findSubject).toHaveBeenCalled();
           expect(findSubject).toHaveBeenCalledWith(
             { _id: validMockSubjectId, school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -1122,7 +1069,6 @@ describe("Resource => subject", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findSubject).toHaveBeenCalled();
           expect(findSubject).toHaveBeenCalledWith(
             { _id: validMockSubjectId, school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -1195,7 +1141,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
           {
             level_id: newSubjectMissingValues.level_i,
@@ -1203,21 +1148,18 @@ describe("Resource => subject", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubjectMissingValues.level_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubjectMissingValues.field_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
           {
             _id: validMockSubjectId,
@@ -1295,7 +1237,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
           {
             level_id: newSubjectEmptyValues.level_id,
@@ -1303,21 +1244,18 @@ describe("Resource => subject", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubjectEmptyValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubjectEmptyValues.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
           {
             _id: validMockSubjectId,
@@ -1401,7 +1339,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
           {
             level_id: newSubjectNotValidDataTypes.level_id,
@@ -1409,21 +1346,18 @@ describe("Resource => subject", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubjectNotValidDataTypes.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubjectNotValidDataTypes.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
           {
             _id: invalidMockId,
@@ -1484,7 +1418,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).not.toHaveBeenCalled();
         expect(duplicateSubjectName).not.toHaveBeenCalledWith(
           {
             level_id: newSubjectWrongLengthValues.level_id,
@@ -1492,21 +1425,18 @@ describe("Resource => subject", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubjectWrongLengthValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubjectWrongLengthValues.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
           {
             _id: validMockSubjectId,
@@ -1541,26 +1471,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).not.toHaveBeenCalled();
         expect(findLevel).not.toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
           { _id: validMockSubjectId, school_id: newSubject.school_id },
           newSubject
@@ -1595,26 +1521,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
           { _id: validMockSubjectId, school_id: newSubject.school_id },
           newSubject
@@ -1649,26 +1571,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: validMockLevelId, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).not.toHaveBeenCalled();
         expect(findField).not.toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
           { _id: validMockSubjectId, school_id: otherValidMockId },
           newSubject
@@ -1703,26 +1621,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
           { _id: validMockSubjectId, school_id: newSubject.school_id },
           newSubject
@@ -1757,26 +1671,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: validMockLevelId, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).not.toHaveBeenCalled();
         expect(updateSubject).not.toHaveBeenCalledWith(
           { _id: validMockSubjectId, school_id: otherValidMockId },
           newSubject
@@ -1808,26 +1718,22 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).toHaveBeenCalled();
         expect(updateSubject).toHaveBeenCalledWith(
           {
             _id: validMockSubjectId,
@@ -1863,26 +1769,22 @@ describe("Resource => subject", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateSubjectName).toHaveBeenCalled();
         expect(duplicateSubjectName).toHaveBeenCalledWith(
           { level_id: newSubject.level_id, name: newSubject.name },
           "-createdAt -updatedAt"
         );
-        expect(findLevel).toHaveBeenCalled();
         expect(findLevel).toHaveBeenCalledWith(
           newSubject.level_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findField).toHaveBeenCalled();
         expect(findField).toHaveBeenCalledWith(
           newSubject.field_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSubject).toHaveBeenCalled();
         expect(updateSubject).toHaveBeenCalledWith(
           {
             _id: validMockSubjectId,
@@ -1921,7 +1823,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteSubject).not.toHaveBeenCalled();
         expect(deleteSubject).not.toHaveBeenCalledWith({
           _id: validMockSubjectId,
           school_id: null,
@@ -1954,7 +1855,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteSubject).not.toHaveBeenCalled();
         expect(deleteSubject).not.toHaveBeenCalledWith({
           _id: validMockSubjectId,
           school_id: "",
@@ -1993,7 +1893,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteSubject).not.toHaveBeenCalled();
         expect(deleteSubject).not.toHaveBeenCalledWith({
           _id: invalidMockId,
           school_id: invalidMockId,
@@ -2019,7 +1918,6 @@ describe("Resource => subject", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteSubject).toHaveBeenCalled();
         expect(deleteSubject).toHaveBeenCalledWith({
           _id: validMockSubjectId,
           school_id: otherValidMockId,
@@ -2042,7 +1940,6 @@ describe("Resource => subject", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Subject deleted", success: true });
         expect(statusCode).toBe(200);
-        expect(deleteSubject).toHaveBeenCalled();
         expect(deleteSubject).toHaveBeenCalledWith({
           _id: validMockSubjectId,
           school_id: validMockSchoolId,

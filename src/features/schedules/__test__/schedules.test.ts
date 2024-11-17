@@ -290,12 +290,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newScheduleMissingValues.school_i,
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           {
             school_id: newScheduleMissingValues.school_i,
@@ -303,7 +301,6 @@ describe("Resource => Schedule", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(
           newScheduleMissingValues
         );
@@ -406,12 +403,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newScheduleEmptyValues.school_id,
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           {
             school_id: newScheduleEmptyValues.school_id,
@@ -419,7 +414,6 @@ describe("Resource => Schedule", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(newScheduleEmptyValues);
       });
     });
@@ -520,12 +514,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newScheduleNotValidDataTypes.school_id,
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           {
             school_id: newScheduleNotValidDataTypes.school_id,
@@ -533,7 +525,6 @@ describe("Resource => Schedule", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(
           newScheduleNotValidDataTypes
         );
@@ -589,12 +580,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newScheduleWrongLengthValues.school_id,
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           {
             school_id: newScheduleWrongLengthValues.school_id,
@@ -602,7 +591,6 @@ describe("Resource => Schedule", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(
           newScheduleWrongLengthValues
         );
@@ -629,17 +617,14 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           newSchedule.school_id,
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
@@ -664,17 +649,14 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           newSchedule.school_id,
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
@@ -702,17 +684,14 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           newSchedule.school_id,
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchedule).not.toHaveBeenCalled();
         expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
@@ -740,17 +719,14 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           newSchedule.school_id,
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchedule).toHaveBeenCalled();
         expect(insertSchedule).toHaveBeenCalledWith(newSchedule);
       });
     });
@@ -775,17 +751,14 @@ describe("Resource => Schedule", () => {
           success: true,
         });
         expect(statusCode).toBe(201);
-        expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           newSchedule.school_id,
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchedule).toHaveBeenCalled();
         expect(insertSchedule).toHaveBeenCalledWith(newSchedule);
       });
     });
@@ -818,7 +791,6 @@ describe("Resource => Schedule", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSchedules).not.toHaveBeenCalled();
           expect(findSchedules).not.toHaveBeenCalledWith(
             { school_id: null },
             "-createdAt -updatedAt"
@@ -851,7 +823,6 @@ describe("Resource => Schedule", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSchedules).not.toHaveBeenCalled();
           expect(findSchedules).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-createdAt -updatedAt"
@@ -884,7 +855,6 @@ describe("Resource => Schedule", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSchedules).not.toHaveBeenCalled();
           expect(findSchedules).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -910,7 +880,6 @@ describe("Resource => Schedule", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findSchedules).toHaveBeenCalled();
           expect(findSchedules).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -936,7 +905,6 @@ describe("Resource => Schedule", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findSchedules).toHaveBeenCalled();
           expect(findSchedules).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -970,7 +938,6 @@ describe("Resource => Schedule", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSchedule).not.toHaveBeenCalled();
           expect(findSchedule).not.toHaveBeenCalledWith(
             { school_id: null, _id: validMockScheduleId },
             "-createdAt -updatedAt"
@@ -1003,7 +970,6 @@ describe("Resource => Schedule", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSchedule).not.toHaveBeenCalled();
           expect(findSchedule).not.toHaveBeenCalledWith(
             { school_id: "", _id: validMockScheduleId },
             "-createdAt -updatedAt"
@@ -1042,7 +1008,6 @@ describe("Resource => Schedule", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSchedule).not.toHaveBeenCalled();
           expect(findSchedule).not.toHaveBeenCalledWith(
             { school_id: invalidMockId, _id: invalidMockId },
             "-createdAt -updatedAt"
@@ -1068,7 +1033,6 @@ describe("Resource => Schedule", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findSchedule).toHaveBeenCalled();
           expect(findSchedule).toHaveBeenCalledWith(
             { school_id: validMockSchoolId, _id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -1094,7 +1058,6 @@ describe("Resource => Schedule", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findSchedule).toHaveBeenCalled();
           expect(findSchedule).toHaveBeenCalledWith(
             { school_id: validMockSchoolId, _id: validMockScheduleId },
             "-createdAt -updatedAt"
@@ -1189,7 +1152,6 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
           {
             school_id: newScheduleMissingValues.school_i,
@@ -1197,7 +1159,6 @@ describe("Resource => Schedule", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
           {
             _id: validMockScheduleId,
@@ -1303,7 +1264,6 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
           {
             school_id: newScheduleEmptyValues.school_id,
@@ -1311,7 +1271,6 @@ describe("Resource => Schedule", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
           {
             _id: validMockScheduleId,
@@ -1423,7 +1382,6 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
           {
             school_id: newScheduleNotValidDataTypes.school_id,
@@ -1431,7 +1389,6 @@ describe("Resource => Schedule", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
           {
             _id: validMockScheduleId,
@@ -1490,7 +1447,6 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
           {
             school_id: newScheduleWrongLengthValues.school_id,
@@ -1498,7 +1454,6 @@ describe("Resource => Schedule", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
           {
             _id: validMockScheduleId,
@@ -1531,12 +1486,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateScheduleName).not.toHaveBeenCalled();
         expect(duplicateScheduleName).not.toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
           "-createdAt -updatedAt"
         );
-        expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
           { _id: validMockScheduleId, school_id: newSchedule.school_id },
           newSchedule
@@ -1566,12 +1519,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateScheduleName).toHaveBeenCalled();
         expect(duplicateScheduleName).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
           "-createdAt -updatedAt"
         );
-        expect(updateSchedule).not.toHaveBeenCalled();
         expect(updateSchedule).not.toHaveBeenCalledWith(
           { _id: validMockScheduleId, school_id: newSchedule.school_id },
           newSchedule
@@ -1601,12 +1552,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateScheduleName).toHaveBeenCalled();
         expect(duplicateScheduleName).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
           "-createdAt -updatedAt"
         );
-        expect(updateSchedule).toHaveBeenCalled();
         expect(updateSchedule).toHaveBeenCalledWith(
           { _id: validMockScheduleId, school_id: newSchedule.school_id },
           newSchedule
@@ -1633,12 +1582,10 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Schedule updated", success: true });
         expect(statusCode).toBe(200);
-        expect(duplicateScheduleName).toHaveBeenCalled();
         expect(duplicateScheduleName).toHaveBeenCalledWith(
           { school_id: newSchedule.school_id, name: newSchedule.name },
           "-createdAt -updatedAt"
         );
-        expect(updateSchedule).toHaveBeenCalled();
         expect(updateSchedule).toHaveBeenCalledWith(
           { _id: validMockScheduleId, school_id: newSchedule.school_id },
           newSchedule
@@ -1674,12 +1621,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findAllLevels).not.toHaveBeenCalled();
         expect(findAllLevels).not.toHaveBeenCalledWith({
           school_i: validMockSchoolId,
           schedule_id: validMockScheduleId,
         });
-        expect(deleteSchedule).not.toHaveBeenCalled();
         expect(deleteSchedule).not.toHaveBeenCalledWith({
           school_id: null,
           _id: validMockScheduleId,
@@ -1712,13 +1657,11 @@ describe("Resource => Schedule", () => {
           ],
           success: false,
         });
-        expect(findAllLevels).not.toHaveBeenCalled();
         expect(findAllLevels).not.toHaveBeenCalledWith({
           school_id: "",
           schedule_id: validMockScheduleId,
         });
         expect(statusCode).toBe(400);
-        expect(deleteSchedule).not.toHaveBeenCalled();
         expect(deleteSchedule).not.toHaveBeenCalledWith({
           _id: validMockScheduleId,
           school_id: "",
@@ -1757,13 +1700,11 @@ describe("Resource => Schedule", () => {
           ],
           success: false,
         });
-        expect(findAllLevels).not.toHaveBeenCalled();
         expect(findAllLevels).not.toHaveBeenCalledWith({
           school_id: invalidMockId,
           schedule_id: invalidMockId,
         });
         expect(statusCode).toBe(400);
-        expect(deleteSchedule).not.toHaveBeenCalled();
         expect(deleteSchedule).not.toHaveBeenCalledWith({
           school_id: "",
           _id: "",
@@ -1790,12 +1731,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(findAllLevels).toHaveBeenCalled();
         expect(findAllLevels).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           schedule_id: validMockScheduleId,
         });
-        expect(deleteSchedule).not.toHaveBeenCalled();
         expect(deleteSchedule).not.toHaveBeenCalledWith({
           school_id: "",
           _id: "",
@@ -1822,12 +1761,10 @@ describe("Resource => Schedule", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findAllLevels).toHaveBeenCalled();
         expect(findAllLevels).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           schedule_id: otherValidMockId,
         });
-        expect(deleteSchedule).toHaveBeenCalled();
         expect(deleteSchedule).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           _id: otherValidMockId,
@@ -1851,12 +1788,10 @@ describe("Resource => Schedule", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Schedule deleted", success: true });
         expect(statusCode).toBe(200);
-        expect(findAllLevels).toHaveBeenCalled();
         expect(findAllLevels).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           schedule_id: validMockScheduleId,
         });
-        expect(deleteSchedule).toHaveBeenCalled();
         expect(deleteSchedule).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           _id: validMockScheduleId,

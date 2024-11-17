@@ -1,14 +1,14 @@
 Back end:
-// Todo --> check if the empty just toBeCalled are necessary since you already have toBeCalledWith that might replace it
-// Todo --> tests, validators, controllers and routes labeling might not be scalable
-// Todo --> type the entities params when need it instead of comments with params types, maybe use zod
+// Todo --> controllers, tests, validators, and routes labeling might not be scalable
+// Todo --> type the entities params when need it instead of comments with params types
 // Todo --> refactor the test to not be attached to the implementation but the results, maybe use in-memory-mongo-db or something similar
-// Todo --> add linter
-// Todo --> make sure populate does not go into production, maybe work on a file to be call on the terminal, there is some issue with the modules, maybe try something different from ts-node
+// Todo --> make sure populate does not go into production, maybe work on a file to be call on the terminal
+// Todo --> fix the issue with the ESmodules modules, maybe try something different from ts-node
+// Todo --> add prettier config and linter
+// Todo --> important: try to update packages; specially express validator, maybe use zod
 // Todo --> add csrf attack protection features:
     https://www.youtube.com/watch?v=CXSE89JGnek&ab_channel=AntonioSarosi
     https://www.youtube.com/watch?v=C9dvkIndTLA&t=1s&ab_channel=4tomik
-// Todo --> important: try to update packages, specially express validator,
 // Todo --> continue checking sanitization and overall security of the apis
 
 for later:

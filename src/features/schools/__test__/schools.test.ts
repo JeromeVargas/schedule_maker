@@ -130,12 +130,10 @@ describe("RESOURCE => School", () => {
         });
 
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
         expect(duplicateSchoolName).not.toHaveBeenCalledWith(
           { name: newSchoolMissingValues.nam },
           "-createdAt -updatedAt"
         );
-        expect(insertSchool).not.toHaveBeenCalled();
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
@@ -178,12 +176,10 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
         expect(duplicateSchoolName).not.toHaveBeenCalledWith(
           { name: newSchoolEmptyValues.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchool).not.toHaveBeenCalled();
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
@@ -226,12 +222,10 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
         expect(duplicateSchoolName).not.toHaveBeenCalledWith(
           { name: newSchoolNotValidDataTypes.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchool).not.toHaveBeenCalled();
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
@@ -269,12 +263,10 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
         expect(duplicateSchoolName).not.toHaveBeenCalledWith(
           { name: newSchoolWrongLengthValues.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchool).not.toHaveBeenCalled();
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
@@ -305,12 +297,10 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
         expect(duplicateSchoolName).not.toHaveBeenCalledWith(
           { name: newSchool.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchool).not.toHaveBeenCalled();
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
@@ -334,12 +324,11 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateSchoolName).toHaveBeenCalled();
+
         expect(duplicateSchoolName).toHaveBeenCalledWith(
           { name: newSchool.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchool).not.toHaveBeenCalled();
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
@@ -363,12 +352,11 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).toHaveBeenCalled();
+
         expect(duplicateSchoolName).toHaveBeenCalledWith(
           { name: newSchool.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchool).toHaveBeenCalled();
         expect(insertSchool).toHaveBeenCalledWith(newSchool);
       });
     });
@@ -391,14 +379,11 @@ describe("RESOURCE => School", () => {
           msg: "School created successfully!",
           success: true,
         });
-
         expect(statusCode).toBe(201);
-        expect(duplicateSchoolName).toHaveBeenCalled();
         expect(duplicateSchoolName).toHaveBeenCalledWith(
           { name: newSchool.name },
           "-createdAt -updatedAt"
         );
-        expect(insertSchool).toHaveBeenCalled();
         expect(insertSchool).toHaveBeenCalledWith(newSchool);
       });
     });
@@ -422,7 +407,6 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findSchools).toHaveBeenCalled();
           expect(findSchools).toHaveBeenCalledWith("-createdAt -updatedAt");
         });
       });
@@ -442,7 +426,6 @@ describe("RESOURCE => School", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findSchools).toHaveBeenCalled();
           expect(findSchools).toHaveBeenCalledWith("-createdAt -updatedAt");
         });
       });
@@ -471,7 +454,6 @@ describe("RESOURCE => School", () => {
               success: false,
             });
             expect(statusCode).toBe(400);
-            expect(findSchool).not.toHaveBeenCalled();
             expect(findSchool).not.toHaveBeenCalledWith(
               invalidMockId,
               "-createdAt -updatedAt"
@@ -494,7 +476,6 @@ describe("RESOURCE => School", () => {
               success: false,
             });
             expect(statusCode).toBe(404);
-            expect(findSchool).toHaveBeenCalled();
             expect(findSchool).toHaveBeenCalledWith(
               otherValidMockId,
               "-createdAt -updatedAt"
@@ -517,7 +498,6 @@ describe("RESOURCE => School", () => {
               success: true,
             });
             expect(statusCode).toBe(200);
-            expect(findSchool).toHaveBeenCalled();
             expect(findSchool).toHaveBeenCalledWith(
               validMockSchoolId,
               "-createdAt -updatedAt"
@@ -564,12 +544,10 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
             { name: newSchoolMissingValues.nam },
             "-createdAt -updatedAt"
           );
-          expect(updateSchool).not.toHaveBeenCalled();
           expect(updateSchool).not.toHaveBeenCalledWith(
             validMockSchoolId,
             newSchoolMissingValues
@@ -615,12 +593,10 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
             { name: newSchoolEmptyValues.name },
             "-createdAt -updatedAt"
           );
-          expect(updateSchool).not.toHaveBeenCalled();
           expect(updateSchool).not.toHaveBeenCalledWith(
             validMockSchoolId,
             newSchoolEmptyValues
@@ -672,12 +648,10 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
             { name: newSchoolNotValidDataTypes.name },
             "-createdAt -updatedAt"
           );
-          expect(updateSchool).not.toHaveBeenCalled();
           expect(updateSchool).not.toHaveBeenCalledWith(
             invalidMockId,
             newSchoolNotValidDataTypes
@@ -718,12 +692,10 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
             { name: newSchoolWrongLengthValues.name },
             "-createdAt -updatedAt"
           );
-          expect(updateSchool).not.toHaveBeenCalled();
           expect(updateSchool).not.toHaveBeenCalledWith(
             validMockSchoolId,
             newSchoolWrongLengthValues
@@ -757,12 +729,10 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
           expect(duplicateSchoolName).not.toHaveBeenCalledWith(
             { name: newSchoolWrongLengthValues.name },
             "-createdAt -updatedAt"
           );
-          expect(updateSchool).not.toHaveBeenCalled();
           expect(updateSchool).not.toHaveBeenCalledWith(
             validMockSchoolId,
             newSchoolWrongLengthValues
@@ -789,12 +759,11 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(409);
-          expect(duplicateSchoolName).toHaveBeenCalled();
+
           expect(duplicateSchoolName).toHaveBeenCalledWith(
             { name: newSchool.name },
             "-createdAt -updatedAt"
           );
-          expect(updateSchool).not.toHaveBeenCalled();
           expect(updateSchool).not.toHaveBeenCalledWith(
             validMockSchoolId,
             newSchool
@@ -821,12 +790,11 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).toHaveBeenCalled();
+
           expect(duplicateSchoolName).toHaveBeenCalledWith(
             { name: newSchool.name },
             "-createdAt -updatedAt"
           );
-          expect(updateSchool).toHaveBeenCalled();
           expect(updateSchool).toHaveBeenCalledWith(
             validMockSchoolId,
             newSchool
@@ -850,12 +818,11 @@ describe("RESOURCE => School", () => {
           // assertions
           expect(body).toStrictEqual({ msg: "School updated", success: true });
           expect(statusCode).toBe(200);
-          expect(duplicateSchoolName).toHaveBeenCalled();
+
           expect(duplicateSchoolName).toHaveBeenCalledWith(
             { name: newSchool.name },
             "-createdAt -updatedAt"
           );
-          expect(updateSchool).toHaveBeenCalled();
           expect(updateSchool).toHaveBeenCalledWith(
             validMockSchoolId,
             newSchool
@@ -888,7 +855,6 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(deleteSchool).not.toHaveBeenCalled();
           expect(deleteSchool).not.toHaveBeenCalledWith(validMockSchoolId);
         });
       });
@@ -908,7 +874,6 @@ describe("RESOURCE => School", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(deleteSchool).toHaveBeenCalled();
           expect(deleteSchool).toHaveBeenCalledWith(otherValidMockId);
         });
       });
@@ -925,7 +890,6 @@ describe("RESOURCE => School", () => {
           // assertions
           expect(body).toStrictEqual({ msg: "School deleted", success: true });
           expect(statusCode).toBe(200);
-          expect(deleteSchool).toHaveBeenCalled();
           expect(deleteSchool).toHaveBeenCalledWith(validMockSchoolId);
         });
       });

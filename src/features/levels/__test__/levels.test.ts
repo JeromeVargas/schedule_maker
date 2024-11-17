@@ -159,7 +159,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
           {
             school_id: newLevelMissingValues.school_i,
@@ -167,14 +166,12 @@ describe("Resource => Level", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevelMissingValues.schedule_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertLevelService).not.toHaveBeenCalled();
         expect(insertLevelService).not.toHaveBeenCalledWith(
           newLevelMissingValues
         );
@@ -223,7 +220,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
           {
             school_id: newLevelEmptyValues.school_id,
@@ -231,14 +227,12 @@ describe("Resource => Level", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevelEmptyValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertLevelService).not.toHaveBeenCalled();
         expect(insertLevelService).not.toHaveBeenCalledWith(newLevel);
       });
     });
@@ -285,7 +279,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
           {
             school_id: newLevelNotValidDataTypes.school_id,
@@ -293,14 +286,12 @@ describe("Resource => Level", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevelNotValidDataTypes.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertLevelService).not.toHaveBeenCalled();
         expect(insertLevelService).not.toHaveBeenCalledWith(
           newLevelNotValidDataTypes
         );
@@ -338,7 +329,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
           {
             school_id: newLevelWrongLengthValues.school_id,
@@ -346,14 +336,12 @@ describe("Resource => Level", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevelWrongLengthValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertLevelService).not.toHaveBeenCalled();
         expect(insertLevelService).not.toHaveBeenCalledWith(
           newLevelWrongLengthValues
         );
@@ -383,19 +371,16 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: newLevel.school_id, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertLevelService).not.toHaveBeenCalled();
         expect(insertLevelService).not.toHaveBeenCalledWith(newLevel);
       });
     });
@@ -423,19 +408,16 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: newLevel.school_id, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertLevelService).not.toHaveBeenCalled();
         expect(insertLevelService).not.toHaveBeenCalledWith(newLevel);
       });
     });
@@ -463,19 +445,16 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: otherValidMockId, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertLevelService).not.toHaveBeenCalled();
         expect(insertLevelService).not.toHaveBeenCalledWith(newLevel);
       });
     });
@@ -503,19 +482,16 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: newLevel.school_id, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertLevelService).toHaveBeenCalled();
         expect(insertLevelService).toHaveBeenCalledWith(newLevel);
       });
     });
@@ -543,19 +519,16 @@ describe("Resource => Level", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: newLevel.school_id, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertLevelService).toHaveBeenCalled();
         expect(insertLevelService).toHaveBeenCalledWith(newLevel);
       });
     });
@@ -588,7 +561,6 @@ describe("Resource => Level", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findLevels).not.toHaveBeenCalled();
           expect(findLevels).not.toHaveBeenCalledWith(
             { school_id: null },
             "-createdAt -updatedAt"
@@ -621,7 +593,6 @@ describe("Resource => Level", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findLevels).not.toHaveBeenCalled();
           expect(findLevels).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-createdAt -updatedAt"
@@ -654,7 +625,6 @@ describe("Resource => Level", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findLevels).not.toHaveBeenCalled();
           expect(findLevels).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -680,7 +650,6 @@ describe("Resource => Level", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findLevels).toHaveBeenCalled();
           expect(findLevels).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -700,7 +669,6 @@ describe("Resource => Level", () => {
           // assertions
           expect(body).toStrictEqual({ payload: levelsPayload, success: true });
           expect(statusCode).toBe(200);
-          expect(findLevels).toHaveBeenCalled();
           expect(findLevels).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -734,7 +702,6 @@ describe("Resource => Level", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findLevel).not.toHaveBeenCalled();
           expect(findLevel).not.toHaveBeenCalledWith(
             { school_id: null, _id: validMockLevelId },
             "-createdAt -updatedAt"
@@ -767,7 +734,6 @@ describe("Resource => Level", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findLevel).not.toHaveBeenCalled();
           expect(findLevel).not.toHaveBeenCalledWith(
             { school_id: "", _id: validMockLevelId },
             "-createdAt -updatedAt"
@@ -806,7 +772,6 @@ describe("Resource => Level", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findLevel).not.toHaveBeenCalled();
           expect(findLevel).not.toHaveBeenCalledWith(
             { school_id: invalidMockId, _id: invalidMockId },
             "-createdAt -updatedAt"
@@ -832,7 +797,6 @@ describe("Resource => Level", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findLevel).toHaveBeenCalled();
           expect(findLevel).toHaveBeenCalledWith(
             { school_id: validMockSchoolId, _id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -852,7 +816,6 @@ describe("Resource => Level", () => {
           // assertions
           expect(body).toStrictEqual({ payload: levelPayload, success: true });
           expect(statusCode).toBe(200);
-          expect(findLevel).toHaveBeenCalled();
           expect(findLevel).toHaveBeenCalledWith(
             { school_id: validMockSchoolId, _id: validMockLevelId },
             "-createdAt -updatedAt"
@@ -903,7 +866,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
           {
             school_id: newLevelMissingValues.school_i,
@@ -911,14 +873,12 @@ describe("Resource => Level", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevelMissingValues.schedule_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateLevel).not.toHaveBeenCalled();
         expect(updateLevel).not.toHaveBeenCalledWith(
           { _id: validMockLevelId, school_id: newLevelMissingValues.school_i },
           newLevelMissingValues
@@ -968,7 +928,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
           {
             school_id: newLevelEmptyValues.school_id,
@@ -976,14 +935,12 @@ describe("Resource => Level", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevelEmptyValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateLevel).not.toHaveBeenCalled();
         expect(updateLevel).not.toHaveBeenCalledWith(
           { _id: validMockLevelId, school_id: newLevelEmptyValues.school_id },
           newLevelEmptyValues
@@ -1039,7 +996,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
           {
             school_id: newLevelNotValidDataTypes.school_id,
@@ -1047,14 +1003,12 @@ describe("Resource => Level", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevelNotValidDataTypes.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateLevel).not.toHaveBeenCalled();
         expect(updateLevel).not.toHaveBeenCalledWith(
           { _id: invalidMockId, school_id: newLevelNotValidDataTypes },
           newLevelNotValidDataTypes
@@ -1093,7 +1047,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalled();
         expect(duplicateLevelName).not.toHaveBeenCalledWith(
           {
             school_id: newLevelWrongLengthValues.school_id,
@@ -1101,14 +1054,12 @@ describe("Resource => Level", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevelWrongLengthValues.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateLevel).not.toHaveBeenCalled();
         expect(updateLevel).not.toHaveBeenCalledWith(
           {
             _id: validMockLevelId,
@@ -1142,19 +1093,16 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: newLevel.school_id, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).not.toHaveBeenCalled();
         expect(findSchedule).not.toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateLevel).not.toHaveBeenCalled();
         expect(updateLevel).not.toHaveBeenCalledWith(
           { _id: validMockLevelId, school_id: newLevel.school_id },
           newLevel
@@ -1182,19 +1130,16 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: newLevel.school_id, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateLevel).not.toHaveBeenCalled();
         expect(updateLevel).not.toHaveBeenCalledWith(
           { _id: validMockLevelId, school_id: newLevel.school_id },
           newLevel
@@ -1225,19 +1170,16 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: otherValidMockId, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateLevel).not.toHaveBeenCalled();
         expect(updateLevel).not.toHaveBeenCalledWith(
           { _id: validMockLevelId, school_id: otherValidMockId },
           newLevel
@@ -1268,19 +1210,16 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: newLevel.school_id, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateLevel).toHaveBeenCalled();
         expect(updateLevel).toHaveBeenCalledWith(
           { _id: validMockLevelId, school_id: newLevel.school_id },
           newLevel
@@ -1311,19 +1250,16 @@ describe("Resource => Level", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateLevelName).toHaveBeenCalled();
         expect(duplicateLevelName).toHaveBeenCalledWith(
           { school_id: newLevel.school_id, name: newLevel.name },
           "-createdAt -updatedAt"
         );
-        expect(findSchedule).toHaveBeenCalled();
         expect(findSchedule).toHaveBeenCalledWith(
           newLevel.schedule_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateLevel).toHaveBeenCalled();
         expect(updateLevel).toHaveBeenCalledWith(
           { _id: validMockLevelId, school_id: newLevel.school_id },
           newLevel
@@ -1355,7 +1291,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteLevel).not.toHaveBeenCalled();
         expect(deleteLevel).not.toHaveBeenCalledWith({
           school_id: null,
           _id: validMockLevelId,
@@ -1385,7 +1320,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteLevel).not.toHaveBeenCalled();
         expect(deleteLevel).not.toHaveBeenCalledWith({
           school_id: "",
           _id: validMockLevelId,
@@ -1421,7 +1355,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteLevel).not.toHaveBeenCalled();
         expect(deleteLevel).not.toHaveBeenCalledWith({
           school_id: invalidMockId,
           _id: invalidMockId,
@@ -1445,7 +1378,6 @@ describe("Resource => Level", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteLevel).toHaveBeenCalled();
         expect(deleteLevel).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           _id: otherValidMockId,
@@ -1465,7 +1397,6 @@ describe("Resource => Level", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Level deleted", success: true });
         expect(statusCode).toBe(200);
-        expect(deleteLevel).toHaveBeenCalled();
         expect(deleteLevel).toHaveBeenCalledWith({
           school_id: validMockSchoolId,
           _id: validMockLevelId,

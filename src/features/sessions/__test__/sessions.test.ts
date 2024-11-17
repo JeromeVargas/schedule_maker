@@ -329,35 +329,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id level_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSessionMissingValues.teacherField_i,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSessionMissingValues.subject_i,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSessionMissingValues);
       });
     });
@@ -454,35 +449,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSessionEmptyValues.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id level_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSessionEmptyValues.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSessionEmptyValues.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSessionEmptyValues);
       });
     });
@@ -579,35 +569,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSessionNotValidDataTypes.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id level_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSessionNotValidDataTypes.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSessionNotValidDataTypes.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(
           newSessionNotValidDataTypes
         );
@@ -664,35 +649,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSessionWrongLengthValues.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id level_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSessionWrongLengthValues.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSessionWrongLengthValues.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(
           newSessionWrongLengthValues
         );
@@ -730,35 +710,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -794,35 +769,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -865,35 +835,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -938,35 +903,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1011,35 +971,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1085,35 +1040,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1159,35 +1109,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1223,35 +1168,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1294,35 +1234,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1368,35 +1303,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1432,35 +1362,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1503,35 +1428,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1585,35 +1505,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1649,35 +1564,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1720,35 +1630,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1792,35 +1697,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1863,35 +1763,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).not.toHaveBeenCalled();
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
@@ -1927,35 +1822,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).toHaveBeenCalled();
         expect(insertSession).toHaveBeenCalledWith(newSession);
       });
     });
@@ -1991,35 +1881,30 @@ describe("Resource => Session", () => {
           success: true,
         });
         expect(statusCode).toBe(201);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(insertSession).toHaveBeenCalled();
         expect(insertSession).toHaveBeenCalledWith(newSession);
       });
     });
@@ -2052,7 +1937,6 @@ describe("Resource => Session", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSessions).not.toHaveBeenCalled();
           expect(findSessions).not.toHaveBeenCalledWith(
             { school_id: null },
             "-createdAt -updatedAt"
@@ -2085,7 +1969,6 @@ describe("Resource => Session", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSessions).not.toHaveBeenCalled();
           expect(findSessions).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-createdAt -updatedAt"
@@ -2118,7 +2001,6 @@ describe("Resource => Session", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSessions).not.toHaveBeenCalled();
           expect(findSessions).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -2144,7 +2026,6 @@ describe("Resource => Session", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findSessions).toHaveBeenCalled();
           expect(findSessions).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -2170,7 +2051,6 @@ describe("Resource => Session", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findSessions).toHaveBeenCalled();
           expect(findSessions).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -2204,7 +2084,6 @@ describe("Resource => Session", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSession).not.toHaveBeenCalled();
           expect(findSession).not.toHaveBeenCalledWith(
             { _id: validMockSessionId, school_id: null },
             "-createdAt -updatedAt"
@@ -2237,7 +2116,6 @@ describe("Resource => Session", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSession).not.toHaveBeenCalled();
           expect(findSession).not.toHaveBeenCalledWith(
             { _id: validMockSessionId, school_id: "" },
             "-createdAt -updatedAt"
@@ -2276,7 +2154,6 @@ describe("Resource => Session", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findSession).not.toHaveBeenCalled();
           expect(findSession).not.toHaveBeenCalledWith(
             { _id: invalidMockId, school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -2302,7 +2179,6 @@ describe("Resource => Session", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findSession).toHaveBeenCalled();
           expect(findSession).toHaveBeenCalledWith(
             { _id: validMockSessionId, school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -2328,7 +2204,6 @@ describe("Resource => Session", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findSession).toHaveBeenCalled();
           expect(findSession).toHaveBeenCalledWith(
             { _id: validMockSessionId, school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -2425,35 +2300,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSessionMissingValues.groupCoordinator_i,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSessionMissingValues.teacherField_i,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSessionMissingValues.subject_i,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           {
             _id: validMockSessionId,
@@ -2559,35 +2429,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSessionEmptyValues.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSessionEmptyValues.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSessionEmptyValues.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           {
             _id: validMockSessionId,
@@ -2699,35 +2564,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSessionNotValidDataTypes.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSessionNotValidDataTypes.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSessionNotValidDataTypes.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           {
             _id: invalidMockId,
@@ -2791,35 +2651,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSessionWrongLengthValues.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSessionWrongLengthValues.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSessionWrongLengthValues.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           {
             _id: validMockSessionId,
@@ -2864,35 +2719,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).not.toHaveBeenCalled();
         expect(findGroupCoordinator).not.toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -2934,35 +2784,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3011,35 +2856,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3090,35 +2930,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3169,35 +3004,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3249,35 +3079,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3329,35 +3154,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).not.toHaveBeenCalled();
         expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3399,35 +3219,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3476,35 +3291,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3556,35 +3366,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).not.toHaveBeenCalled();
         expect(findTeacherField).not.toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3626,35 +3431,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3703,35 +3503,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3791,35 +3586,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).not.toHaveBeenCalled();
         expect(findSubject).not.toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3861,35 +3651,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -3938,35 +3723,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -4016,35 +3796,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -4093,35 +3868,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).not.toHaveBeenCalled();
         expect(updateSession).not.toHaveBeenCalledWith(
           { _id: validMockSessionId, school_id: newSession.school_id },
           newSession
@@ -4163,35 +3933,30 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).toHaveBeenCalled();
         expect(updateSession).toHaveBeenCalledWith(
           {
             _id: validMockSessionId,
@@ -4237,35 +4002,30 @@ describe("Resource => Session", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(findGroupCoordinator).toHaveBeenCalled();
         expect(findGroupCoordinator).toHaveBeenCalledWith(
           newSession.groupCoordinator_id,
           "-createdAt -updatedAt",
           "school_id group_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherCoordinator).toHaveBeenCalled();
         expect(findTeacherCoordinator).toHaveBeenCalledWith(
           newSession.teacherCoordinator_id,
           "-createdAt -updatedAt",
           "school_id teacher_id coordinator_id",
           "-createdAt -updatedAt"
         );
-        expect(findTeacherField).toHaveBeenCalled();
         expect(findTeacherField).toHaveBeenCalledWith(
           newSession.teacherField_id,
           "-createdAt -updatedAt",
           "school_id teacher_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(findSubject).toHaveBeenCalled();
         expect(findSubject).toHaveBeenCalledWith(
           newSession.subject_id,
           "-createdAt -updatedAt",
           "school_id level_id field_id",
           "-createdAt -updatedAt"
         );
-        expect(updateSession).toHaveBeenCalled();
         expect(updateSession).toHaveBeenCalledWith(
           {
             _id: validMockSessionId,
@@ -4304,7 +4064,6 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteSession).not.toHaveBeenCalled();
         expect(deleteSession).not.toHaveBeenCalledWith({
           _id: validMockSessionId,
           school_id: null,
@@ -4337,7 +4096,6 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteSession).not.toHaveBeenCalled();
         expect(deleteSession).not.toHaveBeenCalledWith({
           _id: validMockSessionId,
           school_id: "",
@@ -4376,7 +4134,6 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteSession).not.toHaveBeenCalled();
         expect(deleteSession).not.toHaveBeenCalledWith({
           _id: invalidMockId,
           school_id: invalidMockId,
@@ -4402,7 +4159,6 @@ describe("Resource => Session", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteSession).toHaveBeenCalled();
         expect(deleteSession).toHaveBeenCalledWith({
           _id: otherValidMockId,
           school_id: validMockSchoolId,
@@ -4425,7 +4181,6 @@ describe("Resource => Session", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Session deleted", success: true });
         expect(statusCode).toBe(200);
-        expect(deleteSession).toHaveBeenCalled();
         expect(deleteSession).toHaveBeenCalledWith({
           _id: validMockSessionId,
           school_id: validMockSchoolId,

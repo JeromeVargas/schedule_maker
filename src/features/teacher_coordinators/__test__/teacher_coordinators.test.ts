@@ -167,7 +167,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinatorMissingValues.school_i,
@@ -176,21 +175,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherCoordinatorMissingValues.teacher_i,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinatorMissingValues.coordinator_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinatorMissingValues
         );
@@ -246,7 +243,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinatorEmptyValues.school_id,
@@ -255,21 +251,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherCoordinatorEmptyValues.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinatorEmptyValues.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinatorEmptyValues
         );
@@ -325,7 +319,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinatorNotValidDataTypes.school_id,
@@ -335,21 +328,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherCoordinatorNotValidDataTypes.teacher_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinatorNotValidDataTypes.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinatorNotValidDataTypes
         );
@@ -386,7 +377,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -395,21 +385,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator
         );
@@ -446,7 +434,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -455,21 +442,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator
         );
@@ -506,7 +491,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -515,21 +499,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator
         );
@@ -566,7 +548,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -575,21 +556,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator
         );
@@ -633,7 +612,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -642,21 +620,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator
         );
@@ -696,7 +672,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -705,21 +680,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator
         );
@@ -759,7 +732,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -768,21 +740,19 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).not.toHaveBeenCalled();
+
         expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator
         );
@@ -819,7 +789,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -828,21 +797,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).toHaveBeenCalled();
         expect(insertTeacherCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator
         );
@@ -879,7 +845,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: true,
         });
         expect(statusCode).toBe(201);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -888,21 +853,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertTeacherCoordinator).toHaveBeenCalled();
         expect(insertTeacherCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator
         );
@@ -935,7 +897,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherCoordinators).not.toHaveBeenCalled();
           expect(findTeacherCoordinators).not.toHaveBeenCalledWith(
             { school_id: null },
             "-createdAt -updatedAt"
@@ -966,7 +927,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherCoordinators).not.toHaveBeenCalled();
           expect(findTeacherCoordinators).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-createdAt -updatedAt"
@@ -997,7 +957,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherCoordinators).not.toHaveBeenCalled();
           expect(findTeacherCoordinators).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -1021,7 +980,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findTeacherCoordinators).toHaveBeenCalled();
           expect(findTeacherCoordinators).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -1045,7 +1003,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findTeacherCoordinators).toHaveBeenCalled();
           expect(findTeacherCoordinators).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -1077,7 +1034,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
           expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
             { _id: validMockTeacherCoordinatorId, school_id: null },
             "-createdAt -updatedAt"
@@ -1108,7 +1064,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherCoordinator).not.toHaveBeenCalled();
           expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
             { _id: validMockTeacherCoordinatorId, school_id: "" },
             "-createdAt -updatedAt"
@@ -1145,7 +1100,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findTeacherCoordinator).not.toHaveBeenCalled();
           expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
             { _id: invalidMockId, school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -1169,7 +1123,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findTeacherCoordinator).toHaveBeenCalled();
           expect(findTeacherCoordinator).toHaveBeenCalledWith(
             {
               _id: otherValidMockId,
@@ -1196,7 +1149,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findTeacherCoordinator).toHaveBeenCalled();
           expect(findTeacherCoordinator).toHaveBeenCalledWith(
             {
               _id: validMockTeacherCoordinatorId,
@@ -1255,7 +1207,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinatorMissingValues.school_i,
@@ -1264,21 +1215,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherCoordinatorMissingValues.coordinator_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinatorMissingValues.teacher_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1337,7 +1285,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinatorEmptyValues.school_id,
@@ -1346,21 +1293,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherCoordinatorEmptyValues.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinatorEmptyValues.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1421,7 +1365,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinatorNotValidDataTypes.school_id,
@@ -1431,21 +1374,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherCoordinatorNotValidDataTypes.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinatorNotValidDataTypes.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1487,7 +1427,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -1496,21 +1435,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).not.toHaveBeenCalled();
         expect(findTeacher).not.toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1552,7 +1488,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -1561,21 +1496,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1617,7 +1549,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -1626,21 +1557,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1682,7 +1610,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -1691,21 +1618,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1747,7 +1671,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -1756,21 +1679,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1812,7 +1732,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -1821,21 +1740,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1877,7 +1793,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -1886,21 +1801,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalled();
         expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -1942,7 +1854,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -1951,21 +1862,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).toHaveBeenCalled();
         expect(updateTeacherCoordinator).toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -2007,7 +1915,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalled();
         expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
           {
             school_id: newTeacherCoordinator.school_id,
@@ -2016,21 +1923,18 @@ describe("RESOURCE => Teacher_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findTeacher).toHaveBeenCalled();
         expect(findTeacher).toHaveBeenCalledWith(
           newTeacherCoordinator.teacher_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newTeacherCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateTeacherCoordinator).toHaveBeenCalled();
         expect(updateTeacherCoordinator).toHaveBeenCalledWith(
           {
             _id: validMockTeacherCoordinatorId,
@@ -2067,7 +1971,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
           _id: validMockTeacherCoordinatorId,
           school_id: null,
@@ -2098,7 +2001,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
           _id: validMockTeacherCoordinatorId,
           school_id: "",
@@ -2135,7 +2037,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
           _id: invalidMockId,
           school_id: invalidMockId,
@@ -2159,7 +2060,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({
           _id: otherValidMockId,
           school_id: validMockSchoolId,
@@ -2183,7 +2083,6 @@ describe("RESOURCE => Teacher_coordinator", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({
           _id: validMockTeacherCoordinatorId,
           school_id: validMockSchoolId,

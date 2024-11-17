@@ -208,12 +208,10 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserMissingValues.emai,
@@ -221,9 +219,7 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(newUserMissingValues.passwor);
-        expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserMissingValues);
       });
     });
@@ -292,12 +288,10 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserEmptyValues.email,
@@ -305,9 +299,7 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(newUserEmptyValues.password);
-        expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserEmptyValues, "user");
       });
     });
@@ -376,12 +368,10 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserNotValidDataTypes.email,
@@ -389,11 +379,9 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(
           newUserNotValidDataTypes.password
         );
-        expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserNotValidDataTypes);
       });
     });
@@ -444,12 +432,10 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserWrongLengthValues.email,
@@ -457,11 +443,9 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(
           newUserWrongLengthValues.password
         );
-        expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserWrongLengthValues);
       });
     });
@@ -497,12 +481,10 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserWrongLengthValues.email,
@@ -510,9 +492,7 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(tooLongPassword);
-        expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith({
           ...newUser,
           password: tooLongPassword,
@@ -560,12 +540,10 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
         expect(findSchool).not.toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserWrongInputValues.email,
@@ -573,11 +551,9 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(
           newUserWrongInputValues.password
         );
-        expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUserWrongInputValues);
       });
     });
@@ -603,19 +579,15 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(newUser.password);
-        expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
     });
@@ -641,19 +613,15 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(newUser.password);
-        expect(insertUser).not.toHaveBeenCalled();
         expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
     });
@@ -680,19 +648,15 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).toHaveBeenCalled();
         expect(hashPwd).toHaveBeenCalledWith(newUser.password);
-        expect(insertUser).toHaveBeenCalled();
         expect(insertUser).toHaveBeenCalledWith({
           ...newUser,
           password: hashedPwd,
@@ -721,19 +685,15 @@ describe("RESOURCE => User", () => {
           success: true,
         });
         expect(statusCode).toBe(201);
-        expect(findSchool).toHaveBeenCalled();
         expect(findSchool).toHaveBeenCalledWith(
           validMockSchoolId,
           "-createdAt -updatedAt"
         );
-        expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).toHaveBeenCalled();
         expect(hashPwd).toHaveBeenCalledWith(newUser.password);
-        expect(insertUser).toHaveBeenCalled();
         expect(insertUser).toHaveBeenCalledWith({
           ...newUser,
           password: hashedPwd,
@@ -766,7 +726,6 @@ describe("RESOURCE => User", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findUsers).not.toHaveBeenCalled();
           expect(findUsers).not.toHaveBeenCalledWith(
             { school_id: null },
             "-password -createdAt -updatedAt"
@@ -796,7 +755,6 @@ describe("RESOURCE => User", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findUsers).not.toHaveBeenCalled();
           expect(findUsers).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-password -createdAt -updatedAt"
@@ -826,7 +784,6 @@ describe("RESOURCE => User", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findUsers).not.toHaveBeenCalled();
           expect(findUsers).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-password -createdAt -updatedAt"
@@ -849,7 +806,6 @@ describe("RESOURCE => User", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findUsers).toHaveBeenCalled();
           expect(findUsers).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-password -createdAt -updatedAt"
@@ -872,7 +828,6 @@ describe("RESOURCE => User", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findUsers).toHaveBeenCalled();
           expect(findUsers).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-password -createdAt -updatedAt"
@@ -903,7 +858,6 @@ describe("RESOURCE => User", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findUser).not.toHaveBeenCalled();
           expect(findUser).not.toHaveBeenCalledWith(
             [{ _id: validMockUserId }, { school_id: null }],
             "-password -createdAt -updatedAt"
@@ -933,7 +887,6 @@ describe("RESOURCE => User", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findUser).not.toHaveBeenCalled();
           expect(findUser).not.toHaveBeenCalledWith(
             [{ _id: validMockUserId }, { school_id: "" }],
             "-password -createdAt -updatedAt"
@@ -969,7 +922,6 @@ describe("RESOURCE => User", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findUser).not.toHaveBeenCalled();
           expect(findUser).not.toHaveBeenCalledWith(
             [{ _id: invalidMockId }, { school_id: invalidMockId }],
             "-password -createdAt -updatedAt"
@@ -992,7 +944,6 @@ describe("RESOURCE => User", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findUser).toHaveBeenCalled();
           expect(findUser).toHaveBeenCalledWith(
             { _id: otherValidMockId, school_id: validMockSchoolId },
             "-password -createdAt -updatedAt"
@@ -1015,7 +966,6 @@ describe("RESOURCE => User", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findUser).toHaveBeenCalled();
           expect(findUser).toHaveBeenCalledWith(
             { _id: validMockUserId, school_id: validMockSchoolId },
             "-password -createdAt -updatedAt"
@@ -1083,7 +1033,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserMissingValues.emai,
@@ -1091,9 +1040,7 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(newUserMissingValues.passwor);
-        expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           { _id: validMockUserId, school_id: newUserMissingValues.school_i },
           newUserMissingValues
@@ -1164,7 +1111,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserEmptyValues.email,
@@ -1172,9 +1118,7 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(newUserEmptyValues.password);
-        expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           { _id: validMockUserId, school_id: newUserEmptyValues.school_id },
           newUserEmptyValues
@@ -1251,7 +1195,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserNotValidDataTypes.email,
@@ -1259,11 +1202,9 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(
           newUserNotValidDataTypes.password
         );
-        expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           { _id: invalidMockId, school_id: newUserNotValidDataTypes.school_id },
           newUserNotValidDataTypes
@@ -1316,7 +1257,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserWrongLengthValues.email,
@@ -1324,11 +1264,9 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(
           newUserWrongLengthValues.password
         );
-        expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           {
             school_id: newUserWrongLengthValues.school_id,
@@ -1369,7 +1307,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserWrongLengthValues.email,
@@ -1377,9 +1314,7 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(tooLongPassword);
-        expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           {
             _id: validMockUserId,
@@ -1432,7 +1367,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
         expect(duplicateUserEmail).not.toHaveBeenCalledWith(
           {
             email: newUserWrongInputValues.email,
@@ -1440,11 +1374,9 @@ describe("RESOURCE => User", () => {
           },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(
           newUserWrongInputValues.password
         );
-        expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           {
             _id: validMockUserId,
@@ -1475,14 +1407,11 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).not.toHaveBeenCalled();
         expect(hashPwd).not.toHaveBeenCalledWith(newUser.password);
-        expect(updateUser).not.toHaveBeenCalled();
         expect(updateUser).not.toHaveBeenCalledWith(
           { school_id: newUser.school_id, _id: validMockUserId },
           newUser
@@ -1510,14 +1439,11 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).toHaveBeenCalled();
         expect(hashPwd).toHaveBeenCalledWith(newUser.password);
-        expect(updateUser).toHaveBeenCalled();
         expect(updateUser).toHaveBeenCalledWith(
           { school_id: newUser.school_id, _id: validMockUserId },
           {
@@ -1545,14 +1471,11 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "User updated", success: true });
         expect(statusCode).toBe(200);
-        expect(duplicateUserEmail).toHaveBeenCalled();
         expect(duplicateUserEmail).toHaveBeenCalledWith(
           { email: newUser.email, school_id: newUser.school_id },
           "-password -createdAt -updatedAt"
         );
-        expect(hashPwd).toHaveBeenCalled();
         expect(hashPwd).toHaveBeenCalledWith(newUser.password);
-        expect(updateUser).toHaveBeenCalled();
         expect(updateUser).toHaveBeenCalledWith(
           { school_id: newUser.school_id, _id: validMockUserId },
           {
@@ -1587,7 +1510,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteUser).not.toHaveBeenCalled();
         expect(deleteUser).not.toHaveBeenCalledWith({
           _id: validMockUserId,
           school_id: validMockSchoolId,
@@ -1617,7 +1539,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteUser).not.toHaveBeenCalled();
         expect(deleteUser).not.toHaveBeenCalledWith({
           _id: validMockUserId,
           school_id: "",
@@ -1653,7 +1574,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteUser).not.toHaveBeenCalled();
         expect(deleteUser).not.toHaveBeenCalledWith({
           _id: invalidMockId,
           school_id: invalidMockId,
@@ -1676,7 +1596,6 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteUser).toHaveBeenCalled();
         expect(deleteUser).toHaveBeenCalledWith({
           _id: otherValidMockId,
           school_id: validMockSchoolId,
@@ -1696,7 +1615,6 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "User deleted", success: true });
         expect(statusCode).toBe(200);
-        expect(deleteUser).toHaveBeenCalled();
         expect(deleteUser).toHaveBeenCalledWith({
           _id: validMockUserId,
           school_id: validMockSchoolId,

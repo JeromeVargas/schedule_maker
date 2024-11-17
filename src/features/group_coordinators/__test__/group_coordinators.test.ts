@@ -167,7 +167,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).not.toHaveBeenCalled();
         expect(duplicateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinatorMissingValues.school_i,
@@ -176,21 +175,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).not.toHaveBeenCalled();
         expect(findGroup).not.toHaveBeenCalledWith(
           newGroupCoordinatorMissingValues.group_i,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinatorMissingValues.coordinator_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinatorMissingValues
         );
@@ -246,7 +242,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).not.toHaveBeenCalled();
         expect(duplicateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinatorEmptyValues.school_id,
@@ -255,21 +250,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).not.toHaveBeenCalled();
         expect(findGroup).not.toHaveBeenCalledWith(
           newGroupCoordinatorEmptyValues.group_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinatorEmptyValues.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinatorEmptyValues
         );
@@ -325,7 +317,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).not.toHaveBeenCalled();
         expect(duplicateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinatorNotValidDataTypes.school_id,
@@ -334,21 +325,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).not.toHaveBeenCalled();
         expect(findGroup).not.toHaveBeenCalledWith(
           newGroupCoordinatorNotValidDataTypes.group_id,
           "-createdAt -updatedAt",
           "school_id user_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinatorNotValidDataTypes.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinatorNotValidDataTypes
         );
@@ -385,7 +373,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -394,21 +381,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).not.toHaveBeenCalled();
         expect(findGroup).not.toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator
         );
@@ -445,7 +429,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -454,21 +437,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator
         );
@@ -505,7 +485,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -514,21 +493,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator
         );
@@ -562,7 +538,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -571,21 +546,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator
         );
@@ -626,7 +598,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -635,21 +606,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator
         );
@@ -686,7 +654,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -695,21 +662,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator
         );
@@ -746,7 +710,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -755,21 +718,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).not.toHaveBeenCalled();
         expect(insertGroupCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator
         );
@@ -803,7 +763,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -812,21 +771,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).toHaveBeenCalled();
         expect(insertGroupCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator
         );
@@ -860,7 +816,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: true,
         });
         expect(statusCode).toBe(201);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -869,21 +824,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(insertGroupCoordinator).toHaveBeenCalled();
         expect(insertGroupCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator
         );
@@ -918,7 +870,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroupCoordinators).not.toHaveBeenCalled();
           expect(findGroupCoordinators).not.toHaveBeenCalledWith(
             { school_id: null },
             "-createdAt -updatedAt"
@@ -951,7 +902,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroupCoordinators).not.toHaveBeenCalled();
           expect(findGroupCoordinators).not.toHaveBeenCalledWith(
             { school_id: "" },
             "-createdAt -updatedAt"
@@ -982,7 +932,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroupCoordinators).not.toHaveBeenCalled();
           expect(findGroupCoordinators).not.toHaveBeenCalledWith(
             { school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -1006,7 +955,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findGroupCoordinators).toHaveBeenCalled();
           expect(findGroupCoordinators).toHaveBeenCalledWith(
             { school_id: otherValidMockId },
             "-createdAt -updatedAt"
@@ -1030,7 +978,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findGroupCoordinators).toHaveBeenCalled();
           expect(findGroupCoordinators).toHaveBeenCalledWith(
             { school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -1062,7 +1009,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(duplicateGroupCoordinator).not.toHaveBeenCalled();
           expect(duplicateGroupCoordinator).not.toHaveBeenCalledWith(
             { _id: validMockGroupCoordinatorId, school_id: null },
             "-createdAt -updatedAt"
@@ -1093,7 +1039,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroupCoordinator).not.toHaveBeenCalled();
           expect(findGroupCoordinator).not.toHaveBeenCalledWith(
             { _id: validMockGroupCoordinatorId, school_id: "" },
             "-createdAt -updatedAt"
@@ -1130,7 +1075,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(400);
-          expect(findGroupCoordinator).not.toHaveBeenCalled();
           expect(findGroupCoordinator).not.toHaveBeenCalledWith(
             { _id: invalidMockId, school_id: invalidMockId },
             "-createdAt -updatedAt"
@@ -1154,7 +1098,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findGroupCoordinator).toHaveBeenCalled();
           expect(findGroupCoordinator).toHaveBeenCalledWith(
             {
               _id: otherValidMockId,
@@ -1181,7 +1124,6 @@ describe("RESOURCE => Group_coordinator", () => {
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findGroupCoordinator).toHaveBeenCalled();
           expect(findGroupCoordinator).toHaveBeenCalledWith(
             { _id: validMockGroupCoordinatorId, school_id: validMockSchoolId },
             "-createdAt -updatedAt"
@@ -1237,7 +1179,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).not.toHaveBeenCalled();
         expect(duplicateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinatorMissingValues.school_i,
@@ -1246,21 +1187,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).not.toHaveBeenCalled();
         expect(findGroup).not.toHaveBeenCalledWith(
           newGroupCoordinatorMissingValues.coordinator_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinatorMissingValues.group_i,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1319,7 +1257,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).not.toHaveBeenCalled();
         expect(duplicateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinatorEmptyValues.school_id,
@@ -1328,21 +1265,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).not.toHaveBeenCalled();
         expect(findGroup).not.toHaveBeenCalledWith(
           newGroupCoordinatorEmptyValues.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinatorEmptyValues.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1403,7 +1337,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).not.toHaveBeenCalled();
         expect(duplicateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinatorNotValidDataTypes.school_id,
@@ -1412,21 +1345,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).not.toHaveBeenCalled();
         expect(findGroup).not.toHaveBeenCalledWith(
           newGroupCoordinatorNotValidDataTypes.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinatorNotValidDataTypes.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1468,7 +1398,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -1477,21 +1406,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).not.toHaveBeenCalled();
         expect(findGroup).not.toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1533,7 +1459,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -1542,21 +1467,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1598,7 +1520,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -1607,21 +1528,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).not.toHaveBeenCalled();
         expect(findCoordinator).not.toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1660,7 +1578,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -1669,21 +1586,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1722,7 +1636,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -1731,21 +1644,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1784,7 +1694,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -1793,21 +1702,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1846,7 +1752,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -1855,21 +1760,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).not.toHaveBeenCalled();
         expect(updateGroupCoordinator).not.toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1908,7 +1810,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -1917,21 +1818,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).toHaveBeenCalled();
         expect(updateGroupCoordinator).toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -1970,7 +1868,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateGroupCoordinator).toHaveBeenCalled();
         expect(duplicateGroupCoordinator).toHaveBeenCalledWith(
           {
             school_id: newGroupCoordinator.school_id,
@@ -1979,21 +1876,18 @@ describe("RESOURCE => Group_coordinator", () => {
           },
           "-createdAt -updatedAt"
         );
-        expect(findGroup).toHaveBeenCalled();
         expect(findGroup).toHaveBeenCalledWith(
           newGroupCoordinator.group_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(findCoordinator).toHaveBeenCalled();
         expect(findCoordinator).toHaveBeenCalledWith(
           newGroupCoordinator.coordinator_id,
           "-createdAt -updatedAt",
           "school_id",
           "-createdAt -updatedAt"
         );
-        expect(updateGroupCoordinator).toHaveBeenCalled();
         expect(updateGroupCoordinator).toHaveBeenCalledWith(
           {
             _id: validMockGroupCoordinatorId,
@@ -2030,7 +1924,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
           _id: validMockGroupCoordinatorId,
           school_id: null,
@@ -2061,7 +1954,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
           _id: validMockGroupCoordinatorId,
           school_id: "",
@@ -2098,7 +1990,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalled();
         expect(deleteTeacher).not.toHaveBeenCalledWith({
           _id: invalidMockId,
           school_id: invalidMockId,
@@ -2122,7 +2013,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({
           _id: otherValidMockId,
           school_id: validMockSchoolId,
@@ -2146,7 +2036,6 @@ describe("RESOURCE => Group_coordinator", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(deleteTeacher).toHaveBeenCalled();
         expect(deleteTeacher).toHaveBeenCalledWith({
           _id: validMockGroupCoordinatorId,
           school_id: validMockSchoolId,
