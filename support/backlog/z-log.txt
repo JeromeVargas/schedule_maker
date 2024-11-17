@@ -1,38 +1,29 @@
 Back end:
-
-// Todo --> check how the soft delete of the school affects other entities controllers
 // Todo --> check if the empty just toBeCalled are necessary since you already have toBeCalledWith that might replace it
 // Todo --> tests, validators, controllers and routes labeling might not be scalable
 // Todo --> type the entities params when need it instead of comments with params types, maybe use zod
 // Todo --> refactor the test to not be attached to the implementation but the results, maybe use in-memory-mongo-db or something similar
 // Todo --> add linter
-// Todo --> update cross-env from global to development dependency
 // Todo --> make sure populate does not go into production, maybe work on a file to be call on the terminal, there is some issue with the modules, maybe try something different from ts-node
-
+// Todo --> add csrf attack protection features:
+    https://www.youtube.com/watch?v=CXSE89JGnek&ab_channel=AntonioSarosi
+    https://www.youtube.com/watch?v=C9dvkIndTLA&t=1s&ab_channel=4tomik
+// Todo --> important: try to update packages, specially express validator,
+// Todo --> continue checking sanitization and overall security of the apis
 
 for later:
 
-- authentication JWT
-- authorization - role base
+// Todo --> authentication JWT
+// Todo --> authorization - role base
     https://youtu.be/0NiyW9XINRA?feature=shared
-- add checks for the school, make sure the field actually belongs to the school  - school middleware
-- make sure resources belong to the user/coordinator's school - school middleware
-- not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
-
-
-- add csrf attack protection features:
-    https://www.youtube.com/watch?v=CXSE89JGnek&ab_channel=AntonioSarosi
-    https://www.youtube.com/watch?v=C9dvkIndTLA&t=1s&ab_channel=4tomik
-
-
-- important: try to update packages, specially express validator,
-- continue checking sanitization and overall security of the apis
-
+// Todo -->add checks for the school, make sure the field actually belongs to the school  - school middleware
+// Todo --> on update check how the soft delete of the school affects other entities controllers, maybe just update users status
+// Todo --> make sure resources belong to the user/coordinator's school - school middleware
+// Todo --> not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
 
 Front End
 
 // Todo --> if user is UPDATED as inactive being soft deleted, inform the user that the user functions must be passed onto a new teacher
-// Todo --> if the level changes in the group, inform the user that the user must change it in the session
 // Todo --> Create the user first then create the teacher, do that on a kind of multi-step form, alternatively, you can also use promise.all to do it in one step
 
 
