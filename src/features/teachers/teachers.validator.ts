@@ -3,7 +3,6 @@ import { check } from "express-validator";
 import validateResult from "../../lib/express-validator/validateHelper";
 import { isValidId } from "../../lib/utilities/validation";
 
-// @fields: body: {school_id: [string], user_id: [string],  coordinator_id: [string],  contractType: [string],  teachingHoursAssignable: [number];  teachingHoursAssigned: [number], adminHoursAssignable: [number];  adminHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 export const validateCreateTeacher = [
   check("school_id")
     .exists()
@@ -174,7 +173,6 @@ export const validateCreateTeacher = [
   },
 ];
 
-// @fields: body: {school_id:[string]}
 export const validateGetTeachers = [
   check("school_id")
     .exists()
@@ -197,7 +195,6 @@ export const validateGetTeachers = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateGetTeacher = [
   check("id")
     .custom((value) => {
@@ -230,7 +227,6 @@ export const validateGetTeacher = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id: [string], user_id: [string],  coordinator_id: [string],  contractType: [string],  teachingHoursAssignable: [number],  teachingHoursAssigned: [number], adminHoursAssignable: [number];  adminHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 export const validateUpdateTeacher = [
   check("id")
     .custom((value) => {
@@ -411,7 +407,6 @@ export const validateUpdateTeacher = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateDeleteTeacher = [
   check("id")
     .custom((value) => {

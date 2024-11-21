@@ -5,13 +5,11 @@ import { NewSubject } from "../../typings/types";
 
 // CRUD services
 // @desc insert a subject in the database
-// @params subject
 export const insertSubject = (subject: NewSubject) => {
   return SubjectModel.create(subject);
 };
 
 // @desc find all subjects by school id
-// @params filters, fields to return
 export const findFilterAllSubjects = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -20,7 +18,6 @@ export const findFilterAllSubjects = (
 };
 
 // @desc find a subject by level id and name or school id and subject id
-// @params filters, fields to return
 export const findSubjectByProperty = (
   filters:
     | { level_id: string; name: string }
@@ -35,7 +32,6 @@ export const findSubjectByProperty = (
 };
 
 // @desc find a subject by level id and name
-// @params filters, fields to return
 export const findFilterSubjectByProperty = (
   filters: { level_id: string; name: string },
   fieldsToReturn: string
@@ -48,7 +44,6 @@ export const findFilterSubjectByProperty = (
 };
 
 // @desc update a resource by subject id and school name
-// @params resourceId, resource
 export const modifyFilterSubject = (
   filters: { _id: string; school_id: string },
   resource: NewSubject
@@ -60,7 +55,6 @@ export const modifyFilterSubject = (
 };
 
 // @desc delete a resource by school id and subject id
-// @params resourceId, filters
 export const removeFilterSubject = (filters: {
   school_id: string;
   _id: string;
@@ -70,7 +64,6 @@ export const removeFilterSubject = (filters: {
 
 /* Services from other entities */
 // @desc find a level by id and populate the embedded entities
-// @params levelId, fields to return, fields to populate, fields to return populate
 export const findPopulateLevelById = (
   levelId: string,
   fieldsToReturn: string,
@@ -85,7 +78,6 @@ export const findPopulateLevelById = (
 };
 
 // @desc find a field by id and populate the embedded entities
-// @params fieldId, fields to return, fields to populate, fields to return populate
 export const findPopulateFieldById = (
   fieldId: string,
   fieldsToReturn: string,

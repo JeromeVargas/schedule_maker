@@ -3,7 +3,6 @@ import { check } from "express-validator";
 import validateResult from "../../lib/express-validator/validateHelper";
 import { isValidId } from "../../lib/utilities/validation";
 
-// @fields: body {school_id:[string], level_id:[string], groupCoordinator_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 export const validateCreateSession = [
   check("school_id")
     .exists()
@@ -155,7 +154,6 @@ export const validateCreateSession = [
   },
 ];
 
-// @fields: body {school_id:[string]}
 export const validateGetSessions = [
   check("school_id")
     .exists()
@@ -178,7 +176,6 @@ export const validateGetSessions = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateGetSession = [
   check("id")
     .custom((value) => {
@@ -211,7 +208,6 @@ export const validateGetSession = [
   },
 ];
 
-// @fields: params: {id:[string]},  body {school_id:[string], group_id:[string], subject_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 export const validateUpdateSession = [
   check("id")
     .custom((value) => {
@@ -373,7 +369,6 @@ export const validateUpdateSession = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateDeleteSession = [
   check("id")
     .custom((value) => {

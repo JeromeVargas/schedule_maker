@@ -16,10 +16,6 @@ import {
   findPopulateLevelById,
 } from "./groups.services";
 
-// @desc create a group
-// @route POST /api/v?/groups
-// @access Private
-// @fields: body {school_id:[string], level_id:[string], name:[string], numberStudents:[number]}
 export const createGroup = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, level_id, name, numberStudents } = body;
@@ -73,10 +69,6 @@ export const createGroup = async ({ body }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ msg: "Group created!", success: true });
 };
 
-// @desc get all the Groups
-// @route GET /api/v?/Groups
-// @access Private
-// @fields: body {school_id:[string]}
 export const getGroups = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -94,10 +86,6 @@ export const getGroups = async ({ body }: Request, res: Response) => {
   });
 };
 
-// @desc get the Group by id
-// @route GET /api/v?/Groups/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getGroup = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
@@ -115,10 +103,6 @@ export const getGroup = async ({ params, body }: Request, res: Response) => {
   });
 };
 
-// @desc update a Group
-// @route PUT /api/v?/Groups/:id
-// @access Private
-// @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string], numberStudents:[number]}
 export const updateGroup = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: groupId } = params;
@@ -181,10 +165,6 @@ export const updateGroup = async ({ params, body }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ msg: "Group updated!", success: true });
 };
 
-// @desc delete a Group
-// @route DELETE /api/v?/Groups/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteGroup = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: groupId } = params;

@@ -4,13 +4,11 @@ import { NewBreak } from "../../typings/types";
 
 // CRUD services
 // @desc insert a break in database
-// @params break
 export const insertBreak = (scheduleBreak: NewBreak) => {
   return BreakModel.create(scheduleBreak);
 };
 
 // @desc find all breaks by school id
-// @params filters, fields to return
 export const findFilterAllBreaks = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -19,7 +17,6 @@ export const findFilterAllBreaks = (
 };
 
 // @desc find a break by school id and break id
-// @params breakProperty, fields to return
 export const findBreakByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
@@ -32,7 +29,6 @@ export const findBreakByProperty = (
 };
 
 // @desc update a break by school id and break id
-// @params filters, break
 export const modifyFilterBreak = (
   filters: { _id: string; school_id: string },
   scheduleBreak: NewBreak
@@ -44,7 +40,6 @@ export const modifyFilterBreak = (
 };
 
 // @desc delete a break by school id and break id
-// @params filters
 export const removeFilterBreak = (filters: {
   school_id: string;
   _id: string;
@@ -54,7 +49,6 @@ export const removeFilterBreak = (filters: {
 
 /* Services from other entities */
 // @desc find a schedule by id and populate the embedded entities
-// @params scheduleId, fields to return, fields to populate, fields to return populate
 export const findPopulateScheduleById = (
   scheduleId: string,
   fieldsToReturn: string,

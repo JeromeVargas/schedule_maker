@@ -3,7 +3,6 @@ import { check } from "express-validator";
 import validateResult from "../../lib/express-validator/validateHelper";
 import { isValidId } from "../../lib/utilities/validation";
 
-// @fields: body {school_id:[string] , schedule_id:[string], breakStart:[number], numberMinutes:[number]}
 export const validateCreateBreak = [
   check("school_id")
     .exists()
@@ -65,7 +64,6 @@ export const validateCreateBreak = [
   },
 ];
 
-// @fields: body {school_id:[string]}
 export const validateGetBreaks = [
   check("school_id")
     .exists()
@@ -88,7 +86,6 @@ export const validateGetBreaks = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateGetBreak = [
   check("id")
     .custom((value) => {
@@ -196,7 +193,6 @@ export const validateUpdateBreak = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateDeleteBreak = [
   check("id")
     .custom((value) => {

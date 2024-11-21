@@ -5,15 +5,13 @@ import LevelModel from "../levels/levels.model";
 
 // CRUD services
 // @desc insert a schedule in database
-// @params schedule
-const insertSchedule = (schedule: NewSchedule) => {
+export const insertSchedule = (schedule: NewSchedule) => {
   const scheduleInsert = ScheduleModel.create(schedule);
   return scheduleInsert;
 };
 
 // @desc find all schedule by school id
-// @params filters, fields to return
-const findFilterAllSchedules = (
+export const findFilterAllSchedules = (
   filters: { school_id: string },
   fieldsToReturn: string
 ) => {
@@ -21,8 +19,7 @@ const findFilterAllSchedules = (
 };
 
 // @desc find a schedule by school id and name
-// @params filters, fields to return
-const findScheduleByProperty = (
+export const findScheduleByProperty = (
   filters:
     | { school_id: string; name: string }
     | { school_id: string; _id: string },
@@ -36,8 +33,7 @@ const findScheduleByProperty = (
 };
 
 // @desc find a schedule and filter by school id and name
-// @params filters, fields to return
-const findFilterScheduleByProperty = (
+export const findFilterScheduleByProperty = (
   filters: { school_id: string; name: string },
   fieldsToReturn: string
 ) => {
@@ -49,8 +45,7 @@ const findFilterScheduleByProperty = (
 };
 
 // @desc update a schedule by schedule id and school id
-// @params filter, schedule
-const modifyFilterSchedule = (
+export const modifyFilterSchedule = (
   filters: { _id: string; school_id: string },
   schedule: NewSchedule
 ) => {
@@ -61,32 +56,23 @@ const modifyFilterSchedule = (
 };
 
 // @desc delete a schedule
-// @params filters
-const removeFilterSchedule = (filters: { _id: string; school_id: string }) => {
+export const removeFilterSchedule = (filters: {
+  _id: string;
+  school_id: string;
+}) => {
   return ScheduleModel.findOneAndDelete(filters).lean().exec();
 };
 
 /* Services from other entities */
 // @desc find a school by id
-// @params schoolId, fieldsToReturn
-const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
+export const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
   return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
 
 // @desc find a school by id
-// @params schoolId, fieldsToReturn
-const findAllLevels = (filters: { school_id: string; schedule_id: string }) => {
+export const findAllLevels = (filters: {
+  school_id: string;
+  schedule_id: string;
+}) => {
   return LevelModel.find(filters).lean().exec();
-};
-
-export {
-  insertSchedule,
-  findScheduleByProperty,
-  findFilterAllSchedules,
-  findFilterScheduleByProperty,
-  modifyFilterSchedule,
-  removeFilterSchedule,
-  /* Services from other entities */
-  findSchoolById,
-  findAllLevels,
 };

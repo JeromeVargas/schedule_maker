@@ -4,13 +4,11 @@ import TeacherModel from "./teachers.model";
 
 // CRUD services
 // @desc insert a teacher in database
-// @params teacher
 export const insertTeacher = (teacher: NewTeacher) => {
   return TeacherModel.create(teacher);
 };
 
 // @desc find all teachers by school id
-// @params filters, fieldsToReturn
 export const findFilterAllTeachers = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -19,7 +17,6 @@ export const findFilterAllTeachers = (
 };
 
 // @desc find a teacher by school id and user id or school id and teacher id
-// @params filters, fieldsToReturn
 export const findTeacherByProperty = (
   filters:
     | { school_id: string; user_id: string }
@@ -34,7 +31,6 @@ export const findTeacherByProperty = (
 };
 
 // @desc update a teacher by teacher id, school id and user id
-// @params filters, teacher
 export const modifyFilterTeacher = (
   filters: { _id: string; school_id: string; user_id: string },
   teacher: NewTeacher
@@ -46,7 +42,6 @@ export const modifyFilterTeacher = (
 };
 
 // @desc delete a teacher by school id and teacher id
-// @params teacherId, filters
 export const removeFilterTeacher = (filters: {
   school_id: string;
   _id: string;
@@ -56,7 +51,6 @@ export const removeFilterTeacher = (filters: {
 
 /* Services from other entities */
 // @desc find a user by coordinator and used id, also populate the school
-// @params filters, fields to return, fields to populate, fields to return populate, resourceName
 export const findPopulateFilterAllUsers = (
   filters: string,
   fieldsToReturn: string,
@@ -71,7 +65,6 @@ export const findPopulateFilterAllUsers = (
 };
 
 // @desc find a user by id and school id properties
-// @params filters, fields to return
 export const findUserByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string

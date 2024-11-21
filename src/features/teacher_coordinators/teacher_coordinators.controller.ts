@@ -15,10 +15,6 @@ import {
   findPopulateCoordinatorById,
 } from "./teacher_coordinators.services";
 
-// @desc create a teacher_coordinator
-// @route POST /api/v?/teacher_coordinator
-// @access Private
-// @fields: body {school_id:[string], teacher_id:[string], coordinator_id:[string]}
 export const createTeacherCoordinator = async (
   { body }: Request,
   res: Response
@@ -100,10 +96,6 @@ export const createTeacherCoordinator = async (
   });
 };
 
-// @desc get all the teacher_coordinator
-// @route GET /api/v?/teacher_coordinator
-// @access Private
-// @fields: body {school_id:[string]}
 export const getTeacherCoordinators = async (
   { body }: Request,
   res: Response
@@ -127,10 +119,6 @@ export const getTeacherCoordinators = async (
   });
 };
 
-// @desc get the teacher_coordinator by id
-// @route GET /api/v?/teacher_coordinators/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getTeacherCoordinator = async (
   { params, body }: Request,
   res: Response
@@ -154,10 +142,6 @@ export const getTeacherCoordinator = async (
   });
 };
 
-// @desc update a teacher_field
-// @route PUT /api/v?/teacher_fields/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], coordinator_id:[string]}
 export const updateTeacherCoordinator = async (
   { params, body }: Request,
   res: Response
@@ -245,10 +229,6 @@ export const updateTeacherCoordinator = async (
   });
 };
 
-// @desc delete a teacher_coordinator
-// @route DELETE /api/v?/teacher_coordinators/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteTeacherCoordinator = async (
   { params, body }: Request,
   res: Response

@@ -8,14 +8,12 @@ import TeacherCoordinatorModel from "../teacher_coordinators/teacher_coordinator
 
 // CRUD services
 // @desc insert a session in database
-// @params session
 export const insertSession = (sessionSession: NewSession) => {
   const sessionInsert = SessionModel.create(sessionSession);
   return sessionInsert;
 };
 
 // @desc find all sessions by school id
-// @params filters, fields to return
 export const findFilterAllSessions = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -24,7 +22,6 @@ export const findFilterAllSessions = (
 };
 
 // @desc find a session by school id and session id
-// @params sessionProperty, fields to return
 export const findSessionByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
@@ -37,7 +34,6 @@ export const findSessionByProperty = (
 };
 
 // @desc update a session by session id and school id
-// @params sessionId, session
 export const modifyFilterSession = (
   filters: { _id: string; school_id: string },
   sessionSession: NewSession
@@ -49,7 +45,6 @@ export const modifyFilterSession = (
 };
 
 // @desc delete a session by school id and session id
-// @params sessionId, filters
 export const removeFilterSession = (filters: {
   school_id: string;
   _id: string;
@@ -59,7 +54,6 @@ export const removeFilterSession = (filters: {
 
 /* Services from other entities */
 // @desc find a group_coordinator by id and populate the embedded entities
-// @params groupId, fields to return, fields to populate, fields to return populate
 export const findPopulateGroupCoordinatorById = (
   groupCoordinatorId: string,
   fieldsToReturn: string,
@@ -74,7 +68,6 @@ export const findPopulateGroupCoordinatorById = (
 };
 
 // @desc find a teacher_coordinator by id and populate the embedded entities
-// @params groupId, fields to return, fields to populate, fields to return populate
 export const findPopulateTeacherCoordinatorById = (
   teacherCoordinatorId: string,
   fieldsToReturn: string,
@@ -89,7 +82,6 @@ export const findPopulateTeacherCoordinatorById = (
 };
 
 // @desc find a teacher_filed by id and populate the embedded entities
-// @params teacherFieldId, fields to return, fields to populate, fields to return populate
 export const findPopulateTeacherFieldById = (
   teacherFieldId: string,
   fieldsToReturn: string,
@@ -104,7 +96,6 @@ export const findPopulateTeacherFieldById = (
 };
 
 // @desc find a subject by id and populate the embedded entities
-// @params subjectId, fields to return, fields to populate, fields to return populate
 export const findPopulateSubjectById = (
   subjectId: string,
   fieldsToReturn: string,

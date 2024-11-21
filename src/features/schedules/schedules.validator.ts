@@ -3,7 +3,6 @@ import { check } from "express-validator";
 import validateResult from "../../lib/express-validator/validateHelper";
 import { isValidId } from "../../lib/utilities/validation";
 
-// @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 export const validateCreateSchedule = [
   check("school_id")
     .exists()
@@ -139,7 +138,6 @@ export const validateCreateSchedule = [
   },
 ];
 
-// @fields: body {school_id:[string]}
 export const validateGetSchedules = [
   check("school_id")
     .exists()
@@ -162,7 +160,6 @@ export const validateGetSchedules = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateGetSchedule = [
   check("id")
     .custom((value) => {
@@ -195,7 +192,6 @@ export const validateGetSchedule = [
   },
 ];
 
-// @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 export const validateUpdateSchedule = [
   check("id")
     .custom((value) => {
@@ -341,7 +337,6 @@ export const validateUpdateSchedule = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateDeleteSchedule = [
   check("id")
     .custom((value) => {

@@ -15,10 +15,6 @@ import {
   findPopulateCoordinatorById,
 } from "./group_coordinators.services";
 
-// @desc create a group_coordinator
-// @route POST /api/v?/group_coordinator
-// @access Private
-// @fields: body {school_id:[string], group_id:[string], coordinator_id:[string]}
 export const createGroupCoordinator = async (
   { body }: Request,
   res: Response
@@ -98,10 +94,6 @@ export const createGroupCoordinator = async (
   });
 };
 
-// @desc get all the group_coordinator
-// @route GET /api/v?/group_coordinator
-// @access Private
-// @fields: body {school_id:[string]}
 export const getGroupCoordinators = async (
   { body }: Request,
   res: Response
@@ -125,10 +117,6 @@ export const getGroupCoordinators = async (
   });
 };
 
-// @desc get the group_coordinator by id
-// @route GET /api/v?/group_coordinators/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getGroupCoordinator = async (
   { params, body }: Request,
   res: Response
@@ -152,10 +140,6 @@ export const getGroupCoordinator = async (
   });
 };
 
-// @desc update a teacher_field
-// @route PUT /api/v?/teacher_fields/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], group_id:[string], coordinator_id:[string]}
 export const updateGroupCoordinator = async (
   { params, body }: Request,
   res: Response
@@ -243,10 +227,6 @@ export const updateGroupCoordinator = async (
   });
 };
 
-// @desc delete a group_coordinator
-// @route DELETE /api/v?/group_coordinators/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteGroupCoordinator = async (
   { params, body }: Request,
   res: Response

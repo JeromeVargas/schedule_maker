@@ -6,13 +6,11 @@ import { NewGroup } from "../../typings/types";
 
 // CRUD services
 // @desc insert a group in database
-// @params group
 export const insertGroup = (group: NewGroup) => {
   return GroupModel.create(group);
 };
 
 // @desc find all groups by school id
-// @params filters, fields to return
 export const findFilterAllGroups = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -21,7 +19,6 @@ export const findFilterAllGroups = (
 };
 
 // @desc find a group by school id and name
-// @params filters, fields to return
 export const findGroupByProperty = (
   filters:
     | { school_id: string; name: string }
@@ -36,7 +33,6 @@ export const findGroupByProperty = (
 };
 
 // @desc find a resource and filter by school id and name
-// @params filters, fields to return
 export const findFilterGroupByProperty = (
   filters: { school_id: string; name: string },
   fieldsToReturn: string
@@ -49,7 +45,6 @@ export const findFilterGroupByProperty = (
 };
 
 // @desc update a group by group id and school id
-// @params groupId, group
 export const modifyFilterGroup = (
   filters: { _id: string; school_id: string },
   group: NewGroup
@@ -61,7 +56,6 @@ export const modifyFilterGroup = (
 };
 
 // @desc delete a group by school id and group id
-// @params groupId, filters
 export const removeFilterGroup = (filters: {
   school_id: string;
   _id: string;
@@ -71,7 +65,6 @@ export const removeFilterGroup = (filters: {
 
 /* Services from other entities */
 // @desc find a level by id and populate the embedded entities
-// @params levelId, fields to return, fields to populate, fields to return populate
 export const findPopulateLevelById = (
   levelId: string,
   fieldsToReturn: string,
@@ -86,7 +79,6 @@ export const findPopulateLevelById = (
 };
 
 // @desc find a user by id and populate the embedded entities
-// @params userId, fields to return, fields to populate, fields to return populate
 export const findPopulateUserById = (
   userId: string,
   fieldsToReturn: string,

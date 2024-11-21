@@ -5,7 +5,6 @@ import { NewTeacher_Coordinator } from "../../typings/types";
 
 // CRUD services
 // @desc insert a teacher_field in database
-// @params teacherCoordinator
 export const insertTeacherCoordinator = (
   teacherCoordinator: NewTeacher_Coordinator
 ) => {
@@ -13,7 +12,6 @@ export const insertTeacherCoordinator = (
 };
 
 // @desc find all teacher_fields by school id
-// @params filters, fields to return
 export const findFilterAllTeacherCoordinators = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -25,7 +23,6 @@ export const findFilterAllTeacherCoordinators = (
 };
 
 // @desc find a teacher_field by teacher id, field id and school id
-// @params filters, fields to return
 export const findTeacherCoordinatorByProperty = (
   filters:
     | { school_id: string; teacher_id: string; coordinator_id: string }
@@ -40,7 +37,6 @@ export const findTeacherCoordinatorByProperty = (
 };
 
 // @desc find a teacher_field and filter by school_id, teacher_id and field_id
-// @params filters, fields to return
 export const findFilterTeacherCoordinatorByProperty = (
   filters: { school_id: string; teacher_id: string; field_id: string },
   fieldsToReturn: string
@@ -53,7 +49,6 @@ export const findFilterTeacherCoordinatorByProperty = (
 };
 
 // @desc update a teacher_field by some properties _id, school_id and teacher_id
-// @params filters, teacherCoordinator
 export const modifyFilterTeacherCoordinator = (
   filters: { _id: string; school_id: string; teacher_id: string },
   teacherCoordinator: NewTeacher_Coordinator
@@ -65,7 +60,6 @@ export const modifyFilterTeacherCoordinator = (
 };
 
 // @desc delete a teacher_field by school_id and teacher field id
-// @params filters
 export const removeFilterTeacherCoordinator = (filters: {
   school_id: string;
   _id: string;
@@ -75,7 +69,6 @@ export const removeFilterTeacherCoordinator = (filters: {
 
 /* Services from other entities */
 // @desc find a teacher by id and populate the embedded entities
-// @params teacherId, fields to return, fields to populate, fields to return populate
 export const findPopulateTeacherById = (
   teacherId: string,
   fieldsToReturn: string,
@@ -90,7 +83,6 @@ export const findPopulateTeacherById = (
 };
 
 // @desc find a field by id and populate the embedded entities
-// @params coordinatorId, fields to return, fields to populate, fields to return populate
 export const findPopulateCoordinatorById = (
   coordinatorId: string,
   fieldsToReturn: string,

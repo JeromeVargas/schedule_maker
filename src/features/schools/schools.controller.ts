@@ -13,10 +13,6 @@ import {
   removeSchool,
 } from "./schools.services";
 
-// @desc create a school
-// @route POST /api/v?/schools
-// @access Private
-// @fields: body {name:[string], groupMaxNumStudents: [number]}
 export const createSchool = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { name, groupMaxNumStudents, status } = body;
@@ -45,10 +41,6 @@ export const createSchool = async ({ body }: Request, res: Response) => {
     .json({ msg: "School created successfully!", success: true });
 };
 
-// @desc get all the schools
-// @route GET /api/v?/schools
-// @access Private
-// @fields: no fields
 export const getSchools = async (req: Request, res: Response) => {
   /* get all schools */
   const fieldsToReturn = "-createdAt -updatedAt";
@@ -59,10 +51,6 @@ export const getSchools = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ payload: schoolsFound, success: true });
 };
 
-// @desc get the school by id
-// @route GET /api/v?/schools/:id
-// @access Private
-// @fields: params: {id:[string]}
 export const getSchool = async ({ params }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: schoolId } = params;
@@ -75,10 +63,6 @@ export const getSchool = async ({ params }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ payload: schoolFound, success: true });
 };
 
-// @desc update a school
-// @route PUT /api/v?/schools/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {name:[string], groupMaxNumStudents: [number]}
 export const updateSchool = async (
   { body, params }: Request,
   res: Response
@@ -106,10 +90,6 @@ export const updateSchool = async (
   res.status(StatusCodes.OK).json({ msg: "School updated", success: true });
 };
 
-// @desc delete a school
-// @route DELETE /api/v?/schools/:id
-// @access Private
-// @fields: params: {id:[string]}}
 export const deleteSchool = async ({ params }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: schoolId } = params;

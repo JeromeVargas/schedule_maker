@@ -3,7 +3,6 @@ import { check } from "express-validator";
 import validateResult from "../../lib/express-validator/validateHelper";
 import { isValidId } from "../../lib/utilities/validation";
 
-// @fields: body {school_id:[string] , schedule_id:[string], name:[string]}
 export const validateCreateLevel = [
   check("school_id")
     .exists()
@@ -56,7 +55,6 @@ export const validateCreateLevel = [
   },
 ];
 
-// @fields: body: {school_id:[string]}
 export const validateGetLevels = [
   check("school_id")
     .exists()
@@ -79,7 +77,6 @@ export const validateGetLevels = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateGetLevel = [
   check("id")
     .custom((value) => {
@@ -112,7 +109,6 @@ export const validateGetLevel = [
   },
 ];
 
-// @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string]}
 export const validateUpdateLevel = [
   check("id")
     .custom((value) => {
@@ -175,7 +171,6 @@ export const validateUpdateLevel = [
   },
 ];
 
-// @fields: body {school_id:[string] , schedule_id:[string], name:[string]}
 export const validateDeleteLevel = [
   check("id")
     .custom((value) => {

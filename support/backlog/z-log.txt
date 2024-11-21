@@ -1,5 +1,5 @@
 Back end:
-// Todo --> controllers, tests, validators, and routes labeling might not be scalable
+// Todo --> tests labeling might not be scalable
 // Todo --> type the entities params when need it instead of comments with params types
 // Todo --> refactor the test to not be attached to the implementation but the results, maybe use in-memory-mongo-db or something similar
 // Todo --> make sure populate does not go into production, maybe work on a file to be call on the terminal

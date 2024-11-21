@@ -17,10 +17,6 @@ import {
 
 import { Field } from "../../typings/types";
 
-// @desc create a field
-// @route POST /api/v?/fields
-// @access Private
-// @fields: body {school_id:[string] , name:[string]}
 export const createField = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, name } = body;
@@ -53,10 +49,6 @@ export const createField = async ({ body }: Request, res: Response) => {
     .json({ msg: "Field created successfully!", success: true });
 };
 
-// @desc get all the fields
-// @route GET /api/v?/fields
-// @access Private
-// @fields: body {school_id:[string]}
 export const getFields = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -74,10 +66,6 @@ export const getFields = async ({ body }: Request, res: Response) => {
   });
 };
 
-// @desc get the field by id
-// @route GET /api/v?/field/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
@@ -95,10 +83,6 @@ export const getField = async ({ params, body }: Request, res: Response) => {
   });
 };
 
-// @desc update a field
-// @route PUT /api/v?/field/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], name:[string]}
 export const updateField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields*/
   const { id: fieldId } = params;
@@ -130,10 +114,6 @@ export const updateField = async ({ params, body }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ msg: "Field updated", success: true });
 };
 
-// @desc delete a field
-// @route DELETE /api/v?/field/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteField = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: fieldId } = params;

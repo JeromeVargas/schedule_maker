@@ -17,10 +17,6 @@ import {
   findPopulateFieldById,
 } from "./subjects.services";
 
-// @desc create a subject
-// @route POST /api/v?/subjects
-// @access Private
-// @fields body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
 export const createSubject = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, level_id, field_id, name, sessionUnits, frequency } = body;
@@ -90,10 +86,6 @@ export const createSubject = async ({ body }: Request, res: Response) => {
     .json({ msg: "Subject created!", success: true });
 };
 
-// @desc get all the Subjects
-// @route GET /api/v?/Subjects
-// @access Private
-// @fields: body: {school_id:[string]}
 export const getSubjects = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -111,10 +103,6 @@ export const getSubjects = async ({ body }: Request, res: Response) => {
   });
 };
 
-// @desc get the Subject by id
-// @route GET /api/v?/Subjects/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getSubject = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
@@ -135,10 +123,6 @@ export const getSubject = async ({ params, body }: Request, res: Response) => {
   });
 };
 
-// @desc update a Subject
-// @route PUT /api/v?/Subjects/:id
-// @access Private
-// @fields: params: {id:[string]}, body: {school_id:[string], level_id:[string], field_id:[string], name:[string], sessionUnits:[number], frequency:[number]}
 export const updateSubject = async (
   { params, body }: Request,
   res: Response
@@ -218,10 +202,6 @@ export const updateSubject = async (
   res.status(StatusCodes.OK).json({ msg: "Subject updated!", success: true });
 };
 
-// @desc delete a Subject
-// @route DELETE /api/v?/Subjects/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteSubject = async (
   { params, body }: Request,
   res: Response

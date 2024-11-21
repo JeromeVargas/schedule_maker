@@ -4,13 +4,11 @@ import UserModel from "./users.model";
 
 // CRUD services
 // @desc insert a user in the database
-// @params user
 export const insertUser = (user: NewUser) => {
   return UserModel.create(user);
 };
 
 // @desc find all users by school id
-// @params filters, fieldsToReturn
 export const findFilterAllUsers = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -19,7 +17,6 @@ export const findFilterAllUsers = (
 };
 
 // @desc find a user by school id and email or school id and user id
-// @params filters, fieldsToReturn
 export const findUserByProperty = (
   filters:
     | { school_id: string; email: string }
@@ -34,7 +31,6 @@ export const findUserByProperty = (
 };
 
 // @desc update a user by school id and other property
-// @params filters, user
 export const modifyFilterUser = (
   filters: {
     school_id: string;
@@ -49,7 +45,6 @@ export const modifyFilterUser = (
 };
 
 // @desc delete a user by school id and other property
-// @params filters
 export const removeFilterUser = (filters: {
   school_id: string;
   _id: string;
@@ -59,7 +54,6 @@ export const removeFilterUser = (filters: {
 
 /* Services from other entities */
 // @desc find a school by id
-// @params schoolId, fieldsToReturn
 export const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
   return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
