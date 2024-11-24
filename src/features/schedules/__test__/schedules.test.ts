@@ -19,7 +19,7 @@ type Service =
   | "findSchoolById"
   | "findAllLevels";
 
-describe("Resource => Schedule", () => {
+describe("Resource => SCHEDULE", () => {
   /* mock services */
   // just one return
   const mockService = (payload: any, service: Service) => {
@@ -204,8 +204,8 @@ describe("Resource => Schedule", () => {
   const schedulesNullPayload: Schedule[] = [];
 
   // test blocks
-  describe("POST /schedule ", () => {
-    describe("schedule::post::01 - Passing missing fields", () => {
+  describe("SCHEDULE - POST", () => {
+    describe("POST - /schedules - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -306,7 +306,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::post::02 - Passing fields with empty values", () => {
+    describe("POST - /schedules - Passing fields with empty values", () => {
       it("should return an empty fields error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -417,7 +417,7 @@ describe("Resource => Schedule", () => {
         expect(insertSchedule).not.toHaveBeenCalledWith(newScheduleEmptyValues);
       });
     });
-    describe("schedule::post::03 - Passing an invalid type as a value", () => {
+    describe("POST - /schedules - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -530,7 +530,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::post::04 - Passing too long or short input values", () => {
+    describe("POST - /schedules - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -596,7 +596,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::post::05 - Passing day start after the 23:59 in the body", () => {
+    describe("POST - /schedules - Passing day start after the 23:59 in the body", () => {
       it("should return a day start after the 23:59 error", async () => {
         // mock services
         const findSchool = mockService(schoolPayload, "findSchoolById");
@@ -628,7 +628,7 @@ describe("Resource => Schedule", () => {
         expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
-    describe("schedule::post::06 - Passing a non-existent school in the body", () => {
+    describe("POST - /schedules - Passing a non-existent school in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -660,7 +660,7 @@ describe("Resource => Schedule", () => {
         expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
-    describe("schedule::post::07 - Passing an already existing schedule name", () => {
+    describe("POST - /schedules - Passing an already existing schedule name", () => {
       it("should return an existing schedule name", async () => {
         // mock services
         const findSchool = mockService(schoolPayload, "findSchoolById");
@@ -695,7 +695,7 @@ describe("Resource => Schedule", () => {
         expect(insertSchedule).not.toHaveBeenCalledWith(newSchedule);
       });
     });
-    describe("schedule::post::08 - Passing a schedule but not being created", () => {
+    describe("POST - /schedules - Passing a schedule but not being created", () => {
       it("should not create a field", async () => {
         // mock services
         const findSchool = mockService(schoolPayload, "findSchoolById");
@@ -730,7 +730,7 @@ describe("Resource => Schedule", () => {
         expect(insertSchedule).toHaveBeenCalledWith(newSchedule);
       });
     });
-    describe("schedule::post::09 - Passing a schedule correctly to create", () => {
+    describe("POST - /schedules - Passing a schedule correctly to create", () => {
       it("should create a field", async () => {
         // mock services
         const findSchool = mockService(schoolPayload, "findSchoolById");
@@ -764,311 +764,307 @@ describe("Resource => Schedule", () => {
     });
   });
 
-  describe("GET /schedule ", () => {
-    describe("schedule - GET", () => {
-      describe("schedule::get::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findSchedules = mockService(
-            schedulesNullPayload,
-            "findFilterAllSchedules"
-          );
+  describe("SCHEDULE - GET", () => {
+    describe("GET - /schedules - Passing missing fields", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findSchedules = mockService(
+          schedulesNullPayload,
+          "findFilterAllSchedules"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSchedules).not.toHaveBeenCalledWith(
-            { school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("schedule::get::02 - passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findSchedules = mockService(
-            schedulesNullPayload,
-            "findFilterAllSchedules"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSchedules).not.toHaveBeenCalledWith(
-            { school_id: "" },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("schedule::get::03 - passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findSchedules = mockService(
-            schedulesNullPayload,
-            "findFilterAllSchedules"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSchedules).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("schedule::get::04 - Requesting all fields but not finding any", () => {
-        it("should not get any fields", async () => {
-          // mock services
-          const findSchedules = mockService(
-            schedulesNullPayload,
-            "findFilterAllSchedules"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: otherValidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "No schedules found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findSchedules).toHaveBeenCalledWith(
-            { school_id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("schedule::get::05 - Requesting all fields correctly", () => {
-        it("should get all fields", async () => {
-          // mock services
-          const findSchedules = mockService(
-            schedulesPayload,
-            "findFilterAllSchedules"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            payload: schedulesPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findSchedules).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
-        });
+        expect(statusCode).toBe(400);
+        expect(findSchedules).not.toHaveBeenCalledWith(
+          { school_id: null },
+          "-createdAt -updatedAt"
+        );
       });
     });
-    describe("schedule - GET/:id", () => {
-      describe("schedule::get/:id::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findSchedule = mockService(
-            scheduleNullPayload,
-            "findScheduleByProperty"
-          );
+    describe("GET - /schedules - passing fields with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findSchedules = mockService(
+          schedulesNullPayload,
+          "findFilterAllSchedules"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockScheduleId}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: "" });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSchedule).not.toHaveBeenCalledWith(
-            { school_id: null, _id: validMockScheduleId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findSchedules).not.toHaveBeenCalledWith(
+          { school_id: "" },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("schedule::get/:id::02 - Passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findSchedule = mockService(
-            scheduleNullPayload,
-            "findScheduleByProperty"
-          );
+    });
+    describe("GET - /schedules - passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findSchedules = mockService(
+          schedulesNullPayload,
+          "findFilterAllSchedules"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockScheduleId}`)
-            .send({ school_id: "" });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSchedule).not.toHaveBeenCalledWith(
-            { school_id: "", _id: validMockScheduleId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findSchedules).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("schedule::get/:id::03 - Passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findSchedule = mockService(
-            scheduleNullPayload,
-            "findScheduleByProperty"
-          );
+    });
+    describe("GET - /schedules - Requesting all fields but not finding any", () => {
+      it("should not get any fields", async () => {
+        // mock services
+        const findSchedules = mockService(
+          schedulesNullPayload,
+          "findFilterAllSchedules"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: otherValidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The schedule id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSchedule).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId, _id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No schedules found",
+          success: false,
         });
+        expect(statusCode).toBe(404);
+        expect(findSchedules).toHaveBeenCalledWith(
+          { school_id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("schedule::get/:id::04 - Requesting a field but not finding it", () => {
-        it("should not get a school", async () => {
-          // mock services
-          const findSchedule = mockService(
-            scheduleNullPayload,
-            "findScheduleByProperty"
-          );
+    });
+    describe("GET - /schedules - Requesting all fields correctly", () => {
+      it("should get all fields", async () => {
+        // mock services
+        const findSchedules = mockService(
+          schedulesPayload,
+          "findFilterAllSchedules"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${otherValidMockId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "Schedule not found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findSchedule).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId, _id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          payload: schedulesPayload,
+          success: true,
         });
+        expect(statusCode).toBe(200);
+        expect(findSchedules).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("schedule::get/:id::05 - Requesting a field correctly", () => {
-        it("should get a field", async () => {
-          // mock services
-          const findSchedule = mockService(
-            schedulePayload,
-            "findScheduleByProperty"
-          );
+    });
+    describe("GET - /schedules/:id - Passing missing fields", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findSchedule = mockService(
+          scheduleNullPayload,
+          "findScheduleByProperty"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockScheduleId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockScheduleId}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            payload: schedulePayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findSchedule).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId, _id: validMockScheduleId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findSchedule).not.toHaveBeenCalledWith(
+          { school_id: null, _id: validMockScheduleId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /schedules/:id - Passing fields with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findSchedule = mockService(
+          scheduleNullPayload,
+          "findScheduleByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockScheduleId}`)
+          .send({ school_id: "" });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findSchedule).not.toHaveBeenCalledWith(
+          { school_id: "", _id: validMockScheduleId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /schedules/:id - Passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findSchedule = mockService(
+          scheduleNullPayload,
+          "findScheduleByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${invalidMockId}`)
+          .send({ school_id: invalidMockId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The schedule id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findSchedule).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId, _id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /schedules/:id - Requesting a field but not finding it", () => {
+      it("should not get a school", async () => {
+        // mock services
+        const findSchedule = mockService(
+          scheduleNullPayload,
+          "findScheduleByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${otherValidMockId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Schedule not found",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+        expect(findSchedule).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId, _id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /schedules/:id - Requesting a field correctly", () => {
+      it("should get a field", async () => {
+        // mock services
+        const findSchedule = mockService(
+          schedulePayload,
+          "findScheduleByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockScheduleId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          payload: schedulePayload,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
+        expect(findSchedule).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId, _id: validMockScheduleId },
+          "-createdAt -updatedAt"
+        );
       });
     });
   });
 
-  describe("PUT /schedule ", () => {
-    describe("schedule::put::01 - Passing missing fields", () => {
+  describe("SCHEDULE - PUT", () => {
+    describe("PUT - /schedules/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const duplicateScheduleName = mockService(
@@ -1168,7 +1164,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::put::02 - Passing fields with empty values", () => {
+    describe("PUT - /schedules/:id - Passing fields with empty values", () => {
       it("should return an empty field error", async () => {
         // mock services
         const duplicateScheduleName = mockService(
@@ -1280,7 +1276,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::put::03 - Passing an invalid type as field value", () => {
+    describe("PUT - /schedules/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const duplicateScheduleName = mockService(
@@ -1398,7 +1394,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::put::04 - Passing too long or short input values", () => {
+    describe("PUT - /schedules/:id - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const duplicateScheduleName = mockService(
@@ -1463,7 +1459,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::put::05 - Passing day start after the 23:59 in the body", () => {
+    describe("PUT - /schedules/:id - Passing day start after the 23:59 in the body", () => {
       it("should return a day start after the 23:59 error", async () => {
         // mock services
         const duplicateScheduleName = mockService(
@@ -1496,7 +1492,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::put::06 - Passing a schedule but not updating it because schedule name already exist", () => {
+    describe("PUT - /schedules/:id - Passing a schedule but not updating it because schedule name already exist", () => {
       it("should not update a schedule", async () => {
         // mock services
         const duplicateScheduleName = mockService(
@@ -1529,7 +1525,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::put::07 - Passing a schedule but not updating it because it does not match the filters", () => {
+    describe("PUT - /schedules/:id - Passing a schedule but not updating it because it does not match the filters", () => {
       it("should not update a schedule", async () => {
         // mock services
         const duplicateScheduleName = mockService(
@@ -1562,7 +1558,7 @@ describe("Resource => Schedule", () => {
         );
       });
     });
-    describe("schedule::put::08 - Passing a schedule correctly to update", () => {
+    describe("PUT - /schedules/:id - Passing a schedule correctly to update", () => {
       it("should update a schedule", async () => {
         // mock services
         const duplicateScheduleName = mockService(
@@ -1594,8 +1590,8 @@ describe("Resource => Schedule", () => {
     });
   });
 
-  describe("DELETE /schedule ", () => {
-    describe("schedule::delete::01 - Passing missing fields", () => {
+  describe("SCHEDULE - DELETE", () => {
+    describe("DELETE - /schedules/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const findAllLevels = mockService(levelsNullPayload, "findAllLevels");
@@ -1631,7 +1627,7 @@ describe("Resource => Schedule", () => {
         });
       });
     });
-    describe("schedule::delete::02 - Passing fields with empty values", () => {
+    describe("DELETE - /schedules/:id - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
         // mock services
         const findAllLevels = mockService(levelsNullPayload, "findAllLevels");
@@ -1668,7 +1664,7 @@ describe("Resource => Schedule", () => {
         });
       });
     });
-    describe("schedule::delete::03 - Passing invalid ids", () => {
+    describe("DELETE - /schedules/:id - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
         const findAllLevels = mockService(levelsNullPayload, "findAllLevels");
@@ -1711,7 +1707,7 @@ describe("Resource => Schedule", () => {
         });
       });
     });
-    describe("schedule::delete::04 - Passing a schedule with levels still extending from it", () => {
+    describe("DELETE - /schedules/:id - Passing a schedule with levels still extending from it", () => {
       it("should return a conflict error", async () => {
         // mock services
         const findAllLevels = mockService(levelsPayload, "findAllLevels");
@@ -1741,7 +1737,7 @@ describe("Resource => Schedule", () => {
         });
       });
     });
-    describe("schedule::delete::05 - Passing a schedule id but not deleting it", () => {
+    describe("DELETE - /schedules/:id - Passing a schedule id but not deleting it", () => {
       it("should not delete a school", async () => {
         // mock services
         const findAllLevels = mockService(levelsNullPayload, "findAllLevels");
@@ -1771,7 +1767,7 @@ describe("Resource => Schedule", () => {
         });
       });
     });
-    describe("schedule::delete::06 - Passing a schedule id correctly to delete", () => {
+    describe("DELETE - /schedules/:id - - Passing a schedule id correctly to delete", () => {
       it("should delete a field", async () => {
         // mock services
         const findAllLevels = mockService(levelsNullPayload, "findAllLevels");

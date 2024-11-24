@@ -19,7 +19,7 @@ type Service =
   | "findPopulateGroupById"
   | "findPopulateCoordinatorById";
 
-describe("RESOURCE => Group_coordinator", () => {
+describe("RESOURCE => GROUP_COORDINATOR", () => {
   /* mock services */
   // just one return
   const mockService = (payload: any, service: Service) => {
@@ -119,8 +119,8 @@ describe("RESOURCE => Group_coordinator", () => {
   const groupCoordinatorsNullPayload: Group_Coordinator[] = [];
 
   // test blocks
-  describe("POST /group_coordinator ", () => {
-    describe("group_coordinator::post::01 - Passing a group_coordinator with missing fields", () => {
+  describe("GROUP_COORDINATORS - POST", () => {
+    describe("POST - /group_coordinators - Passing a group_coordinator with missing fields", () => {
       it("should return a field needed error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -192,7 +192,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::02 - Passing a group_coordinator with empty fields", () => {
+    describe("POST - /group_coordinators - Passing a group_coordinator with empty fields", () => {
       it("should return an empty field error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -267,7 +267,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::03 - Passing an invalid type as a value", () => {
+    describe("POST - /group_coordinators - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -342,7 +342,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::04 - group has the coordinator already assigned", () => {
+    describe("POST - /group_coordinators - group has the coordinator already assigned", () => {
       it("should return an already assigned coordinator", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -398,7 +398,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::05 - Passing a non-existent group in the body", () => {
+    describe("POST - /group_coordinators - Passing a non-existent group in the body", () => {
       it("should return a non-existent group error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -454,7 +454,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::06 - Passing a group that does not match the school id", () => {
+    describe("POST - /group_coordinators - Passing a group that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -510,7 +510,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::07 - Passing a non-existent coordinator in the body", () => {
+    describe("POST - /group_coordinators - Passing a non-existent coordinator in the body", () => {
       it("should return a non-existent coordinator error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -563,7 +563,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::08 - Passing a group that does not match the school id", () => {
+    describe("POST - /group_coordinators - Passing a group that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -623,7 +623,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::09 - Passing a coordinator with a role different from coordinator", () => {
+    describe("POST - /group_coordinators - Passing a coordinator with a role different from coordinator", () => {
       it("should return a non-coordinator role error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -679,7 +679,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::10 - Passing a coordinator with a status different from active", () => {
+    describe("POST - /group_coordinators - Passing a coordinator with a status different from active", () => {
       it("should return a non-active coordinator error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -735,7 +735,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::11 - Passing a group_coordinator but not being created", () => {
+    describe("POST - /group_coordinators - Passing a group_coordinator but not being created", () => {
       it("should not create a group_coordinator", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -788,7 +788,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::12 - Passing a group_coordinator correctly to create", () => {
+    describe("POST - /group_coordinators - Passing a group_coordinator correctly to create", () => {
       it("should create a group_coordinator", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -843,298 +843,294 @@ describe("RESOURCE => Group_coordinator", () => {
     });
   });
 
-  describe("GET /group_coordinator ", () => {
-    describe("group_coordinator - GET", () => {
-      describe("group_coordinator::get::01 - passing a school id with missing values", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findGroupCoordinators = mockService(
-            groupCoordinatorsNullPayload,
-            "findFilterAllGroupCoordinators"
-          );
+  describe("GROUP_COORDINATORS - GET", () => {
+    describe("GET - /group_coordinators - passing a school id with missing values", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findGroupCoordinators = mockService(
+          groupCoordinatorsNullPayload,
+          "findFilterAllGroupCoordinators"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroupCoordinators).not.toHaveBeenCalledWith(
-            { school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("group_coordinator::get::02 - passing a field with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findGroupCoordinators = mockService(
-            groupCoordinatorsNullPayload,
-            "findFilterAllGroupCoordinators"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroupCoordinators).not.toHaveBeenCalledWith(
-            { school_id: "" },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group_coordinator::get::03 - passing and invalid school id", () => {
-        it("should get all fields", async () => {
-          // mock services
-          const findGroupCoordinators = mockService(
-            groupCoordinatorsNullPayload,
-            "findFilterAllGroupCoordinators"
-          );
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroupCoordinators).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group_coordinator::get::04 - Requesting all fields but not finding any", () => {
-        it("should not get any fields", async () => {
-          // mock services
-          const findGroupCoordinators = mockService(
-            groupCoordinatorsNullPayload,
-            "findFilterAllGroupCoordinators"
-          );
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: otherValidMockId });
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "No coordinators assigned to any groups yet",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findGroupCoordinators).toHaveBeenCalledWith(
-            { school_id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group_coordinator::get::05 - Requesting all group_coordinators correctly", () => {
-        it("should get all fields", async () => {
-          // mock services
-          const findGroupCoordinators = mockService(
-            groupCoordinatorsPayload,
-            "findFilterAllGroupCoordinators"
-          );
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
-          // assertions
-          expect(body).toStrictEqual({
-            payload: groupCoordinatorsPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findGroupCoordinators).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
-        });
+        expect(statusCode).toBe(400);
+        expect(findGroupCoordinators).not.toHaveBeenCalledWith(
+          { school_id: null },
+          "-createdAt -updatedAt"
+        );
       });
     });
-    describe("group_coordinator - GET/:id", () => {
-      describe("group_coordinator::get/:id::01 - Passing fields with missing values", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const duplicateGroupCoordinator = mockService(
-            groupCoordinatorNullPayload,
-            "findGroupCoordinatorByProperty"
-          );
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockGroupCoordinatorId}`)
-            .send({ school_i: validMockSchoolId });
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(duplicateGroupCoordinator).not.toHaveBeenCalledWith(
-            { _id: validMockGroupCoordinatorId, school_id: null },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group_coordinator::get/:id::02 - Passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findGroupCoordinator = mockService(
-            groupCoordinatorNullPayload,
-            "findGroupCoordinatorByProperty"
-          );
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockGroupCoordinatorId}`)
-            .send({ school_id: "" });
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroupCoordinator).not.toHaveBeenCalledWith(
-            { _id: validMockGroupCoordinatorId, school_id: "" },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group_coordinator::get/:id::03 - Passing an invalid group_coordinator and school ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findGroupCoordinator = mockService(
-            groupCoordinatorNullPayload,
-            "findGroupCoordinatorByProperty"
-          );
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The group_coordinator id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroupCoordinator).not.toHaveBeenCalledWith(
-            { _id: invalidMockId, school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group_coordinator::get/:id::04 - Requesting a field but not finding it", () => {
-        it("should not get a school", async () => {
-          // mock services
-          const findGroupCoordinator = mockService(
-            groupCoordinatorNullPayload,
-            "findGroupCoordinatorByProperty"
-          );
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${otherValidMockId}`)
-            .send({ school_id: validMockSchoolId });
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "Group_coordinator not found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findGroupCoordinator).toHaveBeenCalledWith(
+    describe("GET - /group_coordinators - passing a field with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findGroupCoordinators = mockService(
+          groupCoordinatorsNullPayload,
+          "findFilterAllGroupCoordinators"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: "" });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
             {
-              _id: otherValidMockId,
-              school_id: validMockSchoolId,
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
             },
-            "-createdAt -updatedAt"
-          );
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findGroupCoordinators).not.toHaveBeenCalledWith(
+          { school_id: "" },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("group_coordinator::get/:id::05 - Requesting a field correctly", () => {
-        it("should get a field", async () => {
-          // mock services
-          const findGroupCoordinator = mockService(
-            groupCoordinatorPayload,
-            "findGroupCoordinatorByProperty"
-          );
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockGroupCoordinatorId}`)
-            .send({ school_id: validMockSchoolId });
-          // assertions
-          expect(body).toStrictEqual({
-            payload: groupCoordinatorPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findGroupCoordinator).toHaveBeenCalledWith(
-            { _id: validMockGroupCoordinatorId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
+    });
+    describe("GET - /group_coordinators - passing and invalid school id", () => {
+      it("should get all fields", async () => {
+        // mock services
+        const findGroupCoordinators = mockService(
+          groupCoordinatorsNullPayload,
+          "findFilterAllGroupCoordinators"
+        );
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: invalidMockId });
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findGroupCoordinators).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /group_coordinators - Requesting all fields but not finding any", () => {
+      it("should not get any fields", async () => {
+        // mock services
+        const findGroupCoordinators = mockService(
+          groupCoordinatorsNullPayload,
+          "findFilterAllGroupCoordinators"
+        );
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: otherValidMockId });
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No coordinators assigned to any groups yet",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+        expect(findGroupCoordinators).toHaveBeenCalledWith(
+          { school_id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /group_coordinators - Requesting all group_coordinators correctly", () => {
+      it("should get all fields", async () => {
+        // mock services
+        const findGroupCoordinators = mockService(
+          groupCoordinatorsPayload,
+          "findFilterAllGroupCoordinators"
+        );
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: validMockSchoolId });
+        // assertions
+        expect(body).toStrictEqual({
+          payload: groupCoordinatorsPayload,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
+        expect(findGroupCoordinators).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
     });
   });
+  describe("GET - /group_coordinators/:id - Passing fields with missing values", () => {
+    it("should return a missing values error", async () => {
+      // mock services
+      const duplicateGroupCoordinator = mockService(
+        groupCoordinatorNullPayload,
+        "findGroupCoordinatorByProperty"
+      );
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${validMockGroupCoordinatorId}`)
+        .send({ school_i: validMockSchoolId });
+      // assertions
+      expect(body).toStrictEqual({
+        msg: [
+          {
+            location: "body",
+            msg: "Please add a school id",
+            param: "school_id",
+          },
+        ],
+        success: false,
+      });
+      expect(statusCode).toBe(400);
+      expect(duplicateGroupCoordinator).not.toHaveBeenCalledWith(
+        { _id: validMockGroupCoordinatorId, school_id: null },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
+  describe("GET - /group_coordinators/:id - Passing fields with empty values", () => {
+    it("should return an empty values error", async () => {
+      // mock services
+      const findGroupCoordinator = mockService(
+        groupCoordinatorNullPayload,
+        "findGroupCoordinatorByProperty"
+      );
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${validMockGroupCoordinatorId}`)
+        .send({ school_id: "" });
+      // assertions
+      expect(body).toStrictEqual({
+        msg: [
+          {
+            location: "body",
+            msg: "The school id field is empty",
+            param: "school_id",
+            value: "",
+          },
+        ],
+        success: false,
+      });
+      expect(statusCode).toBe(400);
+      expect(findGroupCoordinator).not.toHaveBeenCalledWith(
+        { _id: validMockGroupCoordinatorId, school_id: "" },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
+  describe("GET - /group_coordinators/:id - Passing an invalid group_coordinator and school ids", () => {
+    it("should return an invalid id error", async () => {
+      // mock services
+      const findGroupCoordinator = mockService(
+        groupCoordinatorNullPayload,
+        "findGroupCoordinatorByProperty"
+      );
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${invalidMockId}`)
+        .send({ school_id: invalidMockId });
+      // assertions
+      expect(body).toStrictEqual({
+        msg: [
+          {
+            location: "params",
+            msg: "The group_coordinator id is not valid",
+            param: "id",
+            value: invalidMockId,
+          },
+          {
+            location: "body",
+            msg: "The school id is not valid",
+            param: "school_id",
+            value: invalidMockId,
+          },
+        ],
+        success: false,
+      });
+      expect(statusCode).toBe(400);
+      expect(findGroupCoordinator).not.toHaveBeenCalledWith(
+        { _id: invalidMockId, school_id: invalidMockId },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
+  describe("GET - /group_coordinators/:id - Requesting a field but not finding it", () => {
+    it("should not get a school", async () => {
+      // mock services
+      const findGroupCoordinator = mockService(
+        groupCoordinatorNullPayload,
+        "findGroupCoordinatorByProperty"
+      );
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${otherValidMockId}`)
+        .send({ school_id: validMockSchoolId });
+      // assertions
+      expect(body).toStrictEqual({
+        msg: "Group_coordinator not found",
+        success: false,
+      });
+      expect(statusCode).toBe(404);
+      expect(findGroupCoordinator).toHaveBeenCalledWith(
+        {
+          _id: otherValidMockId,
+          school_id: validMockSchoolId,
+        },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
+  describe("GET - /group_coordinators/:id - Requesting a field correctly", () => {
+    it("should get a field", async () => {
+      // mock services
+      const findGroupCoordinator = mockService(
+        groupCoordinatorPayload,
+        "findGroupCoordinatorByProperty"
+      );
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${validMockGroupCoordinatorId}`)
+        .send({ school_id: validMockSchoolId });
+      // assertions
+      expect(body).toStrictEqual({
+        payload: groupCoordinatorPayload,
+        success: true,
+      });
+      expect(statusCode).toBe(200);
+      expect(findGroupCoordinator).toHaveBeenCalledWith(
+        { _id: validMockGroupCoordinatorId, school_id: validMockSchoolId },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
 
-  describe("PUT /group_coordinator ", () => {
-    describe("group_coordinator::put::01 - Passing fields with missing fields", () => {
+  describe("GROUP_COORDINATORS - PUT", () => {
+    describe("PUT - /group_coordinators/:id - Passing fields with missing fields", () => {
       it("should return a field needed error", async () => {
         /* mock services */
         const duplicateGroupCoordinator = mockService(
@@ -1209,7 +1205,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("field::put::02 - Passing fields with empty fields", () => {
+    describe("PUT - /group_coordinators/:id - Passing fields with empty fields", () => {
       it("should return an empty field error", async () => {
         /* mock services */
         const duplicateGroupCoordinator = mockService(
@@ -1287,7 +1283,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::put::03 - Passing an invalid type as field value", () => {
+    describe("PUT - /group_coordinators/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1367,7 +1363,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::put::03 - group has the coordinator already assigned", () => {
+    describe("PUT - /group_coordinators/:id - group has the coordinator already assigned", () => {
       it("should return an already assigned coordinator", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1428,7 +1424,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::post::05 - Passing a non-existent group in the body", () => {
+    describe("PUT - /group_coordinators/:id - Passing a non-existent group in the body", () => {
       it("should return a non-existent group error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1489,7 +1485,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::put::06 - Passing a group that does not match the school id", () => {
+    describe("PUT - /group_coordinators/:id - Passing a group that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1550,7 +1546,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::put::06 - Passing a non-existent coordinator in the body", () => {
+    describe("PUT - /group_coordinators/:id - Passing a non-existent coordinator in the body", () => {
       it("should return a non-existent coordinator error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1608,7 +1604,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::put::07 - Passing a coordinator that does not match the school id", () => {
+    describe("PUT - /group_coordinators/:id - Passing a coordinator that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1666,7 +1662,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::put::08 - Passing a coordinator with a role different from coordinator", () => {
+    describe("PUT - /group_coordinators/:id - Passing a coordinator with a role different from coordinator", () => {
       it("should return a non-coordinator role error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1724,7 +1720,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::put::09 - Passing a coordinator with a status different from active", () => {
+    describe("gPUT - /group_coordinators/:id - Passing a coordinator with a status different from active", () => {
       it("should return a non-active coordinator error", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1782,7 +1778,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::put::10 - Passing a group_coordinator but not updating", () => {
+    describe("PUT - /group_coordinators/:id - Passing a group_coordinator but not updating", () => {
       it("should not update a group_coordinator", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1840,7 +1836,7 @@ describe("RESOURCE => Group_coordinator", () => {
         );
       });
     });
-    describe("group_coordinator::put::11 - Passing a group_coordinator correctly to update", () => {
+    describe("PUT - /group_coordinators/:id - Passing a group_coordinator correctly to update", () => {
       it("should update a group_coordinator", async () => {
         // mock services
         const duplicateGroupCoordinator = mockService(
@@ -1900,8 +1896,8 @@ describe("RESOURCE => Group_coordinator", () => {
     });
   });
 
-  describe("DELETE /group_coordinator ", () => {
-    describe("group_coordinator::delete::01 - Passing fields with missing fields", () => {
+  describe("GROUP_COORDINATOR - DELETE", () => {
+    describe("DELETE - /group_coordinators/:id - Passing fields with missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const deleteTeacher = mockService(
@@ -1930,7 +1926,7 @@ describe("RESOURCE => Group_coordinator", () => {
         });
       });
     });
-    describe("group_coordinator::delete::02 - Passing fields with empty fields", () => {
+    describe("DELETE - /group_coordinators/:id - Passing fields with empty fields", () => {
       it("should return a empty fields error", async () => {
         // mock services
         const deleteTeacher = mockService(
@@ -1960,7 +1956,7 @@ describe("RESOURCE => Group_coordinator", () => {
         });
       });
     });
-    describe("group_coordinator::delete::03 - Passing an invalid group_coordinator and school ids", () => {
+    describe("DELETE - /group_coordinators/:id - Passing an invalid group_coordinator and school ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
         const deleteTeacher = mockService(
@@ -1996,7 +1992,7 @@ describe("RESOURCE => Group_coordinator", () => {
         });
       });
     });
-    describe("group_coordinator::delete::04 - Passing a group_coordinator id but not deleting it", () => {
+    describe("DELETE - /group_coordinators/:id - Passing a group_coordinator id but not deleting it", () => {
       it("should not delete a school", async () => {
         // mock services
         const deleteTeacher = mockService(
@@ -2019,7 +2015,7 @@ describe("RESOURCE => Group_coordinator", () => {
         });
       });
     });
-    describe("group_coordinator::delete::05 - Passing a group_coordinator id correctly to delete", () => {
+    describe("DELETE - /group_coordinators/:id - Passing a group_coordinator id correctly to delete", () => {
       it("should delete a group_coordinator", async () => {
         // mock services
         const deleteTeacher = mockService(

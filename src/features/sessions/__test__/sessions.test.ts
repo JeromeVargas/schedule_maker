@@ -20,7 +20,7 @@ type Service =
   | "findPopulateTeacherFieldById"
   | "findPopulateSubjectById";
 
-describe("Resource => Session", () => {
+describe("Resource => SESSION", () => {
   /* mock services */
   // just one return
   const mockService = (payload: any, service: Service) => {
@@ -245,8 +245,8 @@ describe("Resource => Session", () => {
   const sessionsNullPayload: Session[] = [];
 
   // test blocks
-  describe("POST /session ", () => {
-    describe("session::post::01 - Passing missing fields", () => {
+  describe("SESSIONS - POST", () => {
+    describe("POST - /sessions - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -356,7 +356,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSessionMissingValues);
       });
     });
-    describe("session::post::02 - Passing fields with empty values", () => {
+    describe("POST - /sessions - Passing fields with empty values", () => {
       it("should return an empty fields error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -476,7 +476,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSessionEmptyValues);
       });
     });
-    describe("session::post::03 - Passing an invalid type as a value", () => {
+    describe("POST - /sessions - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -598,7 +598,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::post::04 - Passing too long or short input values", () => {
+    describe("POST - /sessions - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -678,7 +678,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::post::05 - Passing a start time past the 23:59 hours", () => {
+    describe("POST - /sessions - Passing a start time past the 23:59 hours", () => {
       it("should return a invalid start time error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -737,7 +737,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::06 - Passing a non-existent group_coordinator in the body", () => {
+    describe("POST - /sessions - Passing a non-existent group_coordinator in the body", () => {
       it("should return a non-existent group_coordinator error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -796,7 +796,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::07 - Passing a non-matching school for the group_coordinator in the body", () => {
+    describe("POST - /sessions - Passing a non-matching school for the group_coordinator in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -862,7 +862,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::08 - Passing a non-matching level for the group in the body", () => {
+    describe("POST - /sessions - Passing a non-matching level for the group in the body", () => {
       it("should return a non-matching level error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -930,7 +930,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::09 - Passing a non-matching group for the group in the body", () => {
+    describe("POST - /sessions - Passing a non-matching group for the group in the body", () => {
       it("should return a non-matching level error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -998,7 +998,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::10 - Passing a coordinator with a role different from coordinator", () => {
+    describe("POST - /sessions - Passing a coordinator with a role different from coordinator", () => {
       it("should return a not valid coordinator role error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1067,7 +1067,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::11 - Passing a coordinator with a status different from active", () => {
+    describe("POST - /sessions - Passing a coordinator with a status different from active", () => {
       it("should return an invalid status error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1136,7 +1136,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::12 - Passing a non-existing teacher_coordinator", () => {
+    describe("POST - /sessions - Passing a non-existing teacher_coordinator", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1195,7 +1195,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::13 - Passing a non-matching school for the teacher_coordinator", () => {
+    describe("POST - /sessions - Passing a non-matching school for the teacher_coordinator", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1261,7 +1261,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::14 - Passing a non-matching coordinator for the group and the teacher", () => {
+    describe("POST - /sessions - Passing a non-matching coordinator for the group and the teacher", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1330,7 +1330,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::15 - Passing a non-existent teacher_field in the body", () => {
+    describe("POST - /sessions - Passing a non-existent teacher_field in the body", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1389,7 +1389,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::16 - Passing a non-matching school for the teacher_field in the body", () => {
+    describe("POST - /sessions - Passing a non-matching school for the teacher_field in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1455,7 +1455,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::17 - Passing a non-matching teacher for the coordinator and the field", () => {
+    describe("POST - /sessions - Passing a non-matching teacher for the coordinator and the field", () => {
       it("should return a non-matching teacher error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1532,7 +1532,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::18 - Passing a non-existent subject in the body", () => {
+    describe("POST - /sessions - Passing a non-existent subject in the body", () => {
       it("should return a non-existent subject error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1591,7 +1591,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::19 - Passing a non-matching school for the subject in the body", () => {
+    describe("POST - /sessions - Passing a non-matching school for the subject in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1657,7 +1657,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::20 - Passing a non-matching level for the subject in the body", () => {
+    describe("POST - /sessions - Passing a non-matching level for the subject in the body", () => {
       it("should return a non-matching level error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1724,7 +1724,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::21 - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
+    describe("POST - /sessions - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
       it("should return a non-matching field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1790,7 +1790,7 @@ describe("Resource => Session", () => {
         expect(insertSession).not.toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::22 - Passing a session but not being created", () => {
+    describe("POST - /sessions - Passing a session but not being created", () => {
       it("should not create a session", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1849,7 +1849,7 @@ describe("Resource => Session", () => {
         expect(insertSession).toHaveBeenCalledWith(newSession);
       });
     });
-    describe("session::post::23 - Passing a session correctly to create", () => {
+    describe("POST - /sessions - Passing a session correctly to create", () => {
       it("should create a session", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -1910,311 +1910,307 @@ describe("Resource => Session", () => {
     });
   });
 
-  describe("GET /session ", () => {
-    describe("session - GET", () => {
-      describe("session::get::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findSessions = mockService(
-            sessionsNullPayload,
-            "findFilterAllSessions"
-          );
+  describe("SESSIONS - GET", () => {
+    describe("GET - /sessions - Passing missing fields", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findSessions = mockService(
+          sessionsNullPayload,
+          "findFilterAllSessions"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSessions).not.toHaveBeenCalledWith(
-            { school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("session::get::02 - passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findSessions = mockService(
-            sessionsNullPayload,
-            "findFilterAllSessions"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSessions).not.toHaveBeenCalledWith(
-            { school_id: "" },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("session::get::03 - passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findSessions = mockService(
-            sessionsNullPayload,
-            "findFilterAllSessions"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSessions).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("session::get::04 - Requesting all sessions but not finding any", () => {
-        it("should not get any fields", async () => {
-          // mock services
-          const findSessions = mockService(
-            sessionsNullPayload,
-            "findFilterAllSessions"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: otherValidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "No sessions found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findSessions).toHaveBeenCalledWith(
-            { school_id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("session::get::05 - Requesting all sessions correctly", () => {
-        it("should get all fields", async () => {
-          // mock services
-          const findSessions = mockService(
-            sessionsPayload,
-            "findFilterAllSessions"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            payload: sessionsPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findSessions).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
-        });
+        expect(statusCode).toBe(400);
+        expect(findSessions).not.toHaveBeenCalledWith(
+          { school_id: null },
+          "-createdAt -updatedAt"
+        );
       });
     });
-    describe("session - GET/:id", () => {
-      describe("session::get/:id::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findSession = mockService(
-            sessionNullPayload,
-            "findSessionByProperty"
-          );
+    describe("GET - /sessions - passing fields with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findSessions = mockService(
+          sessionsNullPayload,
+          "findFilterAllSessions"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockSessionId}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: "" });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSession).not.toHaveBeenCalledWith(
-            { _id: validMockSessionId, school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findSessions).not.toHaveBeenCalledWith(
+          { school_id: "" },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("session::get/:id::02 - Passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findSession = mockService(
-            sessionNullPayload,
-            "findSessionByProperty"
-          );
+    });
+    describe("GET - /sessions - passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findSessions = mockService(
+          sessionsNullPayload,
+          "findFilterAllSessions"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockSessionId}`)
-            .send({ school_id: "" });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSession).not.toHaveBeenCalledWith(
-            { _id: validMockSessionId, school_id: "" },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findSessions).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("session::get/:id::03 - Passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findSession = mockService(
-            sessionNullPayload,
-            "findSessionByProperty"
-          );
+    });
+    describe("GET - /sessions - Requesting all sessions but not finding any", () => {
+      it("should not get any fields", async () => {
+        // mock services
+        const findSessions = mockService(
+          sessionsNullPayload,
+          "findFilterAllSessions"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: otherValidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The session id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSession).not.toHaveBeenCalledWith(
-            { _id: invalidMockId, school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No sessions found",
+          success: false,
         });
+        expect(statusCode).toBe(404);
+        expect(findSessions).toHaveBeenCalledWith(
+          { school_id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("session::get/:id::04 - Requesting a session but not finding it", () => {
-        it("should not get a school", async () => {
-          // mock services
-          const findSession = mockService(
-            sessionNullPayload,
-            "findSessionByProperty"
-          );
+    });
+    describe("GET - /sessions - Requesting all sessions correctly", () => {
+      it("should get all fields", async () => {
+        // mock services
+        const findSessions = mockService(
+          sessionsPayload,
+          "findFilterAllSessions"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockSessionId}`)
-            .send({ school_id: otherValidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "Session not found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findSession).toHaveBeenCalledWith(
-            { _id: validMockSessionId, school_id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          payload: sessionsPayload,
+          success: true,
         });
+        expect(statusCode).toBe(200);
+        expect(findSessions).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("session::get/:id::05 - Requesting a session correctly", () => {
-        it("should get a field", async () => {
-          // mock services
-          const findSession = mockService(
-            sessionPayload,
-            "findSessionByProperty"
-          );
+    });
+    describe("GET - /sessions/:id - Passing missing fields", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findSession = mockService(
+          sessionNullPayload,
+          "findSessionByProperty"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockSessionId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockSessionId}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            payload: sessionPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findSession).toHaveBeenCalledWith(
-            { _id: validMockSessionId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findSession).not.toHaveBeenCalledWith(
+          { _id: validMockSessionId, school_id: null },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /sessions/:id - Passing fields with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findSession = mockService(
+          sessionNullPayload,
+          "findSessionByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockSessionId}`)
+          .send({ school_id: "" });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findSession).not.toHaveBeenCalledWith(
+          { _id: validMockSessionId, school_id: "" },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /sessions/:id - Passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findSession = mockService(
+          sessionNullPayload,
+          "findSessionByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${invalidMockId}`)
+          .send({ school_id: invalidMockId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The session id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findSession).not.toHaveBeenCalledWith(
+          { _id: invalidMockId, school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /sessions/:id - Requesting a session but not finding it", () => {
+      it("should not get a school", async () => {
+        // mock services
+        const findSession = mockService(
+          sessionNullPayload,
+          "findSessionByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockSessionId}`)
+          .send({ school_id: otherValidMockId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Session not found",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+        expect(findSession).toHaveBeenCalledWith(
+          { _id: validMockSessionId, school_id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /sessions/:id - Requesting a session correctly", () => {
+      it("should get a field", async () => {
+        // mock services
+        const findSession = mockService(
+          sessionPayload,
+          "findSessionByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockSessionId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          payload: sessionPayload,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
+        expect(findSession).toHaveBeenCalledWith(
+          { _id: validMockSessionId, school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
     });
   });
 
-  describe("PUT /session ", () => {
-    describe("session::put::01 - Passing missing fields", () => {
+  describe("SESSIONS - PUT", () => {
+    describe("PUT - /sessions/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -2333,7 +2329,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::02 - Passing fields with empty values", () => {
+    describe("PUT - /sessions/:id - Passing fields with empty values", () => {
       it("should return an empty field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -2462,7 +2458,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::03 - Passing an invalid type as field value", () => {
+    describe("PUT - /sessions/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -2597,7 +2593,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::04 - Passing too long or short input values", () => {
+    describe("PUT - /sessions/:id - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -2684,7 +2680,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::05 - Passing a start time past the 23:59 hours", () => {
+    describe("PUT - /sessions/:id - Passing a start time past the 23:59 hours", () => {
       it("should return a invalid start time error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -2749,7 +2745,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::06 - Passing a non-existent group_coordinator in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-existent group_coordinator in the body", () => {
       it("should return a non-existent coordinator error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -2814,7 +2810,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::07 - Passing a non-matching school for the group_coordinator in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-matching school for the group_coordinator in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -2886,7 +2882,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::08 - Passing a non-matching level for the group in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-matching level for the group in the body", () => {
       it("should return a non-matching level error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -2960,7 +2956,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::09 - Passing a non-matching group for the group in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-matching group for the group in the body", () => {
       it("should return a non-matching level error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3034,7 +3030,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::10 - Passing a coordinator with a different role in the body", () => {
+    describe("PUT - /sessions/:id - Passing a coordinator with a different role in the body", () => {
       it("should return a not valid coordinator role error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3109,7 +3105,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::11 - Passing a coordinator with a status different from active in the body", () => {
+    describe("PUT - /sessions/:id - Passing a coordinator with a status different from active in the body", () => {
       it("should return a invalid status error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3184,7 +3180,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::12 - Passing a non-existing teacher_coordinator", () => {
+    describe("PUT - /sessions/:id - Passing a non-existing teacher_coordinator", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3249,7 +3245,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::13 - Passing a non-matching school for the teacher_coordinator", () => {
+    describe("PUT - /sessions/:id - Passing a non-matching school for the teacher_coordinator", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3321,7 +3317,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::14 - Passing a non-matching coordinator for the group and the teacher", () => {
+    describe("PUT - /sessions/:id - Passing a non-matching coordinator for the group and the teacher", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3396,7 +3392,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::15 - Passing a non-existent teacher_field in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-existent teacher_field in the body", () => {
       it("should return a non-existent teacher_field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3461,7 +3457,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::16 - Passing a non-existent school for the teacher_field in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-existent school for the teacher_field in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3533,7 +3529,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::17 - Passing a non-matching teacher for the coordinator and the field in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-matching teacher for the coordinator and the field in the body", () => {
       it("should return a non-existent subject error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3616,7 +3612,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::18 - Passing a non-existent subject in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-existent subject in the body", () => {
       it("should return a non-existent subject error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3681,7 +3677,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::19 - Passing a non-matching school for the subject in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-matching school for the subject in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3753,7 +3749,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::20 - Passing a non-matching level for the subject in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-matching level for the subject in the body", () => {
       it("should return a non-matching level error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3826,7 +3822,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::21 - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
+    describe("PUT - /sessions/:id - Passing a non-matching id field for the teacher_field and parent subject field in the body", () => {
       it("should return a non-matching field error", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3898,7 +3894,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::22 - Passing a session but not updating it", () => {
+    describe("PUT - /sessions/:id - Passing a session but not updating it", () => {
       it("should not update a session", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -3967,7 +3963,7 @@ describe("Resource => Session", () => {
         );
       });
     });
-    describe("session::put::23 - Passing a session correctly to update", () => {
+    describe("PUT - /sessions/:id - Passing a session correctly to update", () => {
       it("should update a session", async () => {
         // mock services
         const findGroupCoordinator = mockService(
@@ -4038,8 +4034,8 @@ describe("Resource => Session", () => {
     });
   });
 
-  describe("DELETE /session ", () => {
-    describe("session::delete::01 - Passing missing fields", () => {
+  describe("SESSIONS - DELETE", () => {
+    describe("DELETE - /sessions/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const deleteSession = mockService(
@@ -4070,7 +4066,7 @@ describe("Resource => Session", () => {
         });
       });
     });
-    describe("session::delete::02 - Passing fields with empty values", () => {
+    describe("DELETE - /sessions/:id - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
         // mock services
         const deleteSession = mockService(
@@ -4102,7 +4098,7 @@ describe("Resource => Session", () => {
         });
       });
     });
-    describe("session::delete::03 - Passing invalid ids", () => {
+    describe("DELETE - /sessions/:id - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
         const deleteSession = mockService(
@@ -4140,7 +4136,7 @@ describe("Resource => Session", () => {
         });
       });
     });
-    describe("session::delete::04 - Passing a session id but not deleting it", () => {
+    describe("DELETE - /sessions/:id - Passing a session id but not deleting it", () => {
       it("should not delete a session", async () => {
         // mock services
         const deleteSession = mockService(
@@ -4165,7 +4161,7 @@ describe("Resource => Session", () => {
         });
       });
     });
-    describe("session::delete::05 - Passing a session id correctly to delete", () => {
+    describe("DELETE - /sessions/:id - Passing a session id correctly to delete", () => {
       it("should delete a session", async () => {
         // mock services
         const deleteSession = mockService(

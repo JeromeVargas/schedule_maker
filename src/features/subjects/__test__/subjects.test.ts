@@ -18,7 +18,7 @@ type Service =
   | "findPopulateLevelById"
   | "findPopulateFieldById";
 
-describe("Resource => subject", () => {
+describe("Resource => SUBJECT", () => {
   /* mock services */
   // just one return
   const mockService = (payload: any, service: Service) => {
@@ -144,8 +144,8 @@ describe("Resource => subject", () => {
   const subjectsNullPayload: Subject[] = [];
 
   // test blocks
-  describe("POST /subject ", () => {
-    describe("subject::post::01 - Passing missing fields", () => {
+  describe("SUBJECT - POST", () => {
+    describe("POST - /subjects - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -226,7 +226,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubjectMissingValues);
       });
     });
-    describe("subject::post::02 - Passing fields with empty values", () => {
+    describe("POST - /subjects - Passing fields with empty values", () => {
       it("should return an empty fields error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -313,7 +313,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubjectEmptyValues);
       });
     });
-    describe("subject::post::03 - Passing an invalid type as a value", () => {
+    describe("POST - /subjects - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -402,7 +402,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::post::04 - Passing too long or short input values", () => {
+    describe("POST - /subjects - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -474,7 +474,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::post::05 - Passing a duplicate subject name value", () => {
+    describe("POST - /subjects - Passing a duplicate subject name value", () => {
       it("should return a duplicate field error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -515,7 +515,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::06 - Passing a non-existent level in the body", () => {
+    describe("POST - /subjects - Passing a non-existent level in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -559,7 +559,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::07 - Passing a non-matching school id for the level in the body", () => {
+    describe("POST - /subjects - Passing a non-matching school id for the level in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -603,7 +603,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::08 - Passing a non-existent field in the body", () => {
+    describe("POST - /subjects - Passing a non-existent field in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -647,7 +647,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::09 - Passing a non-matching school for the field in the body", () => {
+    describe("POST - /subjects - Passing a non-matching school for the field in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -691,7 +691,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).not.toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::10 - Passing a subject but not being created", () => {
+    describe("POST - /subjects - Passing a subject but not being created", () => {
       it("should not create a field", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -732,7 +732,7 @@ describe("Resource => subject", () => {
         expect(insertSubject).toHaveBeenCalledWith(newSubject);
       });
     });
-    describe("subject::post::11 - Passing a subject correctly to create", () => {
+    describe("POST - /subjects - Passing a subject correctly to create", () => {
       it("should create a field", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -775,311 +775,307 @@ describe("Resource => subject", () => {
     });
   });
 
-  describe("GET /subject ", () => {
-    describe("subject - GET", () => {
-      describe("subject::get::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findSubjects = mockService(
-            subjectsNullPayload,
-            "findFilterAllSubjects"
-          );
+  describe("SUBJECTS - GET", () => {
+    describe("GET - /subjects - Passing missing fields", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findSubjects = mockService(
+          subjectsNullPayload,
+          "findFilterAllSubjects"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSubjects).not.toHaveBeenCalledWith(
-            { school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("subject::get::02 - passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findSubjects = mockService(
-            subjectsNullPayload,
-            "findFilterAllSubjects"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSubjects).not.toHaveBeenCalledWith(
-            { school_id: "" },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("subject::get::03 - passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findSubjects = mockService(
-            subjectsNullPayload,
-            "findFilterAllSubjects"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSubjects).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("subject::get::04 - Requesting all subjects but not finding any", () => {
-        it("should not get any fields", async () => {
-          // mock services
-          const findSubjects = mockService(
-            subjectsNullPayload,
-            "findFilterAllSubjects"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: otherValidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "No subjects found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findSubjects).toHaveBeenCalledWith(
-            { school_id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("subject::get::05 - Requesting all subjects correctly", () => {
-        it("should get all fields", async () => {
-          // mock services
-          const findSubjects = mockService(
-            subjectsPayload,
-            "findFilterAllSubjects"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            payload: subjectsPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findSubjects).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
-        });
+        expect(statusCode).toBe(400);
+        expect(findSubjects).not.toHaveBeenCalledWith(
+          { school_id: null },
+          "-createdAt -updatedAt"
+        );
       });
     });
-    describe("subject - GET/:id", () => {
-      describe("subject::get/:id::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findSubject = mockService(
-            subjectNullPayload,
-            "findSubjectByProperty"
-          );
+    describe("GET - /subjects - passing fields with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findSubjects = mockService(
+          subjectsNullPayload,
+          "findFilterAllSubjects"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockSubjectId}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: "" });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSubject).not.toHaveBeenCalledWith(
-            { _id: validMockSubjectId, school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findSubjects).not.toHaveBeenCalledWith(
+          { school_id: "" },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("subject::get/:id::02 - Passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findSubject = mockService(
-            subjectNullPayload,
-            "findSubjectByProperty"
-          );
+    });
+    describe("GET - /subjects - passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findSubjects = mockService(
+          subjectsNullPayload,
+          "findFilterAllSubjects"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockSubjectId}`)
-            .send({ school_id: "" });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSubject).not.toHaveBeenCalledWith(
-            { _id: validMockSubjectId, school_id: "" },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findSubjects).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("subject::get/:id::03 - Passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findSubject = mockService(
-            subjectNullPayload,
-            "findSubjectByProperty"
-          );
+    });
+    describe("GET - /subjects - Requesting all subjects but not finding any", () => {
+      it("should not get any fields", async () => {
+        // mock services
+        const findSubjects = mockService(
+          subjectsNullPayload,
+          "findFilterAllSubjects"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: otherValidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The subject id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findSubject).not.toHaveBeenCalledWith(
-            { _id: invalidMockId, school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No subjects found",
+          success: false,
         });
+        expect(statusCode).toBe(404);
+        expect(findSubjects).toHaveBeenCalledWith(
+          { school_id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("subject::get/:id::04 - Requesting a subject but not finding it", () => {
-        it("should not get a school", async () => {
-          // mock services
-          const findSubject = mockService(
-            subjectNullPayload,
-            "findSubjectByProperty"
-          );
+    });
+    describe("GET - /subjects - Requesting all subjects correctly", () => {
+      it("should get all fields", async () => {
+        // mock services
+        const findSubjects = mockService(
+          subjectsPayload,
+          "findFilterAllSubjects"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockSubjectId}`)
-            .send({ school_id: otherValidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "Subject not found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findSubject).toHaveBeenCalledWith(
-            { _id: validMockSubjectId, school_id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          payload: subjectsPayload,
+          success: true,
         });
+        expect(statusCode).toBe(200);
+        expect(findSubjects).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("subject::get/:id::05 - Requesting a subject correctly", () => {
-        it("should get a field", async () => {
-          // mock services
-          const findSubject = mockService(
-            subjectPayload,
-            "findSubjectByProperty"
-          );
+    });
+    describe("GET - /subjects/:id - Passing missing fields", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findSubjectByProperty"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockSubjectId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockSubjectId}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            payload: subjectPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findSubject).toHaveBeenCalledWith(
-            { _id: validMockSubjectId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findSubject).not.toHaveBeenCalledWith(
+          { _id: validMockSubjectId, school_id: null },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /subjects/:id - Passing fields with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findSubjectByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockSubjectId}`)
+          .send({ school_id: "" });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findSubject).not.toHaveBeenCalledWith(
+          { _id: validMockSubjectId, school_id: "" },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /subjects/:id - Passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findSubjectByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${invalidMockId}`)
+          .send({ school_id: invalidMockId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The subject id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findSubject).not.toHaveBeenCalledWith(
+          { _id: invalidMockId, school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /subjects/:id - Requesting a subject but not finding it", () => {
+      it("should not get a school", async () => {
+        // mock services
+        const findSubject = mockService(
+          subjectNullPayload,
+          "findSubjectByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockSubjectId}`)
+          .send({ school_id: otherValidMockId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Subject not found",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+        expect(findSubject).toHaveBeenCalledWith(
+          { _id: validMockSubjectId, school_id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /subjects/:id - Requesting a subject correctly", () => {
+      it("should get a field", async () => {
+        // mock services
+        const findSubject = mockService(
+          subjectPayload,
+          "findSubjectByProperty"
+        );
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockSubjectId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          payload: subjectPayload,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
+        expect(findSubject).toHaveBeenCalledWith(
+          { _id: validMockSubjectId, school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
     });
   });
 
-  describe("PUT /subject ", () => {
-    describe("subject::put::01 - Passing missing fields", () => {
+  describe("SUBJECTS - PUT", () => {
+    describe("PUT - /subjects/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1169,7 +1165,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::02 - Passing fields with empty values", () => {
+    describe("PUT - /subjects/:id - Passing fields with empty values", () => {
       it("should return an empty field error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1265,7 +1261,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::03 - Passing an invalid type as field value", () => {
+    describe("PUT - /subjects/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1367,7 +1363,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::04 - Passing too long or short input values", () => {
+    describe("PUT - /subjects/:id - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1446,7 +1442,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::05 - Passing a duplicate subject name value", () => {
+    describe("PUT - /subjects/:id - Passing a duplicate subject name value", () => {
       it("should return a duplicate field error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1493,7 +1489,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::06 - Passing a non-existent level in the body", () => {
+    describe("PUT - /subjects/:id - Passing a non-existent level in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1543,7 +1539,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::07 - Passing a non-matching school for the level in the body", () => {
+    describe("PUT - /subjects/:id - Passing a non-matching school for the level in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1593,7 +1589,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::08 - Passing a non-existent field in the body", () => {
+    describe("PUT - /subjects/:id - Passing a non-existent field in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1643,7 +1639,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::09 - Passing a non-matching school for the field in the body", () => {
+    describe("PUT - /subjects/:id - Passing a non-matching school for the field in the body", () => {
       it("should return a non-matching school error", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1693,7 +1689,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::10 - Passing a subject but not being created", () => {
+    describe("PUT - /subjects/:id - Passing a subject but not being created", () => {
       it("should not update a subject", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1744,7 +1740,7 @@ describe("Resource => subject", () => {
         );
       });
     });
-    describe("subject::put::11 - Passing a subject correctly to update", () => {
+    describe("PUT - /subjects/:id - Passing a subject correctly to update", () => {
       it("should update a subject", async () => {
         // mock services
         const duplicateSubjectName = mockService(
@@ -1797,8 +1793,8 @@ describe("Resource => subject", () => {
     });
   });
 
-  describe("DELETE /subject ", () => {
-    describe("subject::delete::01 - Passing missing fields", () => {
+  describe("SUBJECTS - DELETE", () => {
+    describe("GET - /subjects/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const deleteSubject = mockService(
@@ -1829,7 +1825,7 @@ describe("Resource => subject", () => {
         });
       });
     });
-    describe("subject::delete::02 - Passing fields with empty values", () => {
+    describe("GET - /subjects/:id - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
         // mock services
         const deleteSubject = mockService(
@@ -1861,7 +1857,7 @@ describe("Resource => subject", () => {
         });
       });
     });
-    describe("subject::delete::03 - Passing invalid ids", () => {
+    describe("GET - /subjects/:id - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
         const deleteSubject = mockService(
@@ -1899,7 +1895,7 @@ describe("Resource => subject", () => {
         });
       });
     });
-    describe("subject::delete::04 - Passing a subject id but not deleting it", () => {
+    describe("GET - /subjects/:id - Passing a subject id but not deleting it", () => {
       it("should not delete a school", async () => {
         // mock services
         const deleteSubject = mockService(
@@ -1924,7 +1920,7 @@ describe("Resource => subject", () => {
         });
       });
     });
-    describe("subject::delete::05 - Passing a subject id correctly to delete", () => {
+    describe("GET - /subjects/:id - Passing a subject id correctly to delete", () => {
       it("should delete a field", async () => {
         // mock services
         const deleteSubject = mockService(

@@ -16,7 +16,7 @@ type Service =
   | "modifySchool"
   | "removeSchool";
 
-describe("RESOURCE => School", () => {
+describe("RESOURCE => SCHOOLS", () => {
   /* mock services */
   // just one return
   const mockService = (payload: any, service: Service) => {
@@ -92,8 +92,8 @@ describe("RESOURCE => School", () => {
   const schoolsNullPayload: School[] = [];
 
   // test blocks
-  describe("POST /school ", () => {
-    describe("school::post::01 - Passing a school with missing fields", () => {
+  describe("SCHOOLS - POST", () => {
+    describe("POST - /schools - Passing a school with missing fields", () => {
       it("should return a field needed error", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -137,7 +137,7 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::02 - Passing a school with empty fields", () => {
+    describe("POST - /schools - Passing a school with empty fields", () => {
       it("should return an empty field error", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -183,7 +183,7 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::03 - Passing an invalid type as field value", () => {
+    describe("POST - /schools - Passing an invalid type as field value", () => {
       it("should return a not valid type error", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -229,7 +229,7 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::04 - Passing too long or short input values", () => {
+    describe("POST - /schools - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -270,7 +270,7 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::05 - Passing an invalid status value", () => {
+    describe("POST - /schools - Passing an invalid status value", () => {
       it("should return a duplicate school error", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -304,7 +304,7 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::06 - Passing an existing school name", () => {
+    describe("POST - /schools - Passing an existing school name", () => {
       it("should return a duplicate school error", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -332,7 +332,7 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::07 - Passing a school but not being created", () => {
+    describe("POST - /schools - Passing a school but not being created", () => {
       it("should not create a school", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -360,7 +360,7 @@ describe("RESOURCE => School", () => {
         expect(insertSchool).toHaveBeenCalledWith(newSchool);
       });
     });
-    describe("school::post::08 - Passing a school correctly to create", () => {
+    describe("POST - /schools - Passing a school correctly to create", () => {
       it("should create a school", async () => {
         // mock services
         const duplicateSchoolName = mockService(
@@ -389,126 +389,121 @@ describe("RESOURCE => School", () => {
     });
   });
 
-  describe("GET /school ", () => {
-    describe("school - GET", () => {
-      describe("school::get::01 - Requesting all schools but not finding any", () => {
-        it("should not get any schools", async () => {
+  describe("SCHOOLS - GET", () => {
+    describe("GET - /schools - Requesting all schools but not finding any", () => {
+      it("should not get any schools", async () => {
+        // mock services
+        const findSchools = mockService(schoolsNullPayload, "findAllSchools");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send();
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No schools found",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+        expect(findSchools).toHaveBeenCalledWith("-createdAt -updatedAt");
+      });
+    });
+    describe("GET - /schools - Requesting all schools correctly", () => {
+      it("should get all schools", async () => {
+        // mock services
+        const findSchools = mockService(schoolsPayload, "findAllSchools");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send();
+
+        // assertions
+        expect(body).toStrictEqual({
+          payload: schoolsPayload,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
+        expect(findSchools).toHaveBeenCalledWith("-createdAt -updatedAt");
+      });
+      describe("GET - /schools/:id - Passing an invalid school id in the url", () => {
+        it("should return an invalid id error", async () => {
           // mock services
-          const findSchools = mockService(schoolsNullPayload, "findAllSchools");
+          const findSchool = mockService(schoolNullPayload, "findSchoolById");
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
+            .get(`${endPointUrl}${invalidMockId}`)
             .send();
 
           // assertions
           expect(body).toStrictEqual({
-            msg: "No schools found",
+            msg: [
+              {
+                location: "params",
+                msg: "The school id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
+          expect(statusCode).toBe(400);
+          expect(findSchool).not.toHaveBeenCalledWith(
+            invalidMockId,
+            "-createdAt -updatedAt"
+          );
+        });
+      });
+      describe("GET - /schools/:id - Requesting a school but not finding it", () => {
+        it("should not get a school", async () => {
+          // mock services
+          const findSchool = mockService(schoolNullPayload, "findSchoolById");
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}${otherValidMockId}`)
+            .send();
+
+          // assertions
+          expect(body).toStrictEqual({
+            msg: "School not found",
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findSchools).toHaveBeenCalledWith("-createdAt -updatedAt");
+          expect(findSchool).toHaveBeenCalledWith(
+            otherValidMockId,
+            "-createdAt -updatedAt"
+          );
         });
       });
-      describe("school::get::02 - Requesting all schools correctly", () => {
-        it("should get all schools", async () => {
+      describe("GET - /schools/:id - Requesting a school correctly", () => {
+        it("should get a school", async () => {
           // mock services
-          const findSchools = mockService(schoolsPayload, "findAllSchools");
+          const findSchool = mockService(schoolPayload, "findSchoolById");
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
+            .get(`${endPointUrl}${validMockSchoolId}`)
             .send();
 
           // assertions
           expect(body).toStrictEqual({
-            payload: schoolsPayload,
+            payload: schoolPayload,
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findSchools).toHaveBeenCalledWith("-createdAt -updatedAt");
-        });
-      });
-
-      describe("school - GET/:id", () => {
-        describe("school::get/:id::01 - Passing an invalid school id in the url", () => {
-          it("should return an invalid id error", async () => {
-            // mock services
-            const findSchool = mockService(schoolNullPayload, "findSchoolById");
-
-            // api call
-            const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${invalidMockId}`)
-              .send();
-
-            // assertions
-            expect(body).toStrictEqual({
-              msg: [
-                {
-                  location: "params",
-                  msg: "The school id is not valid",
-                  param: "id",
-                  value: invalidMockId,
-                },
-              ],
-              success: false,
-            });
-            expect(statusCode).toBe(400);
-            expect(findSchool).not.toHaveBeenCalledWith(
-              invalidMockId,
-              "-createdAt -updatedAt"
-            );
-          });
-        });
-        describe("school::get/:id::02 - Requesting a school but not finding it", () => {
-          it("should not get a school", async () => {
-            // mock services
-            const findSchool = mockService(schoolNullPayload, "findSchoolById");
-
-            // api call
-            const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${otherValidMockId}`)
-              .send();
-
-            // assertions
-            expect(body).toStrictEqual({
-              msg: "School not found",
-              success: false,
-            });
-            expect(statusCode).toBe(404);
-            expect(findSchool).toHaveBeenCalledWith(
-              otherValidMockId,
-              "-createdAt -updatedAt"
-            );
-          });
-        });
-        describe("school::get/:id::03 - Requesting a school correctly", () => {
-          it("should get a school", async () => {
-            // mock services
-            const findSchool = mockService(schoolPayload, "findSchoolById");
-
-            // api call
-            const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${validMockSchoolId}`)
-              .send();
-
-            // assertions
-            expect(body).toStrictEqual({
-              payload: schoolPayload,
-              success: true,
-            });
-            expect(statusCode).toBe(200);
-            expect(findSchool).toHaveBeenCalledWith(
-              validMockSchoolId,
-              "-createdAt -updatedAt"
-            );
-          });
+          expect(findSchool).toHaveBeenCalledWith(
+            validMockSchoolId,
+            "-createdAt -updatedAt"
+          );
         });
       });
     });
 
-    describe("PUT /school ", () => {
-      describe("school::put::01 - Passing a school with missing fields", () => {
+    describe("SCHOOLS - PUT", () => {
+      describe("PUT - /schools/:id - Passing a school with missing fields", () => {
         it("should return a missing field error", async () => {
           // mock services
           const duplicateSchoolName = mockService(
@@ -554,7 +549,7 @@ describe("RESOURCE => School", () => {
           );
         });
       });
-      describe("school::put::02 - Passing a school with empty fields", () => {
+      describe("PUT - /schools/:id - Passing a school with empty fields", () => {
         it("should return an empty field error", async () => {
           // mock services
           const duplicateSchoolName = mockService(
@@ -603,7 +598,7 @@ describe("RESOURCE => School", () => {
           );
         });
       });
-      describe("school::put::03 - Passing an invalid type as field value", () => {
+      describe("PUT - /schools/:id - Passing an invalid type as field value", () => {
         it("should return a not valid value error", async () => {
           // mock services
           const duplicateSchoolName = mockService(
@@ -658,7 +653,7 @@ describe("RESOURCE => School", () => {
           );
         });
       });
-      describe("school::put::04 - Passing too long or short input values", () => {
+      describe("PUT - /schools/:id - Passing too long or short input values", () => {
         it("should return an invalid length input value error", async () => {
           // mock services
           const duplicateSchoolName = mockService(
@@ -702,7 +697,7 @@ describe("RESOURCE => School", () => {
           );
         });
       });
-      describe("school::put::05 - Passing an invalid status value", () => {
+      describe("PUT - /schools/:id - Passing an invalid status value", () => {
         it("should return a duplicate school error", async () => {
           // mock services
           const duplicateSchoolName = mockService(
@@ -739,7 +734,7 @@ describe("RESOURCE => School", () => {
           );
         });
       });
-      describe("school::put::06 - Passing an existing school name", () => {
+      describe("PUT - /schools/:id - Passing an existing school name", () => {
         it("should not update a school", async () => {
           // mock services
           const duplicateSchoolName = mockService(
@@ -770,7 +765,7 @@ describe("RESOURCE => School", () => {
           );
         });
       });
-      describe("school::put::06 - Passing a school but not updating it", () => {
+      describe("PUT - /schools/:id - Passing a school but not updating it", () => {
         it("should not update a school", async () => {
           // mock services
           const duplicateSchoolName = mockService(
@@ -801,7 +796,7 @@ describe("RESOURCE => School", () => {
           );
         });
       });
-      describe("school::put::07 - Passing a school correctly to update", () => {
+      describe("PUT - /schools/:id - Passing a school correctly to update", () => {
         it("should update a school", async () => {
           // mock services
           const duplicateSchoolName = mockService(
@@ -831,8 +826,8 @@ describe("RESOURCE => School", () => {
       });
     });
 
-    describe("DELETE /school ", () => {
-      describe("school::delete::01 - Passing an invalid school id in the url", () => {
+    describe("SCHOOLS - DELETE", () => {
+      describe("DELETE - /schools/:id - Passing an invalid school id in the url", () => {
         it("should return an invalid id error", async () => {
           // mock services
           const deleteSchool = mockService(schoolNullPayload, "removeSchool");
@@ -858,7 +853,7 @@ describe("RESOURCE => School", () => {
           expect(deleteSchool).not.toHaveBeenCalledWith(validMockSchoolId);
         });
       });
-      describe("school::delete::02 - Passing a school id but not deleting it", () => {
+      describe("DELETE - /schools/:id - Passing a school id but not deleting it", () => {
         it("should not delete a school", async () => {
           // mock services
           const deleteSchool = mockService(schoolNullPayload, "removeSchool");
@@ -877,7 +872,7 @@ describe("RESOURCE => School", () => {
           expect(deleteSchool).toHaveBeenCalledWith(otherValidMockId);
         });
       });
-      describe("school::delete::03 - Passing a school id correctly to delete", () => {
+      describe("DELETE - /schools/:id - Passing a school id correctly to delete", () => {
         it("should delete a school", async () => {
           // mock services
           const deleteSchool = mockService(schoolPayload, "removeSchool");

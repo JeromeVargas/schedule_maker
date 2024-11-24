@@ -19,7 +19,7 @@ type Service =
   | "findPopulateLevelById"
   | "findPopulateUserById";
 
-describe("Resource => Group", () => {
+describe("Resource => GROUP", () => {
   /* mock services */
   // just one return
   const mockService = (payload: any, service: Service) => {
@@ -113,8 +113,8 @@ describe("Resource => Group", () => {
   const groupsNullPayload: Group[] = [];
 
   // test blocks
-  describe("POST /group ", () => {
-    describe("group::post::01 - Passing missing fields", () => {
+  describe("GROUP - POST", () => {
+    describe("POST - /groups - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -175,7 +175,7 @@ describe("Resource => Group", () => {
         expect(insertGroup).not.toHaveBeenCalledWith(newGroupMissingValues);
       });
     });
-    describe("group::post::02 - Passing fields with empty values", () => {
+    describe("POST - /groups - Passing fields with empty values", () => {
       it("should return an empty fields error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -240,7 +240,7 @@ describe("Resource => Group", () => {
         expect(insertGroup).not.toHaveBeenCalledWith(newGroupEmptyValues);
       });
     });
-    describe("group::post::03 - Passing an invalid type as a value", () => {
+    describe("POST - /groups - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -302,7 +302,7 @@ describe("Resource => Group", () => {
         expect(insertGroup).not.toHaveBeenCalledWith(newGroupNotValidDataTypes);
       });
     });
-    describe("group::post::04 - Passing too long or short input values", () => {
+    describe("POST - /groups - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -356,7 +356,7 @@ describe("Resource => Group", () => {
         expect(insertGroup).not.toHaveBeenCalledWith(newGroupWrongLengthValues);
       });
     });
-    describe("group::post::05 - Passing a duplicate group name", () => {
+    describe("POST - /groups - Passing a duplicate group name", () => {
       it("should return a duplicate group name", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -390,7 +390,7 @@ describe("Resource => Group", () => {
         expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
-    describe("group::post::06 - Passing a non-existent level", () => {
+    describe("POST - /groups - Passing a non-existent level", () => {
       it("should return a non-existent level error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -427,7 +427,7 @@ describe("Resource => Group", () => {
         expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
-    describe("group::post::07 - Passing a non matching school id for the level", () => {
+    describe("POST - /groups - Passing a non matching school id for the level", () => {
       it("should return a non matching school id error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -471,7 +471,7 @@ describe("Resource => Group", () => {
         expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
-    describe("group::post::08 - Passing a number of students larger than the max allowed number of students", () => {
+    describe("POST - /groups - Passing a number of students larger than the max allowed number of students", () => {
       it("should return a larger than the max allowed number of students error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -505,7 +505,7 @@ describe("Resource => Group", () => {
         expect(insertGroup).not.toHaveBeenCalledWith(newGroup);
       });
     });
-    describe("group::post::09 - Passing a group but not being created", () => {
+    describe("POST - /groups - Passing a group but not being created", () => {
       it("should not create a field", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -539,7 +539,7 @@ describe("Resource => Group", () => {
         expect(insertGroup).toHaveBeenCalledWith(newGroup);
       });
     });
-    describe("group::post::10 - Passing a group correctly to create", () => {
+    describe("POST - /groups - Passing a group correctly to create", () => {
       it("should create a field", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -572,299 +572,283 @@ describe("Resource => Group", () => {
     });
   });
 
-  describe("GET /group ", () => {
-    describe("group - GET", () => {
-      describe("group::get::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findGroups = mockService(
-            groupsNullPayload,
-            "findFilterAllGroups"
-          );
+  describe("GROUP - GET", () => {
+    describe("GET - /groups - Passing missing fields", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findGroups = mockService(
+          groupsNullPayload,
+          "findFilterAllGroups"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroups).not.toHaveBeenCalledWith(
-            { school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("group::get::02 - passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findGroups = mockService(
-            groupsNullPayload,
-            "findFilterAllGroups"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroups).not.toHaveBeenCalledWith(
-            { school_id: "" },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group::get::03 - passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findGroups = mockService(
-            groupsNullPayload,
-            "findFilterAllGroups"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroups).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group::get::04 - Requesting all groups but not finding any", () => {
-        it("should not get any fields", async () => {
-          // mock services
-          const findGroups = mockService(
-            groupsNullPayload,
-            "findFilterAllGroups"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: otherValidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "No groups found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findGroups).toHaveBeenCalledWith(
-            { school_id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group::get::05 - Requesting all groups correctly", () => {
-        it("should get all fields", async () => {
-          // mock services
-          const findGroups = mockService(groupsPayload, "findFilterAllGroups");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({ payload: groupsPayload, success: true });
-          expect(statusCode).toBe(200);
-          expect(findGroups).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
-        });
+        expect(statusCode).toBe(400);
+        expect(findGroups).not.toHaveBeenCalledWith(
+          { school_id: null },
+          "-createdAt -updatedAt"
+        );
       });
     });
-    describe("group - GET/:id", () => {
-      describe("group::get/:id::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findGroup = mockService(
-            groupNullPayload,
-            "findGroupByProperty"
-          );
+    describe("GET - /groups - passing fields with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findGroups = mockService(
+          groupsNullPayload,
+          "findFilterAllGroups"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockGroupId}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: "" });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroup).not.toHaveBeenCalledWith(
-            { school_id: null, _id: validMockGroupId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findGroups).not.toHaveBeenCalledWith(
+          { school_id: "" },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("group::get/:id::02 - Passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findGroup = mockService(
-            groupNullPayload,
-            "findGroupByProperty"
-          );
+    });
+    describe("GET - /groups - passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findGroups = mockService(
+          groupsNullPayload,
+          "findFilterAllGroups"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockGroupId}`)
-            .send({ school_id: "" });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroup).not.toHaveBeenCalledWith(
-            { school_id: "", _id: validMockGroupId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findGroups).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("group::get/:id::03 - Passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findGroup = mockService(
-            groupNullPayload,
-            "findGroupByProperty"
-          );
+    });
+    describe("GET - /groups - Requesting all groups but not finding any", () => {
+      it("should not get any fields", async () => {
+        // mock services
+        const findGroups = mockService(
+          groupsNullPayload,
+          "findFilterAllGroups"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: otherValidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The group id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findGroup).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId, _id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No groups found",
+          success: false,
         });
+        expect(statusCode).toBe(404);
+        expect(findGroups).toHaveBeenCalledWith(
+          { school_id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("group::get/:id::04 - Requesting a group but not finding it", () => {
-        it("should not get a school", async () => {
-          // mock services
-          const findGroup = mockService(
-            groupNullPayload,
-            "findGroupByProperty"
-          );
+    });
+    describe("GET - /groups - Requesting all groups correctly", () => {
+      it("should get all fields", async () => {
+        // mock services
+        const findGroups = mockService(groupsPayload, "findFilterAllGroups");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${otherValidMockId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "Group not found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findGroup).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId, _id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("group::get/:id::05 - Requesting a group correctly", () => {
-        it("should get a field", async () => {
-          // mock services
-          const findGroup = mockService(groupPayload, "findGroupByProperty");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockGroupId}`)
-            .send({ school_id: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({ payload: groupPayload, success: true });
-          expect(statusCode).toBe(200);
-          expect(findGroup).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId, _id: validMockGroupId },
-            "-createdAt -updatedAt"
-          );
-        });
+        // assertions
+        expect(body).toStrictEqual({ payload: groupsPayload, success: true });
+        expect(statusCode).toBe(200);
+        expect(findGroups).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
     });
   });
+  describe("GET - /groups/:id - Passing missing fields", () => {
+    it("should return a missing values error", async () => {
+      // mock services
+      const findGroup = mockService(groupNullPayload, "findGroupByProperty");
 
-  describe("PUT /group ", () => {
-    describe("group::put::01 - Passing missing fields", () => {
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${validMockGroupId}`)
+        .send({ school_i: validMockSchoolId });
+
+      // assertions
+      expect(body).toStrictEqual({
+        msg: [
+          {
+            location: "body",
+            msg: "Please add a school id",
+            param: "school_id",
+          },
+        ],
+        success: false,
+      });
+      expect(statusCode).toBe(400);
+      expect(findGroup).not.toHaveBeenCalledWith(
+        { school_id: null, _id: validMockGroupId },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
+  describe("GET - /groups/:id - Passing fields with empty values", () => {
+    it("should return an empty values error", async () => {
+      // mock services
+      const findGroup = mockService(groupNullPayload, "findGroupByProperty");
+
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${validMockGroupId}`)
+        .send({ school_id: "" });
+
+      // assertions
+      expect(body).toStrictEqual({
+        msg: [
+          {
+            location: "body",
+            msg: "The school id field is empty",
+            param: "school_id",
+            value: "",
+          },
+        ],
+        success: false,
+      });
+      expect(statusCode).toBe(400);
+      expect(findGroup).not.toHaveBeenCalledWith(
+        { school_id: "", _id: validMockGroupId },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
+  describe("GET - /groups/:id - Passing invalid ids", () => {
+    it("should return an invalid id error", async () => {
+      // mock services
+      const findGroup = mockService(groupNullPayload, "findGroupByProperty");
+
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${invalidMockId}`)
+        .send({ school_id: invalidMockId });
+
+      // assertions
+      expect(body).toStrictEqual({
+        msg: [
+          {
+            location: "params",
+            msg: "The group id is not valid",
+            param: "id",
+            value: invalidMockId,
+          },
+          {
+            location: "body",
+            msg: "The school id is not valid",
+            param: "school_id",
+            value: invalidMockId,
+          },
+        ],
+        success: false,
+      });
+      expect(statusCode).toBe(400);
+      expect(findGroup).not.toHaveBeenCalledWith(
+        { school_id: invalidMockId, _id: invalidMockId },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
+  describe("GET - /groups/:id - Requesting a group but not finding it", () => {
+    it("should not get a school", async () => {
+      // mock services
+      const findGroup = mockService(groupNullPayload, "findGroupByProperty");
+
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${otherValidMockId}`)
+        .send({ school_id: validMockSchoolId });
+
+      // assertions
+      expect(body).toStrictEqual({
+        msg: "Group not found",
+        success: false,
+      });
+      expect(statusCode).toBe(404);
+      expect(findGroup).toHaveBeenCalledWith(
+        { school_id: validMockSchoolId, _id: otherValidMockId },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
+  describe("GET - /groups/:id - Requesting a group correctly", () => {
+    it("should get a field", async () => {
+      // mock services
+      const findGroup = mockService(groupPayload, "findGroupByProperty");
+
+      // api call
+      const { statusCode, body } = await supertest(server)
+        .get(`${endPointUrl}${validMockGroupId}`)
+        .send({ school_id: validMockSchoolId });
+
+      // assertions
+      expect(body).toStrictEqual({ payload: groupPayload, success: true });
+      expect(statusCode).toBe(200);
+      expect(findGroup).toHaveBeenCalledWith(
+        { school_id: validMockSchoolId, _id: validMockGroupId },
+        "-createdAt -updatedAt"
+      );
+    });
+  });
+
+  describe("GROUP - PUT", () => {
+    describe("PUT - /groups/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -927,7 +911,7 @@ describe("Resource => Group", () => {
         );
       });
     });
-    describe("group::put::02 - Passing fields with empty values", () => {
+    describe("PUT - /groups/:id - Passing fields with empty values", () => {
       it("should return an empty field error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -994,7 +978,7 @@ describe("Resource => Group", () => {
         );
       });
     });
-    describe("group::put::03 - Passing an invalid type as field value", () => {
+    describe("PUT - /groups/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -1066,7 +1050,7 @@ describe("Resource => Group", () => {
         );
       });
     });
-    describe("group::put::04 - Passing too long or short input values", () => {
+    describe("PUT - /groups/:id - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -1122,7 +1106,7 @@ describe("Resource => Group", () => {
         );
       });
     });
-    describe("group::put::05 - Passing a duplicate group name value", () => {
+    describe("PUT - /groups/:id - Passing a duplicate group name value", () => {
       it("should return a duplicate group name error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -1159,7 +1143,7 @@ describe("Resource => Group", () => {
         );
       });
     });
-    describe("group::put::06 - Passing a non-existent level", () => {
+    describe("PUT - /groups/:id - Passing a non-existent level", () => {
       it("should return a non-existent level error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -1199,7 +1183,7 @@ describe("Resource => Group", () => {
         );
       });
     });
-    describe("group::put::07 - Passing a non-matching school id for the level", () => {
+    describe("PUT - /groups/:id - Passing a non-matching school id for the level", () => {
       it("should return a non-matching school id error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -1246,7 +1230,7 @@ describe("Resource => Group", () => {
         );
       });
     });
-    describe("group::put::08 - Passing a number students larger than the max allowed number of students", () => {
+    describe("PUT - /groups/:id - Passing a number students larger than the max allowed number of students", () => {
       it("should return a larger than the max allowed number of students error", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -1283,7 +1267,7 @@ describe("Resource => Group", () => {
         );
       });
     });
-    describe("group::put::09 - Passing a group but not updating it because it does not match the filters", () => {
+    describe("PUT - /groups/:id - Passing a group but not updating it because it does not match the filters", () => {
       it("should not update a group", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -1324,7 +1308,7 @@ describe("Resource => Group", () => {
         );
       });
     });
-    describe("group::put::10 - Passing a group correctly to update", () => {
+    describe("PUT - /groups/:id - Passing a group correctly to update", () => {
       it("should update a group", async () => {
         // mock services
         const duplicateGroupName = mockService(
@@ -1367,8 +1351,8 @@ describe("Resource => Group", () => {
     });
   });
 
-  describe("DELETE /group ", () => {
-    describe("group::delete::01 - Passing missing fields", () => {
+  describe("GROUP - DELETE", () => {
+    describe("DELETE - /groups/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const deleteGroup = mockService(groupNullPayload, "removeFilterGroup");
@@ -1396,7 +1380,7 @@ describe("Resource => Group", () => {
         });
       });
     });
-    describe("group::delete::02 - Passing fields with empty values", () => {
+    describe("DELETE - /groups/:id - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
         // mock services
         const deleteGroup = mockService(groupNullPayload, "removeFilterGroup");
@@ -1425,7 +1409,7 @@ describe("Resource => Group", () => {
         });
       });
     });
-    describe("group::delete::03 - Passing invalid ids", () => {
+    describe("DELETE - /groups/:id - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
         const deleteGroup = mockService(groupNullPayload, "removeFilterGroup");
@@ -1460,7 +1444,7 @@ describe("Resource => Group", () => {
         });
       });
     });
-    describe("group::delete::04 - Passing a group id but not deleting it", () => {
+    describe("DELETE - /groups/:id - Passing a group id but not deleting it", () => {
       it("should not delete a school", async () => {
         // mock services
         const deleteGroup = mockService(groupNullPayload, "removeFilterGroup");
@@ -1482,7 +1466,7 @@ describe("Resource => Group", () => {
         });
       });
     });
-    describe("group::delete::05 - Passing a group id correctly to delete", () => {
+    describe("DELETE - /groups/:id - Passing a group id correctly to delete", () => {
       it("should delete a field", async () => {
         // mock services
         const deleteGroup = mockService(groupPayload, "removeFilterGroup");

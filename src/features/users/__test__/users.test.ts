@@ -18,7 +18,7 @@ type Service =
   | "removeFilterUser"
   | "findSchoolById";
 
-describe("RESOURCE => User", () => {
+describe("RESOURCE => USERS", () => {
   /* mock services */
   // just one return
   const mockService = (payload: any, service: Service) => {
@@ -149,8 +149,8 @@ describe("RESOURCE => User", () => {
   const usersNullPayload: User[] = [];
 
   // test blocks
-  describe("POST /user ", () => {
-    describe("user::post::01 - Passing a user with missing fields", () => {
+  describe("USERS - POST", () => {
+    describe("POST - /users - Passing a user with missing fields", () => {
       it("should return a field needed error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -223,7 +223,7 @@ describe("RESOURCE => User", () => {
         expect(insertUser).not.toHaveBeenCalledWith(newUserMissingValues);
       });
     });
-    describe("user::post::02 - Passing a user with empty fields", () => {
+    describe("POST - /users - Passing a user with empty fields", () => {
       it("should return an empty field error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -303,7 +303,7 @@ describe("RESOURCE => User", () => {
         expect(insertUser).not.toHaveBeenCalledWith(newUserEmptyValues, "user");
       });
     });
-    describe("user::post::03 - Passing an invalid type as field value", () => {
+    describe("POST - /users - Passing an invalid type as field value", () => {
       it("should return a not valid type error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -385,7 +385,7 @@ describe("RESOURCE => User", () => {
         expect(insertUser).not.toHaveBeenCalledWith(newUserNotValidDataTypes);
       });
     });
-    describe("user::post::04 - Passing too long or short input values", () => {
+    describe("POST - /users - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -449,7 +449,7 @@ describe("RESOURCE => User", () => {
         expect(insertUser).not.toHaveBeenCalledWith(newUserWrongLengthValues);
       });
     });
-    describe("user::post::05 - Passing a password that is too long", () => {
+    describe("POST - /users - Passing a password that is too long", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -499,7 +499,7 @@ describe("RESOURCE => User", () => {
         });
       });
     });
-    describe("user::post::06 - Passing wrong school id, email, role or status", () => {
+    describe("POST - /users - Passing wrong school id, email, role or status", () => {
       it("should return a wrong input value error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -557,7 +557,7 @@ describe("RESOURCE => User", () => {
         expect(insertUser).not.toHaveBeenCalledWith(newUserWrongInputValues);
       });
     });
-    describe("user::post::07 - Passing a non-existing school", () => {
+    describe("POST - /users - Passing a non-existing school", () => {
       it("should return a duplicate user error", async () => {
         // mock services
         const findSchool = mockService(schoolNullPayload, "findSchoolById");
@@ -591,7 +591,7 @@ describe("RESOURCE => User", () => {
         expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
     });
-    describe("user::post::08 - Passing an existing user's email", () => {
+    describe("POST - /users - Passing an existing user's email", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const findSchool = mockService(schoolPayload, "findSchoolById");
@@ -625,7 +625,7 @@ describe("RESOURCE => User", () => {
         expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
     });
-    describe("user::post::09 - Passing a user but not being created", () => {
+    describe("POST - /users - Passing a user but not being created", () => {
       it("should not create a user", async () => {
         // mock services
         const findSchool = mockService(schoolPayload, "findSchoolById");
@@ -663,7 +663,7 @@ describe("RESOURCE => User", () => {
         });
       });
     });
-    describe("user::post::10 - Passing a user correctly to create", () => {
+    describe("POST - /users - Passing a user correctly to create", () => {
       it("should create a user", async () => {
         // mock services
         const findSchool = mockService(schoolPayload, "findSchoolById");
@@ -702,281 +702,277 @@ describe("RESOURCE => User", () => {
     });
   });
 
-  describe("GET /user ", () => {
-    describe("user - GET", () => {
-      describe("user::get::01 - passing a school with missing values", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
+  describe("USERS - GET", () => {
+    describe("GET - /users - passing a school with missing values", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUsers).not.toHaveBeenCalledWith(
-            { school_id: null },
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("user::get::02 - passing a school with empty values", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUsers).not.toHaveBeenCalledWith(
-            { school_id: "" },
-            "-password -createdAt -updatedAt"
-          );
-        });
-      });
-      describe("user::get::03 - Passing an invalid school id in the body", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUsers).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId },
-            "-password -createdAt -updatedAt"
-          );
-        });
-      });
-      describe("user::get::04 - Requesting all users but not finding any", () => {
-        it("should not get any users", async () => {
-          // mock services
-          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: otherValidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "No users found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findUsers).toHaveBeenCalledWith(
-            { school_id: otherValidMockId },
-            "-password -createdAt -updatedAt"
-          );
-        });
-      });
-      describe("user::get::05 - Requesting all users", () => {
-        it("should get all users", async () => {
-          // mock services
-          const findUsers = mockService(usersPayload, "findFilterAllUsers");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            payload: usersPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findUsers).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId },
-            "-password -createdAt -updatedAt"
-          );
-        });
+        expect(statusCode).toBe(400);
+        expect(findUsers).not.toHaveBeenCalledWith(
+          { school_id: null },
+          "-password -createdAt -updatedAt"
+        );
       });
     });
-    describe("user - GET/:id", () => {
-      describe("user::get/:id::01 - passing a school with missing values", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findUser = mockService(userNullPayload, "findUserByProperty");
+    describe("GET - /users - passing a school with empty values", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockUserId}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: "" });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUser).not.toHaveBeenCalledWith(
-            [{ _id: validMockUserId }, { school_id: null }],
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findUsers).not.toHaveBeenCalledWith(
+          { school_id: "" },
+          "-password -createdAt -updatedAt"
+        );
       });
-      describe("user::get/:id::02 - passing a school with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findUser = mockService(userNullPayload, "findUserByProperty");
+    });
+    describe("GET - /users - Passing an invalid school id in the body", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockUserId}`)
-            .send({ school_id: "" });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUser).not.toHaveBeenCalledWith(
-            [{ _id: validMockUserId }, { school_id: "" }],
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findUsers).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId },
+          "-password -createdAt -updatedAt"
+        );
       });
-      describe("user::get/:id::03 - Passing an invalid user and school ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findUser = mockService(userNullPayload, "findUserByProperty");
+    });
+    describe("GET - /users - Requesting all users but not finding any", () => {
+      it("should not get any users", async () => {
+        // mock services
+        const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: otherValidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The user id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUser).not.toHaveBeenCalledWith(
-            [{ _id: invalidMockId }, { school_id: invalidMockId }],
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No users found",
+          success: false,
         });
+        expect(statusCode).toBe(404);
+        expect(findUsers).toHaveBeenCalledWith(
+          { school_id: otherValidMockId },
+          "-password -createdAt -updatedAt"
+        );
       });
-      describe("user::get/:id::04 - Requesting a user but not finding it", () => {
-        it("should not get a user", async () => {
-          // mock services
-          const findUser = mockService(userNullPayload, "findUserByProperty");
+    });
+    describe("GET - /users - Requesting all users", () => {
+      it("should get all users", async () => {
+        // mock services
+        const findUsers = mockService(usersPayload, "findFilterAllUsers");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${otherValidMockId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "User not found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findUser).toHaveBeenCalledWith(
-            { _id: otherValidMockId, school_id: validMockSchoolId },
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          payload: usersPayload,
+          success: true,
         });
+        expect(statusCode).toBe(200);
+        expect(findUsers).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId },
+          "-password -createdAt -updatedAt"
+        );
       });
-      describe("user::get/:id::05 - Requesting a user correctly", () => {
-        it("should get a user", async () => {
-          // mock services
-          const findUser = mockService(userPayload, "findUserByProperty");
+    });
+    describe("GET - /users/:id - passing a school with missing values", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findUser = mockService(userNullPayload, "findUserByProperty");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockUserId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockUserId}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            payload: userPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findUser).toHaveBeenCalledWith(
-            { _id: validMockUserId, school_id: validMockSchoolId },
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findUser).not.toHaveBeenCalledWith(
+          [{ _id: validMockUserId }, { school_id: null }],
+          "-password -createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /users/:id - passing a school with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findUser = mockService(userNullPayload, "findUserByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockUserId}`)
+          .send({ school_id: "" });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findUser).not.toHaveBeenCalledWith(
+          [{ _id: validMockUserId }, { school_id: "" }],
+          "-password -createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /users/:id - Passing an invalid user and school ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findUser = mockService(userNullPayload, "findUserByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${invalidMockId}`)
+          .send({ school_id: invalidMockId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The user id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findUser).not.toHaveBeenCalledWith(
+          [{ _id: invalidMockId }, { school_id: invalidMockId }],
+          "-password -createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /users/:id - Requesting a user but not finding it", () => {
+      it("should not get a user", async () => {
+        // mock services
+        const findUser = mockService(userNullPayload, "findUserByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${otherValidMockId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "User not found",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+        expect(findUser).toHaveBeenCalledWith(
+          { _id: otherValidMockId, school_id: validMockSchoolId },
+          "-password -createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /users/:id - Requesting a user correctly", () => {
+      it("should get a user", async () => {
+        // mock services
+        const findUser = mockService(userPayload, "findUserByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockUserId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          payload: userPayload,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
+        expect(findUser).toHaveBeenCalledWith(
+          { _id: validMockUserId, school_id: validMockSchoolId },
+          "-password -createdAt -updatedAt"
+        );
       });
     });
   });
 
-  describe("PUT /user ", () => {
-    describe("user::put::01 - Passing a user with missing fields", () => {
+  describe("USERS - PUT ", () => {
+    describe("PUT - /users/:id - Passing a user with missing fields", () => {
       it("should return a field needed error", async () => {
         // mock services
         const duplicateUserEmail = mockService(
@@ -1047,7 +1043,7 @@ describe("RESOURCE => User", () => {
         );
       });
     });
-    describe("user::put::02 - Passing a user with empty fields", () => {
+    describe("PUT - /users/:id - Passing a user with empty fields", () => {
       it("should return an empty field error", async () => {
         // mock services
         const duplicateUserEmail = mockService(
@@ -1125,7 +1121,7 @@ describe("RESOURCE => User", () => {
         );
       });
     });
-    describe("user::put::03 - Passing an invalid type as field value", () => {
+    describe("PUT - /users/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const duplicateUserEmail = mockService(
@@ -1211,7 +1207,7 @@ describe("RESOURCE => User", () => {
         );
       });
     });
-    describe("user::put::04 - Passing too long or short input values", () => {
+    describe("PUT - /users/:id - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const duplicateUserEmail = mockService(
@@ -1276,7 +1272,7 @@ describe("RESOURCE => User", () => {
         );
       });
     });
-    describe("user::put::05 - Passing a password that is too long", () => {
+    describe("PUT - /users/:id - Passing a password that is too long", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const duplicateUserEmail = mockService(
@@ -1327,7 +1323,7 @@ describe("RESOURCE => User", () => {
         );
       });
     });
-    describe("user::put::06 - Passing wrong email, role or status", () => {
+    describe("PUT - /users/:id - Passing wrong email, role or status", () => {
       it("should return an invalid input value error", async () => {
         // mock services
         const duplicateUserEmail = mockService(
@@ -1386,7 +1382,7 @@ describe("RESOURCE => User", () => {
         );
       });
     });
-    describe("user::put::07 - Passing an existing user's email", () => {
+    describe("PUT - /users/:id - Passing an existing user's email", () => {
       it("should return a duplicate user error", async () => {
         // mock services
         const duplicateUserEmail = mockService(
@@ -1418,7 +1414,7 @@ describe("RESOURCE => User", () => {
         );
       });
     });
-    describe("user::put::08 - Passing a user but not updating it", () => {
+    describe("PUT - /users/:id - Passing a user but not updating it", () => {
       it("should not update a user", async () => {
         // mock services
         const duplicateUserEmail = mockService(
@@ -1453,7 +1449,7 @@ describe("RESOURCE => User", () => {
         );
       });
     });
-    describe("user::put::09 - Passing a user correctly to update", () => {
+    describe("PUT - /users/:id - Passing a user correctly to update", () => {
       it("should update a user", async () => {
         // mock services
         const duplicateUserEmail = mockService(
@@ -1487,8 +1483,8 @@ describe("RESOURCE => User", () => {
     });
   });
 
-  describe("DELETE /user ", () => {
-    describe("user::delete::01 - passing a school with missing values", () => {
+  describe("USERS - DELETE", () => {
+    describe("DELETE - /users/:id - passing a school with missing values", () => {
       it("should return a missing values error", async () => {
         // mock services
         const deleteUser = mockService(userNullPayload, "removeFilterUser");
@@ -1516,7 +1512,7 @@ describe("RESOURCE => User", () => {
         });
       });
     });
-    describe("user::delete::02 - passing a school with empty values", () => {
+    describe("DELETE - /users/:id - passing a school with empty values", () => {
       it("should return an empty values error", async () => {
         // mock services
         const deleteUser = mockService(userNullPayload, "removeFilterUser");
@@ -1545,7 +1541,7 @@ describe("RESOURCE => User", () => {
         });
       });
     });
-    describe("user::delete::03 - Passing an invalid user and school ids", () => {
+    describe("DELETE - /users/:id - Passing an invalid user and school ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
         const deleteUser = mockService(userNullPayload, "removeFilterUser");
@@ -1580,7 +1576,7 @@ describe("RESOURCE => User", () => {
         });
       });
     });
-    describe("user::delete::04 - Passing a user id but not deleting it", () => {
+    describe("DELETE - /users/:id - Passing a user id but not deleting it", () => {
       it("should not delete a user", async () => {
         // mock services
         const deleteUser = mockService(userNullPayload, "removeFilterUser");
@@ -1602,7 +1598,7 @@ describe("RESOURCE => User", () => {
         });
       });
     });
-    describe("user::delete::05 - Passing a user id correctly to delete", () => {
+    describe("DELETE - /users/:id - Passing a user id correctly to delete", () => {
       it("should delete a user", async () => {
         // mock services
         const deleteUser = mockService(userPayload, "removeFilterUser");

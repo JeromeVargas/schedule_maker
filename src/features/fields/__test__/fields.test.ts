@@ -18,7 +18,7 @@ type Service =
   | "removeFilterField"
   | "findSchoolById";
 
-describe("RESOURCE => Field", () => {
+describe("RESOURCE => FIELDS", () => {
   /* mock services */
   // just one return
   const mockService = (payload: any, service: Service) => {
@@ -85,8 +85,8 @@ describe("RESOURCE => Field", () => {
   const fieldsNullPayload: Field[] = [];
 
   // test blocks
-  describe("POST /field ", () => {
-    describe("field::post::01 - Passing a field with missing fields", () => {
+  describe("FIELDS - POST", () => {
+    describe("POST - /fields - Passing a field with missing fields", () => {
       it("should return a field needed error", async () => {
         // mock services
         const findSchool = mockService(fieldNullPayload, "findSchoolById");
@@ -132,7 +132,7 @@ describe("RESOURCE => Field", () => {
         expect(insertField).not.toHaveBeenCalledWith(newFieldMissingValues);
       });
     });
-    describe("field::post::02 - Passing a field with empty fields", () => {
+    describe("POST - /fields - Passing a field with empty fields", () => {
       it("should return an empty field error", async () => {
         // mock services
         const findSchool = mockService(fieldNullPayload, "findSchoolById");
@@ -180,7 +180,7 @@ describe("RESOURCE => Field", () => {
         expect(insertField).not.toHaveBeenCalledWith(newFieldEmptyValues);
       });
     });
-    describe("field::post::03 - Passing an invalid type as a value", () => {
+    describe("POST - /fields - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const findSchool = mockService(fieldNullPayload, "findSchoolById");
@@ -228,7 +228,7 @@ describe("RESOURCE => Field", () => {
         expect(insertField).not.toHaveBeenCalledWith(newFieldNotValidDataTypes);
       });
     });
-    describe("field::post::04 - Passing too long or short input values", () => {
+    describe("POST - /fields - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const findSchool = mockService(fieldNullPayload, "findSchoolById");
@@ -271,7 +271,7 @@ describe("RESOURCE => Field", () => {
         expect(insertField).not.toHaveBeenCalledWith(newField);
       });
     });
-    describe("field::post::05 - Passing a non-existent school in the body", () => {
+    describe("POST - /fields - Passing a non-existent school in the body", () => {
       it("should return a non-existent school error", async () => {
         // mock services
         const findSchool = mockService(fieldNullPayload, "findSchoolById");
@@ -303,7 +303,7 @@ describe("RESOURCE => Field", () => {
         expect(insertField).not.toHaveBeenCalledWith(newField);
       });
     });
-    describe("field::post::06 - Passing an existing field name", () => {
+    describe("POST - /fields - Passing an existing field name", () => {
       it("should return a duplicate field error", async () => {
         // mock services
         const findSchool = mockService(fieldPayload, "findSchoolById");
@@ -332,7 +332,7 @@ describe("RESOURCE => Field", () => {
         expect(insertField).not.toHaveBeenCalledWith(newField);
       });
     });
-    describe("field::post::07 - Passing a field but not being created", () => {
+    describe("POST - /fields - Passing a field but not being created", () => {
       it("should not create a field", async () => {
         // mock services
         const findSchool = mockService(fieldPayload, "findSchoolById");
@@ -364,7 +364,7 @@ describe("RESOURCE => Field", () => {
         expect(insertField).toHaveBeenCalledWith(newField);
       });
     });
-    describe("field::post::08 - Passing a field correctly to create", () => {
+    describe("POST - /fields - Passing a field correctly to create", () => {
       it("should create a field", async () => {
         // mock services
         const findSchool = mockService(fieldPayload, "findSchoolById");
@@ -398,305 +398,289 @@ describe("RESOURCE => Field", () => {
     });
   });
 
-  describe("GET /field ", () => {
-    describe("field - GET", () => {
-      describe("field::get::01 - passing a field with missing values", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findFields = mockService(
-            fieldsNullPayload,
-            "findFilterAllFields"
-          );
+  describe("FIELDS - GET", () => {
+    describe("GET - /fields - passing a field with missing values", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findFields = mockService(
+          fieldsNullPayload,
+          "findFilterAllFields"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send();
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send();
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findFields).not.toHaveBeenCalledWith(
-            { school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("field::get::02 - passing a field with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findFields = mockService(
-            fieldsNullPayload,
-            "findFilterAllFields"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findFields).not.toHaveBeenCalledWith(
-            { school_id: "" },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("field::get::03 - passing and invalid school id", () => {
-        it("should get all fields", async () => {
-          // mock services
-          const findFields = mockService(
-            fieldsNullPayload,
-            "findFilterAllFields"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findFields).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("field::get::04 - Requesting all fields but not finding any", () => {
-        it("should not get any fields", async () => {
-          // mock services
-          const findFields = mockService(
-            fieldsNullPayload,
-            "findFilterAllFields"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: otherValidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "No fields found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findFields).toHaveBeenCalledWith(
-            { school_id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("field::get::05 - Requesting all fields correctly", () => {
-        it("should get all fields", async () => {
-          // mock services
-          const findFields = mockService(fieldsPayload, "findFilterAllFields");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            payload: fieldsPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findFields).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
-        });
+        expect(statusCode).toBe(400);
+        expect(findFields).not.toHaveBeenCalledWith(
+          { school_id: null },
+          "-createdAt -updatedAt"
+        );
       });
     });
-    describe("field - GET/:id", () => {
-      describe("field::get/:id::01 - Passing a field with missing values", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findField = mockService(
-            fieldNullPayload,
-            "findFieldByProperty"
-          );
+    describe("GET - /fields - passing a field with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findFields = mockService(
+          fieldsNullPayload,
+          "findFilterAllFields"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockFieldId}`)
-            .send();
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: "" });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findField).not.toHaveBeenCalledWith(
-            { _id: validMockFieldId, school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findFields).not.toHaveBeenCalledWith(
+          { school_id: "" },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("field::get/:id::02 - Passing a field with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findField = mockService(
-            fieldNullPayload,
-            "findFieldByProperty"
-          );
+    });
+    describe("GET - /fields - passing and invalid school id", () => {
+      it("should get all fields", async () => {
+        // mock services
+        const findFields = mockService(
+          fieldsNullPayload,
+          "findFilterAllFields"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockFieldId}`)
-            .send({ school_id: "" });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findField).not.toHaveBeenCalledWith(
-            { _id: validMockFieldId, school_id: "" },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findFields).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("field::get/:id::03 - Passing an invalid field and school ids in the url", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findField = mockService(
-            fieldNullPayload,
-            "findFieldByProperty"
-          );
+    });
+    describe("GET - /fields - Requesting all fields but not finding any", () => {
+      it("should not get any fields", async () => {
+        // mock services
+        const findFields = mockService(
+          fieldsNullPayload,
+          "findFilterAllFields"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: otherValidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The field id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findField).not.toHaveBeenCalledWith(
-            { _id: invalidMockId, school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No fields found",
+          success: false,
         });
+        expect(statusCode).toBe(404);
+        expect(findFields).toHaveBeenCalledWith(
+          { school_id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("field::get/:id::04 - Requesting a field but not finding it", () => {
-        it("should not get a school", async () => {
-          // mock services
-          const findField = mockService(
-            fieldNullPayload,
-            "findFieldByProperty"
-          );
+    });
+    describe("GET - /fields - Requesting all fields correctly", () => {
+      it("should get all fields", async () => {
+        // mock services
+        const findFields = mockService(fieldsPayload, "findFilterAllFields");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${otherValidMockId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "Field not found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findField).toHaveBeenCalledWith(
-            { _id: otherValidMockId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          payload: fieldsPayload,
+          success: true,
         });
+        expect(statusCode).toBe(200);
+        expect(findFields).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("field::get/:id::05 - Requesting a field correctly", () => {
-        it("should get a field", async () => {
-          // mock services
-          const findField = mockService(fieldPayload, "findFieldByProperty");
+    });
+    describe("GET - /fields/:id - Passing a field with missing values", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findField = mockService(fieldNullPayload, "findFieldByProperty");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockFieldId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockFieldId}`)
+          .send();
 
-          // assertions
-          expect(body).toStrictEqual({
-            payload: fieldPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findField).toHaveBeenCalledWith(
-            { _id: validMockFieldId, school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findField).not.toHaveBeenCalledWith(
+          { _id: validMockFieldId, school_id: null },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /fields/:id - Passing a field with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findField = mockService(fieldNullPayload, "findFieldByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockFieldId}`)
+          .send({ school_id: "" });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findField).not.toHaveBeenCalledWith(
+          { _id: validMockFieldId, school_id: "" },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /fields/:id - Passing an invalid field and school ids in the url", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findField = mockService(fieldNullPayload, "findFieldByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${invalidMockId}`)
+          .send({ school_id: invalidMockId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The field id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findField).not.toHaveBeenCalledWith(
+          { _id: invalidMockId, school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /fields/:id - Requesting a field but not finding it", () => {
+      it("should not get a school", async () => {
+        // mock services
+        const findField = mockService(fieldNullPayload, "findFieldByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${otherValidMockId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Field not found",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+        expect(findField).toHaveBeenCalledWith(
+          { _id: otherValidMockId, school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /fields/:id - - Requesting a field correctly", () => {
+      it("should get a field", async () => {
+        // mock services
+        const findField = mockService(fieldPayload, "findFieldByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockFieldId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          payload: fieldPayload,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
+        expect(findField).toHaveBeenCalledWith(
+          { _id: validMockFieldId, school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
     });
   });
 
-  describe("PUT /field ", () => {
-    describe("field::put::01 - Passing a field with missing fields", () => {
+  describe("FIELDS - PUT", () => {
+    describe("PUT - /fields/:id - Passing a field with missing fields", () => {
       it("should return a field needed error", async () => {
         // mock services
         const duplicateFieldName = mockService(
@@ -740,7 +724,7 @@ describe("RESOURCE => Field", () => {
         );
       });
     });
-    describe("field::put::02 - Passing a field with empty fields", () => {
+    describe("PUT - /fields/:id - Passing a field with empty fields", () => {
       it("should return an empty field error", async () => {
         // mock services
         const duplicateFieldName = mockService(
@@ -787,7 +771,7 @@ describe("RESOURCE => Field", () => {
         );
       });
     });
-    describe("field::put::03 - Passing an invalid type as field value", () => {
+    describe("PUT - /fields/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const duplicateFieldName = mockService(
@@ -842,7 +826,7 @@ describe("RESOURCE => Field", () => {
         );
       });
     });
-    describe("field::put::04 - Passing too long or short input values", () => {
+    describe("PUT - /fields/:id - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const duplicateFieldName = mockService(
@@ -886,7 +870,7 @@ describe("RESOURCE => Field", () => {
         );
       });
     });
-    describe("field::put::05 - Passing a field but not updating it because the field name, already exists for the school", () => {
+    describe("PUT - /fields/:id - Passing a field but not updating it because the field name, already exists for the school", () => {
       it("should not update a field", async () => {
         // mock services
         const duplicateFieldName = mockService(
@@ -916,7 +900,7 @@ describe("RESOURCE => Field", () => {
         );
       });
     });
-    describe("field::put::06 - Passing a field but not updating it because it does not match one of the filters: _id, school_id", () => {
+    describe("PUT - /fields/:id - Passing a field but not updating it because it does not match one of the filters: _id, school_id", () => {
       it("should not update a field", async () => {
         // mock services
         const duplicateFieldName = mockService(
@@ -946,7 +930,7 @@ describe("RESOURCE => Field", () => {
         );
       });
     });
-    describe("field::put::07 - Passing a field correctly to update", () => {
+    describe("PUT - /fields/:id - Passing a field correctly to update", () => {
       it("should update a field", async () => {
         // mock services
         const findFieldNameDuplicateByPropertyService = mockService(
@@ -975,8 +959,8 @@ describe("RESOURCE => Field", () => {
     });
   });
 
-  describe("DELETE /field ", () => {
-    describe("field::delete::01 - Passing a field with missing fields", () => {
+  describe("FIELDS - DELETE", () => {
+    describe("DELETE - /fields/:id - Passing a field with missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const deleteField = mockService(fieldNullPayload, "removeFilterField");
@@ -1004,7 +988,7 @@ describe("RESOURCE => Field", () => {
         });
       });
     });
-    describe("field::delete::02 - Passing a field with empty fields", () => {
+    describe("DELETE - /fields/:id - Passing a field with empty fields", () => {
       it("should return a empty fields error", async () => {
         // mock services
         const deleteField = mockService(fieldNullPayload, "removeFilterField");
@@ -1033,7 +1017,7 @@ describe("RESOURCE => Field", () => {
         });
       });
     });
-    describe("field::delete::03 - Passing an invalid field and school ids", () => {
+    describe("DELETE - /fields/:id - Passing an invalid field and school ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
         const deleteField = mockService(fieldNullPayload, "removeFilterField");
@@ -1068,7 +1052,7 @@ describe("RESOURCE => Field", () => {
         });
       });
     });
-    describe("field::delete::04 - Passing a field id but not deleting it", () => {
+    describe("DELETE - /fields/:id - Passing a field id but not deleting it", () => {
       it("should not delete a school", async () => {
         // mock services
         const deleteField = mockService(fieldNullPayload, "removeFilterField");
@@ -1090,7 +1074,7 @@ describe("RESOURCE => Field", () => {
         });
       });
     });
-    describe("field::delete::05 - Passing a field id correctly to delete", () => {
+    describe("DELETE - /fields/:id - Passing a field id correctly to delete", () => {
       it("should delete a field", async () => {
         // mock services
         const deleteField = mockService(fieldPayload, "removeFilterField");

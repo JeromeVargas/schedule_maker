@@ -17,7 +17,7 @@ type Service =
   | "removeFilterBreak"
   | "findPopulateScheduleById";
 
-describe("Resource => Break", () => {
+describe("Resource => BREAK", () => {
   /* mock services */
   // just one return
   const mockService = (payload: any, service: Service) => {
@@ -125,8 +125,8 @@ describe("Resource => Break", () => {
   const breaksNullPayload: Break[] = [];
 
   // test blocks
-  describe("POST /break ", () => {
-    describe("break::post::01 - Passing missing fields", () => {
+  describe("BREAKS - POST", () => {
+    describe("POST - /breaks - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -176,7 +176,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).not.toHaveBeenCalledWith(newBreakMissingValues);
       });
     });
-    describe("break::post::02 - Passing fields with empty values", () => {
+    describe("POST - /breaks - Passing fields with empty values", () => {
       it("should return an empty fields error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -230,7 +230,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).not.toHaveBeenCalledWith(newBreakEmptyValues);
       });
     });
-    describe("break::post::03 - Passing an invalid type as a value", () => {
+    describe("POST - /breaks - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -284,7 +284,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).not.toHaveBeenCalledWith(newBreakNotValidDataTypes);
       });
     });
-    describe("break::post::04 - Passing too long or short input values", () => {
+    describe("POST - /breaks - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -326,7 +326,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).not.toHaveBeenCalledWith(newBreakWrongLengthValues);
       });
     });
-    describe("break::post::05 - Passing break start after the 23:59 in the body", () => {
+    describe("POST - /breaks - Passing break start after the 23:59 in the body", () => {
       it("should return a break start after the 23:59 error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -355,7 +355,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
-    describe("break::post::06 - Passing a non-existent schedule in the body", () => {
+    describe("POST - /breaks - Passing a non-existent schedule in the body", () => {
       it("should return a non-existent schedule error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -384,7 +384,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
-    describe("break::post::07 - Passing non-matching school id value", () => {
+    describe("POST - /breaks - Passing non-matching school id value", () => {
       it("should return a non-matching school id error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -413,7 +413,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
-    describe("break::post::08 - Passing a break start time that starts earlier than the school shift day start time", () => {
+    describe("POST - /breaks - Passing a break start time that starts earlier than the school shift day start time", () => {
       it("should return a break start time error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -442,7 +442,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).not.toHaveBeenCalledWith(newBreak);
       });
     });
-    describe("break::post::09 - Passing a break but not being created", () => {
+    describe("POST - /breaks - Passing a break but not being created", () => {
       it("should not create a field", async () => {
         // mock services
         const findSchedule = mockService(
@@ -471,7 +471,7 @@ describe("Resource => Break", () => {
         expect(insertBreak).toHaveBeenCalledWith(newBreak);
       });
     });
-    describe("break::post::10 - Passing a break correctly to create", () => {
+    describe("POST - /breaks - Passing a break correctly to create", () => {
       it("should create a field", async () => {
         // mock services
         const findSchedule = mockService(
@@ -502,305 +502,289 @@ describe("Resource => Break", () => {
     });
   });
 
-  describe("GET /break ", () => {
-    describe("break - GET", () => {
-      describe("break::get::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findBreaks = mockService(
-            breaksNullPayload,
-            "findFilterAllBreaks"
-          );
+  describe("BREAK - GET", () => {
+    describe("GET - /breaks - Passing missing fields", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findBreaks = mockService(
+          breaksNullPayload,
+          "findFilterAllBreaks"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findBreaks).not.toHaveBeenCalledWith(
-            { school_id: null },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("break::get::02 - passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findBreaks = mockService(
-            breaksNullPayload,
-            "findFilterAllBreaks"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findBreaks).not.toHaveBeenCalledWith(
-            { school_id: "" },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("break::get::03 - passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findBreaks = mockService(
-            breaksNullPayload,
-            "findFilterAllBreaks"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findBreaks).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("break::get::04 - Requesting all fields but not finding any", () => {
-        it("should not get any fields", async () => {
-          // mock services
-          const findBreaks = mockService(
-            breaksNullPayload,
-            "findFilterAllBreaks"
-          );
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: otherValidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "No breaks found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findBreaks).toHaveBeenCalledWith(
-            { school_id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
-        });
-      });
-      describe("break::get::05 - Requesting all fields correctly", () => {
-        it("should get all fields", async () => {
-          // mock services
-          const findBreaks = mockService(breaksPayload, "findFilterAllBreaks");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            payload: breaksPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findBreaks).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId },
-            "-createdAt -updatedAt"
-          );
-        });
+        expect(statusCode).toBe(400);
+        expect(findBreaks).not.toHaveBeenCalledWith(
+          { school_id: null },
+          "-createdAt -updatedAt"
+        );
       });
     });
-    describe("break - GET/:id", () => {
-      describe("break::get/:id::01 - Passing missing fields", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findBreak = mockService(
-            breakNullPayload,
-            "findBreakByProperty"
-          );
+    describe("GET - /breaks - passing fields with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findBreaks = mockService(
+          breaksNullPayload,
+          "findFilterAllBreaks"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockBreakId}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: "" });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findBreak).not.toHaveBeenCalledWith(
-            { school_id: null, _id: validMockBreakId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findBreaks).not.toHaveBeenCalledWith(
+          { school_id: "" },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("break::get/:id::02 - Passing fields with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findBreak = mockService(
-            breakNullPayload,
-            "findBreakByProperty"
-          );
+    });
+    describe("GET - /breaks - passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findBreaks = mockService(
+          breaksNullPayload,
+          "findFilterAllBreaks"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockBreakId}`)
-            .send({ school_id: "" });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: invalidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findBreak).not.toHaveBeenCalledWith(
-            { school_id: "", _id: validMockBreakId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findBreaks).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("break::get/:id::03 - Passing invalid ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findBreak = mockService(
-            breakNullPayload,
-            "findBreakByProperty"
-          );
+    });
+    describe("GET - /breaks - Requesting all fields but not finding any", () => {
+      it("should not get any fields", async () => {
+        // mock services
+        const findBreaks = mockService(
+          breaksNullPayload,
+          "findFilterAllBreaks"
+        );
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: otherValidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The break id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findBreak).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId, _id: invalidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No breaks found",
+          success: false,
         });
+        expect(statusCode).toBe(404);
+        expect(findBreaks).toHaveBeenCalledWith(
+          { school_id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("break::get/:id::04 - Requesting a field but not finding it", () => {
-        it("should not get a school", async () => {
-          // mock services
-          const findBreak = mockService(
-            breakNullPayload,
-            "findBreakByProperty"
-          );
+    });
+    describe("GET - /breaks - Requesting all fields correctly", () => {
+      it("should get all fields", async () => {
+        // mock services
+        const findBreaks = mockService(breaksPayload, "findFilterAllBreaks");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${otherValidMockId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "Break not found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findBreak).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId, _id: otherValidMockId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          payload: breaksPayload,
+          success: true,
         });
+        expect(statusCode).toBe(200);
+        expect(findBreaks).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId },
+          "-createdAt -updatedAt"
+        );
       });
-      describe("break::get/:id::05 - Requesting a field correctly", () => {
-        it("should get a field", async () => {
-          // mock services
-          const findBreak = mockService(breakPayload, "findBreakByProperty");
+    });
+    describe("GET - /breaks/:id - Passing missing fields", () => {
+      it("should return a missing values error", async () => {
+        // mock services
+        const findBreak = mockService(breakNullPayload, "findBreakByProperty");
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockBreakId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockBreakId}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            payload: breakPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findBreak).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId, _id: validMockBreakId },
-            "-createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+        expect(findBreak).not.toHaveBeenCalledWith(
+          { school_id: null, _id: validMockBreakId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /breaks/:id - Passing fields with empty values", () => {
+      it("should return an empty values error", async () => {
+        // mock services
+        const findBreak = mockService(breakNullPayload, "findBreakByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockBreakId}`)
+          .send({ school_id: "" });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findBreak).not.toHaveBeenCalledWith(
+          { school_id: "", _id: validMockBreakId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /breaks/:id - Passing invalid ids", () => {
+      it("should return an invalid id error", async () => {
+        // mock services
+        const findBreak = mockService(breakNullPayload, "findBreakByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${invalidMockId}`)
+          .send({ school_id: invalidMockId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The break id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+        expect(findBreak).not.toHaveBeenCalledWith(
+          { school_id: invalidMockId, _id: invalidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /breaks/:id - Requesting a field but not finding it", () => {
+      it("should not get a school", async () => {
+        // mock services
+        const findBreak = mockService(breakNullPayload, "findBreakByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${otherValidMockId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "Break not found",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+        expect(findBreak).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId, _id: otherValidMockId },
+          "-createdAt -updatedAt"
+        );
+      });
+    });
+    describe("GET - /breaks/:id - Requesting a field correctly", () => {
+      it("should get a field", async () => {
+        // mock services
+        const findBreak = mockService(breakPayload, "findBreakByProperty");
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockBreakId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          payload: breakPayload,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
+        expect(findBreak).toHaveBeenCalledWith(
+          { school_id: validMockSchoolId, _id: validMockBreakId },
+          "-createdAt -updatedAt"
+        );
       });
     });
   });
 
-  describe("PUT /break ", () => {
-    describe("break::put::01 - Passing missing fields", () => {
+  describe("BREAKS - PUT", () => {
+    describe("PUT - /breaks/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -853,7 +837,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::02 - Passing fields with empty values", () => {
+    describe("PUT - /breaks/:id - Passing fields with empty values", () => {
       it("should return an empty field error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -910,7 +894,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::03 - Passing an invalid type as field value", () => {
+    describe("PUT - /breaks/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -976,7 +960,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::04 - Passing too long or short input values", () => {
+    describe("PUT - /breaks/:id - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -1024,7 +1008,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::05 - Passing break start after the 23:59 in the body", () => {
+    describe("PUT - /breaks/:id - Passing break start after the 23:59 in the body", () => {
       it("should return a break start after the 23:59 error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -1056,7 +1040,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::06 - Passing a non-existent schedule in the body", () => {
+    describe("PUT - /breaks/:id - Passing a non-existent schedule in the body", () => {
       it("should return a non-existent schedule error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -1088,7 +1072,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::07 - Passing non-matching school", () => {
+    describe("PUT - /breaks/:id - Passing non-matching school", () => {
       it("should return a non-matching school id error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -1120,7 +1104,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::08 - Passing a break start time that starts earlier than the school shift day start time", () => {
+    describe("PUT - /breaks/:id - Passing a break start time that starts earlier than the school shift day start time", () => {
       it("should return an invalid length input value error", async () => {
         // mock services
         const findSchedule = mockService(
@@ -1152,7 +1136,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::09 - Passing a break but not updating it because it does not match the filters", () => {
+    describe("PUT - /breaks/:id - Passing a break but not updating it because it does not match the filters", () => {
       it("should not update a break", async () => {
         // mock services
         const findSchedule = mockService(
@@ -1184,7 +1168,7 @@ describe("Resource => Break", () => {
         );
       });
     });
-    describe("break::put::10 - Passing a break correctly to update", () => {
+    describe("PUT - /breaks/:id - Passing a break correctly to update", () => {
       it("should update a break", async () => {
         // mock services
         const findSchedule = mockService(
@@ -1218,8 +1202,8 @@ describe("Resource => Break", () => {
     });
   });
 
-  describe("DELETE /break ", () => {
-    describe("break::delete::01 - Passing missing fields", () => {
+  describe("BREAKS - DELETE", () => {
+    describe("DELETE - /break/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
         // mock services
         const deleteBreak = mockService(breakNullPayload, "removeFilterBreak");
@@ -1247,7 +1231,7 @@ describe("Resource => Break", () => {
         });
       });
     });
-    describe("break::delete::02 - Passing fields with empty values", () => {
+    describe("DELETE - /break/:id - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
         // mock services
         const deleteBreak = mockService(breakNullPayload, "removeFilterBreak");
@@ -1276,7 +1260,7 @@ describe("Resource => Break", () => {
         });
       });
     });
-    describe("break::delete::03 - Passing invalid ids", () => {
+    describe("DELETE - /break/:id - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
         // mock services
         const deleteBreak = mockService(breakNullPayload, "removeFilterBreak");
@@ -1311,7 +1295,7 @@ describe("Resource => Break", () => {
         });
       });
     });
-    describe("break::delete::04 - Passing a break id but not deleting it", () => {
+    describe("DELETE - /break/:id - Passing a break id but not deleting it", () => {
       it("should not delete a school", async () => {
         // mock services
         const deleteBreak = mockService(breakNullPayload, "removeFilterBreak");
@@ -1333,7 +1317,7 @@ describe("Resource => Break", () => {
         });
       });
     });
-    describe("break::delete::05 - Passing a break id correctly to delete", () => {
+    describe("DELETE - /break/:id - Passing a break id correctly to delete", () => {
       it("should delete a field", async () => {
         // mock services
         const deleteBreak = mockService(breakPayload, "removeFilterBreak");
