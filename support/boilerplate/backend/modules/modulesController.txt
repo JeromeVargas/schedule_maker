@@ -11,7 +11,7 @@ import {
   findFilterModuleByProperty,
   modifyFilterModule,
   removeFilterModule,
-  /* Services from other entities */
+   
   findSchoolById,
 } from "./moduleServices";
 

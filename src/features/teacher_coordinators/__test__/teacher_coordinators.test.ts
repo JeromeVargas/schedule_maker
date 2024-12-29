@@ -1,144 +1,63 @@
+import mongoose, { Types } from "mongoose";
 import supertest from "supertest";
-import { Types } from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 import { server, connection } from "../../../server";
-
-import * as teacherCoordinatorServices from "../teacher_coordinators.services";
-
 import { BASE_URL } from "../../../lib/router";
+import {
+  insertManyTeacherCoordinators,
+  insertTeacherCoordinator,
+  removeAllTeacherCoordinators,
+  insertSchool,
+  removeAllSchools,
+  insertTeacher,
+  removeAllTeachers,
+  insertUser,
+  removeAllUsers,
+} from "../teacher_coordinators.services";
 
-import type { Teacher_Coordinator } from "../../../typings/types";
-
-type Service =
-  | "insertTeacherCoordinator"
-  | "findFilterAllTeacherCoordinators"
-  | "findTeacherCoordinatorByProperty"
-  | "findFilterTeacherCoordinatorByProperty"
-  | "modifyFilterTeacherCoordinator"
-  | "removeFilterTeacherCoordinator"
-  | "findPopulateTeacherById"
-  | "findPopulateCoordinatorById";
+import {
+  ContractType,
+  NewSchool,
+  SchoolStatus,
+  UserRole,
+  UserStatus,
+} from "../../../typings/types";
 
 describe("RESOURCE => TEACHER_COORDINATOR", () => {
-  /* mock services */
-  // just one return
-  const mockService = (payload: any, service: Service) => {
-    return jest
-      .spyOn(teacherCoordinatorServices, service)
-      .mockReturnValue(payload);
-  };
-
   /* hooks */
-  afterAll(() => {
+  afterEach(async () => {
+    await removeAllTeacherCoordinators();
+    await removeAllSchools();
+    await removeAllUsers();
+    await removeAllTeachers();
+  });
+  beforeAll(async () => {
+    const mongoServer = await MongoMemoryServer.create();
+    await mongoose.connect(mongoServer.getUri());
+  });
+  afterAll(async () => {
+    await mongoose.disconnect();
+    await mongoose.connection.close();
     connection.close();
   });
 
   /* end point url */
   const endPointUrl = `${BASE_URL}teacher_coordinators/`;
 
-  /* inputs */
-  const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
-  const validMockSchoolId = new Types.ObjectId().toString();
-  const validMockTeacherId = new Types.ObjectId().toString();
-  const validMockLevelId = new Types.ObjectId().toString();
-  const validMockCoordinatorId = new Types.ObjectId().toString();
-  const otherValidMockId = new Types.ObjectId().toString();
-  const invalidMockId = "63c5dcac78b868f80035asdf";
-  const newTeacherCoordinator = {
-    school_id: validMockSchoolId,
-    teacher_id: validMockTeacherId,
-    coordinator_id: validMockCoordinatorId,
-  };
-  const newTeacherCoordinatorMissingValues = {
-    school_i: validMockSchoolId,
-    teacher_i: validMockTeacherId,
-    coordinator_i: validMockCoordinatorId,
-  };
-  const newTeacherCoordinatorEmptyValues = {
-    school_id: "",
-    teacher_id: "",
-    coordinator_id: "",
-  };
-  const newTeacherCoordinatorNotValidDataTypes = {
-    school_id: invalidMockId,
-    teacher_id: invalidMockId,
-    coordinator_id: invalidMockId,
-  };
-
-  /* payloads */
-  const schoolPayload = {
-    _id: validMockSchoolId,
-    name: "School 001",
-    teacherMaxNumStudents: 40,
-  };
-  const teacherPayload = {
-    _id: validMockTeacherId,
-    school_id: schoolPayload,
-    level_id: validMockLevelId,
-    name: "Teacher 101",
-    numberStudents: 20,
-  };
-  const teacherNullPayload = null;
-  const coordinatorPayload = {
-    _id: validMockCoordinatorId,
-    school_id: schoolPayload,
-    firstName: "Jerome",
-    lastName: "Vargas",
-    email: "JeromeVar@gmail.com",
-    role: "coordinator",
-    status: "active",
-  };
-  const coordinatorNullPayload = null;
-  const teacherCoordinatorPayload = {
-    _id: validMockTeacherCoordinatorId,
-    school_id: validMockSchoolId,
-    teacher_id: validMockTeacherId,
-    coordinator_id: validMockCoordinatorId,
-  };
-  const teacherCoordinatorNullPayload = null;
-  const teacherCoordinatorsPayload = [
-    {
-      _id: new Types.ObjectId().toString(),
-      school_id: new Types.ObjectId().toString(),
-      teacher_id: new Types.ObjectId().toString(),
-      coordinator_id: new Types.ObjectId().toString(),
-    },
-    {
-      _id: new Types.ObjectId().toString(),
-      school_id: new Types.ObjectId().toString(),
-      teacher_id: new Types.ObjectId().toString(),
-      coordinator_id: new Types.ObjectId().toString(),
-    },
-    {
-      _id: new Types.ObjectId().toString(),
-      school_id: new Types.ObjectId().toString(),
-      teacher_id: new Types.ObjectId().toString(),
-      coordinator_id: new Types.ObjectId().toString(),
-    },
-  ];
-  const teacherCoordinatorsNullPayload: Teacher_Coordinator[] = [];
-
   // test blocks
   describe("TEACHER_COORDINATORS - POST", () => {
     describe("POST - /teacher_coordinators - Passing a teacher_coordinator with missing fields", () => {
       it("should return a field needed error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacherCoordinatorMissingValues = {
+          school_i: validMockSchoolId,
+          teacher_i: validMockTeacherId,
+          coordinator_i: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -167,51 +86,16 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinatorMissingValues.school_i,
-            teacher_id: newTeacherCoordinatorMissingValues.teacher_i,
-            coordinator_id: newTeacherCoordinatorMissingValues.coordinator_i,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorMissingValues.teacher_i,
-          "-createdAt -updatedAt",
-          "school_id user_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorMissingValues.coordinator_i,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorMissingValues
-        );
       });
     });
     describe("POST - /teacher_coordinators - Passing a teacher_coordinator with empty fields", () => {
       it("should return an empty field error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const newTeacherCoordinatorEmptyValues = {
+          school_id: "",
+          teacher_id: "",
+          coordinator_id: "",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -243,51 +127,17 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinatorEmptyValues.school_id,
-            teacher_id: newTeacherCoordinatorEmptyValues.teacher_id,
-            coordinator_id: newTeacherCoordinatorEmptyValues.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorEmptyValues.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id user_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorEmptyValues.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorEmptyValues
-        );
       });
     });
     describe("POST - /teacher_coordinators - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+        const newTeacherCoordinatorNotValidDataTypes = {
+          school_id: invalidMockId,
+          teacher_id: invalidMockId,
+          coordinator_id: invalidMockId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -319,52 +169,20 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinatorNotValidDataTypes.school_id,
-            teacher_id: newTeacherCoordinatorNotValidDataTypes.teacher_id,
-            coordinator_id:
-              newTeacherCoordinatorNotValidDataTypes.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorNotValidDataTypes.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id user_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorNotValidDataTypes.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorNotValidDataTypes
-        );
       });
     });
     describe("POST - /teacher_coordinators - teacher has the coordinator already assigned", () => {
       it("should return an already assigned coordinator", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacherCoordinator = {
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
+        await insertTeacherCoordinator(newTeacherCoordinator);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -377,51 +195,19 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).not.toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator
-        );
       });
     });
     describe("POST - /teacher_coordinators - Passing a non-existent teacher in the body", () => {
       it("should return a non-existent teacher error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacherCoordinator = {
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -434,51 +220,38 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator
-        );
       });
     });
     describe("POST - /teacher_coordinators - Passing a teacher that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          { ...teacherPayload, school_id: otherValidMockId },
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newTeacherCoordinator = {
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -491,51 +264,45 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator
-        );
       });
     });
     describe("POST - /teacher_coordinators - Passing a non-existent coordinator in the body", () => {
       it("should return a non-existent coordinator error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newTeacherCoordinator = {
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -548,58 +315,57 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator
-        );
       });
     });
-    describe("POST - /teacher_coordinators - Passing a teacher that does not match the school id", () => {
+    describe("POST - /teacher_coordinators - Passing a coordinator that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          {
-            ...coordinatorPayload,
-            school_id: {
-              _id: otherValidMockId,
-              name: "School 001",
-              teacherMaxNumStudents: 40,
-            },
-          },
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const otherValidMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newUser = {
+          _id: validMockCoordinatorId,
+          school_id: otherValidMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "1x3sdf1qwe3r2",
+          role: "coordinator" as UserRole,
+          status: "active" as UserStatus,
+        };
+        await insertUser(newUser);
+        const newTeacherCoordinator = {
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -612,54 +378,56 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator
-        );
       });
     });
     describe("POST - /teacher_coordinators - Passing a coordinator with a role different from coordinator", () => {
       it("should return a non-coordinator role error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          {
-            ...coordinatorPayload,
-            role: "teacher",
-          },
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newUser = {
+          _id: validMockCoordinatorId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "1x3sdf1qwe3r2",
+          role: "teacher" as UserRole,
+          status: "active" as UserStatus,
+        };
+        await insertUser(newUser);
+        const newTeacherCoordinator = {
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -672,54 +440,56 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator
-        );
       });
     });
     describe("POST - /teacher_coordinators - Passing a coordinator with a status different from active", () => {
       it("should return a non-active coordinator error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          {
-            ...coordinatorPayload,
-            status: "inactive",
-          },
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newUser = {
+          _id: validMockCoordinatorId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "1x3sdf1qwe3r2",
+          role: "coordinator" as UserRole,
+          status: "inactive" as UserStatus,
+        };
+        await insertUser(newUser);
+        const newTeacherCoordinator = {
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -732,107 +502,56 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-
-        expect(insertTeacherCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator
-        );
-      });
-    });
-    describe("POST - /teacher_coordinators - Passing a teacher_coordinator but not being created", () => {
-      it("should not create a teacher_coordinator", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorPayload,
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "insertTeacherCoordinator"
-        );
-
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .post(`${endPointUrl}`)
-          .send(newTeacherCoordinator);
-
-        // assertions
-        expect(body).toStrictEqual({
-          msg: "Coordinator has not been assigned the to teacher",
-          success: false,
-        });
-        expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertTeacherCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator
-        );
       });
     });
     describe("POST - /teacher_coordinators - Passing a teacher_coordinator correctly to create", () => {
       it("should create a teacher_coordinator", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorPayload,
-          "findPopulateCoordinatorById"
-        );
-        const insertTeacherCoordinator = mockService(
-          teacherCoordinatorPayload,
-          "insertTeacherCoordinator"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newUser = {
+          _id: validMockCoordinatorId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "1x3sdf1qwe3r2",
+          role: "coordinator" as UserRole,
+          status: "active" as UserStatus,
+        };
+        await insertUser(newUser);
+        const newTeacherCoordinator = {
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -845,29 +564,6 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: true,
         });
         expect(statusCode).toBe(201);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertTeacherCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator
-        );
       });
     });
   });
@@ -875,15 +571,14 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
   describe("TEACHER_COORDINATORS - GET", () => {
     describe("GET - /teacher_coordinators - passing a school id with missing values", () => {
       it("should return a missing values error", async () => {
-        // mock services
-        const findTeacherCoordinators = mockService(
-          teacherCoordinatorsNullPayload,
-          "findFilterAllTeacherCoordinators"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}`)
           .send({ school_i: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -896,23 +591,15 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findTeacherCoordinators).not.toHaveBeenCalledWith(
-          { school_id: null },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /teacher_coordinators - passing a field with empty values", () => {
       it("should return an empty values error", async () => {
-        // mock services
-        const findTeacherCoordinators = mockService(
-          teacherCoordinatorsNullPayload,
-          "findFilterAllTeacherCoordinators"
-        );
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}`)
           .send({ school_id: "" });
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -926,23 +613,18 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findTeacherCoordinators).not.toHaveBeenCalledWith(
-          { school_id: "" },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /teacher_coordinators - passing and invalid school id", () => {
       it("should get all fields", async () => {
-        // mock services
-        const findTeacherCoordinators = mockService(
-          teacherCoordinatorsNullPayload,
-          "findFilterAllTeacherCoordinators"
-        );
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}`)
           .send({ school_id: invalidMockId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -956,69 +638,76 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findTeacherCoordinators).not.toHaveBeenCalledWith(
-          { school_id: invalidMockId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /teacher_coordinators - Requesting all fields but not finding any", () => {
       it("should not get any fields", async () => {
-        // mock services
-        const findTeacherCoordinators = mockService(
-          teacherCoordinatorsNullPayload,
-          "findFilterAllTeacherCoordinators"
-        );
+        // inputs
+        const otherValidMockId = new Types.ObjectId().toString();
+
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}`)
           .send({ school_id: otherValidMockId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: "No coordinators assigned to any teachers yet",
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findTeacherCoordinators).toHaveBeenCalledWith(
-          { school_id: otherValidMockId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /teacher_coordinators - Requesting all teacher_coordinators correctly", () => {
       it("should get all fields", async () => {
-        // mock services
-        const findTeacherCoordinators = mockService(
-          teacherCoordinatorsPayload,
-          "findFilterAllTeacherCoordinators"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newTeacherCoordinators = [
+          {
+            _id: new Types.ObjectId().toString(),
+            school_id: validMockSchoolId,
+            teacher_id: new Types.ObjectId().toString(),
+            coordinator_id: new Types.ObjectId().toString(),
+          },
+          {
+            _id: new Types.ObjectId().toString(),
+            school_id: validMockSchoolId,
+            teacher_id: new Types.ObjectId().toString(),
+            coordinator_id: new Types.ObjectId().toString(),
+          },
+          {
+            _id: new Types.ObjectId().toString(),
+            school_id: validMockSchoolId,
+            teacher_id: new Types.ObjectId().toString(),
+            coordinator_id: new Types.ObjectId().toString(),
+          },
+        ];
+        await insertManyTeacherCoordinators(newTeacherCoordinators);
+
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}`)
           .send({ school_id: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({
-          payload: teacherCoordinatorsPayload,
+          payload: newTeacherCoordinators,
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(findTeacherCoordinators).toHaveBeenCalledWith(
-          { school_id: validMockSchoolId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /teacher_coordinators/:id - Passing fields with missing values", () => {
       it("should return a missing values error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_i: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -1031,23 +720,18 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
-          { _id: validMockTeacherCoordinatorId, school_id: null },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /teacher_coordinators/:id - Passing fields with empty values", () => {
       it("should return an empty values error", async () => {
-        // mock services
-        const findTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_id: "" });
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -1061,23 +745,18 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
-          { _id: validMockTeacherCoordinatorId, school_id: "" },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /teacher_coordinators/:id - Passing an invalid teacher_coordinator and school ids", () => {
       it("should return an invalid id error", async () => {
-        // mock services
-        const findTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}${invalidMockId}`)
           .send({ school_id: invalidMockId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -1097,62 +776,53 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findTeacherCoordinator).not.toHaveBeenCalledWith(
-          { _id: invalidMockId, school_id: invalidMockId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /teacher_coordinators/:id - Requesting a field but not finding it", () => {
       it("should not get a school", async () => {
-        // mock services
-        const findTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const otherValidMockId = new Types.ObjectId().toString();
+
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}${otherValidMockId}`)
           .send({ school_id: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: "Teacher_coordinator not found",
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            _id: otherValidMockId,
-            school_id: validMockSchoolId,
-          },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /teacher_coordinators/:id - Requesting a field correctly", () => {
       it("should get a field", async () => {
-        // mock services
-        const findTeacherCoordinator = mockService(
-          teacherCoordinatorPayload,
-          "findTeacherCoordinatorByProperty"
-        );
+        // inputs
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
+        await insertTeacherCoordinator(newTeacherCoordinator);
+
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_id: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({
-          payload: teacherCoordinatorPayload,
+          payload: newTeacherCoordinator,
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(findTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            school_id: validMockSchoolId,
-          },
-          "-createdAt -updatedAt"
-        );
       });
     });
   });
@@ -1160,27 +830,22 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
   describe("TEACHER_COORDINATORS - PUT", () => {
     describe("PUT - /teacher_coordinators/:id - Passing fields with missing fields", () => {
       it("should return a field needed error", async () => {
-        /* mock services */
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacherCoordinatorMissingValues = {
+          school_i: validMockSchoolId,
+          teacher_i: validMockTeacherId,
+          coordinator_i: validMockCoordinatorId,
+        };
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send(newTeacherCoordinatorMissingValues);
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -1203,59 +868,23 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinatorMissingValues.school_i,
-            teacher_id: newTeacherCoordinatorMissingValues.teacher_i,
-            coordinator_id: newTeacherCoordinatorMissingValues.coordinator_i,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorMissingValues.coordinator_i,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorMissingValues.teacher_i,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinatorMissingValues.teacher_i,
-            school_id: newTeacherCoordinatorMissingValues.school_i,
-          },
-          newTeacherCoordinatorMissingValues
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing fields with empty fields", () => {
       it("should return an empty field error", async () => {
-        /* mock services */
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const newTeacherCoordinatorEmptyValues = {
+          school_id: "",
+          teacher_id: "",
+          coordinator_id: "",
+        };
+
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send(newTeacherCoordinatorEmptyValues);
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -1281,55 +910,18 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinatorEmptyValues.school_id,
-            teacher_id: newTeacherCoordinatorEmptyValues.teacher_id,
-            coordinator_id: newTeacherCoordinatorEmptyValues.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorEmptyValues.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorEmptyValues.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinatorEmptyValues.teacher_id,
-            school_id: newTeacherCoordinatorEmptyValues.school_id,
-          },
-          newTeacherCoordinatorEmptyValues
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+        const newTeacherCoordinatorNotValidDataTypes = {
+          school_id: invalidMockId,
+          teacher_id: invalidMockId,
+          coordinator_id: invalidMockId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1361,56 +953,22 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinatorNotValidDataTypes.school_id,
-            teacher_id: newTeacherCoordinatorNotValidDataTypes.teacher_id,
-            coordinator_id:
-              newTeacherCoordinatorNotValidDataTypes.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorNotValidDataTypes.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinatorNotValidDataTypes.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinatorNotValidDataTypes.teacher_id,
-            school_id: newTeacherCoordinatorNotValidDataTypes.school_id,
-          },
-          newTeacherCoordinatorNotValidDataTypes
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - teacher has the coordinator already assigned", () => {
       it("should return an already assigned coordinator", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
+        await insertTeacherCoordinator(newTeacherCoordinator);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1423,55 +981,20 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).not.toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            school_id: newTeacherCoordinator.school_id,
-          },
-          newTeacherCoordinator
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing a non-existent teacher in the body", () => {
       it("should return a non-existent teacher error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherNullPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacherCoordinator = {
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1484,55 +1007,40 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            school_id: newTeacherCoordinator.school_id,
-          },
-          newTeacherCoordinator
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing a teacher that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          { ...teacherPayload, school_id: otherValidMockId },
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1545,55 +1053,47 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).not.toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            school_id: newTeacherCoordinator.school_id,
-          },
-          newTeacherCoordinator
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing a non-existent coordinator in the body", () => {
       it("should return a non-existent coordinator error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorNullPayload,
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1606,55 +1106,59 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            school_id: newTeacherCoordinator.school_id,
-          },
-          newTeacherCoordinator
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing a coordinator that does not match the school id", () => {
       it("should return a non-existent school error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          { ...coordinatorPayload, school_id: otherValidMockId },
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const otherValidMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newUser = {
+          _id: validMockCoordinatorId,
+          school_id: otherValidMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "1x3sdf1qwe3r2",
+          role: "coordinator" as UserRole,
+          status: "active" as UserStatus,
+        };
+        await insertUser(newUser);
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1667,55 +1171,58 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            school_id: newTeacherCoordinator.school_id,
-          },
-          newTeacherCoordinator
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing a coordinator with a role different from coordinator", () => {
       it("should return a non-coordinator role error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          { ...coordinatorPayload, role: "student" },
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newUser = {
+          _id: validMockCoordinatorId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "1x3sdf1qwe3r2",
+          role: "teacher" as UserRole,
+          status: "active" as UserStatus,
+        };
+        await insertUser(newUser);
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1728,55 +1235,58 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            school_id: newTeacherCoordinator.school_id,
-          },
-          newTeacherCoordinator
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing a coordinator with a status different from active", () => {
       it("should return a non-active coordinator error", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          { ...coordinatorPayload, status: "inactive" },
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newUser = {
+          _id: validMockCoordinatorId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "1x3sdf1qwe3r2",
+          role: "coordinator" as UserRole,
+          status: "inactive" as UserStatus,
+        };
+        await insertUser(newUser);
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1789,55 +1299,58 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).not.toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            school_id: newTeacherCoordinator.school_id,
-          },
-          newTeacherCoordinator
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing a teacher_coordinator but not updating", () => {
       it("should not update a teacher_coordinator", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorPayload,
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newUser = {
+          _id: validMockCoordinatorId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "1x3sdf1qwe3r2",
+          role: "coordinator" as UserRole,
+          status: "active" as UserStatus,
+        };
+        await insertUser(newUser);
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1850,55 +1363,66 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            school_id: newTeacherCoordinator.school_id,
-          },
-          newTeacherCoordinator
-        );
       });
     });
     describe("PUT - /teacher_coordinators/:id - Passing a teacher_coordinator correctly to update", () => {
       it("should update a teacher_coordinator", async () => {
-        // mock services
-        const duplicateTeacherCoordinator = mockService(
-          teacherCoordinatorNullPayload,
-          "findTeacherCoordinatorByProperty"
-        );
-        const findTeacher = mockService(
-          teacherPayload,
-          "findPopulateTeacherById"
-        );
-        const findCoordinator = mockService(
-          coordinatorPayload,
-          "findPopulateCoordinatorById"
-        );
-        const updateTeacherCoordinator = mockService(
-          teacherCoordinatorPayload,
-          "modifyFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const otherValidMockCoordinatorId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newTeacher = {
+          _id: validMockTeacherId,
+          school_id: validMockSchoolId,
+          user_id: validMockUserId,
+          contractType: "full-time" as ContractType,
+          teachingHoursAssignable: 36,
+          teachingHoursAssigned: 35,
+          adminHoursAssignable: 36,
+          adminHoursAssigned: 35,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertTeacher(newTeacher);
+        const newUser = {
+          _id: validMockCoordinatorId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "1x3sdf1qwe3r2",
+          role: "coordinator" as UserRole,
+          status: "active" as UserStatus,
+        };
+        await insertUser(newUser);
+        const teacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: otherValidMockCoordinatorId,
+        };
+        await insertTeacherCoordinator(teacherCoordinator);
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1911,34 +1435,6 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            school_id: newTeacherCoordinator.school_id,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            coordinator_id: newTeacherCoordinator.coordinator_id,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findTeacher).toHaveBeenCalledWith(
-          newTeacherCoordinator.teacher_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(findCoordinator).toHaveBeenCalledWith(
-          newTeacherCoordinator.coordinator_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateTeacherCoordinator).toHaveBeenCalledWith(
-          {
-            _id: validMockTeacherCoordinatorId,
-            teacher_id: newTeacherCoordinator.teacher_id,
-            school_id: newTeacherCoordinator.school_id,
-          },
-          newTeacherCoordinator
-        );
       });
     });
   });
@@ -1946,15 +1442,15 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
   describe("TEACHER_COORDINATORS - DELETE", () => {
     describe("DELETE - /teacher_coordinators/:id - Passing fields with missing fields", () => {
       it("should return a missing fields error", async () => {
-        // mock services
-        const deleteTeacher = mockService(
-          teacherCoordinatorNullPayload,
-          "removeFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_i: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -1967,23 +1463,18 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalledWith({
-          _id: validMockTeacherCoordinatorId,
-          school_id: null,
-        });
       });
     });
     describe("DELETE - /teacher_coordinators/:id - Passing fields with empty fields", () => {
       it("should return a empty fields error", async () => {
-        // mock services
-        const deleteTeacher = mockService(
-          teacherCoordinatorNullPayload,
-          "removeFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_id: "" });
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -1997,23 +1488,18 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalledWith({
-          _id: validMockTeacherCoordinatorId,
-          school_id: "",
-        });
       });
     });
     describe("DELETE - /teacher_coordinators/:id - Passing an invalid teacher_coordinator and school ids", () => {
       it("should return an invalid id error", async () => {
-        // mock services
-        const deleteTeacher = mockService(
-          teacherCoordinatorNullPayload,
-          "removeFilterTeacherCoordinator"
-        );
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${invalidMockId}`)
           .send({ school_id: invalidMockId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: [
@@ -2033,56 +1519,53 @@ describe("RESOURCE => TEACHER_COORDINATOR", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteTeacher).not.toHaveBeenCalledWith({
-          _id: invalidMockId,
-          school_id: invalidMockId,
-        });
       });
     });
     describe("DELETE - /teacher_coordinators/:id - Passing a teacher_coordinator id but not deleting it", () => {
       it("should not delete a school", async () => {
-        // mock services
-        const deleteTeacher = mockService(
-          teacherCoordinatorNullPayload,
-          "removeFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const otherValidMockId = new Types.ObjectId().toString();
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${otherValidMockId}`)
           .send({ school_id: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: "Teacher_coordinator not deleted",
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteTeacher).toHaveBeenCalledWith({
-          _id: otherValidMockId,
-          school_id: validMockSchoolId,
-        });
       });
     });
     describe("DELETE - /teacher_coordinators/:id - Passing a teacher_coordinator id correctly to delete", () => {
       it("should delete a teacher_coordinator", async () => {
-        // mock services
-        const deleteTeacher = mockService(
-          teacherCoordinatorPayload,
-          "removeFilterTeacherCoordinator"
-        );
+        // inputs
+        const validMockTeacherCoordinatorId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockTeacherId = new Types.ObjectId().toString();
+        const validMockCoordinatorId = new Types.ObjectId().toString();
+        const newTeacherCoordinator = {
+          _id: validMockTeacherCoordinatorId,
+          school_id: validMockSchoolId,
+          teacher_id: validMockTeacherId,
+          coordinator_id: validMockCoordinatorId,
+        };
+        await insertTeacherCoordinator(newTeacherCoordinator);
+
         // api call
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockTeacherCoordinatorId}`)
           .send({ school_id: validMockSchoolId });
+
         // assertions
         expect(body).toStrictEqual({
           msg: "Teacher_coordinator deleted",
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(deleteTeacher).toHaveBeenCalledWith({
-          _id: validMockTeacherCoordinatorId,
-          school_id: validMockSchoolId,
-        });
       });
     });
   });

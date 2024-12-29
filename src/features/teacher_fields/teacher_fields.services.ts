@@ -1,15 +1,25 @@
 import TeacherFieldModel from "./teacher_fields.model";
 import TeacherModel from "../teachers/teachers.model";
 import FieldModel from "../fields/fields.model";
-import { NewTeacher_Field } from "../../typings/types";
+import {
+  NewField,
+  NewSchool,
+  NewTeacher,
+  NewTeacherField,
+  NewUser,
+} from "../../typings/types";
+import SchoolModel from "../schools/schools.model";
+import UserModel from "../users/users.model";
 
-// CRUD services
-// @desc insert a teacher_field in database
-export const insertTeacherField = (teacherField: NewTeacher_Field) => {
+/* TeacherFields */
+export const insertTeacherField = (teacherField: NewTeacherField) => {
   return TeacherFieldModel.create(teacherField);
 };
 
-// @desc find all teacher_fields by school id
+export const insertManyTeacherFields = (teacherFields: NewTeacherField[]) => {
+  return TeacherFieldModel.insertMany(teacherFields);
+};
+
 export const findFilterAllTeacherFields = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -17,7 +27,6 @@ export const findFilterAllTeacherFields = (
   return TeacherFieldModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a teacher_field by teacher id, field id and school id
 export const findTeacherFieldByProperty = (
   filters:
     | { school_id: string; teacher_id: string; field_id: string }
@@ -31,7 +40,6 @@ export const findTeacherFieldByProperty = (
     .exec();
 };
 
-// @desc find a teacher_field and filter by school_id, teacher_id and field_id
 export const findFilterTeacherFieldByProperty = (
   filters: { school_id: string; teacher_id: string; field_id: string },
   fieldsToReturn: string
@@ -43,10 +51,9 @@ export const findFilterTeacherFieldByProperty = (
     .exec();
 };
 
-// @desc update a teacher_field by some properties _id, school_id and teacher_id
 export const modifyFilterTeacherField = (
   filters: { _id: string; school_id: string; teacher_id: string },
-  teacherField: NewTeacher_Field
+  teacherField: NewTeacherField
 ) => {
   return TeacherFieldModel.findOneAndUpdate(filters, teacherField, {
     new: true,
@@ -54,7 +61,6 @@ export const modifyFilterTeacherField = (
   });
 };
 
-// @desc delete a teacher_field by school_id and teacher field id
 export const removeFilterTeacherField = (filters: {
   school_id: string;
   _id: string;
@@ -62,8 +68,24 @@ export const removeFilterTeacherField = (filters: {
   return TeacherFieldModel.findOneAndDelete(filters).lean().exec();
 };
 
-/* Services from other entities */
-// @desc find a teacher by id and populate the embedded entities
+export const removeAllTeacherFields = () => {
+  return TeacherFieldModel.deleteMany();
+};
+
+/* Users */
+export const insertUser = (user: NewUser) => {
+  return UserModel.create(user);
+};
+
+export const removeAllUsers = () => {
+  return UserModel.deleteMany();
+};
+
+/* Teachers */
+export const insertTeacher = (teacher: NewTeacher) => {
+  return TeacherModel.create(teacher);
+};
+
 export const findPopulateTeacherById = (
   teacherId: string,
   fieldsToReturn: string,
@@ -77,7 +99,19 @@ export const findPopulateTeacherById = (
     .exec();
 };
 
-// @desc find a field by id and populate the embedded entities
+export const removeAllTeachers = () => {
+  return TeacherModel.deleteMany();
+};
+
+/* Fields */
+export const insertField = (field: NewField) => {
+  return FieldModel.create(field);
+};
+
+export const removeAllFields = () => {
+  return FieldModel.deleteMany();
+};
+
 export const findPopulateFieldById = (
   fieldId: string,
   fieldsToReturn: string,
@@ -89,4 +123,14 @@ export const findPopulateFieldById = (
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
+};
+
+/* Schools */
+export const insertSchool = (school: NewSchool) => {
+  return SchoolModel.create(school);
+};
+
+// @desc delete all schools
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
 };

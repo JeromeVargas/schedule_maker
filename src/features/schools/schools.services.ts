@@ -1,23 +1,23 @@
 import { NewSchool } from "../../typings/types";
 import SchoolModel from "./schools.model";
 
-/* Model services */
-// @desc insert a school in database
+/* Schools */
 export const insertSchool = (school: NewSchool) => {
   return SchoolModel.create(school);
 };
 
-// @desc find all schools
+export const insertManySchools = (schools: NewSchool[]) => {
+  return SchoolModel.insertMany(schools);
+};
+
 export const findAllSchools = (fieldsToReturn: string) => {
   return SchoolModel.find().select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a school by id
 export const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
   return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a school by name
 export const findSchoolByProperty = (
   filters: { name: string },
   fieldsToReturn: string
@@ -29,7 +29,6 @@ export const findSchoolByProperty = (
     .exec();
 };
 
-// @desc update a school by id
 export const modifySchool = (schoolId: string, school: NewSchool) => {
   return SchoolModel.findByIdAndUpdate(schoolId, school, {
     new: true,
@@ -37,7 +36,10 @@ export const modifySchool = (schoolId: string, school: NewSchool) => {
   });
 };
 
-// @desc delete a school by id
 export const removeSchool = (schoolId: string) => {
   return SchoolModel.findOneAndRemove({ _id: schoolId }).lean().exec();
+};
+
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
 };

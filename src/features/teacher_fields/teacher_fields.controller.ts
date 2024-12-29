@@ -10,7 +10,6 @@ import {
   findTeacherFieldByProperty,
   modifyFilterTeacherField,
   removeFilterTeacherField,
-  /* Services from other entities */
   findPopulateTeacherById,
   findPopulateFieldById,
 } from "./teacher_fields.services";
@@ -43,13 +42,15 @@ export const createTeacherField = async ({ body }: Request, res: Response) => {
   if (!teacherFound) {
     throw new NotFoundError("Please make sure the teacher exists");
   }
-  if (teacherFound.school_id?._id?.toString() !== school_id) {
+  if (teacherFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
       "Please make sure the teacher belongs to the school"
     );
   }
-  if (teacherFound.user_id.status !== "active") {
-    throw new BadRequestError(`The teacher is ${teacherFound.user_id.status}`);
+  if (teacherFound?.user_id?.status !== "active") {
+    throw new BadRequestError(
+      `The teacher status is ${teacherFound?.user_id?.status}`
+    );
   }
   /* find if the field already exists */
   const fieldsToReturnField = "-createdAt -updatedAt";
@@ -120,7 +121,7 @@ export const getTeacherField = async (
     fieldsToReturn
   );
   if (!teacherFieldFound) {
-    throw new NotFoundError("Teacher_Field not found");
+    throw new NotFoundError("TeacherField not found");
   }
   res.status(StatusCodes.OK).json({
     payload: teacherFieldFound,
@@ -223,9 +224,9 @@ export const deleteTeacherField = async (
   const teacherFiltersDelete = { school_id: school_id, _id: teacherFieldId };
   const fieldDeleted = await removeFilterTeacherField(teacherFiltersDelete);
   if (!fieldDeleted) {
-    throw new NotFoundError("Teacher_Field not deleted");
+    throw new NotFoundError("TeacherField not deleted");
   }
   res
     .status(StatusCodes.OK)
-    .json({ msg: "Teacher_Field deleted", success: true });
+    .json({ msg: "TeacherField deleted", success: true });
 };

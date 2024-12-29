@@ -9,14 +9,13 @@ import {
   findFilterAllSessions,
   modifyFilterSession,
   removeFilterSession,
-  /* Services from other entities */
   findPopulateGroupCoordinatorById,
   findPopulateSubjectById,
   findPopulateTeacherFieldById,
   findPopulateTeacherCoordinatorById,
 } from "./sessions.services";
 
-/* global controller reference */
+/* controller global variables */
 const maxMinutesInDay = 1439;
 
 export const createSession = async ({ body }: Request, res: Response) => {
@@ -37,7 +36,6 @@ export const createSession = async ({ body }: Request, res: Response) => {
   if (startTime > maxMinutesInDay) {
     throw new BadRequestError("The session start time must not exceed 23:00");
   }
-
   /* find if the groupCoordinator already exists */
   const fieldsToReturnGroupCoordinator = "-createdAt -updatedAt";
   const fieldsToPopulateGroupCoordinator = "school_id group_id coordinator_id";

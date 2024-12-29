@@ -11,7 +11,6 @@ import {
   findFilterFieldByProperty,
   modifyFilterField,
   removeFilterField,
-  /* Services from other entities */
   findSchoolById,
 } from "./fields.services";
 

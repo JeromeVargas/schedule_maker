@@ -10,11 +10,10 @@ import {
   findFilterAllTeachers,
   modifyFilterTeacher,
   removeFilterTeacher,
-  /* Services from other entities */
-  findPopulateFilterAllUsers,
+  findPopulateFilterUser,
 } from "./teachers.services";
 
-/* global controller reference */
+/* controller global variables */
 const maxHours = 70; // number of hours in a week
 
 export const createTeacher = async ({ body }: Request, res: Response) => {
@@ -68,7 +67,7 @@ export const createTeacher = async ({ body }: Request, res: Response) => {
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
   const userFieldsToReturnPopulate = "-createdAt -updatedAt";
-  const existingUser = await findPopulateFilterAllUsers(
+  const existingUser = await findPopulateFilterUser(
     userSearchCriteria,
     userFieldsToReturn,
     userFieldsToPopulate,
@@ -202,7 +201,7 @@ export const updateTeacher = async (
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
   const userFieldsToReturnPopulate = "-createdAt -updatedAt";
-  const existingUser = await findPopulateFilterAllUsers(
+  const existingUser = await findPopulateFilterUser(
     userSearchCriteria,
     userFieldsToReturn,
     userFieldsToPopulate,

@@ -4,7 +4,7 @@ import SchoolModel from "../schools/schoolModel";
 import { NewModule } from "../../typings/types";
 
 // CRUD services
-// @desc insert a module in database
+// @desc insert a module  
 // @params module
 const insertModule = (module: NewModule) => {
   const moduleInsert = ModuleModel.create(module);
@@ -74,7 +74,7 @@ const removeFilterModule = (filters: { school_id: string; _id: string }) => {
   return resourceDeleted;
 };
 
-/* Services from other entities */
+ 
 // @desc find a school by id
 // @params schoolId, fieldsToReturn
 const findSchoolById = (schoolId: string, fieldsToReturn: string) => {

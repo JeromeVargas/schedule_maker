@@ -1,14 +1,21 @@
 import ScheduleModel from "../schedules/schedules.model";
 import BreakModel from "./breaks.model";
-import { NewBreak } from "../../typings/types";
+import SchoolModel from "../schools/schools.model";
+import { NewBreak, NewSchedule, NewSchool } from "../../typings/types";
 
-// CRUD services
-// @desc insert a break in database
+/* Breaks */
 export const insertBreak = (scheduleBreak: NewBreak) => {
   return BreakModel.create(scheduleBreak);
 };
 
-// @desc find all breaks by school id
+export const insertManyBreaks = (breaks: NewBreak[]) => {
+  return BreakModel.insertMany(breaks);
+};
+
+export const findAllBreaks = (fieldsToReturn: string) => {
+  return BreakModel.find().select(fieldsToReturn).lean().exec();
+};
+
 export const findFilterAllBreaks = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -16,7 +23,6 @@ export const findFilterAllBreaks = (
   return BreakModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a break by school id and break id
 export const findBreakByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
@@ -28,7 +34,6 @@ export const findBreakByProperty = (
     .exec();
 };
 
-// @desc update a break by school id and break id
 export const modifyFilterBreak = (
   filters: { _id: string; school_id: string },
   scheduleBreak: NewBreak
@@ -39,7 +44,6 @@ export const modifyFilterBreak = (
   });
 };
 
-// @desc delete a break by school id and break id
 export const removeFilterBreak = (filters: {
   school_id: string;
   _id: string;
@@ -47,8 +51,24 @@ export const removeFilterBreak = (filters: {
   return BreakModel.findOneAndDelete(filters).lean().exec();
 };
 
-/* Services from other entities */
-// @desc find a schedule by id and populate the embedded entities
+export const removeAllBreaks = () => {
+  return BreakModel.deleteMany();
+};
+
+/* Schools */
+export const insertSchool = (school: NewSchool) => {
+  return SchoolModel.create(school);
+};
+
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
+};
+
+export const removeAllSchedules = () => {
+  return ScheduleModel.deleteMany();
+};
+
+/* Schedules */
 export const findPopulateScheduleById = (
   scheduleId: string,
   fieldsToReturn: string,
@@ -60,4 +80,9 @@ export const findPopulateScheduleById = (
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
+};
+
+export const insertSchedule = (schedule: NewSchedule) => {
+  const scheduleInsert = ScheduleModel.create(schedule);
+  return scheduleInsert;
 };

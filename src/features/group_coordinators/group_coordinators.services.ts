@@ -1,17 +1,27 @@
 import GroupCoordinatorModel from "./group_coordinators.model";
-import { NewGroup_Coordinator } from "../../typings/types";
+import {
+  NewGroup,
+  NewGroupCoordinator,
+  NewSchool,
+  NewUser,
+} from "../../typings/types";
 import GroupModel from "../groups/groups.model";
 import UserModel from "../users/users.model";
+import SchoolModel from "../schools/schools.model";
 
-// CRUD services
-// @desc insert a teacher_field in database
+/* GroupCoordinators */
 export const insertGroupCoordinator = (
-  groupCoordinator: NewGroup_Coordinator
+  groupCoordinator: NewGroupCoordinator
 ) => {
   return GroupCoordinatorModel.create(groupCoordinator);
 };
 
-// @desc find all teacher_fields by school id
+export const insertManyGroupCoordinators = (
+  groupCoordinators: NewGroupCoordinator[]
+) => {
+  return GroupCoordinatorModel.insertMany(groupCoordinators);
+};
+
 export const findFilterAllGroupCoordinators = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -22,7 +32,6 @@ export const findFilterAllGroupCoordinators = (
     .exec();
 };
 
-// @desc find a teacher_field by teacher id, field id and school id
 export const findGroupCoordinatorByProperty = (
   filters:
     | { school_id: string; group_id: string; coordinator_id: string }
@@ -36,22 +45,9 @@ export const findGroupCoordinatorByProperty = (
     .exec();
 };
 
-// @desc find a teacher_field and filter by school_id, teacher_id and field_id
-export const findFilterGroupCoordinatorByProperty = (
-  filters: { school_id: string; teacher_id: string; field_id: string },
-  fieldsToReturn: string
-) => {
-  return GroupCoordinatorModel.find(filters)
-    .collation({ locale: "en", strength: 2 })
-    .select(fieldsToReturn)
-    .lean()
-    .exec();
-};
-
-// @desc update a teacher_field by some properties _id, school_id and teacher_id
 export const modifyFilterGroupCoordinator = (
   filters: { _id: string; school_id: string; group_id: string },
-  groupCoordinator: NewGroup_Coordinator
+  groupCoordinator: NewGroupCoordinator
 ) => {
   return GroupCoordinatorModel.findOneAndUpdate(filters, groupCoordinator, {
     new: true,
@@ -59,7 +55,6 @@ export const modifyFilterGroupCoordinator = (
   });
 };
 
-// @desc delete a teacher_field by school_id and teacher field id
 export const removeFilterGroupCoordinator = (filters: {
   school_id: string;
   _id: string;
@@ -67,8 +62,25 @@ export const removeFilterGroupCoordinator = (filters: {
   return GroupCoordinatorModel.findOneAndDelete(filters).lean().exec();
 };
 
-/* Services from other entities */
-// @desc find a group by id and populate the embedded entities
+export const removeAllGroupCoordinators = () => {
+  return GroupCoordinatorModel.deleteMany();
+};
+
+/* Schools */
+export const insertSchool = (school: NewSchool) => {
+  return SchoolModel.create(school);
+};
+
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
+};
+
+/* Groups */
+export const insertGroup = (group: NewGroup) => {
+  const groupInsert = GroupModel.create(group);
+  return groupInsert;
+};
+
 export const findPopulateGroupById = (
   groupId: string,
   fieldsToReturn: string,
@@ -82,7 +94,10 @@ export const findPopulateGroupById = (
     .exec();
 };
 
-// @desc find a field by id and populate the embedded entities
+export const removeAllGroups = () => {
+  return GroupModel.deleteMany();
+};
+
 export const findPopulateCoordinatorById = (
   coordinatorId: string,
   fieldsToReturn: string,
@@ -94,4 +109,13 @@ export const findPopulateCoordinatorById = (
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
+};
+
+/* Users */
+export const insertUser = (user: NewUser) => {
+  return UserModel.create(user);
+};
+
+export const removeAllUsers = () => {
+  return UserModel.deleteMany();
 };

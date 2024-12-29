@@ -12,7 +12,6 @@ import {
   findGroupByProperty,
   modifyFilterGroup,
   removeFilterGroup,
-  /* Services from other entities */
   findPopulateLevelById,
 } from "./groups.services";
 

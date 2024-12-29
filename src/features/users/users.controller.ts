@@ -11,7 +11,6 @@ import {
   findUserByProperty,
   modifyFilterUser,
   removeFilterUser,
-  /* Services from other entities */
   findSchoolById,
 } from "./users.services";
 
@@ -30,7 +29,7 @@ export const createUser = async ({ body }: Request, res: Response) => {
     throw new ConflictError("Please create the school first");
   }
   /* check if the email is already in use */
-  const searchCriteria = { school_id, email };
+  const searchCriteria = { email };
   const fieldsToReturn = "-password -createdAt -updatedAt";
   const duplicateUserEmailFound = await findUserByProperty(
     searchCriteria,

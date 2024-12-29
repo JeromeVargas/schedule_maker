@@ -1,14 +1,17 @@
 Back end:
-// Todo --> type the entities params when need it instead of comments with params types
-// Todo --> refactor the test to not be attached to the implementation but the results, maybe use in-memory-mongo-db or something similar
-// Todo --> make sure populate does not go into production, maybe work on a file to be call on the terminal
+// Todo --> make all camelcase but the fileNames          
+// Todo --> check the dynamic router, use map instead of filter
 // Todo --> fix the issue with the ESmodules modules, maybe try something different from ts-node
+// Todo --> make sure populate does not go into production, maybe work on a file to be call on the terminal
 // Todo --> add prettier config and linter
 // Todo --> important: try to update packages; specially express validator, maybe use zod
+// Todo --> type the entities params when need it instead of comments with params types
+// Todo --> work on config for dot env variables, https://youtu.be/eQwMWIhTOow?feature=shared&t=545
 // Todo --> add csrf attack protection features:
     https://www.youtube.com/watch?v=CXSE89JGnek&ab_channel=AntonioSarosi
     https://www.youtube.com/watch?v=C9dvkIndTLA&t=1s&ab_channel=4tomik
 // Todo --> continue checking sanitization and overall security of the apis
+// Todo --> swagger documentation
 
 for later:
 
@@ -19,6 +22,7 @@ for later:
 // Todo --> on update check how the soft delete of the school affects other entities controllers, maybe just update users status
 // Todo --> make sure resources belong to the user/coordinator's school - school middleware
 // Todo --> not allow user/coordinator to update/delete other user/coordinator's info - coordinator middleware
+// Todo --> make sure you test the resource not create case when you move to postgres, maybe by not having the table define
 
 Front End
 

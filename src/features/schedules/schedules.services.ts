@@ -1,16 +1,18 @@
 import SchoolModel from "../schools/schools.model";
 import ScheduleModel from "./schedules.model";
-import { NewSchedule } from "../../typings/types";
+import { NewLevel, NewSchedule, NewSchool } from "../../typings/types";
 import LevelModel from "../levels/levels.model";
 
-// CRUD services
-// @desc insert a schedule in database
+/* Schedules */
 export const insertSchedule = (schedule: NewSchedule) => {
   const scheduleInsert = ScheduleModel.create(schedule);
   return scheduleInsert;
 };
 
-// @desc find all schedule by school id
+export const insertManySchedules = (schedules: NewSchedule[]) => {
+  return ScheduleModel.insertMany(schedules);
+};
+
 export const findFilterAllSchedules = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -18,7 +20,6 @@ export const findFilterAllSchedules = (
   return ScheduleModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a schedule by school id and name
 export const findScheduleByProperty = (
   filters:
     | { school_id: string; name: string }
@@ -32,7 +33,6 @@ export const findScheduleByProperty = (
     .exec();
 };
 
-// @desc find a schedule and filter by school id and name
 export const findFilterScheduleByProperty = (
   filters: { school_id: string; name: string },
   fieldsToReturn: string
@@ -44,7 +44,6 @@ export const findFilterScheduleByProperty = (
     .exec();
 };
 
-// @desc update a schedule by schedule id and school id
 export const modifyFilterSchedule = (
   filters: { _id: string; school_id: string },
   schedule: NewSchedule
@@ -55,7 +54,6 @@ export const modifyFilterSchedule = (
   });
 };
 
-// @desc delete a schedule
 export const removeFilterSchedule = (filters: {
   _id: string;
   school_id: string;
@@ -63,13 +61,28 @@ export const removeFilterSchedule = (filters: {
   return ScheduleModel.findOneAndDelete(filters).lean().exec();
 };
 
-/* Services from other entities */
-// @desc find a school by id
+export const removeAllSchedules = () => {
+  return ScheduleModel.deleteMany();
+};
+
+/* Schools */
+export const insertSchool = (school: NewSchool) => {
+  return SchoolModel.create(school);
+};
+
 export const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
   return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a school by id
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
+};
+
+/* Levels */
+export const insertLevel = (level: NewLevel) => {
+  return LevelModel.create(level);
+};
+
 export const findAllLevels = (filters: {
   school_id: string;
   schedule_id: string;

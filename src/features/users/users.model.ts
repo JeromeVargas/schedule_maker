@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 import {
-  Group_Coordinator,
-  Teacher_Coordinator,
-  Teacher_Field,
+  GroupCoordinator,
+  TeacherCoordinator,
+  TeacherField,
   User,
 } from "../../typings/types";
 import TeacherModel from "../teachers/teachers.model";
@@ -37,12 +37,12 @@ const UserSchema = new Schema<User>(
     },
     role: {
       type: String,
-      enum: ["headmaster", "coordinator", "teacher"],
+      enum: ["headmaster", "coordinator", "teacher", "student"],
       required: [true, "Please provide a role for the user"],
     },
     status: {
       type: String,
-      enum: ["active", "inactive", "on_leave"],
+      enum: ["active", "inactive", "leave"],
       required: [true, "Please provide a status for the user"],
     },
   },
@@ -71,7 +71,7 @@ UserSchema.pre(
       .lean()
       .exec();
     // get the teacher_coordinators
-    const findGroupCoordinators: Group_Coordinator[] =
+    const findGroupCoordinators: GroupCoordinator[] =
       await GroupCoordinatorModel.find({
         school_id: findUser?.school_id,
         coordinator_id: findUser?._id,
@@ -80,7 +80,7 @@ UserSchema.pre(
         .lean()
         .exec();
     // get the teacher_coordinators
-    const findTeacherCoordinators_teachers: Teacher_Coordinator[] =
+    const findTeacherCoordinators_teachers: TeacherCoordinator[] =
       await TeacherCoordinatorModel.find({
         school_id: findTeacher?.school_id,
         teacher_id: findTeacher?._id,
@@ -88,7 +88,7 @@ UserSchema.pre(
         .select("_id")
         .lean()
         .exec();
-    const findTeacherCoordinators_coordinators: Teacher_Coordinator[] =
+    const findTeacherCoordinators_coordinators: TeacherCoordinator[] =
       await TeacherCoordinatorModel.find({
         school_id: findUser?.school_id,
         coordinator_id: findUser?._id,
@@ -97,7 +97,7 @@ UserSchema.pre(
         .lean()
         .exec();
     // get the teacher_fields
-    const findTeacherFields: Teacher_Field[] = await TeacherFieldModel.find({
+    const findTeacherFields: TeacherField[] = await TeacherFieldModel.find({
       school_id: findUser?.school_id,
       teacher_id: findTeacher?._id,
     })

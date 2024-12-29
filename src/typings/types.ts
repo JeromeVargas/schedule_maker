@@ -1,9 +1,7 @@
-import { Types } from "mongoose";
-
-// school
+// School
 export type SchoolStatus = "active" | "inactive";
 export type School = {
-  _id: Types.ObjectId;
+  _id: string;
   name: string;
   groupMaxNumStudents: number;
   status: SchoolStatus;
@@ -12,27 +10,35 @@ export type School = {
 export type NewSchool = Omit<School, "_id">;
 
 // User
-export type Role = "headmaster" | "coordinator" | "teacher";
-export type UserStatus = "active" | "inactive" | "on_leave";
+export type UserRole = "headmaster" | "coordinator" | "teacher";
+export type UserStatus = "active" | "inactive" | "leave";
 
 export type User = {
-  _id: Types.ObjectId;
+  _id: string;
   school_id: School;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  role: Role;
+  role: UserRole;
   status: UserStatus;
 };
 
-export type NewUser = Omit<User, "_id">;
+export type NewUser = {
+  school_id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: UserRole;
+  status: UserStatus;
+};
 
-// teacher
+// Teacher
 export type ContractType = "full-time" | "part-time" | "substitute";
 
 export type Teacher = {
-  _id: Types.ObjectId;
+  _id: string;
   school_id: School;
   user_id: User;
   contractType: ContractType;
@@ -49,30 +55,52 @@ export type Teacher = {
   sunday: boolean;
 };
 
-export type NewTeacher = Omit<Teacher, "_id">;
+export type NewTeacher = {
+  school_id: string;
+  user_id: string;
+  contractType: ContractType;
+  teachingHoursAssignable: number;
+  teachingHoursAssigned: number;
+  adminHoursAssignable: number;
+  adminHoursAssigned: number;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
+};
 
-// field
+// Field
 export type Field = {
-  _id: Types.ObjectId;
+  _id: string;
   school_id: School;
   name: string;
 };
 
-export type NewField = Omit<Field, "_id">;
+export type NewField = {
+  school_id: string;
+  name: string;
+};
 
-// teacher_field
-export type Teacher_Field = {
-  _id: Types.ObjectId;
+// TeacherField
+export type TeacherField = {
+  _id: string;
   school_id: School;
   teacher_id: Teacher;
   field_id: Field;
 };
 
-export type NewTeacher_Field = Omit<Teacher_Field, "_id">;
+export type NewTeacherField = {
+  school_id: string;
+  teacher_id: string;
+  field_id: string;
+};
 
-// schedule
+// Schedule
 export type Schedule = {
-  _id: Types.ObjectId;
+  _id: string;
   school_id: School;
   name: string;
   dayStart: number;
@@ -87,53 +115,84 @@ export type Schedule = {
   sunday: boolean;
 };
 
-export type NewSchedule = Omit<Schedule, "_id">;
+export type NewSchedule = {
+  school_id: string;
+  name: string;
+  dayStart: number;
+  shiftNumberMinutes: number;
+  sessionUnitMinutes: number;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
+};
 
-// break
+// Break
 export type Break = {
-  _id: Types.ObjectId;
+  _id: string;
   school_id: School;
   schedule_id: Schedule;
   breakStart: number;
   numberMinutes: number;
 };
 
-export type NewBreak = Omit<Break, "_id">;
+export type NewBreak = {
+  school_id: string;
+  schedule_id: string;
+  breakStart: number;
+  numberMinutes: number;
+};
 
-// level
+// Level
 export type Level = {
-  _id: Types.ObjectId;
+  _id: string;
   school_id: School;
   schedule_id: Schedule;
   name: string;
 };
 
-export type NewLevel = Omit<Level, "_id">;
+export type NewLevel = {
+  school_id: string;
+  schedule_id: string;
+  name: string;
+};
 
-// group
+// Group
 export type Group = {
-  _id: Types.ObjectId;
+  _id: string;
   school_id: School;
   level_id: Level;
   name: string;
   numberStudents: number;
 };
 
-export type NewGroup = Omit<Group, "_id">;
+export type NewGroup = {
+  school_id: string;
+  level_id: string;
+  name: string;
+  numberStudents: number;
+};
 
-// group_coordinator
-export type Group_Coordinator = {
-  _id: Types.ObjectId;
+// GroupCoordinator
+export type GroupCoordinator = {
+  _id: string;
   school_id: School;
   group_id: Group;
   coordinator_id: User;
 };
 
-export type NewGroup_Coordinator = Omit<Group_Coordinator, "_id">;
+export type NewGroupCoordinator = {
+  school_id: string;
+  group_id: string;
+  coordinator_id: string;
+};
 
-// subject
+// Subject
 export type Subject = {
-  _id: Types.ObjectId;
+  _id: string;
   school_id: School;
   level_id: Level;
   field_id: Field;
@@ -142,31 +201,53 @@ export type Subject = {
   frequency: number;
 };
 
-export type NewSubject = Omit<Subject, "_id">;
+export type NewSubject = {
+  school_id: string;
+  level_id: string;
+  field_id: string;
+  name: string;
+  sessionUnits: number;
+  frequency: number;
+};
 
-// teacher_coordinator
-export type Teacher_Coordinator = {
-  _id: Types.ObjectId;
+// TeacherCoordinator
+export type TeacherCoordinator = {
+  _id: string;
   school_id: School;
   teacher_id: Teacher;
   coordinator_id: User;
 };
 
-export type NewTeacher_Coordinator = Omit<Teacher_Coordinator, "_id">;
+export type NewTeacherCoordinator = {
+  school_id: string;
+  teacher_id: string;
+  coordinator_id: string;
+};
 
-// session
+// Session
 export type Session = {
-  _id: Types.ObjectId;
+  _id: string;
   school_id: School;
   level_id: Level;
   group_id: Group;
-  groupCoordinator_id: Group_Coordinator;
-  teacherCoordinator_id: Teacher_Coordinator;
-  teacherField_id: Teacher_Field;
+  groupCoordinator_id: GroupCoordinator;
+  teacherCoordinator_id: TeacherCoordinator;
+  teacherField_id: TeacherField;
   subject_id: Group;
   startTime: number;
   groupScheduleSlot: number;
   teacherScheduleSlot: number;
 };
 
-export type NewSession = Omit<Session, "_id">;
+export type NewSession = {
+  school_id: string;
+  level_id: string;
+  group_id: string;
+  groupCoordinator_id: string;
+  teacherCoordinator_id: string;
+  teacherField_id: string;
+  subject_id: string;
+  startTime: number;
+  groupScheduleSlot: number;
+  teacherScheduleSlot: number;
+};

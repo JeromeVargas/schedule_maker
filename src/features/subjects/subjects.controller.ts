@@ -12,7 +12,6 @@ import {
   findFilterSubjectByProperty,
   modifyFilterSubject,
   removeFilterSubject,
-  /* Services from other entities */
   findPopulateLevelById,
   findPopulateFieldById,
 } from "./subjects.services";

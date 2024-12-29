@@ -9,7 +9,6 @@ import {
   findFilterAllBreaks,
   modifyFilterBreak,
   removeFilterBreak,
-  /* Services from other entities */
   findPopulateScheduleById,
 } from "./breaks.services";
 

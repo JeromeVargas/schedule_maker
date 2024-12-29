@@ -10,7 +10,6 @@ import {
   findTeacherCoordinatorByProperty,
   modifyFilterTeacherCoordinator,
   removeFilterTeacherCoordinator,
-  /* Services from other entities */
   findPopulateTeacherById,
   findPopulateCoordinatorById,
 } from "./teacher_coordinators.services";
@@ -75,7 +74,6 @@ export const createTeacherCoordinator = async (
   if (coordinatorFound?.status !== "active") {
     throw new BadRequestError("Please pass an active coordinator");
   }
-
   /* create the teacher_field record */
   const newTeacherCoordinator = {
     school_id: school_id,

@@ -10,7 +10,6 @@ import {
   findGroupCoordinatorByProperty,
   modifyFilterGroupCoordinator,
   removeFilterGroupCoordinator,
-  /* Services from other entities */
   findPopulateGroupById,
   findPopulateCoordinatorById,
 } from "./group_coordinators.services";
@@ -75,7 +74,6 @@ export const createGroupCoordinator = async (
   if (coordinatorFound?.status !== "active") {
     throw new BadRequestError("Please pass an active coordinator");
   }
-
   /* create the teacher_field record */
   const newGroupCoordinator = {
     school_id: school_id,

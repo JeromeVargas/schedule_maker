@@ -11,14 +11,13 @@ import {
   findFilterScheduleByProperty,
   modifyFilterSchedule,
   removeFilterSchedule,
-  /* Services from other entities */
   findSchoolById,
   findAllLevels,
 } from "./schedules.services";
 
 import { Schedule } from "../../typings/types";
 
-/* global controller reference */
+/* controller global variables */
 const maxMinutesInDay = 1439;
 
 export const createSchedule = async ({ body }: Request, res: Response) => {

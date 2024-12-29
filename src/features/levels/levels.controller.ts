@@ -10,7 +10,6 @@ import {
   findFilterAllLevels,
   findLevelByProperty,
   findFilterLevelByProperty,
-  /* Services from other entities */
   findPopulateScheduleById,
   modifyFilterLevel,
   removeFilterLevel,

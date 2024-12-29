@@ -1,136 +1,53 @@
+import mongoose, { Types } from "mongoose";
 import supertest from "supertest";
-import { Types } from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 import { server, connection } from "../../../server";
-
-import * as levelServices from "../levels.services";
-
 import { BASE_URL } from "../../../lib/router";
+import {
+  insertLevel,
+  insertManyLevels,
+  insertSchedule,
+  insertSchool,
+  removeAllLevels,
+  removeAllSchedules,
+  removeAllSchools,
+} from "../levels.services";
 
-import type { Level } from "../../../typings/types";
-
-type Service =
-  | "insertLevel"
-  | "findFilterAllLevels"
-  | "findLevelByProperty"
-  | "findFilterLevelByProperty"
-  | "findPopulateLevelById"
-  | "modifyFilterLevel"
-  | "removeFilterLevel"
-  | "findPopulateScheduleById";
+import { SchoolStatus } from "../../../typings/types";
 
 describe("Resource => LEVEL", () => {
-  /* mock services */
-  // just one return
-  const mockService = (payload: any, service: Service) => {
-    return jest.spyOn(levelServices, service).mockReturnValue(payload);
-  };
-
   /* hooks */
-  afterAll(() => {
+  afterEach(async () => {
+    await removeAllLevels;
+    await removeAllSchools();
+    await removeAllSchedules();
+  });
+  beforeAll(async () => {
+    const mongoServer = await MongoMemoryServer.create();
+    await mongoose.connect(mongoServer.getUri());
+  });
+  afterAll(async () => {
+    await mongoose.disconnect();
+    await mongoose.connection.close();
     connection.close();
   });
 
   /* end point url */
   const endPointUrl = `${BASE_URL}levels/`;
 
-  /* inputs */
-  const validMockLevelId = new Types.ObjectId().toString();
-  const validMockSchoolId = new Types.ObjectId().toString();
-  const validMockScheduleId = new Types.ObjectId().toString();
-  const otherValidMockId = new Types.ObjectId().toString();
-  const invalidMockId = "63c5dcac78b868f80035asdf";
-  const newLevel = {
-    school_id: validMockSchoolId,
-    schedule_id: validMockScheduleId,
-    name: "Level 001",
-  };
-  const newLevelMissingValues = {
-    school_i: validMockSchoolId,
-    schedule_i: validMockScheduleId,
-    nam: "Level 001",
-  };
-  const newLevelEmptyValues = {
-    school_id: "",
-    schedule_id: "",
-    name: "",
-  };
-  const newLevelNotValidDataTypes = {
-    school_id: invalidMockId,
-    schedule_id: invalidMockId,
-    name: 1234567890,
-  };
-  const newLevelWrongLengthValues = {
-    school_id: validMockSchoolId,
-    schedule_id: validMockScheduleId,
-    name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-  };
-
-  /* payloads */
-  const levelPayload = {
-    _id: validMockLevelId,
-    school_id: validMockSchoolId,
-    schedule_id: validMockScheduleId,
-    name: "Level 001",
-  };
-  const levelNullPayload = null;
-  const schoolPayload = {
-    _id: validMockSchoolId,
-    name: "School 001",
-    groupMaxNumberStudents: 40,
-  };
-  const schedulePayload = {
-    _id: validMockScheduleId,
-    school_id: schoolPayload,
-    name: "Schedule 001",
-    dayStart: 420,
-    shiftNumberMinutes: 360,
-    sessionUnitMinutes: 40,
-    monday: true,
-    tuesday: true,
-    wednesday: true,
-    thursday: true,
-    friday: true,
-    saturday: true,
-    sunday: true,
-  };
-  const scheduleNullPayload = null;
-  const levelsPayload = [
-    {
-      _id: new Types.ObjectId().toString(),
-      school_id: new Types.ObjectId().toString(),
-      schedule_id: new Types.ObjectId().toString(),
-      name: "Mathematics",
-    },
-    {
-      _id: new Types.ObjectId().toString(),
-      school_id: new Types.ObjectId().toString(),
-      schedule_id: new Types.ObjectId().toString(),
-      name: "Language",
-    },
-    {
-      _id: new Types.ObjectId().toString(),
-      school_id: new Types.ObjectId().toString(),
-      schedule_id: new Types.ObjectId().toString(),
-      name: "Physics",
-    },
-  ];
-  const levelsNullPayload: Level[] = [];
-
   // test blocks
   describe("LEVEL - POST", () => {
     describe("POST - /levels - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelNullPayload,
-          "findLevelByProperty"
-        );
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const insertLevelService = mockService(levelNullPayload, "insertLevel");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevelMissingValues = {
+          school_i: validMockSchoolId,
+          schedule_i: validMockScheduleId,
+          nam: "Level 001",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -159,36 +76,16 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalledWith(
-          {
-            school_id: newLevelMissingValues.school_i,
-            name: newLevelMissingValues.nam,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevelMissingValues.schedule_i,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertLevelService).not.toHaveBeenCalledWith(
-          newLevelMissingValues
-        );
       });
     });
     describe("POST - /levels - Passing fields with empty values", () => {
       it("should return an empty fields error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelNullPayload,
-          "findLevelByProperty"
-        );
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const insertLevelService = mockService(levelNullPayload, "insertLevel");
+        // inputs
+        const newLevelEmptyValues = {
+          school_id: "",
+          schedule_id: "",
+          name: "",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -220,34 +117,17 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalledWith(
-          {
-            school_id: newLevelEmptyValues.school_id,
-            name: newLevelEmptyValues.name,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevelEmptyValues.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertLevelService).not.toHaveBeenCalledWith(newLevel);
       });
     });
     describe("POST - /levels - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelNullPayload,
-          "findLevelByProperty"
-        );
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const insertLevelService = mockService(levelNullPayload, "insertLevel");
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+        const newLevelNotValidDataTypes = {
+          school_id: invalidMockId,
+          schedule_id: invalidMockId,
+          name: 1234567890,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -279,36 +159,18 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalledWith(
-          {
-            school_id: newLevelNotValidDataTypes.school_id,
-            name: newLevelNotValidDataTypes.name,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevelNotValidDataTypes.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertLevelService).not.toHaveBeenCalledWith(
-          newLevelNotValidDataTypes
-        );
       });
     });
     describe("POST - /levels - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelNullPayload,
-          "findLevelByProperty"
-        );
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const insertLevelService = mockService(levelNullPayload, "insertLevel");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevelWrongLengthValues = {
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -329,36 +191,21 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalledWith(
-          {
-            school_id: newLevelWrongLengthValues.school_id,
-            name: newLevelWrongLengthValues.name,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevelWrongLengthValues.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertLevelService).not.toHaveBeenCalledWith(
-          newLevelWrongLengthValues
-        );
       });
     });
     describe("POST - /levels - Passing a duplicate level name value", () => {
       it("should return an duplicate value error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelPayload,
-          "findLevelByProperty"
-        );
-        const findSchedule = mockService(
-          schedulePayload,
-          "findPopulateScheduleById"
-        );
-        const insertLevelService = mockService(levelPayload, "insertLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevel = {
+          _id: validMockLevelId,
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
+        await insertLevel(newLevel);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -371,31 +218,18 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: newLevel.school_id, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertLevelService).not.toHaveBeenCalledWith(newLevel);
       });
     });
     describe("POST - /levels - Passing a non-existent schedule in the body", () => {
       it("should return a non-existent schedule error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelNullPayload,
-          "findLevelByProperty"
-        );
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const insertLevelService = mockService(levelPayload, "insertLevel");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevel = {
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -408,68 +242,35 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: newLevel.school_id, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertLevelService).not.toHaveBeenCalledWith(newLevel);
       });
     });
     describe("POST - /levels - Passing a non matching school id", () => {
       it("should return a non matching school id error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelNullPayload,
-          "findLevelByProperty"
-        );
-        const findSchedule = mockService(
-          schedulePayload,
-          "findPopulateScheduleById"
-        );
-        const insertLevelService = mockService(levelNullPayload, "insertLevel");
-
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .post(`${endPointUrl}`)
-          .send({ ...newLevel, school_id: otherValidMockId });
-
-        // assertions
-        expect(body).toStrictEqual({
-          msg: "Please make sure the schedule belongs to the school",
-          success: false,
-        });
-        expect(statusCode).toBe(400);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: otherValidMockId, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertLevelService).not.toHaveBeenCalledWith(newLevel);
-      });
-    });
-    describe("POST - /levels - Passing a level but not being created", () => {
-      it("should not create a field", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelNullPayload,
-          "findLevelByProperty"
-        );
-        const findSchedule = mockService(
-          schedulePayload,
-          "findPopulateScheduleById"
-        );
-        const insertLevelService = mockService(levelNullPayload, "insertLevel");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const otherValidMockId = new Types.ObjectId().toString();
+        const newSchedule = {
+          _id: validMockScheduleId,
+          school_id: validMockSchoolId,
+          name: "Schedule 001",
+          dayStart: 1440,
+          shiftNumberMinutes: 360,
+          sessionUnitMinutes: 40,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertSchedule(newSchedule);
+        const newLevel = {
+          school_id: otherValidMockId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -478,35 +279,45 @@ describe("Resource => LEVEL", () => {
 
         // assertions
         expect(body).toStrictEqual({
-          msg: "Level not created!",
+          msg: "Please make sure the schedule belongs to the school",
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: newLevel.school_id, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertLevelService).toHaveBeenCalledWith(newLevel);
       });
     });
     describe("POST - /levels - Passing a level correctly to create", () => {
       it("should create a field", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelNullPayload,
-          "findLevelByProperty"
-        );
-        const findSchedule = mockService(
-          schedulePayload,
-          "findPopulateScheduleById"
-        );
-        const insertLevelService = mockService(levelPayload, "insertLevel");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newSchedule = {
+          _id: validMockScheduleId,
+          school_id: validMockSchoolId,
+          name: "Schedule 001",
+          dayStart: 1440,
+          shiftNumberMinutes: 360,
+          sessionUnitMinutes: 40,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertSchedule(newSchedule);
+        const newLevel = {
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -519,17 +330,6 @@ describe("Resource => LEVEL", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: newLevel.school_id, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(insertLevelService).toHaveBeenCalledWith(newLevel);
       });
     });
   });
@@ -537,13 +337,8 @@ describe("Resource => LEVEL", () => {
   describe("LEVEL - GET", () => {
     describe("GET - /levels - Passing missing fields", () => {
       it("should return a missing values error", async () => {
-        // mock services
-        const findLevels = mockService(
-          levelsNullPayload,
-          "findFilterAllLevels"
-        );
-
         // api call
+        const validMockSchoolId = new Types.ObjectId().toString();
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}`)
           .send({ school_i: validMockSchoolId });
@@ -560,20 +355,10 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findLevels).not.toHaveBeenCalledWith(
-          { school_id: null },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /levels - passing fields with empty values", () => {
       it("should return an empty values error", async () => {
-        // mock services
-        const findLevels = mockService(
-          levelsNullPayload,
-          "findFilterAllLevels"
-        );
-
         // api call
         const { statusCode, body } = await supertest(server)
           .get(`${endPointUrl}`)
@@ -592,19 +377,12 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findLevels).not.toHaveBeenCalledWith(
-          { school_id: "" },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /levels - passing invalid ids", () => {
       it("should return an invalid id error", async () => {
-        // mock services
-        const findLevels = mockService(
-          levelsNullPayload,
-          "findFilterAllLevels"
-        );
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -624,19 +402,12 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findLevels).not.toHaveBeenCalledWith(
-          { school_id: invalidMockId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /levels - Requesting all levels but not finding any", () => {
       it("should not get any fields", async () => {
-        // mock services
-        const findLevels = mockService(
-          levelsNullPayload,
-          "findFilterAllLevels"
-        );
+        // inputs
+        const otherValidMockId = new Types.ObjectId().toString();
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -649,16 +420,33 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findLevels).toHaveBeenCalledWith(
-          { school_id: otherValidMockId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /levels - Requesting all levels correctly", () => {
       it("should get all fields", async () => {
-        // mock services
-        const findLevels = mockService(levelsPayload, "findFilterAllLevels");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newLevels = [
+          {
+            _id: new Types.ObjectId().toString(),
+            school_id: validMockSchoolId,
+            schedule_id: new Types.ObjectId().toString(),
+            name: "Mathematics",
+          },
+          {
+            _id: new Types.ObjectId().toString(),
+            school_id: validMockSchoolId,
+            schedule_id: new Types.ObjectId().toString(),
+            name: "Language",
+          },
+          {
+            _id: new Types.ObjectId().toString(),
+            school_id: validMockSchoolId,
+            schedule_id: new Types.ObjectId().toString(),
+            name: "Physics",
+          },
+        ];
+        await insertManyLevels(newLevels);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -666,18 +454,15 @@ describe("Resource => LEVEL", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ payload: levelsPayload, success: true });
+        expect(body).toStrictEqual({ payload: newLevels, success: true });
         expect(statusCode).toBe(200);
-        expect(findLevels).toHaveBeenCalledWith(
-          { school_id: validMockSchoolId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /levels/:id - Passing missing fields", () => {
       it("should return a missing values error", async () => {
-        // mock services
-        const findLevel = mockService(levelNullPayload, "findLevelByProperty");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -696,16 +481,12 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findLevel).not.toHaveBeenCalledWith(
-          { school_id: null, _id: validMockLevelId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /levels/:id - Passing fields with empty values", () => {
       it("should return an empty values error", async () => {
-        // mock services
-        const findLevel = mockService(levelNullPayload, "findLevelByProperty");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -725,16 +506,12 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findLevel).not.toHaveBeenCalledWith(
-          { school_id: "", _id: validMockLevelId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /levels/:id - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
-        // mock services
-        const findLevel = mockService(levelNullPayload, "findLevelByProperty");
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -760,16 +537,13 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findLevel).not.toHaveBeenCalledWith(
-          { school_id: invalidMockId, _id: invalidMockId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /levels/:id - Requesting a level but not finding it", () => {
       it("should not get a school", async () => {
-        // mock services
-        const findLevel = mockService(levelNullPayload, "findLevelByProperty");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const otherValidMockId = new Types.ObjectId().toString();
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -782,16 +556,21 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(findLevel).toHaveBeenCalledWith(
-          { school_id: validMockSchoolId, _id: otherValidMockId },
-          "-createdAt -updatedAt"
-        );
       });
     });
     describe("GET - /levels/:id - Requesting a level correctly", () => {
       it("should get a field", async () => {
-        // mock services
-        const findLevel = mockService(levelPayload, "findLevelByProperty");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevel = {
+          _id: validMockLevelId,
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
+        await insertLevel(newLevel);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -799,12 +578,8 @@ describe("Resource => LEVEL", () => {
           .send({ school_id: validMockSchoolId });
 
         // assertions
-        expect(body).toStrictEqual({ payload: levelPayload, success: true });
+        expect(body).toStrictEqual({ payload: newLevel, success: true });
         expect(statusCode).toBe(200);
-        expect(findLevel).toHaveBeenCalledWith(
-          { school_id: validMockSchoolId, _id: validMockLevelId },
-          "-createdAt -updatedAt"
-        );
       });
     });
   });
@@ -812,16 +587,15 @@ describe("Resource => LEVEL", () => {
   describe("LEVEL - PUT", () => {
     describe("PUT - /levels/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelsNullPayload,
-          "findFilterLevelByProperty"
-        );
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const updateLevel = mockService(levelNullPayload, "modifyFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevelMissingValues = {
+          school_i: validMockSchoolId,
+          schedule_i: validMockScheduleId,
+          nam: "Level 001",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -850,37 +624,17 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalledWith(
-          {
-            school_id: newLevelMissingValues.school_i,
-            name: newLevelMissingValues.nam,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevelMissingValues.schedule_i,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateLevel).not.toHaveBeenCalledWith(
-          { _id: validMockLevelId, school_id: newLevelMissingValues.school_i },
-          newLevelMissingValues
-        );
       });
     });
     describe("PUT - /levels/:id - Passing fields with empty values", () => {
       it("should return an empty fields error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelsNullPayload,
-          "findFilterLevelByProperty"
-        );
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const updateLevel = mockService(levelNullPayload, "modifyFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const newLevelEmptyValues = {
+          school_id: "",
+          schedule_id: "",
+          name: "",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -912,37 +666,17 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalledWith(
-          {
-            school_id: newLevelEmptyValues.school_id,
-            name: newLevelEmptyValues.name,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevelEmptyValues.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateLevel).not.toHaveBeenCalledWith(
-          { _id: validMockLevelId, school_id: newLevelEmptyValues.school_id },
-          newLevelEmptyValues
-        );
       });
     });
     describe("PUT - /levels/:id - Passing an invalid type as a value", () => {
       it("should return a not valid value error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelsNullPayload,
-          "findFilterLevelByProperty"
-        );
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const updateLevel = mockService(levelNullPayload, "modifyFilterLevel");
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+        const newLevelNotValidDataTypes = {
+          school_id: invalidMockId,
+          schedule_id: invalidMockId,
+          name: 1234567890,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -980,37 +714,19 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalledWith(
-          {
-            school_id: newLevelNotValidDataTypes.school_id,
-            name: newLevelNotValidDataTypes.name,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevelNotValidDataTypes.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateLevel).not.toHaveBeenCalledWith(
-          { _id: invalidMockId, school_id: newLevelNotValidDataTypes },
-          newLevelNotValidDataTypes
-        );
       });
     });
     describe("PUT - /levels/:id - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelsNullPayload,
-          "findFilterLevelByProperty"
-        );
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const updateLevel = mockService(levelNullPayload, "modifyFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevelWrongLengthValues = {
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1031,40 +747,20 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).not.toHaveBeenCalledWith(
-          {
-            school_id: newLevelWrongLengthValues.school_id,
-            name: newLevelWrongLengthValues.name,
-          },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevelWrongLengthValues.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateLevel).not.toHaveBeenCalledWith(
-          {
-            _id: validMockLevelId,
-            school_id: newLevelWrongLengthValues.school_id,
-          },
-          newLevelWrongLengthValues
-        );
       });
     });
-    describe("PUT - /levels/:id - Passing a duplicate value", () => {
+    describe("PUT - /levels/:id - Passing a duplicate level name value", () => {
       it("should return an duplicate value error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelsPayload,
-          "findFilterLevelByProperty"
-        );
-        const findSchedule = mockService(
-          schedulePayload,
-          "findPopulateScheduleById"
-        );
-        const updateLevel = mockService(levelPayload, "modifyFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevel = {
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
+        await insertLevel(newLevel);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1077,31 +773,19 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: newLevel.school_id, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).not.toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateLevel).not.toHaveBeenCalledWith(
-          { _id: validMockLevelId, school_id: newLevel.school_id },
-          newLevel
-        );
       });
     });
     describe("PUT - /levels/:id - Passing a non-existent schedule in the body", () => {
       it("should return a non-existent schedule error", async () => {
-        // mock services
-        const duplicateLevelName = mockService([], "findFilterLevelByProperty");
-        const findSchedule = mockService(
-          scheduleNullPayload,
-          "findPopulateScheduleById"
-        );
-        const updateLevel = mockService(levelPayload, "modifyFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevel = {
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1114,39 +798,42 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: newLevel.school_id, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateLevel).not.toHaveBeenCalledWith(
-          { _id: validMockLevelId, school_id: newLevel.school_id },
-          newLevel
-        );
       });
     });
     describe("PUT - /levels/:id - Passing a non matching school id", () => {
       it("should return a non matching school id error", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelsNullPayload,
-          "findFilterLevelByProperty"
-        );
-        const findSchedule = mockService(
-          schedulePayload,
-          "findPopulateScheduleById"
-        );
-        const updateLevel = mockService(levelPayload, "modifyFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const otherValidMockId = new Types.ObjectId().toString();
+        const newSchedule = {
+          _id: validMockScheduleId,
+          school_id: validMockSchoolId,
+          name: "Schedule 001",
+          dayStart: 1440,
+          shiftNumberMinutes: 360,
+          sessionUnitMinutes: 40,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertSchedule(newSchedule);
+        const newLevel = {
+          _id: validMockLevelId,
+          school_id: otherValidMockId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockLevelId}`)
-          .send({ ...newLevel, school_id: otherValidMockId });
+          .send(newLevel);
 
         // assertions
         expect(body).toStrictEqual({
@@ -1154,34 +841,42 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: otherValidMockId, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateLevel).not.toHaveBeenCalledWith(
-          { _id: validMockLevelId, school_id: otherValidMockId },
-          newLevel
-        );
       });
     });
     describe("PUT - /levels/:id - Passing a level but not being updated", () => {
       it("should not update a field", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelsNullPayload,
-          "findFilterLevelByProperty"
-        );
-        const findSchedule = mockService(
-          schedulePayload,
-          "findPopulateScheduleById"
-        );
-        const updateLevel = mockService(levelNullPayload, "modifyFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newSchedule = {
+          _id: validMockScheduleId,
+          school_id: validMockSchoolId,
+          name: "Schedule 001",
+          dayStart: 1440,
+          shiftNumberMinutes: 360,
+          sessionUnitMinutes: 40,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertSchedule(newSchedule);
+        const newLevel = {
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1194,34 +889,44 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: newLevel.school_id, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateLevel).toHaveBeenCalledWith(
-          { _id: validMockLevelId, school_id: newLevel.school_id },
-          newLevel
-        );
       });
     });
     describe("PUT - /levels/:id - Passing a level correctly to update", () => {
       it("should update a level", async () => {
-        // mock services
-        const duplicateLevelName = mockService(
-          levelsNullPayload,
-          "findFilterLevelByProperty"
-        );
-        const findSchedule = mockService(
-          schedulePayload,
-          "findPopulateScheduleById"
-        );
-        const updateLevel = mockService(levelPayload, "modifyFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newSchedule = {
+          _id: validMockScheduleId,
+          school_id: validMockSchoolId,
+          name: "Schedule 001",
+          dayStart: 1440,
+          shiftNumberMinutes: 360,
+          sessionUnitMinutes: 40,
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        };
+        await insertSchedule(newSchedule);
+        const newLevel = {
+          _id: validMockLevelId,
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
+        await insertLevel(newLevel);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1234,20 +939,6 @@ describe("Resource => LEVEL", () => {
           success: true,
         });
         expect(statusCode).toBe(200);
-        expect(duplicateLevelName).toHaveBeenCalledWith(
-          { school_id: newLevel.school_id, name: newLevel.name },
-          "-createdAt -updatedAt"
-        );
-        expect(findSchedule).toHaveBeenCalledWith(
-          newLevel.schedule_id,
-          "-createdAt -updatedAt",
-          "school_id",
-          "-createdAt -updatedAt"
-        );
-        expect(updateLevel).toHaveBeenCalledWith(
-          { _id: validMockLevelId, school_id: newLevel.school_id },
-          newLevel
-        );
       });
     });
   });
@@ -1255,10 +946,9 @@ describe("Resource => LEVEL", () => {
   describe("LEVEL - DELETE", () => {
     describe("DELETE - /levels/:id - Passing missing fields", () => {
       it("should return a missing fields error", async () => {
-        // mock services
-        const deleteLevel = mockService(levelNullPayload, "removeFilterLevel");
-
-        // api call
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockLevelId = new Types.ObjectId().toString();
         const { statusCode, body } = await supertest(server)
           .delete(`${endPointUrl}${validMockLevelId}`)
           .send({ school_i: validMockSchoolId });
@@ -1275,16 +965,12 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteLevel).not.toHaveBeenCalledWith({
-          school_id: null,
-          _id: validMockLevelId,
-        });
       });
     });
     describe("DELETE - /levels/:id - Passing fields with empty values", () => {
       it("should return a empty fields error", async () => {
-        // mock services
-        const deleteLevel = mockService(levelNullPayload, "removeFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1304,16 +990,12 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteLevel).not.toHaveBeenCalledWith({
-          school_id: "",
-          _id: validMockLevelId,
-        });
       });
     });
     describe("DELETE - /levels/:id - Passing invalid ids", () => {
       it("should return an invalid id error", async () => {
-        // mock services
-        const deleteLevel = mockService(levelNullPayload, "removeFilterLevel");
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1339,17 +1021,13 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteLevel).not.toHaveBeenCalledWith({
-          school_id: invalidMockId,
-          _id: invalidMockId,
-        });
       });
     });
-
     describe("DELETE - /levels/:id - Passing a level id but not deleting it", () => {
       it("should not delete a school", async () => {
-        // mock services
-        const deleteLevel = mockService(levelNullPayload, "removeFilterLevel");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const otherValidMockId = new Types.ObjectId().toString();
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1362,16 +1040,21 @@ describe("Resource => LEVEL", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteLevel).toHaveBeenCalledWith({
-          school_id: validMockSchoolId,
-          _id: otherValidMockId,
-        });
       });
     });
     describe("DELETE - /levels/:id - Passing a level id correctly to delete", () => {
       it("should delete a field", async () => {
-        // mock services
-        const deleteLevel = mockService(levelPayload, "removeFilterLevel");
+        // inputs
+        const validMockLevelId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockScheduleId = new Types.ObjectId().toString();
+        const newLevel = {
+          _id: validMockLevelId,
+          school_id: validMockSchoolId,
+          schedule_id: validMockScheduleId,
+          name: "Level 001",
+        };
+        await insertLevel(newLevel);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1381,10 +1064,6 @@ describe("Resource => LEVEL", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "Level deleted", success: true });
         expect(statusCode).toBe(200);
-        expect(deleteLevel).toHaveBeenCalledWith({
-          school_id: validMockSchoolId,
-          _id: validMockLevelId,
-        });
       });
     });
   });
