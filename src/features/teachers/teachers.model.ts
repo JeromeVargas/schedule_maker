@@ -1,9 +1,5 @@
 import { Schema, model } from "mongoose";
-import {
-  Teacher,
-  Teacher_Coordinator,
-  Teacher_Field,
-} from "../../typings/types";
+import { Teacher, TeacherCoordinator, TeacherField } from "../../typings/types";
 import TeacherFieldModel from "../teacher_fields/teacher_fields.model";
 import TeacherCoordinatorModel from "../teacher_coordinators/teacher_coordinators.model";
 import SessionModel from "../sessions/sessions.model";
@@ -100,7 +96,7 @@ TeacherSchema.pre(
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
     // get the teacher_fields
-    const findTeacherFields: Teacher_Field[] = await TeacherFieldModel.find({
+    const findTeacherFields: TeacherField[] = await TeacherFieldModel.find({
       school_id: findTeacher?.school_id,
       teacher_id: findTeacher?._id,
     })
@@ -108,7 +104,7 @@ TeacherSchema.pre(
       .lean()
       .exec();
     // get the teacher_coordinators
-    const findTeacherCoordinators: Teacher_Coordinator[] =
+    const findTeacherCoordinators: TeacherCoordinator[] =
       await TeacherCoordinatorModel.find({
         school_id: findTeacher?.school_id,
         teacher_id: findTeacher?._id,

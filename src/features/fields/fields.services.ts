@@ -1,16 +1,16 @@
-import { NewField } from "../../typings/types";
+import { NewField, NewSchool } from "../../typings/types";
 import SchoolModel from "../schools/schools.model";
 import FieldModel from "./fields.model";
 
-// CRUD services
-// @desc insert a field in database
-// @params Field
+/* Fields */
 export const insertField = (field: NewField) => {
   return FieldModel.create(field);
 };
 
-// @desc find all fields by school id
-// @params filters, fields to return
+export const insertManyFields = (fields: NewField[]) => {
+  return FieldModel.insertMany(fields);
+};
+
 export const findFilterAllFields = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -18,8 +18,6 @@ export const findFilterAllFields = (
   return FieldModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a field by school id and name or school id and field id
-// @params Field, fields to return
 export const findFieldByProperty = (
   filters:
     | { school_id: string; name: string }
@@ -33,8 +31,6 @@ export const findFieldByProperty = (
     .exec();
 };
 
-// @desc find and filter a field by school id and name
-// @params filters, fields to return
 export const findFilterFieldByProperty = (
   filters: { school_id: string; name: string },
   fieldsToReturn: string
@@ -46,8 +42,6 @@ export const findFilterFieldByProperty = (
     .exec();
 };
 
-// @desc update a field by school id and field id
-// @params resourceId, Field
 export const modifyFilterField = (
   filters: { school_id: string; _id: string },
   field: NewField
@@ -58,8 +52,6 @@ export const modifyFilterField = (
   });
 };
 
-// @desc delete a field by school id and field id
-// @params filters
 export const removeFilterField = (filters: {
   school_id: string;
   _id: string;
@@ -67,9 +59,19 @@ export const removeFilterField = (filters: {
   return FieldModel.findOneAndDelete(filters).lean().exec();
 };
 
-/* Services from other entities */
-// @desc find a school by id
-// @params schoolId, fields to return
+export const removeAllFields = () => {
+  return FieldModel.deleteMany();
+};
+
+/* Schools */
+export const insertSchool = (school: NewSchool) => {
+  return SchoolModel.create(school);
+};
+
 export const findSchoolById = (schoolId: string, fieldsToReturn: string) => {
   return SchoolModel.findById(schoolId).select(fieldsToReturn).lean().exec();
+};
+
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
 };

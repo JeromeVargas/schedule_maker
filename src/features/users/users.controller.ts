@@ -11,14 +11,9 @@ import {
   findUserByProperty,
   modifyFilterUser,
   removeFilterUser,
-  /* Services from other entities */
   findSchoolById,
 } from "./users.services";
 
-// @desc create a user
-// @route POST /api/v?/users
-// @access Private
-// @fields: body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], role:[string], status:[string]}
 export const createUser = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, firstName, lastName, email, password, role, status } =
@@ -34,7 +29,7 @@ export const createUser = async ({ body }: Request, res: Response) => {
     throw new ConflictError("Please create the school first");
   }
   /* check if the email is already in use */
-  const searchCriteria = { school_id, email };
+  const searchCriteria = { email };
   const fieldsToReturn = "-password -createdAt -updatedAt";
   const duplicateUserEmailFound = await findUserByProperty(
     searchCriteria,
@@ -64,10 +59,6 @@ export const createUser = async ({ body }: Request, res: Response) => {
     .json({ msg: "User created successfully!", success: true });
 };
 
-// @desc get all the users
-// @route GET /api/v?/users
-// @access Private
-// @fields: body: {school_id:[string]}
 export const getUsers = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -85,10 +76,6 @@ export const getUsers = async ({ body }: Request, res: Response) => {
   });
 };
 
-// @desc get the user by id
-// @route GET /api/v?/users/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getUser = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
@@ -106,10 +93,6 @@ export const getUser = async ({ params, body }: Request, res: Response) => {
   });
 };
 
-// @desc update a user
-// @route PUT /api/v?/users/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {firstName:[string], lastName:[string], school_id:[string], email:[string], password:[string], password:[string], role:[string], status:[string]}
 export const updateUser = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: userId } = params;
@@ -145,10 +128,6 @@ export const updateUser = async ({ params, body }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ msg: "User updated", success: true });
 };
 
-// @desc delete a user
-// @route DELETE /api/v?/users/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteUser = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: userId } = params;

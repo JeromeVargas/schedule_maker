@@ -1,106 +1,46 @@
+import mongoose, { Types } from "mongoose";
 import supertest from "supertest";
-import { Types } from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 import { server, connection } from "../../../server";
-import * as schoolServices from "../schools.services";
-
 import { BASE_URL } from "../../../lib/router";
+import {
+  findAllSchools,
+  insertManySchools,
+  insertSchool,
+  removeAllSchools,
+} from "../schools.services";
 
-import type { School } from "../../../typings/types";
+import { NewSchool, School, SchoolStatus } from "../../../typings/types";
 
-type Service =
-  | "insertSchool"
-  | "findAllSchools"
-  | "findSchoolById"
-  | "findSchoolByProperty"
-  | "modifySchool"
-  | "removeSchool";
-
-describe("RESOURCE => School", () => {
-  /* mock services */
-  // just one return
-  const mockService = (payload: any, service: Service) => {
-    return jest.spyOn(schoolServices, service).mockReturnValue(payload);
-  };
-
+describe("RESOURCE => SCHOOLS", () => {
   /* hooks */
-  afterAll(() => {
+  afterEach(async () => {
+    await removeAllSchools();
+  });
+  beforeAll(async () => {
+    const mongoServer = await MongoMemoryServer.create();
+    await mongoose.connect(mongoServer.getUri());
+  });
+  afterAll(async () => {
+    await mongoose.disconnect();
+    await mongoose.connection.close();
     connection.close();
   });
 
   /* end point url */
   const endPointUrl = `${BASE_URL}schools/`;
 
-  /* inputs */
-  const validMockSchoolId = new Types.ObjectId().toString();
-  const otherValidMockId = new Types.ObjectId().toString();
-  const invalidMockId = "63c5dcac78b868f80035asdf";
-  const newSchool = {
-    name: "school 001",
-    groupMaxNumStudents: 40,
-    status: "active",
-  };
-  const newSchoolMissingValues = {
-    nam: "school 001",
-    groupMaxNumStudent: 40,
-    statu: "active",
-  };
-  const newSchoolEmptyValues = {
-    name: "",
-    groupMaxNumStudents: "",
-    status: "",
-  };
-  const newSchoolNotValidDataTypes = {
-    name: 1234567890,
-    groupMaxNumStudents: "hello",
-    status: 123456789,
-  };
-  const newSchoolWrongLengthValues = {
-    name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-    groupMaxNumStudents: 1234567890,
-    status: "active",
-  };
-
-  /* payloads */
-  const schoolPayload = {
-    _id: validMockSchoolId,
-    name: "school 001",
-    groupMaxNumStudents: 40,
-    status: "active",
-  };
-  const schoolNullPayload = null;
-  const schoolsPayload = [
-    {
-      _id: new Types.ObjectId().toString(),
-      name: "school 001",
-      groupMaxNumStudents: 40,
-      status: "active",
-    },
-    {
-      _id: new Types.ObjectId().toString(),
-      name: "school 002",
-      groupMaxNumStudents: 40,
-      status: "active",
-    },
-    {
-      _id: new Types.ObjectId().toString(),
-      name: "school 003",
-      groupMaxNumStudents: 40,
-      status: "inactive",
-    },
-  ];
-  const schoolsNullPayload: School[] = [];
-
   // test blocks
-  describe("POST /school ", () => {
-    describe("school::post::01 - Passing a school with missing fields", () => {
+  describe("SCHOOLS - POST", () => {
+    describe("POST - /schools - Passing a school with missing fields", () => {
       it("should return a field needed error", async () => {
-        // mock services
-        const duplicateSchoolName = mockService(
-          schoolNullPayload,
-          "findSchoolByProperty"
-        );
-        const insertSchool = mockService(schoolNullPayload, "insertSchool");
+        // inputs
+        const newSchoolMissingValues = {
+          nam: "school 001",
+          groupMaxNumStudent: 40,
+          statu: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -128,25 +68,17 @@ describe("RESOURCE => School", () => {
           ],
           success: false,
         });
-
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
-        expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-          { name: newSchoolMissingValues.nam },
-          "-createdAt -updatedAt"
-        );
-        expect(insertSchool).not.toHaveBeenCalled();
-        expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::02 - Passing a school with empty fields", () => {
+    describe("POST - /schools - Passing a school with empty fields", () => {
       it("should return an empty field error", async () => {
-        // mock services
-        const duplicateSchoolName = mockService(
-          schoolNullPayload,
-          "findSchoolByProperty"
-        );
-        const insertSchool = mockService(schoolNullPayload, "insertSchool");
+        // inputs
+        const newSchoolEmptyValues = {
+          name: "",
+          groupMaxNumStudents: "",
+          status: "",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -178,23 +110,16 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
-        expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-          { name: newSchoolEmptyValues.name },
-          "-createdAt -updatedAt"
-        );
-        expect(insertSchool).not.toHaveBeenCalled();
-        expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::03 - Passing an invalid type as field value", () => {
+    describe("POST - /schools - Passing an invalid type as field value", () => {
       it("should return a not valid type error", async () => {
-        // mock services
-        const duplicateSchoolName = mockService(
-          schoolNullPayload,
-          "findSchoolByProperty"
-        );
-        const insertSchool = mockService(schoolNullPayload, "insertSchool");
+        // inputs
+        const newSchoolNotValidDataTypes = {
+          name: 1234567890,
+          groupMaxNumStudents: "hello",
+          status: 123456789,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -226,23 +151,16 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
-        expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-          { name: newSchoolNotValidDataTypes.name },
-          "-createdAt -updatedAt"
-        );
-        expect(insertSchool).not.toHaveBeenCalled();
-        expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::04 - Passing too long or short input values", () => {
+    describe("POST - /schools - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
-        // mock services
-        const duplicateSchoolName = mockService(
-          schoolNullPayload,
-          "findSchoolByProperty"
-        );
-        const insertSchool = mockService(schoolNullPayload, "insertSchool");
+        // inputs
+        const newSchoolWrongLengthValues = {
+          name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+          groupMaxNumStudents: 1234567890,
+          status: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -269,28 +187,21 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
-        expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-          { name: newSchoolWrongLengthValues.name },
-          "-createdAt -updatedAt"
-        );
-        expect(insertSchool).not.toHaveBeenCalled();
-        expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::05 - Passing an invalid status value", () => {
+    describe("POST - /schools - Passing an invalid status value", () => {
       it("should return a duplicate school error", async () => {
-        // mock services
-        const duplicateSchoolName = mockService(
-          schoolNullPayload,
-          "findSchoolByProperty"
-        );
-        const insertSchool = mockService(schoolNullPayload, "insertSchool");
+        // inputs
+        const newSchool = {
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "hello",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
-          .send({ ...newSchool, status: "hello" });
+          .send(newSchool);
 
         // assertions
         expect(body).toStrictEqual({
@@ -305,23 +216,17 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).not.toHaveBeenCalled();
-        expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-          { name: newSchool.name },
-          "-createdAt -updatedAt"
-        );
-        expect(insertSchool).not.toHaveBeenCalled();
-        expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::06 - Passing an existing school name", () => {
+    describe("POST - /schools - Passing an existing school name", () => {
       it("should return a duplicate school error", async () => {
-        // mock services
-        const duplicateSchoolName = mockService(
-          schoolPayload,
-          "findSchoolByProperty"
-        );
-        const insertSchool = mockService(schoolNullPayload, "insertSchool");
+        // inputs
+        const newSchool: NewSchool = {
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active",
+        };
+        await insertSchool(newSchool);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -334,52 +239,16 @@ describe("RESOURCE => School", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateSchoolName).toHaveBeenCalled();
-        expect(duplicateSchoolName).toHaveBeenCalledWith(
-          { name: newSchool.name },
-          "-createdAt -updatedAt"
-        );
-        expect(insertSchool).not.toHaveBeenCalled();
-        expect(insertSchool).not.toHaveBeenCalledWith(newSchool, "school");
       });
     });
-    describe("school::post::07 - Passing a school but not being created", () => {
-      it("should not create a school", async () => {
-        // mock services
-        const duplicateSchoolName = mockService(
-          schoolNullPayload,
-          "findSchoolByProperty"
-        );
-        const insertSchool = mockService(schoolNullPayload, "insertSchool");
-
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .post(`${endPointUrl}`)
-          .send(newSchool);
-
-        // assertions
-        expect(body).toStrictEqual({
-          msg: "School not created",
-          success: false,
-        });
-        expect(statusCode).toBe(400);
-        expect(duplicateSchoolName).toHaveBeenCalled();
-        expect(duplicateSchoolName).toHaveBeenCalledWith(
-          { name: newSchool.name },
-          "-createdAt -updatedAt"
-        );
-        expect(insertSchool).toHaveBeenCalled();
-        expect(insertSchool).toHaveBeenCalledWith(newSchool);
-      });
-    });
-    describe("school::post::08 - Passing a school correctly to create", () => {
+    describe("POST - /schools - Passing a school correctly to create", () => {
       it("should create a school", async () => {
-        // mock services
-        const duplicateSchoolName = mockService(
-          schoolNullPayload,
-          "findSchoolByProperty"
-        );
-        const insertSchool = mockService(schoolPayload, "insertSchool");
+        // inputs
+        const newSchool: NewSchool = {
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -391,543 +260,470 @@ describe("RESOURCE => School", () => {
           msg: "School created successfully!",
           success: true,
         });
-
         expect(statusCode).toBe(201);
-        expect(duplicateSchoolName).toHaveBeenCalled();
-        expect(duplicateSchoolName).toHaveBeenCalledWith(
-          { name: newSchool.name },
-          "-createdAt -updatedAt"
-        );
-        expect(insertSchool).toHaveBeenCalled();
-        expect(insertSchool).toHaveBeenCalledWith(newSchool);
       });
     });
   });
 
-  describe("GET /school ", () => {
-    describe("school - GET", () => {
-      describe("school::get::01 - Requesting all schools but not finding any", () => {
-        it("should not get any schools", async () => {
-          // mock services
-          const findSchools = mockService(schoolsNullPayload, "findAllSchools");
+  describe("SCHOOLS - GET", () => {
+    describe("GET - /schools - Requesting all schools but not finding any", () => {
+      it("should not get any schools", async () => {
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send();
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "No schools found",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+      });
+    });
+    describe("GET - /schools - Requesting all schools correctly", () => {
+      it("should get all schools", async () => {
+        // inputs
+        const validMockSchoolId01 = new Types.ObjectId().toString();
+        const validMockSchoolId02 = new Types.ObjectId().toString();
+        const validMockSchoolId03 = new Types.ObjectId().toString();
+        const newSchools: School[] = [
+          {
+            _id: validMockSchoolId01,
+            name: "school 001",
+            groupMaxNumStudents: 40,
+            status: "active",
+          },
+          {
+            _id: validMockSchoolId02,
+            name: "school 002",
+            groupMaxNumStudents: 40,
+            status: "active",
+          },
+          {
+            _id: validMockSchoolId03,
+            name: "school 003",
+            groupMaxNumStudents: 40,
+            status: "inactive",
+          },
+        ];
+        await insertManySchools(newSchools);
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send();
+
+        // assertions
+        expect(body).toStrictEqual({
+          payload: newSchools,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
+      });
+      describe("GET - /schools/:id - Passing an invalid school id in the url", () => {
+        it("should return an invalid id error", async () => {
+          // inputs
+          const invalidMockId = "63c5dcac78b868f80035asdf";
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
+            .get(`${endPointUrl}${invalidMockId}`)
             .send();
 
           // assertions
           expect(body).toStrictEqual({
-            msg: "No schools found",
+            msg: [
+              {
+                location: "params",
+                msg: "The school id is not valid",
+                param: "id",
+                value: invalidMockId,
+              },
+            ],
+            success: false,
+          });
+          expect(statusCode).toBe(400);
+        });
+      });
+      describe("GET - /schools/:id - Requesting a school but not finding it", () => {
+        it("should not get a school", async () => {
+          // inputs
+          const otherValidMockId = new Types.ObjectId().toString();
+
+          // api call
+          const { statusCode, body } = await supertest(server)
+            .get(`${endPointUrl}${otherValidMockId}`)
+            .send();
+
+          // assertions
+          expect(body).toStrictEqual({
+            msg: "School not found",
             success: false,
           });
           expect(statusCode).toBe(404);
-          expect(findSchools).toHaveBeenCalled();
-          expect(findSchools).toHaveBeenCalledWith("-createdAt -updatedAt");
         });
       });
-      describe("school::get::02 - Requesting all schools correctly", () => {
-        it("should get all schools", async () => {
-          // mock services
-          const findSchools = mockService(schoolsPayload, "findAllSchools");
+      describe("GET - /schools/:id - Requesting a school correctly", () => {
+        it("should get a school", async () => {
+          // inputs
+          const validMockSchoolId = new Types.ObjectId().toString();
+          const newSchool = {
+            _id: validMockSchoolId,
+            name: "school 001",
+            groupMaxNumStudents: 40,
+            status: "active" as SchoolStatus,
+          };
+          await insertSchool(newSchool);
 
           // api call
           const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
+            .get(`${endPointUrl}${validMockSchoolId}`)
             .send();
 
           // assertions
           expect(body).toStrictEqual({
-            payload: schoolsPayload,
+            payload: newSchool,
             success: true,
           });
           expect(statusCode).toBe(200);
-          expect(findSchools).toHaveBeenCalled();
-          expect(findSchools).toHaveBeenCalledWith("-createdAt -updatedAt");
-        });
-      });
-
-      describe("school - GET/:id", () => {
-        describe("school::get/:id::01 - Passing an invalid school id in the url", () => {
-          it("should return an invalid id error", async () => {
-            // mock services
-            const findSchool = mockService(schoolNullPayload, "findSchoolById");
-
-            // api call
-            const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${invalidMockId}`)
-              .send();
-
-            // assertions
-            expect(body).toStrictEqual({
-              msg: [
-                {
-                  location: "params",
-                  msg: "The school id is not valid",
-                  param: "id",
-                  value: invalidMockId,
-                },
-              ],
-              success: false,
-            });
-            expect(statusCode).toBe(400);
-            expect(findSchool).not.toHaveBeenCalled();
-            expect(findSchool).not.toHaveBeenCalledWith(
-              invalidMockId,
-              "-createdAt -updatedAt"
-            );
-          });
-        });
-        describe("school::get/:id::02 - Requesting a school but not finding it", () => {
-          it("should not get a school", async () => {
-            // mock services
-            const findSchool = mockService(schoolNullPayload, "findSchoolById");
-
-            // api call
-            const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${otherValidMockId}`)
-              .send();
-
-            // assertions
-            expect(body).toStrictEqual({
-              msg: "School not found",
-              success: false,
-            });
-            expect(statusCode).toBe(404);
-            expect(findSchool).toHaveBeenCalled();
-            expect(findSchool).toHaveBeenCalledWith(
-              otherValidMockId,
-              "-createdAt -updatedAt"
-            );
-          });
-        });
-        describe("school::get/:id::03 - Requesting a school correctly", () => {
-          it("should get a school", async () => {
-            // mock services
-            const findSchool = mockService(schoolPayload, "findSchoolById");
-
-            // api call
-            const { statusCode, body } = await supertest(server)
-              .get(`${endPointUrl}${validMockSchoolId}`)
-              .send();
-
-            // assertions
-            expect(body).toStrictEqual({
-              payload: schoolPayload,
-              success: true,
-            });
-            expect(statusCode).toBe(200);
-            expect(findSchool).toHaveBeenCalled();
-            expect(findSchool).toHaveBeenCalledWith(
-              validMockSchoolId,
-              "-createdAt -updatedAt"
-            );
-          });
         });
       });
     });
+  });
 
-    describe("PUT /school ", () => {
-      describe("school::put::01 - Passing a school with missing fields", () => {
-        it("should return a missing field error", async () => {
-          // mock services
-          const duplicateSchoolName = mockService(
-            schoolNullPayload,
-            "findSchoolByProperty"
-          );
-          const updateSchool = mockService(schoolNullPayload, "modifySchool");
+  describe("SCHOOLS - PUT", () => {
+    describe("PUT - /schools/:id - Passing a school with missing fields", () => {
+      it("should return a missing field error", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newSchoolMissingValues = {
+          nam: "school 001",
+          groupMaxNumStudent: 40,
+          statu: "active",
+        };
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockSchoolId}`)
-            .send(newSchoolMissingValues);
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockSchoolId}`)
+          .send(newSchoolMissingValues);
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a name",
-                param: "name",
-              },
-              {
-                location: "body",
-                msg: "Please add the group max number of students",
-                param: "groupMaxNumStudents",
-              },
-              {
-                location: "body",
-                msg: "Please add the school's current status",
-                param: "status",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
-          expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-            { name: newSchoolMissingValues.nam },
-            "-createdAt -updatedAt"
-          );
-          expect(updateSchool).not.toHaveBeenCalled();
-          expect(updateSchool).not.toHaveBeenCalledWith(
-            validMockSchoolId,
-            newSchoolMissingValues
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a name",
+              param: "name",
+            },
+            {
+              location: "body",
+              msg: "Please add the group max number of students",
+              param: "groupMaxNumStudents",
+            },
+            {
+              location: "body",
+              msg: "Please add the school's current status",
+              param: "status",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("school::put::02 - Passing a school with empty fields", () => {
-        it("should return an empty field error", async () => {
-          // mock services
-          const duplicateSchoolName = mockService(
-            schoolNullPayload,
-            "findSchoolByProperty"
-          );
-          const updateSchool = mockService(schoolNullPayload, "modifySchool");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockSchoolId}`)
-            .send(newSchoolEmptyValues);
-
-          //assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The name field is empty",
-                param: "name",
-                value: "",
-              },
-              {
-                location: "body",
-                msg: "The group max number of students field is empty",
-                param: "groupMaxNumStudents",
-                value: "",
-              },
-              {
-                location: "body",
-                msg: "The status field is empty",
-                param: "status",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
-          expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-            { name: newSchoolEmptyValues.name },
-            "-createdAt -updatedAt"
-          );
-          expect(updateSchool).not.toHaveBeenCalled();
-          expect(updateSchool).not.toHaveBeenCalledWith(
-            validMockSchoolId,
-            newSchoolEmptyValues
-          );
-        });
-      });
-      describe("school::put::03 - Passing an invalid type as field value", () => {
-        it("should return a not valid value error", async () => {
-          // mock services
-          const duplicateSchoolName = mockService(
-            schoolNullPayload,
-            "findSchoolByProperty"
-          );
-          const updateSchool = mockService(schoolNullPayload, "modifySchool");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${invalidMockId}`)
-            .send(newSchoolNotValidDataTypes);
-
-          //assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The school id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school name is not valid",
-                param: "name",
-                value: 1234567890,
-              },
-              {
-                location: "body",
-                msg: "group max number of students value is not valid",
-                param: "groupMaxNumStudents",
-                value: "hello",
-              },
-              {
-                location: "body",
-                msg: "status is not valid",
-                param: "status",
-                value: 123456789,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
-          expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-            { name: newSchoolNotValidDataTypes.name },
-            "-createdAt -updatedAt"
-          );
-          expect(updateSchool).not.toHaveBeenCalled();
-          expect(updateSchool).not.toHaveBeenCalledWith(
-            invalidMockId,
-            newSchoolNotValidDataTypes
-          );
-        });
-      });
-      describe("school::put::04 - Passing too long or short input values", () => {
-        it("should return an invalid length input value error", async () => {
-          // mock services
-          const duplicateSchoolName = mockService(
-            schoolNullPayload,
-            "findSchoolByProperty"
-          );
-          const updateSchool = mockService(schoolNullPayload, "modifySchool");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockSchoolId}`)
-            .send(newSchoolWrongLengthValues);
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The name must not exceed 100 characters",
-                param: "name",
-                value:
-                  "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
-              },
-              {
-                location: "body",
-                msg: "group max number of students must not exceed 9 digits",
-                param: "groupMaxNumStudents",
-                value: 1234567890,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
-          expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-            { name: newSchoolWrongLengthValues.name },
-            "-createdAt -updatedAt"
-          );
-          expect(updateSchool).not.toHaveBeenCalled();
-          expect(updateSchool).not.toHaveBeenCalledWith(
-            validMockSchoolId,
-            newSchoolWrongLengthValues
-          );
-        });
-      });
-      describe("school::put::05 - Passing an invalid status value", () => {
-        it("should return a duplicate school error", async () => {
-          // mock services
-          const duplicateSchoolName = mockService(
-            schoolNullPayload,
-            "findSchoolByProperty"
-          );
-          const updateSchool = mockService(schoolNullPayload, "modifySchool");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockSchoolId}`)
-            .send({ ...newSchool, status: "hello" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "the status provided is not a valid option",
-                param: "status",
-                value: "hello",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).not.toHaveBeenCalled();
-          expect(duplicateSchoolName).not.toHaveBeenCalledWith(
-            { name: newSchoolWrongLengthValues.name },
-            "-createdAt -updatedAt"
-          );
-          expect(updateSchool).not.toHaveBeenCalled();
-          expect(updateSchool).not.toHaveBeenCalledWith(
-            validMockSchoolId,
-            newSchoolWrongLengthValues
-          );
-        });
-      });
-      describe("school::put::06 - Passing an existing school name", () => {
-        it("should not update a school", async () => {
-          // mock services
-          const duplicateSchoolName = mockService(
-            schoolPayload,
-            "findSchoolByProperty"
-          );
-          const updateSchool = mockService(schoolPayload, "modifySchool");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${otherValidMockId}`)
-            .send(newSchool);
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "This school name already exists",
-            success: false,
-          });
-          expect(statusCode).toBe(409);
-          expect(duplicateSchoolName).toHaveBeenCalled();
-          expect(duplicateSchoolName).toHaveBeenCalledWith(
-            { name: newSchool.name },
-            "-createdAt -updatedAt"
-          );
-          expect(updateSchool).not.toHaveBeenCalled();
-          expect(updateSchool).not.toHaveBeenCalledWith(
-            validMockSchoolId,
-            newSchool
-          );
-        });
-      });
-      describe("school::put::06 - Passing a school but not updating it", () => {
-        it("should not update a school", async () => {
-          // mock services
-          const duplicateSchoolName = mockService(
-            schoolNullPayload,
-            "findSchoolByProperty"
-          );
-          const updateSchool = mockService(schoolNullPayload, "modifySchool");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockSchoolId}`)
-            .send(newSchool);
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "School not updated",
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(duplicateSchoolName).toHaveBeenCalled();
-          expect(duplicateSchoolName).toHaveBeenCalledWith(
-            { name: newSchool.name },
-            "-createdAt -updatedAt"
-          );
-          expect(updateSchool).toHaveBeenCalled();
-          expect(updateSchool).toHaveBeenCalledWith(
-            validMockSchoolId,
-            newSchool
-          );
-        });
-      });
-      describe("school::put::07 - Passing a school correctly to update", () => {
-        it("should update a school", async () => {
-          // mock services
-          const duplicateSchoolName = mockService(
-            schoolNullPayload,
-            "findSchoolByProperty"
-          );
-          const updateSchool = mockService(schoolPayload, "modifySchool");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .put(`${endPointUrl}${validMockSchoolId}`)
-            .send(newSchool);
-
-          // assertions
-          expect(body).toStrictEqual({ msg: "School updated", success: true });
-          expect(statusCode).toBe(200);
-          expect(duplicateSchoolName).toHaveBeenCalled();
-          expect(duplicateSchoolName).toHaveBeenCalledWith(
-            { name: newSchool.name },
-            "-createdAt -updatedAt"
-          );
-          expect(updateSchool).toHaveBeenCalled();
-          expect(updateSchool).toHaveBeenCalledWith(
-            validMockSchoolId,
-            newSchool
-          );
-        });
+        expect(statusCode).toBe(400);
       });
     });
+    describe("PUT - /schools/:id - Passing a school with empty fields", () => {
+      it("should return an empty field error", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newSchoolEmptyValues = {
+          name: "",
+          groupMaxNumStudents: "",
+          status: "",
+        };
 
-    describe("DELETE /school ", () => {
-      describe("school::delete::01 - Passing an invalid school id in the url", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const deleteSchool = mockService(schoolNullPayload, "removeSchool");
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockSchoolId}`)
+          .send(newSchoolEmptyValues);
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}${invalidMockId}`)
-            .send();
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The school id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(deleteSchool).not.toHaveBeenCalled();
-          expect(deleteSchool).not.toHaveBeenCalledWith(validMockSchoolId);
+        //assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The name field is empty",
+              param: "name",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The group max number of students field is empty",
+              param: "groupMaxNumStudents",
+              value: "",
+            },
+            {
+              location: "body",
+              msg: "The status field is empty",
+              param: "status",
+              value: "",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
       });
-      describe("school::delete::02 - Passing a school id but not deleting it", () => {
-        it("should not delete a school", async () => {
-          // mock services
-          const deleteSchool = mockService(schoolNullPayload, "removeSchool");
+    });
+    describe("PUT - /schools/:id - Passing an invalid type as field value", () => {
+      it("should return a not valid value error", async () => {
+        // input
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+        const newSchoolNotValidDataTypes = {
+          name: 1234567890,
+          groupMaxNumStudents: "hello",
+          status: 123456789,
+        };
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}${otherValidMockId}`)
-            .send();
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${invalidMockId}`)
+          .send(newSchoolNotValidDataTypes);
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "School not deleted",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(deleteSchool).toHaveBeenCalled();
-          expect(deleteSchool).toHaveBeenCalledWith(otherValidMockId);
+        //assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The school id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+            {
+              location: "body",
+              msg: "The school name is not valid",
+              param: "name",
+              value: 1234567890,
+            },
+            {
+              location: "body",
+              msg: "group max number of students value is not valid",
+              param: "groupMaxNumStudents",
+              value: "hello",
+            },
+            {
+              location: "body",
+              msg: "status is not valid",
+              param: "status",
+              value: 123456789,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
       });
-      describe("school::delete::03 - Passing a school id correctly to delete", () => {
-        it("should delete a school", async () => {
-          // mock services
-          const deleteSchool = mockService(schoolPayload, "removeSchool");
+    });
+    describe("PUT - /schools/:id - Passing too long or short input values", () => {
+      it("should return an invalid length input value error", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newSchoolWrongLengthValues = {
+          name: "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+          groupMaxNumStudents: 1234567890,
+          status: "active",
+        };
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .delete(`${endPointUrl}${validMockSchoolId}`)
-            .send();
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockSchoolId}`)
+          .send(newSchoolWrongLengthValues);
 
-          // assertions
-          expect(body).toStrictEqual({ msg: "School deleted", success: true });
-          expect(statusCode).toBe(200);
-          expect(deleteSchool).toHaveBeenCalled();
-          expect(deleteSchool).toHaveBeenCalledWith(validMockSchoolId);
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The name must not exceed 100 characters",
+              param: "name",
+              value:
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit Maiores laborum aspernatur similique sequi am",
+            },
+            {
+              location: "body",
+              msg: "group max number of students must not exceed 9 digits",
+              param: "groupMaxNumStudents",
+              value: 1234567890,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+      });
+    });
+    describe("PUT - /schools/:id - Passing an invalid status value", () => {
+      it("should return a duplicate school error", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newSchool = {
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "hello",
+        };
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockSchoolId}`)
+          .send(newSchool);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "the status provided is not a valid option",
+              param: "status",
+              value: "hello",
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+      });
+    });
+    describe("PUT - /schools/:id - Passing an existing school name", () => {
+      it("should not update a school", async () => {
+        // inputs
+        const otherValidMockId = new Types.ObjectId().toString();
+        const newSchool: NewSchool = {
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active",
+        };
+        await insertSchool(newSchool);
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${otherValidMockId}`)
+          .send(newSchool);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "This school name already exists",
+          success: false,
+        });
+        expect(statusCode).toBe(409);
+      });
+    });
+    describe("PUT - /schools/:id - Passing a school but not updating it", () => {
+      it("should not update a school", async () => {
+        // inputs
+        const otherValidMockSchoolId = new Types.ObjectId().toString();
+        const newSchool: NewSchool = {
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active",
+        };
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${otherValidMockSchoolId}`)
+          .send(newSchool);
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "School not updated",
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+      });
+    });
+    describe("PUT - /schools/:id - Passing a school correctly to update", () => {
+      it("should update a school", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .put(`${endPointUrl}${validMockSchoolId}`)
+          .send(newSchool);
+
+        // assertions
+        expect(body).toStrictEqual({ msg: "School updated", success: true });
+        expect(statusCode).toBe(200);
+      });
+    });
+  });
+
+  describe("SCHOOLS - DELETE", () => {
+    describe("DELETE - /schools/:id - Passing an invalid school id in the url", () => {
+      it("should return an invalid id error", async () => {
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .delete(`${endPointUrl}${invalidMockId}`)
+          .send();
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The school id is not valid",
+              param: "id",
+              value: invalidMockId,
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+      });
+    });
+    describe("DELETE - /schools/:id - Passing a school id but not deleting it", () => {
+      it("should not delete a school", async () => {
+        // inputs
+        const otherValidMockId = new Types.ObjectId().toString();
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .delete(`${endPointUrl}${otherValidMockId}`)
+          .send();
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "School not deleted",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+      });
+    });
+    describe("DELETE - /schools/:id - Passing a school id correctly to delete", () => {
+      it("should delete a school", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .delete(`${endPointUrl}${validMockSchoolId}`)
+          .send();
+
+        // assertions
+        expect(body).toStrictEqual({ msg: "School deleted", success: true });
+        expect(statusCode).toBe(200);
       });
     });
   });

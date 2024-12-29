@@ -10,17 +10,12 @@ import {
   findFilterAllTeachers,
   modifyFilterTeacher,
   removeFilterTeacher,
-  /* Services from other entities */
-  findPopulateFilterAllUsers,
+  findPopulateFilterUser,
 } from "./teachers.services";
 
-/* global controller reference */
+/* controller global variables */
 const maxHours = 70; // number of hours in a week
 
-// @desc create a user
-// @route POST /api/v?/teachers
-// @access Private
-// @fields: body: {user_id: [string],  coordinator_id: [string],  contractType: [string], teachingHoursAssignable: [number],  teachingHoursAssigned: [number], adminHoursAssignable: [number], adminHoursAssigned: [number], monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 export const createTeacher = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
@@ -72,7 +67,7 @@ export const createTeacher = async ({ body }: Request, res: Response) => {
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
   const userFieldsToReturnPopulate = "-createdAt -updatedAt";
-  const existingUser = await findPopulateFilterAllUsers(
+  const existingUser = await findPopulateFilterUser(
     userSearchCriteria,
     userFieldsToReturn,
     userFieldsToPopulate,
@@ -124,10 +119,6 @@ export const createTeacher = async ({ body }: Request, res: Response) => {
     .json({ msg: "Teacher created successfully!", success: true });
 };
 
-// @desc get all the users
-// @route GET /api/v?/teachers
-// @access Private
-// @fields: body: {school_id:[string]}
 export const getTeachers = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -145,10 +136,6 @@ export const getTeachers = async ({ body }: Request, res: Response) => {
   });
 };
 
-// @desc get the user by id
-// @route GET /api/v?/teachers/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getTeacher = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
@@ -169,10 +156,6 @@ export const getTeacher = async ({ params, body }: Request, res: Response) => {
   });
 };
 
-// @desc update a user
-// @route PUT /api/v?/teachers/:id
-// @access Private
-// @fields: params: {id:[string]}, body: {user_id: [string], coordinator_id: [string], contractType: [string], teachingHoursAssignable: [number],  teachingHoursAssigned: [number], adminHoursAssignable: [number],  adminHoursAssigned: [number],monday: [boolean], tuesday: [boolean], wednesday: [boolean], thursday: [boolean], friday: [boolean], saturday: [boolean], sunday: [boolean]}
 export const updateTeacher = async (
   { body, params }: Request,
   res: Response
@@ -218,7 +201,7 @@ export const updateTeacher = async (
   const userFieldsToReturn = "-password -createdAt -updatedAt";
   const userFieldsToPopulate = "school_id";
   const userFieldsToReturnPopulate = "-createdAt -updatedAt";
-  const existingUser = await findPopulateFilterAllUsers(
+  const existingUser = await findPopulateFilterUser(
     userSearchCriteria,
     userFieldsToReturn,
     userFieldsToPopulate,
@@ -273,10 +256,6 @@ export const updateTeacher = async (
   res.status(StatusCodes.OK).json({ msg: "Teacher updated", success: true });
 };
 
-// @desc delete a user
-// @route DELETE /api/v?/teachers/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteTeacher = async (
   { params, body }: Request,
   res: Response

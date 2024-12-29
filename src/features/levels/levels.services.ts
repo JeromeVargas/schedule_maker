@@ -1,16 +1,17 @@
 import LevelModel from "./levels.model";
 import ScheduleModel from "../schedules/schedules.model";
-import { NewLevel } from "../../typings/types";
+import { NewLevel, NewSchedule, NewSchool } from "../../typings/types";
+import SchoolModel from "../schools/schools.model";
 
-// CRUD services
-// @desc insert a level in database
-// @params level
+/* Levels */
 export const insertLevel = (level: NewLevel) => {
   return LevelModel.create(level);
 };
 
-// @desc find all levels by school id
-// @params filters, fields to return
+export const insertManyLevels = (levels: NewLevel[]) => {
+  return LevelModel.insertMany(levels);
+};
+
 export const findFilterAllLevels = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -18,8 +19,6 @@ export const findFilterAllLevels = (
   return LevelModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a level by id and populate the embedded entities
-// @params levelId, fields to return, fields to populate, fields to return populate
 export const findPopulateLevelById = (
   levelId: string,
   fieldsToReturn: string,
@@ -33,8 +32,6 @@ export const findPopulateLevelById = (
     .exec();
 };
 
-// @desc find a level by school id and name
-// @params filters, fields to return
 export const findLevelByProperty = (
   filters:
     | { school_id: string; name: string }
@@ -48,8 +45,6 @@ export const findLevelByProperty = (
     .exec();
 };
 
-// @desc find a level and filter by some school id and name
-// @params filters, fields to return
 export const findFilterLevelByProperty = (
   filters: { school_id: string; name: string },
   fieldsToReturn: string
@@ -61,8 +56,6 @@ export const findFilterLevelByProperty = (
     .exec();
 };
 
-// @desc update a level by level id and school id
-// @params levelId, level
 export const modifyFilterLevel = (
   filters: { _id: string; school_id: string },
   level: NewLevel
@@ -73,8 +66,6 @@ export const modifyFilterLevel = (
   });
 };
 
-// @desc delete a level by property
-// @params filters, filters
 export const removeFilterLevel = (filters: {
   school_id: string;
   _id: string;
@@ -82,9 +73,25 @@ export const removeFilterLevel = (filters: {
   return LevelModel.findOneAndDelete(filters).lean().exec();
 };
 
-/* Services from other entities */
-// @desc find a schedule by id and populate the embedded entities
-// @params scheduleId, fields to return, fields to populate, fields to return populate
+export const removeAllLevels = () => {
+  return LevelModel.deleteMany();
+};
+
+/* Schools */
+export const insertSchool = (school: NewSchool) => {
+  return SchoolModel.create(school);
+};
+
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
+};
+
+/* Schedules */
+
+export const insertSchedule = (schedule: NewSchedule) => {
+  return ScheduleModel.create(schedule);
+};
+
 export const findPopulateScheduleById = (
   scheduleId: string,
   fieldsToReturn: string,
@@ -96,4 +103,8 @@ export const findPopulateScheduleById = (
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
+};
+
+export const removeAllSchedules = () => {
+  return ScheduleModel.deleteMany();
 };

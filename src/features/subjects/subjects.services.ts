@@ -1,17 +1,18 @@
 import SubjectModel from "./subjects.model";
 import LevelModel from "../levels/levels.model";
 import FieldModel from "../fields/fields.model";
-import { NewSubject } from "../../typings/types";
+import { NewField, NewLevel, NewSchool, NewSubject } from "../../typings/types";
+import SchoolModel from "../schools/schools.model";
 
-// CRUD services
-// @desc insert a subject in the database
-// @params subject
+/* Subjects */
 export const insertSubject = (subject: NewSubject) => {
   return SubjectModel.create(subject);
 };
 
-// @desc find all subjects by school id
-// @params filters, fields to return
+export const insertManySubjects = (subjects: NewSubject[]) => {
+  return SubjectModel.insertMany(subjects);
+};
+
 export const findFilterAllSubjects = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -19,8 +20,6 @@ export const findFilterAllSubjects = (
   return SubjectModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a subject by level id and name or school id and subject id
-// @params filters, fields to return
 export const findSubjectByProperty = (
   filters:
     | { level_id: string; name: string }
@@ -34,8 +33,6 @@ export const findSubjectByProperty = (
     .exec();
 };
 
-// @desc find a subject by level id and name
-// @params filters, fields to return
 export const findFilterSubjectByProperty = (
   filters: { level_id: string; name: string },
   fieldsToReturn: string
@@ -47,8 +44,6 @@ export const findFilterSubjectByProperty = (
     .exec();
 };
 
-// @desc update a resource by subject id and school name
-// @params resourceId, resource
 export const modifyFilterSubject = (
   filters: { _id: string; school_id: string },
   resource: NewSubject
@@ -59,8 +54,6 @@ export const modifyFilterSubject = (
   });
 };
 
-// @desc delete a resource by school id and subject id
-// @params resourceId, filters
 export const removeFilterSubject = (filters: {
   school_id: string;
   _id: string;
@@ -68,9 +61,24 @@ export const removeFilterSubject = (filters: {
   return SubjectModel.findOneAndDelete(filters).lean().exec();
 };
 
-/* Services from other entities */
-// @desc find a level by id and populate the embedded entities
-// @params levelId, fields to return, fields to populate, fields to return populate
+export const removeAllSubjects = () => {
+  return SubjectModel.deleteMany();
+};
+
+/* Schools */
+export const insertSchool = (school: NewSchool) => {
+  return SchoolModel.create(school);
+};
+
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
+};
+
+/* Levels */
+export const insertLevel = (level: NewLevel) => {
+  return LevelModel.create(level);
+};
+
 export const findPopulateLevelById = (
   levelId: string,
   fieldsToReturn: string,
@@ -84,8 +92,11 @@ export const findPopulateLevelById = (
     .exec();
 };
 
-// @desc find a field by id and populate the embedded entities
-// @params fieldId, fields to return, fields to populate, fields to return populate
+export const removeAllLevels = () => {
+  return LevelModel.deleteMany();
+};
+
+/* Fields */
 export const findPopulateFieldById = (
   fieldId: string,
   fieldsToReturn: string,
@@ -97,4 +108,12 @@ export const findPopulateFieldById = (
     .populate(fieldsToPopulate, fieldsToReturnPopulate)
     .lean()
     .exec();
+};
+
+export const insertField = (field: NewField) => {
+  return FieldModel.create(field);
+};
+
+export const removeAllFields = () => {
+  return FieldModel.deleteMany();
 };

@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import SessionModel from "../sessions/sessions.model";
 import GroupModel from "../groups/groups.model";
 import SubjectModel from "../subjects/subjects.model";
-import { Group, Level } from "../../typings/types";
+import { Level } from "../../typings/types";
 
 const LevelSchema = new Schema<Level>(
   {

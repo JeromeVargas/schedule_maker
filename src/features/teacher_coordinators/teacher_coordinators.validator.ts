@@ -3,7 +3,6 @@ import { check } from "express-validator";
 import validateResult from "../../lib/express-validator/validateHelper";
 import { isValidId } from "../../lib/utilities/validation";
 
-// @fields: body {school_id:[string], teacher_id:[string], coordinator_id:[string]}
 export const validateCreateTeacherCoordinator = [
   check("school_id")
     .exists()
@@ -59,7 +58,6 @@ export const validateCreateTeacherCoordinator = [
   },
 ];
 
-// @fields: body {school_id:[string]}
 export const validateGetTeacherCoordinators = [
   check("school_id")
     .exists()
@@ -82,7 +80,6 @@ export const validateGetTeacherCoordinators = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateGetTeacherCoordinator = [
   check("id")
     .custom((value) => {
@@ -115,7 +112,6 @@ export const validateGetTeacherCoordinator = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], coordinator_id:[string]}
 export const validateUpdateTeacherCoordinator = [
   check("id")
     .custom((value) => {
@@ -180,7 +176,6 @@ export const validateUpdateTeacherCoordinator = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateDeleteTeacherCoordinator = [
   check("id")
     .custom((value) => {

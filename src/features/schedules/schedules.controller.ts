@@ -11,20 +11,15 @@ import {
   findFilterScheduleByProperty,
   modifyFilterSchedule,
   removeFilterSchedule,
-  /* Services from other entities */
   findSchoolById,
   findAllLevels,
 } from "./schedules.services";
 
 import { Schedule } from "../../typings/types";
 
-/* global controller reference */
+/* controller global variables */
 const maxMinutesInDay = 1439;
 
-// @desc create a schedule
-// @route POST /api/v?/schedules
-// @access Private
-// @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 export const createSchedule = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
@@ -89,10 +84,6 @@ export const createSchedule = async ({ body }: Request, res: Response) => {
     .json({ msg: "Schedule created successfully!", success: true });
 };
 
-// @desc get all the Schedules
-// @route GET /api/v?/schedules
-// @access Private
-// @fields: body {school_id:[string]}
 export const getSchedules = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -107,10 +98,6 @@ export const getSchedules = async ({ body }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ payload: schedulesFound, success: true });
 };
 
-// @desc get the Schedule by id
-// @route GET /api/v?/schedules/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getSchedule = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
@@ -128,10 +115,6 @@ export const getSchedule = async ({ params, body }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ payload: scheduleFound, success: true });
 };
 
-// @desc update a Schedule
-// @route PUT /api/v?/schedules/:id
-// @access Private
-// @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 export const updateSchedule = async (
   { params, body }: Request,
   res: Response
@@ -196,10 +179,6 @@ export const updateSchedule = async (
   res.status(StatusCodes.OK).json({ msg: "Schedule updated", success: true });
 };
 
-// @desc delete a Schedule
-// @route DELETE /api/v?/schedules/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteSchedule = async (
   { params, body }: Request,
   res: Response

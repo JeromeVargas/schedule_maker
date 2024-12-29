@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
-import { Teacher_Field } from "../../typings/types";
+import { TeacherField } from "../../typings/types";
 import SessionModel from "../sessions/sessions.model";
 
-const TeacherFieldSchema = new Schema<Teacher_Field>(
+const TeacherFieldSchema = new Schema<TeacherField>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
@@ -31,7 +31,7 @@ TeacherFieldSchema.pre(
   async function () {
     /* get the entities ids and references */
     // get the field
-    const findTeacherField: Teacher_Field | null = await this.model
+    const findTeacherField: TeacherField | null = await this.model
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
@@ -48,8 +48,8 @@ TeacherFieldSchema.pre(
   }
 );
 
-const TeacherFieldModel = model<Teacher_Field>(
-  "Teacher_Field",
+const TeacherFieldModel = model<TeacherField>(
+  "TeacherField",
   TeacherFieldSchema
 );
 

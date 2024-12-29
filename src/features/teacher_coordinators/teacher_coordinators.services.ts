@@ -1,19 +1,27 @@
 import TeacherCoordinatorModel from "./teacher_coordinators.model";
 import TeacherModel from "../teachers/teachers.model";
 import UserModel from "../users/users.model";
-import { NewTeacher_Coordinator } from "../../typings/types";
+import {
+  NewSchool,
+  NewTeacher,
+  NewTeacherCoordinator,
+  NewUser,
+} from "../../typings/types";
+import SchoolModel from "../schools/schools.model";
 
-// CRUD services
-// @desc insert a teacher_field in database
-// @params teacherCoordinator
+/* TeacherCoordinators */
 export const insertTeacherCoordinator = (
-  teacherCoordinator: NewTeacher_Coordinator
+  teacherCoordinator: NewTeacherCoordinator
 ) => {
   return TeacherCoordinatorModel.create(teacherCoordinator);
 };
 
-// @desc find all teacher_fields by school id
-// @params filters, fields to return
+export const insertManyTeacherCoordinators = (
+  teacherCoordinators: NewTeacherCoordinator[]
+) => {
+  return TeacherCoordinatorModel.insertMany(teacherCoordinators);
+};
+
 export const findFilterAllTeacherCoordinators = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -24,8 +32,6 @@ export const findFilterAllTeacherCoordinators = (
     .exec();
 };
 
-// @desc find a teacher_field by teacher id, field id and school id
-// @params filters, fields to return
 export const findTeacherCoordinatorByProperty = (
   filters:
     | { school_id: string; teacher_id: string; coordinator_id: string }
@@ -39,8 +45,6 @@ export const findTeacherCoordinatorByProperty = (
     .exec();
 };
 
-// @desc find a teacher_field and filter by school_id, teacher_id and field_id
-// @params filters, fields to return
 export const findFilterTeacherCoordinatorByProperty = (
   filters: { school_id: string; teacher_id: string; field_id: string },
   fieldsToReturn: string
@@ -52,11 +56,9 @@ export const findFilterTeacherCoordinatorByProperty = (
     .exec();
 };
 
-// @desc update a teacher_field by some properties _id, school_id and teacher_id
-// @params filters, teacherCoordinator
 export const modifyFilterTeacherCoordinator = (
   filters: { _id: string; school_id: string; teacher_id: string },
-  teacherCoordinator: NewTeacher_Coordinator
+  teacherCoordinator: NewTeacherCoordinator
 ) => {
   return TeacherCoordinatorModel.findOneAndUpdate(filters, teacherCoordinator, {
     new: true,
@@ -64,8 +66,6 @@ export const modifyFilterTeacherCoordinator = (
   });
 };
 
-// @desc delete a teacher_field by school_id and teacher field id
-// @params filters
 export const removeFilterTeacherCoordinator = (filters: {
   school_id: string;
   _id: string;
@@ -73,9 +73,25 @@ export const removeFilterTeacherCoordinator = (filters: {
   return TeacherCoordinatorModel.findOneAndDelete(filters).lean().exec();
 };
 
-/* Services from other entities */
-// @desc find a teacher by id and populate the embedded entities
-// @params teacherId, fields to return, fields to populate, fields to return populate
+export const removeAllTeacherCoordinators = () => {
+  return TeacherCoordinatorModel.deleteMany();
+};
+
+/* Schools */
+export const insertSchool = (school: NewSchool) => {
+  return SchoolModel.create(school);
+};
+
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
+};
+
+/* Teachers */
+export const insertTeacher = (teacher: NewTeacher) => {
+  const teacherInsert = TeacherModel.create(teacher);
+  return teacherInsert;
+};
+
 export const findPopulateTeacherById = (
   teacherId: string,
   fieldsToReturn: string,
@@ -89,8 +105,19 @@ export const findPopulateTeacherById = (
     .exec();
 };
 
-// @desc find a field by id and populate the embedded entities
-// @params coordinatorId, fields to return, fields to populate, fields to return populate
+export const removeAllTeachers = () => {
+  return TeacherModel.deleteMany();
+};
+
+/* Users */
+export const insertUser = (user: NewUser) => {
+  return UserModel.create(user);
+};
+
+export const removeAllUsers = () => {
+  return UserModel.deleteMany();
+};
+
 export const findPopulateCoordinatorById = (
   coordinatorId: string,
   fieldsToReturn: string,

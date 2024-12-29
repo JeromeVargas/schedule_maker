@@ -10,15 +10,10 @@ import {
   findTeacherFieldByProperty,
   modifyFilterTeacherField,
   removeFilterTeacherField,
-  /* Services from other entities */
   findPopulateTeacherById,
   findPopulateFieldById,
 } from "./teacher_fields.services";
 
-// @desc create a teacher_field
-// @route POST /api/v?/teacher_fields
-// @access Private
-// @fields: body {school_id:[string], teacher_id:[string], field_id:[string]}
 export const createTeacherField = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, teacher_id, field_id } = body;
@@ -47,13 +42,15 @@ export const createTeacherField = async ({ body }: Request, res: Response) => {
   if (!teacherFound) {
     throw new NotFoundError("Please make sure the teacher exists");
   }
-  if (teacherFound.school_id?._id?.toString() !== school_id) {
+  if (teacherFound?.school_id?._id?.toString() !== school_id) {
     throw new BadRequestError(
       "Please make sure the teacher belongs to the school"
     );
   }
-  if (teacherFound.user_id.status !== "active") {
-    throw new BadRequestError(`The teacher is ${teacherFound.user_id.status}`);
+  if (teacherFound?.user_id?.status !== "active") {
+    throw new BadRequestError(
+      `The teacher status is ${teacherFound?.user_id?.status}`
+    );
   }
   /* find if the field already exists */
   const fieldsToReturnField = "-createdAt -updatedAt";
@@ -89,10 +86,6 @@ export const createTeacherField = async ({ body }: Request, res: Response) => {
   });
 };
 
-// @desc get all the teacher_fields
-// @route GET /api/v?/teacher_fields
-// @access Private
-// @fields: body {school_id:[string]}
 export const getTeacherFields = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -113,10 +106,6 @@ export const getTeacherFields = async ({ body }: Request, res: Response) => {
   });
 };
 
-// @desc get the teacher_field by id
-// @route GET /api/v?/teacher_fields/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getTeacherField = async (
   { params, body }: Request,
   res: Response
@@ -132,7 +121,7 @@ export const getTeacherField = async (
     fieldsToReturn
   );
   if (!teacherFieldFound) {
-    throw new NotFoundError("Teacher_Field not found");
+    throw new NotFoundError("TeacherField not found");
   }
   res.status(StatusCodes.OK).json({
     payload: teacherFieldFound,
@@ -140,10 +129,6 @@ export const getTeacherField = async (
   });
 };
 
-// @desc update a teacher_field
-// @route PUT /api/v?/teacher_fields/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string], teacher_id:[string], field_id:[string]}
 export const updateTeacherField = async (
   { params, body }: Request,
   res: Response
@@ -228,10 +213,6 @@ export const updateTeacherField = async (
   });
 };
 
-// @desc delete a teacher_field
-// @route DELETE /api/v?/teacher_fields/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteTeacherField = async (
   { params, body }: Request,
   res: Response
@@ -243,9 +224,9 @@ export const deleteTeacherField = async (
   const teacherFiltersDelete = { school_id: school_id, _id: teacherFieldId };
   const fieldDeleted = await removeFilterTeacherField(teacherFiltersDelete);
   if (!fieldDeleted) {
-    throw new NotFoundError("Teacher_Field not deleted");
+    throw new NotFoundError("TeacherField not deleted");
   }
   res
     .status(StatusCodes.OK)
-    .json({ msg: "Teacher_Field deleted", success: true });
+    .json({ msg: "TeacherField deleted", success: true });
 };

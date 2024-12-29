@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Field, Teacher_Field } from "../../typings/types";
+import { Field, TeacherField } from "../../typings/types";
 import TeacherFieldModel from "../teacher_fields/teacher_fields.model";
 import SessionModel from "../sessions/sessions.model";
 import SubjectModel from "../subjects/subjects.model";
@@ -33,7 +33,7 @@ FieldSchema.pre(
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
     // get the teacher_fields
-    const findTeacherFields: Teacher_Field[] = await TeacherFieldModel.find({
+    const findTeacherFields: TeacherField[] = await TeacherFieldModel.find({
       school_id: findField?.school_id,
       field_id: findField?._id,
     })

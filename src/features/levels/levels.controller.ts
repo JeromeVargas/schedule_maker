@@ -10,16 +10,11 @@ import {
   findFilterAllLevels,
   findLevelByProperty,
   findFilterLevelByProperty,
-  /* Services from other entities */
   findPopulateScheduleById,
   modifyFilterLevel,
   removeFilterLevel,
 } from "./levels.services";
 
-// @desc create a level
-// @route POST /api/v?/levels
-// @access Private
-// @fields: body {school_id:[string] , schedule_id:[string], name:[string]}
 export const createLevel = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id, schedule_id, name } = body;
@@ -65,10 +60,6 @@ export const createLevel = async ({ body }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ msg: "Level created!", success: true });
 };
 
-// @desc get all the Levels
-// @route GET /api/v?/Levels
-// @access Private
-// @fields: body {fieldOne:[string]}
 export const getLevels = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -86,10 +77,6 @@ export const getLevels = async ({ body }: Request, res: Response) => {
   });
 };
 
-// @desc get the Level by id
-// @route GET /api/v?/Levels/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {fieldOne:[string]}
 export const getLevel = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
@@ -107,10 +94,6 @@ export const getLevel = async ({ params, body }: Request, res: Response) => {
   });
 };
 
-// @desc update a Level
-// @route PUT /api/v?/Levels/:id
-// @access Private
-// @fields: params: {id:[string]},  body {school_id:[string] , schedule_id:[string], name:[string]}
 export const updateLevel = async ({ params, body }: Request, res: Response) => {
   // /* destructure the fields */
   const { id: levelId } = params;
@@ -162,10 +145,6 @@ export const updateLevel = async ({ params, body }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ msg: "Level updated!", success: true });
 };
 
-// @desc delete a Level
-// @route DELETE /api/v?/Levels/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {fieldOne:[string]}
 export const deleteLevel = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields from the params and body */
   const { id: levelId } = params;

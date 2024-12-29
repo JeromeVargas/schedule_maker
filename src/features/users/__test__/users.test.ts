@@ -1,165 +1,59 @@
+import mongoose, { Types } from "mongoose";
 import supertest from "supertest";
-import { Types } from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 import { server, connection } from "../../../server";
-
-import * as userServices from "../users.services";
-import * as utils from "../../../lib/utilities/validation";
-
 import { BASE_URL } from "../../../lib/router";
+import {
+  findAllUsers,
+  insertManyUsers,
+  insertUser,
+  removeAllUsers,
+  insertSchool,
+  removeAllSchools,
+} from "../users.services";
+import {
+  NewSchool,
+  NewUser,
+  SchoolStatus,
+  UserRole,
+  UserStatus,
+} from "../../../typings/types";
 
-import type { User } from "../../../typings/types";
-
-type Service =
-  | "insertUser"
-  | "findFilterAllUsers"
-  | "findUserByProperty"
-  | "modifyFilterUser"
-  | "removeFilterUser"
-  | "findSchoolById";
-
-describe("RESOURCE => User", () => {
-  /* mock services */
-  // just one return
-  const mockService = (payload: any, service: Service) => {
-    return jest.spyOn(userServices, service).mockReturnValue(payload);
-  };
-  // password hashing mock
-  const mockHashingService = (hashedPwd: any) => {
-    return jest.spyOn(utils, "hashPwd").mockResolvedValue(hashedPwd);
-  };
-
+describe("RESOURCE => USERS", () => {
   /* hooks */
-  afterAll(() => {
+  afterEach(async () => {
+    await removeAllUsers();
+    await removeAllSchools();
+  });
+  beforeAll(async () => {
+    const mongoServer = await MongoMemoryServer.create();
+    await mongoose.connect(mongoServer.getUri());
+  });
+  afterAll(async () => {
+    await mongoose.disconnect();
+    await mongoose.connection.close();
     connection.close();
   });
 
   /* end point url */
   const endPointUrl = `${BASE_URL}users/`;
 
-  /* inputs */
-  const validMockUserId = new Types.ObjectId().toString();
-  const validMockSchoolId = new Types.ObjectId().toString();
-  const otherValidMockId = new Types.ObjectId().toString();
-  const invalidMockId = "63c5dcac78b868f80035asdf";
-  const tooLongPassword =
-    "123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341";
-  const hashedPwd =
-    "$2b$10$3R7rTrUF5Dtknal44dnzsuJh.I2UI1S6wW0hwWqbmoDopiGtEa36.";
-  const newUser = {
-    school_id: validMockSchoolId,
-    firstName: "Jerome",
-    lastName: "Vargas",
-    email: "jerome@gmail.com",
-    password: "12341234",
-    role: "coordinator",
-    status: "active",
-  };
-  const newUserMissingValues = {
-    school_i: validMockSchoolId,
-    firstNam: "Jerome",
-    lastNam: "Vargas",
-    emai: "jerome@gmail.com",
-    passwor: "12341234",
-    rol: "coordinator",
-    statu: "active",
-  };
-  const newUserEmptyValues = {
-    school_id: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    role: "",
-    status: "",
-  };
-  const newUserNotValidDataTypes = {
-    school_id: invalidMockId,
-    firstName: 9087432156,
-    lastName: 890213429039,
-    email: 9808934123,
-    password: 12341234,
-    role: 93870134699832,
-    status: 43124314,
-  };
-  const newUserWrongLengthValues = {
-    school_id: validMockSchoolId,
-    firstName: "Jerome Je Jerome Je Jerome Je Jerome Je Jerome Je 1",
-    lastName: "Vargas Va Vargas Va Vargas Va Vargas Va Vargas Va  1",
-    email: "jeromejeromejeromejeromejeromejeromejerom@gmail.com",
-    password: "1234123",
-    role: "coordinator",
-    status: "active",
-  };
-  const newUserWrongInputValues = {
-    school_id: validMockSchoolId,
-    firstName: "Jerome",
-    lastName: "Vargas",
-    email: "jerome@gmail",
-    password: "12341234",
-    role: "coordinador",
-    status: "activo",
-  };
-
-  /* payloads */
-  const userPayload = {
-    _id: validMockUserId,
-    school_id: validMockSchoolId,
-    firstName: "Jerome",
-    lastName: "Vargas",
-    email: "jerome@gmail.com",
-    role: "coordinator",
-    status: "active",
-  };
-  const userNullPayload = null;
-  const schoolPayload = {
-    _id: validMockSchoolId,
-    name: "school 001",
-  };
-  const schoolNullPayload = null;
-  const usersPayload = [
-    {
-      _id: new Types.ObjectId().toString(),
-      school_id: new Types.ObjectId().toString(),
-      firstName: "Jerome",
-      lastName: "Vargas",
-      email: "jerome@gmail.com",
-      role: "headmaster",
-      status: "inactive",
-    },
-    {
-      _id: new Types.ObjectId().toString(),
-      school_id: new Types.ObjectId().toString(),
-      firstName: "Dave",
-      lastName: "Gray",
-      email: "dave@hotmail.com",
-      role: "coordinator",
-      status: "active",
-    },
-    {
-      _id: new Types.ObjectId().toString(),
-      school_id: new Types.ObjectId().toString(),
-      firstName: "Ania",
-      lastName: "Kubow",
-      email: "ania@yahoo.com",
-      role: "teacher",
-      status: "on_leave",
-    },
-  ];
-  const usersNullPayload: User[] = [];
-
   // test blocks
-  describe("POST /user ", () => {
-    describe("user::post::01 - Passing a user with missing fields", () => {
+  describe("USERS - POST", () => {
+    describe("POST - /users - Passing a user with missing fields", () => {
       it("should return a field needed error", async () => {
-        // mock services
-        const findSchool = mockService(schoolNullPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const insertUser = mockService(userNullPayload, "insertUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUserMissingValues = {
+          school_i: validMockSchoolId,
+          firstNam: "Jerome",
+          lastNam: "Vargas",
+          emai: "jerome@gmail.com",
+          passwor: "12341234",
+          rol: "coordinator",
+          statu: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -208,35 +102,20 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
-        expect(findSchool).not.toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserMissingValues.emai,
-            school_id: newUserMissingValues.school_i,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(newUserMissingValues.passwor);
-        expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUserMissingValues);
       });
     });
-    describe("user::post::02 - Passing a user with empty fields", () => {
+    describe("POST - /users - Passing a user with empty fields", () => {
       it("should return an empty field error", async () => {
-        // mock services
-        const findSchool = mockService(schoolNullPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const insertUser = mockService(userNullPayload, "insertUser");
+        // inputs
+        const newUserEmptyValues = {
+          school_id: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          role: "",
+          status: "",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -292,35 +171,21 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
-        expect(findSchool).not.toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserEmptyValues.email,
-            school_id: newUserEmptyValues.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(newUserEmptyValues.password);
-        expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUserEmptyValues, "user");
       });
     });
-    describe("user::post::03 - Passing an invalid type as field value", () => {
+    describe("POST - /users - Passing an invalid type as field value", () => {
       it("should return a not valid type error", async () => {
-        // mock services
-        const findSchool = mockService(schoolNullPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const insertUser = mockService(userNullPayload, "insertUser");
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+        const newUserNotValidDataTypes = {
+          school_id: invalidMockId,
+          firstName: 9087432156,
+          lastName: 890213429039,
+          email: 9808934123,
+          password: 12341234,
+          role: 93870134699832,
+          status: 43124314,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -376,37 +241,21 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
-        expect(findSchool).not.toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserNotValidDataTypes.email,
-            school_id: newUserNotValidDataTypes.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(
-          newUserNotValidDataTypes.password
-        );
-        expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUserNotValidDataTypes);
       });
     });
-    describe("user::post::04 - Passing too long or short input values", () => {
+    describe("POST - /users - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
-        // mock services
-        const findSchool = mockService(schoolNullPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const insertUser = mockService(userNullPayload, "insertUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUserWrongLengthValues = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome Je Jerome Je Jerome Je Jerome Je Jerome Je 1",
+          lastName: "Vargas Va Vargas Va Vargas Va Vargas Va Vargas Va  1",
+          email: "jeromejeromejeromejeromejeromejeromejerom@gmail.com",
+          password: "1234123",
+          role: "coordinator",
+          status: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -444,45 +293,28 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
-        expect(findSchool).not.toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserWrongLengthValues.email,
-            school_id: newUserWrongInputValues.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(
-          newUserWrongLengthValues.password
-        );
-        expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUserWrongLengthValues);
       });
     });
-    describe("user::post::05 - Passing a password that is too long", () => {
+    describe("POST - /users - Passing a password that is too long", () => {
       it("should return an invalid length input value error", async () => {
-        // mock services
-        const findSchool = mockService(schoolNullPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const insertUser = mockService(userNullPayload, "insertUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const tooLongPassword =
+          "123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341";
+        const newUser = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: tooLongPassword,
+          role: "coordinator",
+          status: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
           .post(`${endPointUrl}`)
-          .send({
-            ...newUser,
-            password: tooLongPassword,
-          });
+          .send(newUser);
 
         //assertions
         expect(body).toStrictEqual({
@@ -497,38 +329,21 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
-        expect(findSchool).not.toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserWrongLengthValues.email,
-            school_id: newUserWrongInputValues.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(tooLongPassword);
-        expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith({
-          ...newUser,
-          password: tooLongPassword,
-        });
       });
     });
-    describe("user::post::06 - Passing wrong school id, email, role or status", () => {
+    describe("POST - /users - Passing wrong email, role or status", () => {
       it("should return a wrong input value error", async () => {
-        // mock services
-        const findSchool = mockService(schoolNullPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const insertUser = mockService(userNullPayload, "insertUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUserWrongInputValues = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail",
+          password: "12341234",
+          role: "coordinador",
+          status: "activo",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -560,37 +375,21 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(findSchool).not.toHaveBeenCalled();
-        expect(findSchool).not.toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserWrongInputValues.email,
-            school_id: newUserWrongInputValues.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(
-          newUserWrongInputValues.password
-        );
-        expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUserWrongInputValues);
       });
     });
-    describe("user::post::07 - Passing a non-existing school", () => {
+    describe("POST - /users - Passing a non-existing school", () => {
       it("should return a duplicate user error", async () => {
-        // mock services
-        const findSchool = mockService(schoolNullPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const insertUser = mockService(userPayload, "insertUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUser = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "12341234",
+          role: "coordinator",
+          status: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -603,32 +402,31 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(findSchool).toHaveBeenCalled();
-        expect(findSchool).toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(newUser.password);
-        expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
     });
-    describe("user::post::08 - Passing an existing user's email", () => {
+    describe("POST - /users - Passing an existing user's email", () => {
       it("should return a non-existent school error", async () => {
-        // mock services
-        const findSchool = mockService(schoolPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const insertUser = mockService(userPayload, "insertUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: validMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newUser = {
+          _id: validMockUserId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "12341234",
+          role: "coordinator" as UserRole,
+          status: "active" as UserStatus,
+        };
+        await insertUser(newUser);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -641,74 +439,28 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(findSchool).toHaveBeenCalled();
-        expect(findSchool).toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).toHaveBeenCalled();
-        expect(duplicateUserEmail).toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(newUser.password);
-        expect(insertUser).not.toHaveBeenCalled();
-        expect(insertUser).not.toHaveBeenCalledWith(newUser);
       });
     });
-    describe("user::post::09 - Passing a user but not being created", () => {
-      it("should not create a user", async () => {
-        // mock services
-        const findSchool = mockService(schoolPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-
-        const insertUser = mockService(userNullPayload, "insertUser");
-
-        // api call
-        const { statusCode, body } = await supertest(server)
-          .post(`${endPointUrl}`)
-          .send(newUser);
-
-        // assertions
-        expect(body).toStrictEqual({
-          msg: "User not created",
-          success: false,
-        });
-        expect(statusCode).toBe(400);
-        expect(findSchool).toHaveBeenCalled();
-        expect(findSchool).toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).toHaveBeenCalled();
-        expect(duplicateUserEmail).toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).toHaveBeenCalled();
-        expect(hashPwd).toHaveBeenCalledWith(newUser.password);
-        expect(insertUser).toHaveBeenCalled();
-        expect(insertUser).toHaveBeenCalledWith({
-          ...newUser,
-          password: hashedPwd,
-        });
-      });
-    });
-    describe("user::post::10 - Passing a user correctly to create", () => {
+    describe("POST - /users - Passing a user correctly to create", () => {
       it("should create a user", async () => {
-        // mock services
-        const findSchool = mockService(schoolPayload, "findSchoolById");
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const insertUser = mockService(userPayload, "insertUser");
+        // inputs
+        const ValidMockSchoolId = new Types.ObjectId().toString();
+        const newSchool = {
+          _id: ValidMockSchoolId,
+          name: "school 001",
+          groupMaxNumStudents: 40,
+          status: "active" as SchoolStatus,
+        };
+        await insertSchool(newSchool);
+        const newUser = {
+          school_id: ValidMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "12341234",
+          role: "coordinator",
+          status: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -721,320 +473,333 @@ describe("RESOURCE => User", () => {
           success: true,
         });
         expect(statusCode).toBe(201);
-        expect(findSchool).toHaveBeenCalled();
-        expect(findSchool).toHaveBeenCalledWith(
-          validMockSchoolId,
-          "-createdAt -updatedAt"
-        );
-        expect(duplicateUserEmail).toHaveBeenCalled();
-        expect(duplicateUserEmail).toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).toHaveBeenCalled();
-        expect(hashPwd).toHaveBeenCalledWith(newUser.password);
-        expect(insertUser).toHaveBeenCalled();
-        expect(insertUser).toHaveBeenCalledWith({
-          ...newUser,
-          password: hashedPwd,
-        });
       });
     });
   });
 
-  describe("GET /user ", () => {
-    describe("user - GET", () => {
-      describe("user::get::01 - passing a school with missing values", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
+  describe("USERS - GET", () => {
+    describe("GET - /users - passing a school with missing values", () => {
+      it("should return a missing values error", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_i: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUsers).not.toHaveBeenCalled();
-          expect(findUsers).not.toHaveBeenCalledWith(
-            { school_id: null },
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
-      });
-      describe("user::get::02 - passing a school with empty values", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: "" });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUsers).not.toHaveBeenCalled();
-          expect(findUsers).not.toHaveBeenCalledWith(
-            { school_id: "" },
-            "-password -createdAt -updatedAt"
-          );
-        });
-      });
-      describe("user::get::03 - Passing an invalid school id in the body", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: invalidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUsers).not.toHaveBeenCalled();
-          expect(findUsers).not.toHaveBeenCalledWith(
-            { school_id: invalidMockId },
-            "-password -createdAt -updatedAt"
-          );
-        });
-      });
-      describe("user::get::04 - Requesting all users but not finding any", () => {
-        it("should not get any users", async () => {
-          // mock services
-          const findUsers = mockService(usersNullPayload, "findFilterAllUsers");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: otherValidMockId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "No users found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findUsers).toHaveBeenCalled();
-          expect(findUsers).toHaveBeenCalledWith(
-            { school_id: otherValidMockId },
-            "-password -createdAt -updatedAt"
-          );
-        });
-      });
-      describe("user::get::05 - Requesting all users", () => {
-        it("should get all users", async () => {
-          // mock services
-          const findUsers = mockService(usersPayload, "findFilterAllUsers");
-
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}`)
-            .send({ school_id: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            payload: usersPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findUsers).toHaveBeenCalled();
-          expect(findUsers).toHaveBeenCalledWith(
-            { school_id: validMockSchoolId },
-            "-password -createdAt -updatedAt"
-          );
-        });
+        expect(statusCode).toBe(400);
       });
     });
-    describe("user - GET/:id", () => {
-      describe("user::get/:id::01 - passing a school with missing values", () => {
-        it("should return a missing values error", async () => {
-          // mock services
-          const findUser = mockService(userNullPayload, "findUserByProperty");
+    describe("GET - /users - passing a school with empty values", () => {
+      it("should return an invalid id error", async () => {
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: "" });
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockUserId}`)
-            .send({ school_i: validMockSchoolId });
-
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "Please add a school id",
-                param: "school_id",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUser).not.toHaveBeenCalled();
-          expect(findUser).not.toHaveBeenCalledWith(
-            [{ _id: validMockUserId }, { school_id: null }],
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
       });
-      describe("user::get/:id::02 - passing a school with empty values", () => {
-        it("should return an empty values error", async () => {
-          // mock services
-          const findUser = mockService(userNullPayload, "findUserByProperty");
+    });
+    describe("GET - /users - Passing an invalid school id in the body", () => {
+      it("should return an invalid id error", async () => {
+        // inputs
+        const invalidMockSchoolId = "63c5dcac78b868f80035asdf";
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockUserId}`)
-            .send({ school_id: "" });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: invalidMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "body",
-                msg: "The school id field is empty",
-                param: "school_id",
-                value: "",
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUser).not.toHaveBeenCalled();
-          expect(findUser).not.toHaveBeenCalledWith(
-            [{ _id: validMockUserId }, { school_id: "" }],
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockSchoolId,
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
       });
-      describe("user::get/:id::03 - Passing an invalid user and school ids", () => {
-        it("should return an invalid id error", async () => {
-          // mock services
-          const findUser = mockService(userNullPayload, "findUserByProperty");
+    });
+    describe("GET - /users - Requesting all users but not finding any", () => {
+      it("should not get any users", async () => {
+        // inputs
+        const otherValidMockId = new Types.ObjectId().toString();
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${invalidMockId}`)
-            .send({ school_id: invalidMockId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: otherValidMockId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: [
-              {
-                location: "params",
-                msg: "The user id is not valid",
-                param: "id",
-                value: invalidMockId,
-              },
-              {
-                location: "body",
-                msg: "The school id is not valid",
-                param: "school_id",
-                value: invalidMockId,
-              },
-            ],
-            success: false,
-          });
-          expect(statusCode).toBe(400);
-          expect(findUser).not.toHaveBeenCalled();
-          expect(findUser).not.toHaveBeenCalledWith(
-            [{ _id: invalidMockId }, { school_id: invalidMockId }],
-            "-password -createdAt -updatedAt"
-          );
+        expect(body).toStrictEqual({
+          // assertions{}
+          msg: "No users found",
+          success: false,
         });
+        expect(statusCode).toBe(404);
       });
-      describe("user::get/:id::04 - Requesting a user but not finding it", () => {
-        it("should not get a user", async () => {
-          // mock services
-          const findUser = mockService(userNullPayload, "findUserByProperty");
+    });
+    describe("GET - /users - Requesting all users", () => {
+      it("should get all users", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUsers: NewUser[] = [
+          {
+            school_id: validMockSchoolId,
+            firstName: "Jerome",
+            lastName: "Vargas",
+            email: "jerome@gmail.com",
+            password: "s3dfj234802974sf",
+            role: "headmaster",
+            status: "inactive",
+          },
+          {
+            school_id: validMockSchoolId,
+            firstName: "Dave",
+            lastName: "Gray",
+            email: "dave@hotmail.com",
+            password: "s3dfj234802974sf",
+            role: "coordinator",
+            status: "active",
+          },
+          {
+            school_id: validMockSchoolId,
+            firstName: "Ania",
+            lastName: "Kubow",
+            email: "ania@yahoo.com",
+            password: "s3dfj234802974sf",
+            role: "teacher",
+            status: "leave",
+          },
+        ];
+        await insertManyUsers(newUsers);
+        const users = await findAllUsers(validMockSchoolId);
+        const usersPayload = [
+          {
+            _id: users[0]._id.toString(),
+            school_id: validMockSchoolId,
+            firstName: "Jerome",
+            lastName: "Vargas",
+            email: "jerome@gmail.com",
+            role: "headmaster",
+            status: "inactive",
+          },
+          {
+            _id: users[1]._id.toString(),
+            school_id: validMockSchoolId,
+            firstName: "Dave",
+            lastName: "Gray",
+            email: "dave@hotmail.com",
+            role: "coordinator",
+            status: "active",
+          },
+          {
+            _id: users[2]._id.toString(),
+            school_id: validMockSchoolId,
+            firstName: "Ania",
+            lastName: "Kubow",
+            email: "ania@yahoo.com",
+            role: "teacher",
+            status: "leave",
+          },
+        ];
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${otherValidMockId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}`)
+          .send({ school_id: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            msg: "User not found",
-            success: false,
-          });
-          expect(statusCode).toBe(404);
-          expect(findUser).toHaveBeenCalled();
-          expect(findUser).toHaveBeenCalledWith(
-            { _id: otherValidMockId, school_id: validMockSchoolId },
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          payload: usersPayload,
+          success: true,
         });
+        expect(statusCode).toBe(200);
       });
-      describe("user::get/:id::05 - Requesting a user correctly", () => {
-        it("should get a user", async () => {
-          // mock services
-          const findUser = mockService(userPayload, "findUserByProperty");
+    });
+    describe("GET - /users/:id - passing a school with missing values", () => {
+      it("should return a missing values error", async () => {
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
 
-          // api call
-          const { statusCode, body } = await supertest(server)
-            .get(`${endPointUrl}${validMockUserId}`)
-            .send({ school_id: validMockSchoolId });
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockUserId}`)
+          .send({ school_i: validMockSchoolId });
 
-          // assertions
-          expect(body).toStrictEqual({
-            payload: userPayload,
-            success: true,
-          });
-          expect(statusCode).toBe(200);
-          expect(findUser).toHaveBeenCalled();
-          expect(findUser).toHaveBeenCalledWith(
-            { _id: validMockUserId, school_id: validMockSchoolId },
-            "-password -createdAt -updatedAt"
-          );
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "Please add a school id",
+              param: "school_id",
+            },
+          ],
+          success: false,
         });
+        expect(statusCode).toBe(400);
+      });
+    });
+    describe("GET - /users/:id - passing a school with empty values", () => {
+      it("should return an empty values error", async () => {
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${validMockUserId}`)
+          .send({ school_id: "" });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "body",
+              msg: "The school id field is empty",
+              param: "school_id",
+              value: "",
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+      });
+    });
+    describe("GET - /users/:id - Passing an invalid user and school ids", () => {
+      it("should return an invalid id error", async () => {
+        // inputs
+        const invalidMockUserId = "63c5dcac78b868f80035asdf";
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${invalidMockUserId}`)
+          .send({ school_id: invalidMockUserId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: [
+            {
+              location: "params",
+              msg: "The user id is not valid",
+              param: "id",
+              value: invalidMockUserId,
+            },
+            {
+              location: "body",
+              msg: "The school id is not valid",
+              param: "school_id",
+              value: invalidMockUserId,
+            },
+          ],
+          success: false,
+        });
+        expect(statusCode).toBe(400);
+      });
+    });
+    describe("GET - /users/:id - Requesting a user but not finding it", () => {
+      it("should not get a user", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const otherValidMockUserId = new Types.ObjectId().toString();
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${otherValidMockUserId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          msg: "User not found",
+          success: false,
+        });
+        expect(statusCode).toBe(404);
+      });
+    });
+    describe("GET - /users/:id - Requesting a user correctly", () => {
+      it("should get a user", async () => {
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUser: NewUser = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          password: "78sdf3322222a13dsd",
+          email: "jerome@gmail.com",
+          role: "coordinator",
+          status: "active",
+        };
+        const user = await insertUser(newUser);
+        const userId = user._id.toString();
+        const userPayload = {
+          _id: userId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          role: "coordinator",
+          status: "active",
+        };
+
+        // api call
+        const { statusCode, body } = await supertest(server)
+          .get(`${endPointUrl}${userId}`)
+          .send({ school_id: validMockSchoolId });
+
+        // assertions
+        expect(body).toStrictEqual({
+          payload: userPayload,
+          success: true,
+        });
+        expect(statusCode).toBe(200);
       });
     });
   });
 
-  describe("PUT /user ", () => {
-    describe("user::put::01 - Passing a user with missing fields", () => {
+  describe("USERS - PUT ", () => {
+    describe("PUT - /users/:id - Passing a user with missing fields", () => {
       it("should return a field needed error", async () => {
-        // mock services
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const updateUser = mockService(userNullPayload, "modifyFilterUser");
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUserMissingValues = {
+          school_i: validMockSchoolId,
+          firstNam: "Jerome",
+          lastNam: "Vargas",
+          emai: "jerome@gmail.com",
+          passwor: "12341234",
+          rol: "coordinator",
+          statu: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1083,32 +848,21 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserMissingValues.emai,
-            school_id: newUserMissingValues.school_i,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(newUserMissingValues.passwor);
-        expect(updateUser).not.toHaveBeenCalled();
-        expect(updateUser).not.toHaveBeenCalledWith(
-          { _id: validMockUserId, school_id: newUserMissingValues.school_i },
-          newUserMissingValues
-        );
       });
     });
-    describe("user::put::02 - Passing a user with empty fields", () => {
+    describe("PUT - /users/:id - Passing a user with empty fields", () => {
       it("should return an empty field error", async () => {
-        // mock services
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const updateUser = mockService(userNullPayload, "modifyFilterUser");
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+        const newUserEmptyValues = {
+          school_id: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          role: "",
+          status: "",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1164,32 +918,21 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserEmptyValues.email,
-            school_id: newUserEmptyValues.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(newUserEmptyValues.password);
-        expect(updateUser).not.toHaveBeenCalled();
-        expect(updateUser).not.toHaveBeenCalledWith(
-          { _id: validMockUserId, school_id: newUserEmptyValues.school_id },
-          newUserEmptyValues
-        );
       });
     });
-    describe("user::put::03 - Passing an invalid type as field value", () => {
+    describe("PUT - /users/:id - Passing an invalid type as field value", () => {
       it("should return a not valid value error", async () => {
-        // mock services
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const updateUser = mockService(userNullPayload, "modifyFilterUser");
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
+        const newUserNotValidDataTypes = {
+          school_id: invalidMockId,
+          firstName: 9087432156,
+          lastName: 890213429039,
+          email: 9808934123,
+          password: 12341234,
+          role: 93870134699832,
+          status: 43124314,
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1251,34 +994,22 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserNotValidDataTypes.email,
-            school_id: newUserNotValidDataTypes.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(
-          newUserNotValidDataTypes.password
-        );
-        expect(updateUser).not.toHaveBeenCalled();
-        expect(updateUser).not.toHaveBeenCalledWith(
-          { _id: invalidMockId, school_id: newUserNotValidDataTypes.school_id },
-          newUserNotValidDataTypes
-        );
       });
     });
-    describe("user::put::04 - Passing too long or short input values", () => {
+    describe("PUT - /users/:id - Passing too long or short input values", () => {
       it("should return an invalid length input value error", async () => {
-        // mock services
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const updateUser = mockService(userNullPayload, "modifyFilterUser");
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUserWrongLengthValues = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome Je Jerome Je Jerome Je Jerome Je Jerome Je 1",
+          lastName: "Vargas Va Vargas Va Vargas Va Vargas Va Vargas Va  1",
+          email: "jeromejeromejeromejeromejeromejeromejerom@gmail.com",
+          password: "1234123",
+          role: "coordinator",
+          status: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1316,45 +1047,29 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserWrongLengthValues.email,
-            school_id: newUserWrongLengthValues.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(
-          newUserWrongLengthValues.password
-        );
-        expect(updateUser).not.toHaveBeenCalled();
-        expect(updateUser).not.toHaveBeenCalledWith(
-          {
-            school_id: newUserWrongLengthValues.school_id,
-            _id: validMockUserId,
-          },
-          newUserWrongLengthValues
-        );
       });
     });
-    describe("user::put::05 - Passing a password that is too long", () => {
+    describe("PUT - /users/:id - Passing a password that is too long", () => {
       it("should return an invalid length input value error", async () => {
-        // mock services
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const updateUser = mockService(userNullPayload, "modifyFilterUser");
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const tooLongPassword =
+          "123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341212341234121234123412123412341";
+        const newUser = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: tooLongPassword,
+          role: "coordinator",
+          status: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
           .put(`${endPointUrl}${validMockUserId}`)
-          .send({
-            ...newUser,
-            password: tooLongPassword,
-          });
+          .send(newUser);
 
         // assertions
         expect(body).toStrictEqual({
@@ -1369,38 +1084,22 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserWrongLengthValues.email,
-            school_id: newUserWrongLengthValues.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(tooLongPassword);
-        expect(updateUser).not.toHaveBeenCalled();
-        expect(updateUser).not.toHaveBeenCalledWith(
-          {
-            _id: validMockUserId,
-            school_id: newUserWrongLengthValues.school_id,
-          },
-          {
-            ...newUser,
-            password: tooLongPassword,
-          }
-        );
       });
     });
-    describe("user::put::06 - Passing wrong email, role or status", () => {
+    describe("PUT - /users/:id - Passing wrong email, role or status", () => {
       it("should return an invalid input value error", async () => {
-        // mock services
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const updateUser = mockService(userNullPayload, "modifyFilterUser");
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUserWrongInputValues = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail",
+          password: "12341234",
+          role: "coordinador",
+          status: "activo",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1432,37 +1131,23 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).not.toHaveBeenCalled();
-        expect(duplicateUserEmail).not.toHaveBeenCalledWith(
-          {
-            email: newUserWrongInputValues.email,
-            school_id: newUserWrongInputValues.school_id,
-          },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(
-          newUserWrongInputValues.password
-        );
-        expect(updateUser).not.toHaveBeenCalled();
-        expect(updateUser).not.toHaveBeenCalledWith(
-          {
-            _id: validMockUserId,
-            school_id: newUserWrongInputValues.school_id,
-          },
-          newUserWrongInputValues
-        );
       });
     });
-    describe("user::put::07 - Passing an existing user's email", () => {
+    describe("PUT - /users/:id - Passing an existing user's email", () => {
       it("should return a duplicate user error", async () => {
-        // mock services
-        const duplicateUserEmail = mockService(
-          userPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const updateUser = mockService(userPayload, "modifyFilterUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const otherValidMockId = new Types.ObjectId().toString();
+        const newUser: NewUser = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "12341234",
+          role: "coordinator",
+          status: "active",
+        };
+        await insertUser(newUser);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1475,29 +1160,22 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(409);
-        expect(duplicateUserEmail).toHaveBeenCalled();
-        expect(duplicateUserEmail).toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).not.toHaveBeenCalled();
-        expect(hashPwd).not.toHaveBeenCalledWith(newUser.password);
-        expect(updateUser).not.toHaveBeenCalled();
-        expect(updateUser).not.toHaveBeenCalledWith(
-          { school_id: newUser.school_id, _id: validMockUserId },
-          newUser
-        );
       });
     });
-    describe("user::put::08 - Passing a user but not updating it", () => {
+    describe("PUT - /users/:id - Passing a user but not updating it", () => {
       it("should not update a user", async () => {
-        // mock services
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const updateUser = mockService(userNullPayload, "modifyFilterUser");
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const newUser = {
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "12341234",
+          role: "coordinator",
+          status: "active",
+        };
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1510,32 +1188,24 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(duplicateUserEmail).toHaveBeenCalled();
-        expect(duplicateUserEmail).toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).toHaveBeenCalled();
-        expect(hashPwd).toHaveBeenCalledWith(newUser.password);
-        expect(updateUser).toHaveBeenCalled();
-        expect(updateUser).toHaveBeenCalledWith(
-          { school_id: newUser.school_id, _id: validMockUserId },
-          {
-            ...newUser,
-            password: hashedPwd,
-          }
-        );
       });
     });
-    describe("user::put::09 - Passing a user correctly to update", () => {
+    describe("PUT - /users/:id - Passing a user correctly to update", () => {
       it("should update a user", async () => {
-        // mock services
-        const duplicateUserEmail = mockService(
-          userNullPayload,
-          "findUserByProperty"
-        );
-        const hashPwd = mockHashingService(hashedPwd);
-        const updateUser = mockService(userPayload, "modifyFilterUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const newUser = {
+          _id: validMockUserId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "12341234",
+          role: "coordinator" as UserRole,
+          status: "active" as UserStatus,
+        };
+        await insertUser(newUser);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1545,30 +1215,16 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "User updated", success: true });
         expect(statusCode).toBe(200);
-        expect(duplicateUserEmail).toHaveBeenCalled();
-        expect(duplicateUserEmail).toHaveBeenCalledWith(
-          { email: newUser.email, school_id: newUser.school_id },
-          "-password -createdAt -updatedAt"
-        );
-        expect(hashPwd).toHaveBeenCalled();
-        expect(hashPwd).toHaveBeenCalledWith(newUser.password);
-        expect(updateUser).toHaveBeenCalled();
-        expect(updateUser).toHaveBeenCalledWith(
-          { school_id: newUser.school_id, _id: validMockUserId },
-          {
-            ...newUser,
-            password: hashedPwd,
-          }
-        );
       });
     });
   });
 
-  describe("DELETE /user ", () => {
-    describe("user::delete::01 - passing a school with missing values", () => {
+  describe("USERS - DELETE", () => {
+    describe("DELETE - /users/:id - passing a school with missing values", () => {
       it("should return a missing values error", async () => {
-        // mock services
-        const deleteUser = mockService(userNullPayload, "removeFilterUser");
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
+        const validMockSchoolId = new Types.ObjectId().toString();
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1587,17 +1243,12 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteUser).not.toHaveBeenCalled();
-        expect(deleteUser).not.toHaveBeenCalledWith({
-          _id: validMockUserId,
-          school_id: validMockSchoolId,
-        });
       });
     });
-    describe("user::delete::02 - passing a school with empty values", () => {
+    describe("DELETE - /users/:id - passing a school with empty values", () => {
       it("should return an empty values error", async () => {
-        // mock services
-        const deleteUser = mockService(userNullPayload, "removeFilterUser");
+        // inputs
+        const validMockUserId = new Types.ObjectId().toString();
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1617,17 +1268,12 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteUser).not.toHaveBeenCalled();
-        expect(deleteUser).not.toHaveBeenCalledWith({
-          _id: validMockUserId,
-          school_id: "",
-        });
       });
     });
-    describe("user::delete::03 - Passing an invalid user and school ids", () => {
+    describe("DELETE - /users/:id - Passing an invalid user and school ids", () => {
       it("should return an invalid id error", async () => {
-        // mock services
-        const deleteUser = mockService(userNullPayload, "removeFilterUser");
+        // inputs
+        const invalidMockId = "63c5dcac78b868f80035asdf";
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1653,17 +1299,13 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(400);
-        expect(deleteUser).not.toHaveBeenCalled();
-        expect(deleteUser).not.toHaveBeenCalledWith({
-          _id: invalidMockId,
-          school_id: invalidMockId,
-        });
       });
     });
-    describe("user::delete::04 - Passing a user id but not deleting it", () => {
+    describe("DELETE - /users/:id - Passing a user id but not deleting it", () => {
       it("should not delete a user", async () => {
-        // mock services
-        const deleteUser = mockService(userNullPayload, "removeFilterUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const otherValidMockId = new Types.ObjectId().toString();
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1676,17 +1318,24 @@ describe("RESOURCE => User", () => {
           success: false,
         });
         expect(statusCode).toBe(404);
-        expect(deleteUser).toHaveBeenCalled();
-        expect(deleteUser).toHaveBeenCalledWith({
-          _id: otherValidMockId,
-          school_id: validMockSchoolId,
-        });
       });
     });
-    describe("user::delete::05 - Passing a user id correctly to delete", () => {
+    describe("DELETE - /users/:id - Passing a user id correctly to delete", () => {
       it("should delete a user", async () => {
-        // mock services
-        const deleteUser = mockService(userPayload, "removeFilterUser");
+        // inputs
+        const validMockSchoolId = new Types.ObjectId().toString();
+        const validMockUserId = new Types.ObjectId().toString();
+        const newUser = {
+          _id: validMockUserId,
+          school_id: validMockSchoolId,
+          firstName: "Jerome",
+          lastName: "Vargas",
+          email: "jerome@gmail.com",
+          password: "12341234",
+          role: "teacher" as UserRole,
+          status: "active" as UserStatus,
+        };
+        const user = await insertUser(newUser);
 
         // api call
         const { statusCode, body } = await supertest(server)
@@ -1696,11 +1345,6 @@ describe("RESOURCE => User", () => {
         // assertions
         expect(body).toStrictEqual({ msg: "User deleted", success: true });
         expect(statusCode).toBe(200);
-        expect(deleteUser).toHaveBeenCalled();
-        expect(deleteUser).toHaveBeenCalledWith({
-          _id: validMockUserId,
-          school_id: validMockSchoolId,
-        });
       });
     });
   });

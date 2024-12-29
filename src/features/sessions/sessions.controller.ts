@@ -9,20 +9,15 @@ import {
   findFilterAllSessions,
   modifyFilterSession,
   removeFilterSession,
-  /* Services from other entities */
   findPopulateGroupCoordinatorById,
   findPopulateSubjectById,
   findPopulateTeacherFieldById,
   findPopulateTeacherCoordinatorById,
 } from "./sessions.services";
 
-/* global controller reference */
+/* controller global variables */
 const maxMinutesInDay = 1439;
 
-// @desc create a session
-// @route POST /api/v?/sessions
-// @access Private
-// @fields: body {school_id:[string], level_id:[string], groupCoordinator_id:[string], subject_id:[string], teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 export const createSession = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const {
@@ -41,7 +36,6 @@ export const createSession = async ({ body }: Request, res: Response) => {
   if (startTime > maxMinutesInDay) {
     throw new BadRequestError("The session start time must not exceed 23:00");
   }
-
   /* find if the groupCoordinator already exists */
   const fieldsToReturnGroupCoordinator = "-createdAt -updatedAt";
   const fieldsToPopulateGroupCoordinator = "school_id group_id coordinator_id";
@@ -200,10 +194,6 @@ export const createSession = async ({ body }: Request, res: Response) => {
     .json({ msg: "Session created!", success: true });
 };
 
-// @desc get all the sessions
-// @route GET /api/v?/sessions
-// @access Private
-// @fields: body {school_id:[string]}
 export const getSessions = async ({ body }: Request, res: Response) => {
   /* destructure the fields */
   const { school_id } = body;
@@ -221,10 +211,6 @@ export const getSessions = async ({ body }: Request, res: Response) => {
   });
 };
 
-// @desc get the Session by id
-// @route GET /api/v?/sessions/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const getSession = async ({ params, body }: Request, res: Response) => {
   /* destructure the fields */
   const { id: _id } = params;
@@ -242,10 +228,6 @@ export const getSession = async ({ params, body }: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ payload: sessionFound, success: true });
 };
 
-// @desc update a Session
-// @route PUT /api/v?/sessions/:id
-// @access Private
-// @fields: params: {id:[string]},  body {school_id:[string], level_id:[string], group_id:[string], subject_id:[string],  teacherField_id:[string], startTime:[number], groupScheduleSlot:[number], teacherScheduleSlot:[number]}
 export const updateSession = async (
   { params, body }: Request,
   res: Response
@@ -429,10 +411,6 @@ export const updateSession = async (
   res.status(StatusCodes.OK).json({ msg: "Session updated!", success: true });
 };
 
-// @desc delete a Session
-// @route DELETE /api/v?/sessions/:id
-// @access Private
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const deleteSession = async (
   { params, body }: Request,
   res: Response

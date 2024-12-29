@@ -3,7 +3,6 @@ import { check } from "express-validator";
 import validateResult from "../../lib/express-validator/validateHelper";
 import { isValidId } from "../../lib/utilities/validation";
 
-// @fields: body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 export const validateCreateSchedule = [
   check("school_id")
     .exists()
@@ -73,7 +72,7 @@ export const validateCreateSchedule = [
     .withMessage("The day start time must not exceed 9 digits"),
   check("monday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Mondays")
+    .withMessage("Please confirm if Monday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The monday field is empty")
@@ -82,7 +81,7 @@ export const validateCreateSchedule = [
     .withMessage("monday value is not valid"),
   check("tuesday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Tuesdays")
+    .withMessage("Please confirm if Tuesday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The tuesday field is empty")
@@ -91,7 +90,7 @@ export const validateCreateSchedule = [
     .withMessage("tuesday value is not valid"),
   check("wednesday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Wednesdays")
+    .withMessage("Please confirm if Wednesday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The wednesday field is empty")
@@ -100,7 +99,7 @@ export const validateCreateSchedule = [
     .withMessage("wednesday value is not valid"),
   check("thursday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Thursdays")
+    .withMessage("Please confirm if Thursday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The thursday field is empty")
@@ -109,7 +108,7 @@ export const validateCreateSchedule = [
     .withMessage("thursday value is not valid"),
   check("friday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Fridays")
+    .withMessage("Please confirm if Friday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The friday field is empty")
@@ -118,7 +117,7 @@ export const validateCreateSchedule = [
     .withMessage("friday value is not valid"),
   check("saturday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Saturdays")
+    .withMessage("Please confirm if Saturday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The saturday field is empty")
@@ -127,7 +126,7 @@ export const validateCreateSchedule = [
     .withMessage("saturday value is not valid"),
   check("sunday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Sundays")
+    .withMessage("Please confirm if Sunday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The sunday field is empty")
@@ -139,7 +138,6 @@ export const validateCreateSchedule = [
   },
 ];
 
-// @fields: body {school_id:[string]}
 export const validateGetSchedules = [
   check("school_id")
     .exists()
@@ -162,7 +160,6 @@ export const validateGetSchedules = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateGetSchedule = [
   check("id")
     .custom((value) => {
@@ -195,7 +192,6 @@ export const validateGetSchedule = [
   },
 ];
 
-// @fields: params: {id:[string]},  body {school_id:[string] , name:[string], dayStart:[number], shiftNumberMinutes:[number], sessionUnitMinutes:[number], monday:[boolean], tuesday:[boolean], wednesday:[boolean], thursday:[boolean], friday:[boolean], saturday:[boolean], sunday:[boolean],}
 export const validateUpdateSchedule = [
   check("id")
     .custom((value) => {
@@ -275,7 +271,7 @@ export const validateUpdateSchedule = [
     .withMessage("The day start time must not exceed 9 digits"),
   check("monday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Mondays")
+    .withMessage("Please confirm if Monday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The monday field is empty")
@@ -284,7 +280,7 @@ export const validateUpdateSchedule = [
     .withMessage("monday value is not valid"),
   check("tuesday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Tuesdays")
+    .withMessage("Please confirm if Tuesday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The tuesday field is empty")
@@ -293,7 +289,7 @@ export const validateUpdateSchedule = [
     .withMessage("tuesday value is not valid"),
   check("wednesday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Wednesdays")
+    .withMessage("Please confirm if Wednesday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The wednesday field is empty")
@@ -302,7 +298,7 @@ export const validateUpdateSchedule = [
     .withMessage("wednesday value is not valid"),
   check("thursday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Thursdays")
+    .withMessage("Please confirm if Thursday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The thursday field is empty")
@@ -311,7 +307,7 @@ export const validateUpdateSchedule = [
     .withMessage("thursday value is not valid"),
   check("friday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Fridays")
+    .withMessage("Please confirm if Friday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The friday field is empty")
@@ -320,7 +316,7 @@ export const validateUpdateSchedule = [
     .withMessage("friday value is not valid"),
   check("saturday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Saturdays")
+    .withMessage("Please confirm if Saturday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The saturday field is empty")
@@ -329,7 +325,7 @@ export const validateUpdateSchedule = [
     .withMessage("saturday value is not valid"),
   check("sunday")
     .exists()
-    .withMessage("Please add if the teacher is available to work on Sundays")
+    .withMessage("Please confirm if Sunday is a working day")
     .bail()
     .notEmpty()
     .withMessage("The sunday field is empty")
@@ -341,7 +337,6 @@ export const validateUpdateSchedule = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateDeleteSchedule = [
   check("id")
     .custom((value) => {

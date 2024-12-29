@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 import SessionModel from "../sessions/sessions.model";
-import { Group_Coordinator } from "../../typings/types";
+import { GroupCoordinator } from "../../typings/types";
 
-const GroupCoordinatorSchema = new Schema<Group_Coordinator>(
+const GroupCoordinatorSchema = new Schema<GroupCoordinator>(
   {
     school_id: {
       type: Schema.Types.ObjectId,
@@ -32,7 +32,7 @@ GroupCoordinatorSchema.pre(
   async function () {
     /* get the entities ids and references */
     // get the group_coordinator
-    const findGroupCoordinator: Group_Coordinator | null = await this.model
+    const findGroupCoordinator: GroupCoordinator | null = await this.model
       // getFilter gets the parameters from the parent call, in this case findOneAndDelete
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
@@ -49,8 +49,8 @@ GroupCoordinatorSchema.pre(
   }
 );
 
-const GroupCoordinatorModel = model<Group_Coordinator>(
-  "Group_Coordinator",
+const GroupCoordinatorModel = model<GroupCoordinator>(
+  "GroupCoordinator",
   GroupCoordinatorSchema
 );
 

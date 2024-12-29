@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import GroupCoordinatorModel from "../group_coordinators/group_coordinators.model";
 import SessionModel from "../sessions/sessions.model";
-import { Group, Group_Coordinator } from "../../typings/types";
+import { Group, GroupCoordinator } from "../../typings/types";
 
 const GroupSchema = new Schema<Group>(
   {
@@ -40,7 +40,7 @@ GroupSchema.pre(
       .findOne(this.getFilter(), { _id: 1, school_id: 1 })
       .lean();
     // get the group_coordinators
-    const findGroupCoordinators: Group_Coordinator[] =
+    const findGroupCoordinators: GroupCoordinator[] =
       await GroupCoordinatorModel.find({
         school_id: findGroup?.school_id,
         group_id: findGroup?._id,

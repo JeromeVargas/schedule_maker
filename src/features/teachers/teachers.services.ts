@@ -1,16 +1,17 @@
-import { NewTeacher } from "../../typings/types";
+import { NewSchool, NewTeacher, NewUser } from "../../typings/types";
+import SchoolModel from "../schools/schools.model";
 import UserModel from "../users/users.model";
 import TeacherModel from "./teachers.model";
 
-// CRUD services
-// @desc insert a teacher in database
-// @params teacher
+/* Teachers */
 export const insertTeacher = (teacher: NewTeacher) => {
   return TeacherModel.create(teacher);
 };
 
-// @desc find all teachers by school id
-// @params filters, fieldsToReturn
+export const insertManyTeachers = (teachers: NewTeacher[]) => {
+  return TeacherModel.insertMany(teachers);
+};
+
 export const findFilterAllTeachers = (
   filters: { school_id: string },
   fieldsToReturn: string
@@ -18,8 +19,6 @@ export const findFilterAllTeachers = (
   return TeacherModel.find(filters).select(fieldsToReturn).lean().exec();
 };
 
-// @desc find a teacher by school id and user id or school id and teacher id
-// @params filters, fieldsToReturn
 export const findTeacherByProperty = (
   filters:
     | { school_id: string; user_id: string }
@@ -33,8 +32,6 @@ export const findTeacherByProperty = (
     .exec();
 };
 
-// @desc update a teacher by teacher id, school id and user id
-// @params filters, teacher
 export const modifyFilterTeacher = (
   filters: { _id: string; school_id: string; user_id: string },
   teacher: NewTeacher
@@ -45,8 +42,6 @@ export const modifyFilterTeacher = (
   });
 };
 
-// @desc delete a teacher by school id and teacher id
-// @params teacherId, filters
 export const removeFilterTeacher = (filters: {
   school_id: string;
   _id: string;
@@ -54,10 +49,27 @@ export const removeFilterTeacher = (filters: {
   return TeacherModel.findOneAndDelete(filters).lean().exec();
 };
 
-/* Services from other entities */
-// @desc find a user by coordinator and used id, also populate the school
-// @params filters, fields to return, fields to populate, fields to return populate, resourceName
-export const findPopulateFilterAllUsers = (
+export const removeAllTeachers = () => {
+  return TeacherModel.deleteMany();
+};
+
+/* Schools */
+export const insertSchool = (school: NewSchool) => {
+  const schoolInsert = SchoolModel.create(school);
+  return schoolInsert;
+};
+
+export const removeAllSchools = () => {
+  return SchoolModel.deleteMany();
+};
+
+/* Users */
+export const insertUser = (user: NewUser) => {
+  const userInsert = UserModel.create(user);
+  return userInsert;
+};
+
+export const findPopulateFilterUser = (
   filters: string,
   fieldsToReturn: string,
   fieldsToPopulate: string,
@@ -70,8 +82,6 @@ export const findPopulateFilterAllUsers = (
     .exec();
 };
 
-// @desc find a user by id and school id properties
-// @params filters, fields to return
 export const findUserByProperty = (
   filters: { school_id: string; _id: string },
   fieldsToReturn: string
@@ -81,4 +91,8 @@ export const findUserByProperty = (
     .select(fieldsToReturn)
     .lean()
     .exec();
+};
+
+export const removeAllUsers = () => {
+  return UserModel.deleteMany();
 };

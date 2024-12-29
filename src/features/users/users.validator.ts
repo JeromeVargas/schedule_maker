@@ -3,7 +3,6 @@ import { check } from "express-validator";
 import validateResult from "../../lib/express-validator/validateHelper";
 import { isValidId } from "../../lib/utilities/validation";
 
-// @fields: body: {school_id:[string], firstName:[string], lastName:[string], email:[string], password:[string], role:[string], status:[string]}
 export const validateCreateUser = [
   check("school_id")
     .exists()
@@ -105,7 +104,7 @@ export const validateCreateUser = [
     .isString()
     .withMessage("status is not valid")
     .bail()
-    .isIn(["active", "inactive", "on_leave"])
+    .isIn(["active", "inactive", "leave"])
     .withMessage("the status provided is not a valid option")
     .blacklist("%,$")
     .trim()
@@ -115,7 +114,6 @@ export const validateCreateUser = [
   },
 ];
 
-// @fields: body: {school_id:[string]}
 export const validateGetUsers = [
   check("school_id")
     .exists()
@@ -138,7 +136,6 @@ export const validateGetUsers = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateGetUser = [
   check("id")
     .custom((value) => {
@@ -171,7 +168,6 @@ export const validateGetUser = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string], firstName:[string], lastName:[string], email:[string], password:[string], role:[string], status:[string]}
 export const validateUpdateUser = [
   check("id")
     .custom((value) => {
@@ -283,7 +279,7 @@ export const validateUpdateUser = [
     .isString()
     .withMessage("status is not valid")
     .bail()
-    .isIn(["active", "inactive", "on_leave"])
+    .isIn(["active", "inactive", "leave"])
     .withMessage("the status provided is not a valid option")
     .blacklist("%,$")
     .trim()
@@ -293,7 +289,6 @@ export const validateUpdateUser = [
   },
 ];
 
-// @fields: params: {id:[string]},  body: {school_id:[string]}
 export const validateDeleteUser = [
   check("id")
     .custom((value) => {
